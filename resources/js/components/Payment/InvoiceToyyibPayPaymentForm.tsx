@@ -2,8 +2,8 @@ import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,8 @@ export function InvoiceToyyibPayPaymentForm({
     onCancel,
 }: InvoiceToyyibPayPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
         billName: '',
@@ -47,7 +49,7 @@ export function InvoiceToyyibPayPaymentForm({
         setIsProcessing(true);
 
         try {
-            const response = await axios.post(
+            const response = await fetch(
                 route('customer-facing.invoice.toyyibpay.payment'),
                 {
                     invoice_id: invoiceId,
@@ -57,7 +59,7 @@ export function InvoiceToyyibPayPaymentForm({
                     billTo: customerDetails.billTo,
                     billEmail: customerDetails.billEmail,
                     billPhone: customerDetails.billPhone,
-                    _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                    _token: csrfToken,
                 },
                 {
                     headers: {

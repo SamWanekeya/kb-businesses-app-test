@@ -1,10 +1,10 @@
+import { BankTransferForm } from '@components/Payment/BankTransferForm';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { route } from '@utils/Routes';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BankTransferForm } from './BankTransferForm';
 
 interface PaymentMethod {
     id: string;

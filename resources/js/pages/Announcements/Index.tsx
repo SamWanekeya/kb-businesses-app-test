@@ -247,7 +247,7 @@ export default function Announcements() {
             label: translate('Created At'),
             sortable: true,
             type: 'date',
-            //  render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            //  render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
         },
     ];
 

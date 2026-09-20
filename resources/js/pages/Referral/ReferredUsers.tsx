@@ -187,7 +187,7 @@ export default function ReferredUsers() {
                                                         <Calendar className="text-muted-foreground h-4 w-4" />
                                                         <span className="text-muted-foreground truncate text-xs">
                                                             {translate('Registered')}{' '}
-                                                            {window.appSettings?.formatDateTimeSimple(user.created_at, false) ||
+                                                            {window.kbSettings.formatDateTimeSimple(user.created_at, false) ||
                                                                 new Date(user.created_at).toLocaleDateString()}
                                                         </span>
                                                     </div>

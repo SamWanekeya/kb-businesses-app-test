@@ -31,7 +31,7 @@ export default function Invoices() {
     }, [flash]);
 
     const {
-        csrf_token,
+        csrfToken,
         auth,
         invoices,
         accounts,
@@ -257,7 +257,7 @@ export default function Invoices() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
             const data = await response.json();
@@ -294,7 +294,7 @@ export default function Invoices() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({ notes: rejectNotes }),
             });
@@ -422,7 +422,7 @@ export default function Invoices() {
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
-                    {window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
+                    {window.kbSettings.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
                 </span>
             ),
         },
@@ -476,7 +476,7 @@ export default function Invoices() {
         //     className: 'whitespace-nowrap',
         //     render: (value: string, item: any) => (
         //         <span className={`whitespace-nowrap ${item.status === 'overdue' ? 'text-red-600' : ''}`}>
-        //             {window.appSettings?.formatDateTime(value, false) || '-'}
+        //             {window.kbSettings.formatDateTime(value, false) || '-'}
         //         </span>
         //     )
         // }
@@ -488,7 +488,7 @@ export default function Invoices() {
             render: (value: string, item: any) => (
                 <span className={`flex items-center gap-2 whitespace-nowrap ${item.status === 'overdue' ? 'text-red-600' : 'text-gray-500'}`}>
                     <Calendar className="h-4 w-4 shrink-0" />
-                    <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                    <span>{window.kbSettings.formatDateTime(value, false) || '-'}</span>
                 </span>
             ),
         },
@@ -627,7 +627,7 @@ export default function Invoices() {
                                             <p className="text-sm text-gray-500">
                                                 {payment.payment_method === 'bank' ? translate('Bank Transfer') : payment.payment_method} -
                                                 <span className="font-mono">
-                                                    {window.appSettings?.formatCurrency(Number(payment.amount)) ||
+                                                    {window.kbSettings.formatCurrency(Number(payment.amount)) ||
                                                         `$${Number(payment.amount).toFixed(2)}`}
                                                 </span>{' '}
                                                 ({payment.payment_type})
@@ -645,7 +645,7 @@ export default function Invoices() {
                                         </div>
                                         <div className="text-sm text-gray-500">
                                             {translate('Requested')}:{' '}
-                                            {window.appSettings?.formatDateTime(payment.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(payment.created_at, false) ||
                                                 new Date(payment.created_at).toLocaleDateString()}
                                         </div>
                                     </div>
@@ -839,7 +839,7 @@ export default function Invoices() {
                                         {reminderHistory.map((reminder: any, index: number) => (
                                             <tr key={index}>
                                                 <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                                                    {window.appSettings?.formatDateTime(reminder.created_at, false) ||
+                                                    {window.kbSettings.formatDateTime(reminder.created_at, false) ||
                                                         new Date(reminder.created_at).toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">

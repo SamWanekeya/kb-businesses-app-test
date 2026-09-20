@@ -89,7 +89,7 @@ export default function DeliveryOrderEdit() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        setranslate('sales_order_id', id);
+        set('sales_order_id', id);
         if (!id) return;
         try {
             const res = await fetch(route('api.delivery-orders.sales-orders.details', id));
@@ -220,7 +220,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 placeholder={translate('e.g. Q1 Hardware Delivery')}
                                 className={errors.name ? 'border-red-500' : ''}
                             />
@@ -231,7 +231,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea
                                 value={form.description}
-                                onChange={(e) => setranslate('description', e.target.value)}
+                                onChange={(e) => set('description', e.target.value)}
                                 rows={2}
                                 placeholder={translate('Optional notes about this delivery...')}
                             />
@@ -260,7 +260,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
@@ -279,7 +279,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select contact')} />
                                 </SelectTrigger>
@@ -298,7 +298,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Shipping Provider')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
+                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select shipping provider')} />
                                 </SelectTrigger>
@@ -331,7 +331,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
-                                    onChange={(e) => setranslate('delivery_date', e.target.value)}
+                                    onChange={(e) => set('delivery_date', e.target.value)}
                                     className={`cursor-pointer ${errors.delivery_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -354,7 +354,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.expected_delivery_date}
-                                    onChange={(e) => setranslate('expected_delivery_date', e.target.value)}
+                                    onChange={(e) => set('expected_delivery_date', e.target.value)}
                                     className="cursor-pointer"
                                 />
                             </div>
@@ -363,7 +363,7 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
-                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -384,7 +384,7 @@ export default function DeliveryOrderEdit() {
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
-                                    onChange={(e) => setranslate('shipping_cost', e.target.value)}
+                                    onChange={(e) => set('shipping_cost', e.target.value)}
                                     placeholder="0.00"
                                 />
                             </div>
@@ -394,7 +394,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -591,7 +591,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Textarea
                                 value={form.delivery_address}
-                                onChange={(e) => setranslate('delivery_address', e.target.value)}
+                                onChange={(e) => set('delivery_address', e.target.value)}
                                 rows={2}
                                 placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 className={errors.delivery_address ? 'border-red-500' : ''}
@@ -605,7 +605,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.delivery_city}
-                                onChange={(e) => setranslate('delivery_city', e.target.value)}
+                                onChange={(e) => set('delivery_city', e.target.value)}
                                 placeholder={translate('e.g. New York')}
                                 className={errors.delivery_city ? 'border-red-500' : ''}
                             />
@@ -618,7 +618,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.delivery_state}
-                                onChange={(e) => setranslate('delivery_state', e.target.value)}
+                                onChange={(e) => set('delivery_state', e.target.value)}
                                 placeholder={translate('e.g. NY')}
                                 className={errors.delivery_state ? 'border-red-500' : ''}
                             />
@@ -631,7 +631,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.delivery_country}
-                                onChange={(e) => setranslate('delivery_country', e.target.value)}
+                                onChange={(e) => set('delivery_country', e.target.value)}
                                 placeholder={translate('e.g. United States')}
                                 className={errors.delivery_country ? 'border-red-500' : ''}
                             />
@@ -644,7 +644,7 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.delivery_postal_code}
-                                onChange={(e) => setranslate('delivery_postal_code', e.target.value)}
+                                onChange={(e) => set('delivery_postal_code', e.target.value)}
                                 placeholder={translate('e.g. 10001')}
                                 className={errors.delivery_postal_code ? 'border-red-500' : ''}
                             />
@@ -655,7 +655,7 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
                             <Textarea
                                 value={form.delivery_notes}
-                                onChange={(e) => setranslate('delivery_notes', e.target.value)}
+                                onChange={(e) => set('delivery_notes', e.target.value)}
                                 rows={3}
                                 placeholder={translate('e.g. Leave at reception, handle with care...')}
                             />

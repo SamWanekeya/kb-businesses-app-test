@@ -37,7 +37,7 @@ interface Errors {
     [key: string]: string;
 }
 
-const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixed(2)}`;
+const fmt = (n: number) => window.kbSettings.formatCurrency(n) ?? `$${n.toFixed(2)}`;
 
 function FieldError({ message }: { message?: string }) {
     if (!message) return null;
@@ -123,7 +123,7 @@ export default function ReturnOrderEdit() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        setranslate('sales_order_id', id);
+        set('sales_order_id', id);
         setSalesOrderItems([]);
         setReturnItems([]);
         if (!id) return;
@@ -315,7 +315,7 @@ export default function ReturnOrderEdit() {
                                 </Label>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    onChange={(e) => set('name', e.target.value)}
                                     placeholder={translate('e.g. Defective Items Return')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
@@ -345,7 +345,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Account')}
                                 </Label>
-                                <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                                <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
@@ -364,7 +364,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Contact')}
                                 </Label>
-                                <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
+                                <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select contact')} />
                                     </SelectTrigger>
@@ -383,7 +383,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Shipping Provider')}
                                 </Label>
-                                <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
+                                <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                     <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select shipping provider')} />
                                     </SelectTrigger>
@@ -416,7 +416,7 @@ export default function ReturnOrderEdit() {
                                     <Input
                                         type="date"
                                         value={form.return_date}
-                                        onChange={(e) => setranslate('return_date', e.target.value)}
+                                        onChange={(e) => set('return_date', e.target.value)}
                                         className={`cursor-pointer ${errors.return_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -425,7 +425,7 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium">{translate('Status')}</Label>
-                                <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                                <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -442,7 +442,7 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium">{translate('Return Reason')}</Label>
-                                <Select value={form.reason} onValueChange={(v) => setranslate('reason', v)}>
+                                <Select value={form.reason} onValueChange={(v) => set('reason', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -460,7 +460,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Assigned To')}
                                 </Label>
-                                <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                                <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
@@ -479,7 +479,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium">{translate('Description')}</Label>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    onChange={(e) => set('description', e.target.value)}
                                     rows={2}
                                     placeholder={translate('Optional description about this return order...')}
                                 />
@@ -489,7 +489,7 @@ export default function ReturnOrderEdit() {
                                 <Label className="text-sm font-medium">{translate('Reason Description')}</Label>
                                 <Textarea
                                     value={form.reason_description}
-                                    onChange={(e) => setranslate('reason_description', e.target.value)}
+                                    onChange={(e) => set('reason_description', e.target.value)}
                                     rows={2}
                                     placeholder={translate('Describe the reason for return in detail...')}
                                 />
@@ -760,7 +760,7 @@ export default function ReturnOrderEdit() {
                             <Label className="text-sm font-medium">{translate('Notes')}</Label>
                             <Textarea
                                 value={form.notes}
-                                onChange={(e) => setranslate('notes', e.target.value)}
+                                onChange={(e) => set('notes', e.target.value)}
                                 rows={3}
                                 placeholder={translate('Enter any additional notes...')}
                             />

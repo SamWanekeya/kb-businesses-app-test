@@ -344,7 +344,7 @@ export default function Contacts() {
             label: translate('Created At'),
             sortable: true,
             type: 'date',
-            // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            // render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
         },
     ];
 
@@ -629,7 +629,7 @@ export default function Contacts() {
                                         <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
                                             <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             <span>
-                                                {window.appSettings?.formatDateTime(contact.created_at, false) ||
+                                                {window.kbSettings.formatDateTime(contact.created_at, false) ||
                                                     new Date(contact.created_at).toLocaleDateString()}
                                             </span>
                                         </div>

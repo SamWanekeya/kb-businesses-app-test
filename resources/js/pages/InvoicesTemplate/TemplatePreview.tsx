@@ -4,7 +4,7 @@ export default function TemplatePreview() {
     const { invoice, templateId, templateColor, settings } = usePage().props;
 
     const currency = settings?.default_currency || '$';
-    // window.appSettings?.formatCurrency(parseFloat(value))
+    // window.kbSettings.formatCurrency(parseFloat(value))
     const formatCurrency = (amount: number) => amount.toFixed(2);
     const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 

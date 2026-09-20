@@ -126,14 +126,14 @@ export default function ShippingProviderTypeShow() {
                             <div>
                                 <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
                                 <p className="mt-1 text-sm">
-                                    {window.appSettings?.formatDateTime(shippingProviderType.created_at, false) ||
+                                    {window.kbSettings.formatDateTime(shippingProviderType.created_at, false) ||
                                         new Date(shippingProviderType.created_at).toLocaleDateString()}
                                 </p>
                             </div>
                             <div>
                                 <label className="text-muted-foreground text-sm font-medium">{translate('Updated At')}</label>
                                 <p className="mt-1 text-sm">
-                                    {window.appSettings?.formatDateTime(shippingProviderType.updated_at, false) ||
+                                    {window.kbSettings.formatDateTime(shippingProviderType.updated_at, false) ||
                                         new Date(shippingProviderType.updated_at).toLocaleDateString()}
                                 </p>
                             </div>

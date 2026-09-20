@@ -584,7 +584,7 @@ if (!function_exists('validatePaymentMethodConfig')) {
             //
             //            case 'mercadopago':
             //                if (empty($config['access_token'])) {
-            //                    $errors[] = 'MercadoPago access token is required';
+            //                    $errors[] = 'Mercado Pago access token is required';
             //                }
             //                break;
 

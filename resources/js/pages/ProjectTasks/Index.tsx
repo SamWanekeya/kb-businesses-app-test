@@ -603,7 +603,7 @@ export default function ProjectTasks() {
                                                                 <span>
                                                                     {translate('Due')}:{' '}
                                                                     {task.due_date
-                                                                        ? window.appSettings?.formatDateTime(task.due_date, false) ||
+                                                                        ? window.kbSettings.formatDateTime(task.due_date, false) ||
                                                                           new Date(task.due_date).toLocaleDateString()
                                                                         : translate('No due date')}
                                                                 </span>

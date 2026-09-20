@@ -123,7 +123,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         return translate('Good evening');
     };
 
-    const formatCurrency = (val: number) => window.appSettings?.formatCurrency(val) ?? `$${val.toLocaleString()}`;
+    const formatCurrency = (val: number) => window.kbSettings.formatCurrency(val) ?? `$${val.toLocaleString()}`;
 
     const fadeUp = (delay = 0) =>
         `transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}` + (delay ? ` delay-${delay}` : '');

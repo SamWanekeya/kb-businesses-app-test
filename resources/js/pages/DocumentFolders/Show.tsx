@@ -118,7 +118,7 @@ export default function DocumentFolderShow() {
                             <div>
                                 <label className="text-sm font-medium text-gray-500">{translate('Created At')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
-                                    {window.appSettings?.formatDateTime(documentFolder.created_at, false) ||
+                                    {window.kbSettings.formatDateTime(documentFolder.created_at, false) ||
                                         new Date(documentFolder.created_at).toLocaleString()}
                                 </p>
                             </div>
@@ -126,7 +126,7 @@ export default function DocumentFolderShow() {
                             <div>
                                 <label className="text-sm font-medium text-gray-500">{translate('Last Updated')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
-                                    {window.appSettings?.formatDateTime(documentFolder.updated_at, false) ||
+                                    {window.kbSettings.formatDateTime(documentFolder.updated_at, false) ||
                                         new Date(documentFolder.updated_at).toLocaleString()}
                                 </p>
                             </div>

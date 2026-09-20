@@ -37,10 +37,10 @@ import EmailSettings from '@pages/Settings/EmailSettings';
 import PaymentSettings from '@pages/Settings/PaymentSettings';
 
 import CacheSettings from '@pages/Settings/CacheSettings';
-import KakbimaIntelligenceSettings from '@pages/Settings/KakbimaIntelligenceSettings';
 import CookieSettings from '@pages/Settings/CookieSettings';
 import GoogleCalendarSettings from '@pages/Settings/GoogleCalendarSettings';
 import InvoiceTemplateSettings from '@pages/Settings/InvoiceTemplateSettings';
+import KakbimaIntelligenceSettings from '@pages/Settings/KakbimaIntelligenceSettings';
 import QuoteTemplateSettings from '@pages/Settings/QuoteTemplateSettings';
 import RecaptchaSettings from '@pages/Settings/RecaptchaSettings';
 import SalesOrderTemplateSettings from '@pages/Settings/SalesOrderTemplateSettings';

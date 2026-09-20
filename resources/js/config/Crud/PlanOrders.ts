@@ -20,7 +20,7 @@ export const usePlanOrdersConfig: CrudConfig = {
                 key: 'ordered_at',
                 label: translate('Order Date'),
                 sortable: true,
-                render: (value) => `${window.appSettings?.formatDateTime(value, false) || '-'}`,
+                render: (value) => `${window.kbSettings.formatDateTime(value, false) || '-'}`,
             },
             {
                 key: 'user.name',
@@ -35,7 +35,7 @@ export const usePlanOrdersConfig: CrudConfig = {
             {
                 key: 'original_price',
                 label: translate('Original Price'),
-                render: (value) => `${window.appSettings.formatCurrency(value)}`,
+                render: (value) => `${window.kbSettings.formatCurrency(value)}`,
             },
             {
                 key: 'coupon_code',
@@ -45,12 +45,12 @@ export const usePlanOrdersConfig: CrudConfig = {
             {
                 key: 'discount_amount',
                 label: translate('Discount'),
-                render: (value) => (value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'),
+                render: (value) => (value > 0 ? `-${window.kbSettings.formatCurrency(value)}` : '-'),
             },
             {
                 key: 'final_price',
                 label: translate('Final Price'),
-                render: (value) => `${window.appSettings.formatCurrency(value)}`,
+                render: (value) => `${window.kbSettings.formatCurrency(value)}`,
             },
             {
                 key: 'status',

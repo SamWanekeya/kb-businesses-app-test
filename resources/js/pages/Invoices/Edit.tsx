@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +36,7 @@ const emptyLine = (): ProductLine => ({
     discount_value: 0,
 });
 
-const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixed(2)}`;
+const fmt = (n: number) => window.kbSettings.formatCurrency(n) ?? `$${n.toFixed(2)}`;
 
 function Field({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
     return (
@@ -91,58 +90,78 @@ export default function InvoiceEdit() {
     const [submitting, setSubmitting] = useState(false);
     const [loadingSalesOrder, setLoadingSalesOrder] = useState(false);
 
-    const handleSalesOrderChange = useCallback(async (salesOrderId: string) => {
-        setranslate('sales_order_id', salesOrderId);
-        if (!salesOrderId) return;
-        setLoadingSalesOrder(true);
-        try {
-            const { data } = await axios.get(route('api.invoices.sales-orders.details', salesOrderId));
-            setForm((p: any) => ({
-                ...p,
-                sales_order_id: salesOrderId,
-                account_id: data.account_id ? String(data.account_id) : p.account_id,
-                contact_id: data.contact_id ? String(data.contact_id) : p.contact_id,
-                quote_id: data.quote_id ? String(data.quote_id) : p.quote_id,
-                opportunity_id: data.opportunity_id ? String(data.opportunity_id) : p.opportunity_id,
-                billing_address: data.billing_address || p.billing_address,
-                billing_city: data.billing_city || p.billing_city,
-                billing_state: data.billing_state || p.billing_state,
-                billing_postal_code: data.billing_postal_code || p.billing_postal_code,
-                billing_country: data.billing_country || p.billing_country,
-                products: data.products?.length
-                    ? data.products.map((pr: any) => ({
-                          id: crypto.randomUUID(),
-                          product_id: String(pr.product_id),
-                          quantity: parseInt(pr.quantity) || 1,
-                          unit_price: parseFloat(pr.unit_price) || 0,
-                          discount_type: (pr.discount_type === 'none' ? 'none' : pr.discount_type || 'none') as DiscountType,
-                          discount_value: parseFloat(pr.discount_value) || 0,
-                      }))
-                    : p.products,
-            }));
-            setErrors((p) => {
-                const n = { ...p };
-                delete n.account_id;
-                delete n.contact_id;
-                delete n.quote_id;
-                delete n.opportunity_id;
-                delete n.billing_address;
-                delete n.billing_city;
-                delete n.billing_state;
-                delete n.billing_country;
-                delete n.billing_postal_code;
-                if (data.products?.length) {
-                    delete n.products;
-                    data.products.forEach((_: any, i: number) => delete n[`products.${i}.product_id`]);
+    const handleSalesOrderChange = useCallback(
+        async (salesOrderId: string) => {
+            set('sales_order_id', salesOrderId);
+            if (!salesOrderId) return;
+            setLoadingSalesOrder(true);
+
+            try {
+                const response = await fetch(route('api.invoices.sales-orders.details', salesOrderId), {
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load sales order details');
                 }
-                return n;
-            });
-        } catch {
-            toast.error(translate('Failed to load sales order details'));
-        } finally {
-            setLoadingSalesOrder(false);
-        }
-    }, []);
+
+                const data = await response.json();
+
+                setForm((p: any) => ({
+                    ...p,
+                    sales_order_id: salesOrderId,
+                    account_id: data.account_id ? String(data.account_id) : p.account_id,
+                    contact_id: data.contact_id ? String(data.contact_id) : p.contact_id,
+                    quote_id: data.quote_id ? String(data.quote_id) : p.quote_id,
+                    opportunity_id: data.opportunity_id ? String(data.opportunity_id) : p.opportunity_id,
+                    billing_address: data.billing_address || p.billing_address,
+                    billing_city: data.billing_city || p.billing_city,
+                    billing_state: data.billing_state || p.billing_state,
+                    billing_postal_code: data.billing_postal_code || p.billing_postal_code,
+                    billing_country: data.billing_country || p.billing_country,
+                    products: data.products?.length
+                        ? data.products.map((pr: any) => ({
+                              id: crypto.randomUUID(),
+                              product_id: String(pr.product_id),
+                              quantity: parseInt(pr.quantity) || 1,
+                              unit_price: parseFloat(pr.unit_price) || 0,
+                              discount_type: (pr.discount_type === 'none' ? 'none' : pr.discount_type || 'none') as DiscountType,
+                              discount_value: parseFloat(pr.discount_value) || 0,
+                          }))
+                        : p.products,
+                }));
+
+                setErrors((p) => {
+                    const n = { ...p };
+                    delete n.account_id;
+                    delete n.contact_id;
+                    delete n.quote_id;
+                    delete n.opportunity_id;
+                    delete n.billing_address;
+                    delete n.billing_city;
+                    delete n.billing_state;
+                    delete n.billing_country;
+                    delete n.billing_postal_code;
+
+                    if (data.products?.length) {
+                        delete n.products;
+                        data.products.forEach((_: any, i: number) => {
+                            delete n[`products.${i}.product_id`];
+                        });
+                    }
+
+                    return n;
+                });
+            } catch {
+                toast.error(translate('Failed to load sales order details'));
+            } finally {
+                setLoadingSalesOrder(false);
+            }
+        },
+        [translate],
+    );
 
     const set = (field: string, value: any) => {
         setForm((p: any) => ({ ...p, [field]: value }));
@@ -297,7 +316,7 @@ export default function InvoiceEdit() {
                             <Field label={translate('Invoice Name')} required error={errors.name}>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    onChange={(e) => set('name', e.target.value)}
                                     placeholder={translate('e.g. Annual Software License Invoice')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
@@ -329,7 +348,7 @@ export default function InvoiceEdit() {
 
                         {/* Row 2: Quote, Opportunity, Customer, Contact */}
                         <Field label={translate('Quote')} error={errors.quote_id}>
-                            <Select value={form.quote_id} onValueChange={(v) => setranslate('quote_id', v)}>
+                            <Select value={form.quote_id} onValueChange={(v) => set('quote_id', v)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder={translate('Select Quote')} />
                                 </SelectTrigger>
@@ -343,7 +362,7 @@ export default function InvoiceEdit() {
                             </Select>
                         </Field>
                         <Field label={translate('Opportunity')} error={errors.opportunity_id}>
-                            <Select value={form.opportunity_id} onValueChange={(v) => setranslate('opportunity_id', v)}>
+                            <Select value={form.opportunity_id} onValueChange={(v) => set('opportunity_id', v)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder={translate('Select Opportunity')} />
                                 </SelectTrigger>
@@ -357,7 +376,7 @@ export default function InvoiceEdit() {
                             </Select>
                         </Field>
                         <Field label={translate('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select Account')} />
                                 </SelectTrigger>
@@ -371,7 +390,7 @@ export default function InvoiceEdit() {
                             </Select>
                         </Field>
                         <Field label={translate('Contact')} required error={errors.contact_id}>
-                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select Contact')} />
                                 </SelectTrigger>
@@ -401,7 +420,7 @@ export default function InvoiceEdit() {
                                 <Input
                                     type="date"
                                     value={form.invoice_date}
-                                    onChange={(e) => setranslate('invoice_date', e.target.value)}
+                                    onChange={(e) => set('invoice_date', e.target.value)}
                                     className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -421,13 +440,13 @@ export default function InvoiceEdit() {
                                 <Input
                                     type="date"
                                     value={form.due_date}
-                                    onChange={(e) => setranslate('due_date', e.target.value)}
+                                    onChange={(e) => set('due_date', e.target.value)}
                                     className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
                         </Field>
                         <Field label={translate('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -449,7 +468,7 @@ export default function InvoiceEdit() {
                             </Select>
                         </Field>
                         <Field label={translate('Assign To')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select User')} />
                                 </SelectTrigger>
@@ -468,7 +487,7 @@ export default function InvoiceEdit() {
                             <Field label={translate('Description')} error={errors.description}>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    onChange={(e) => set('description', e.target.value)}
                                     placeholder={translate('Enter invoice description...')}
                                     rows={2}
                                 />
@@ -478,7 +497,7 @@ export default function InvoiceEdit() {
                             <Field label={translate('Notes')} error={errors.notes}>
                                 <Textarea
                                     value={form.notes}
-                                    onChange={(e) => setranslate('notes', e.target.value)}
+                                    onChange={(e) => set('notes', e.target.value)}
                                     placeholder={translate('Additional notes...')}
                                     rows={2}
                                 />
@@ -496,7 +515,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Billing Address')} required error={errors.billing_address}>
                             <Textarea
                                 value={form.billing_address}
-                                onChange={(e) => setranslate('billing_address', e.target.value)}
+                                onChange={(e) => set('billing_address', e.target.value)}
                                 placeholder={translate('e.g. 123 Main St')}
                                 rows={2}
                                 className={errors.billing_address ? 'border-red-500' : ''}
@@ -506,28 +525,28 @@ export default function InvoiceEdit() {
                             <Field label={translate('City')} required error={errors.billing_city}>
                                 <Input
                                     value={form.billing_city}
-                                    onChange={(e) => setranslate('billing_city', e.target.value)}
+                                    onChange={(e) => set('billing_city', e.target.value)}
                                     className={errors.billing_city ? 'border-red-500' : ''}
                                 />
                             </Field>
                             <Field label={translate('State')} required error={errors.billing_state}>
                                 <Input
                                     value={form.billing_state}
-                                    onChange={(e) => setranslate('billing_state', e.target.value)}
+                                    onChange={(e) => set('billing_state', e.target.value)}
                                     className={errors.billing_state ? 'border-red-500' : ''}
                                 />
                             </Field>
                             <Field label={translate('Country')} required error={errors.billing_country}>
                                 <Input
                                     value={form.billing_country}
-                                    onChange={(e) => setranslate('billing_country', e.target.value)}
+                                    onChange={(e) => set('billing_country', e.target.value)}
                                     className={errors.billing_country ? 'border-red-500' : ''}
                                 />
                             </Field>
                             <Field label={translate('Postal Code')} required error={errors.billing_postal_code}>
                                 <Input
                                     value={form.billing_postal_code}
-                                    onChange={(e) => setranslate('billing_postal_code', e.target.value)}
+                                    onChange={(e) => set('billing_postal_code', e.target.value)}
                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -535,7 +554,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Terms')} error={errors.terms}>
                             <Textarea
                                 value={form.terms}
-                                onChange={(e) => setranslate('terms', e.target.value)}
+                                onChange={(e) => set('terms', e.target.value)}
                                 placeholder={translate('Payment terms and conditions...')}
                                 rows={2}
                             />

@@ -35,7 +35,7 @@ export function FlutterwavePaymentForm({
     useEffect(() => {
         if (!flutterwaveKey || initialized.current) return;
 
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://checkout.flutterwave.com/v3.js';
         script.async = true;
 
@@ -54,13 +54,13 @@ export function FlutterwavePaymentForm({
                     name: 'Customer',
                 },
                 customizations: {
-                    title: 'Plan Subscription',
-                    description: 'Payment for subscription plan',
+                    title: translate('Plan subscription'),
+                    description: translate('Payment for subscription plan'),
                     logo: '',
                 },
                 callback: function (data: any) {
                     if (data.status === 'successful') {
-                        processPaymentranslate('flutterwave', {
+                        processPayment('flutterwave', {
                             planId,
                             billingCycle,
                             couponCode,

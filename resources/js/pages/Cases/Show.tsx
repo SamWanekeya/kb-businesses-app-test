@@ -134,7 +134,7 @@ export default function CaseShow() {
                     <div className="mt-0.5 flex items-center gap-2">
                         <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                         <span className="text-muted-foreground truncate text-xs">
-                            {window.appSettings?.formatDateTime(item.start_date, false) || new Date(item.start_date).toLocaleDateString()}
+                            {window.kbSettings.formatDateTime(item.start_date, false) || new Date(item.start_date).toLocaleDateString()}
                         </span>
                         {item.assigned_user?.name && (
                             <span className="flex flex-shrink-0 items-center gap-1">
@@ -209,7 +209,7 @@ export default function CaseShow() {
                             {
                                 label: translate('Created'),
                                 value:
-                                    window.appSettings?.formatDateTime(caseData.created_at, false) ||
+                                    window.kbSettings.formatDateTime(caseData.created_at, false) ||
                                     new Date(caseData.created_at).toLocaleDateString(),
                                 icon: Clock,
                                 iconCls: 'text-blue-600',

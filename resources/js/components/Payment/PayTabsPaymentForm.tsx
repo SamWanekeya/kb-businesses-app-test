@@ -1,8 +1,8 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,8 @@ export function PayTabsPaymentForm({
     onCancel,
 }: PayTabsPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handlePayment = async () => {
@@ -41,10 +43,10 @@ export function PayTabsPaymentForm({
                 coupon_code: couponCode || null,
                 payment_id: `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 transaction_id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                _token: csrfToken,
             };
 
-            const response = await axios.post(route('subscriptions.paytabs.payment'), paymentData, {
+            const response = await fetch(route('subscriptions.paytabs.payment'), paymentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',

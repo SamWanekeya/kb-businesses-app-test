@@ -157,13 +157,13 @@ export default function PublicInvoice({
     const [paymentAmount, setPaymentAmount] = useState(dueAmount);
 
     const formatCurrency = (amount: number) => {
-        const val = window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        const val = window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
         return <span className="font-mono">{val}</span>;
     };
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {
@@ -447,7 +447,9 @@ export default function PublicInvoice({
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{translate('Due Date')}</p>
-                                            <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</h3>
+                                            <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">
+                                                {window.kbSettings.formatDateTimeSimple(invoice.due_date)}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full bg-amber-100 p-4">
                                             <FileText className="h-5 w-5 text-amber-600" />
@@ -514,7 +516,9 @@ export default function PublicInvoice({
                                             </div>
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
                                                 <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Due Date')}:</span>
-                                                <span className="font-semibold text-gray-900 dark:text-gray-100">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</span>
+                                                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                                    {window.kbSettings.formatDateTimeSimple(invoice.due_date)}
+                                                </span>
                                             </div>
                                             {invoice.payment_method && (
                                                 <div className="flex items-center justify-between py-2">
@@ -725,7 +729,9 @@ export default function PublicInvoice({
                                         <tbody>
                                             {invoice.payments.map((payment: any, index: number) => (
                                                 <tr key={index} className="border-b hover:bg-gray-50">
-                                                    <td className="px-6 py-4">{window.kbSettings.formatDateTimeSimple(payment.processed_at || payment.created_at)}</td>
+                                                    <td className="px-6 py-4">
+                                                        {window.kbSettings.formatDateTimeSimple(payment.processed_at || payment.created_at)}
+                                                    </td>
                                                     <td className="px-4 py-4 capitalize">{payment.payment_method}</td>
                                                     <td className="px-4 py-4 text-right font-semibold">{formatCurrency(payment.amount)}</td>
                                                     <td className="px-4 py-4 capitalize">

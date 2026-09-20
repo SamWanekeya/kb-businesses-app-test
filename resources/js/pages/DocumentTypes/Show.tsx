@@ -70,14 +70,14 @@ export default function ShowDocumentType() {
                             <div>
                                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Created At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                                    {window.appSettings?.formatDateTime(documentType.created_at, false) ||
+                                    {window.kbSettings.formatDateTime(documentType.created_at, false) ||
                                         new Date(documentType.created_at).toLocaleDateString()}
                                 </dd>
                             </div>
                             <div>
                                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Updated At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                                    {window.appSettings?.formatDateTime(documentType.updated_at, false) ||
+                                    {window.kbSettings.formatDateTime(documentType.updated_at, false) ||
                                         new Date(documentType.updated_at).toLocaleDateString()}
                                 </dd>
                             </div>

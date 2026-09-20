@@ -6,7 +6,6 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,20 +24,28 @@ export default function EmailNotificationSettings() {
 
     useEffect(() => {
         // Load available notifications
-        axios
-            .get(route('settings.email-notifications.available'))
-            .then((response) => {
-                setAvailableNotifications(response.data);
+        fetch(route('settings.email-notifications.available'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setAvailableNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
 
         // Load current settings
-        axios
-            .get(route('settings.email-notifications.get'))
-            .then((response) => {
-                setNotifications(response.data);
+        fetch(route('settings.email-notifications.get'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
     }, []);
 
     const handleToggle = (key: string, enabled: boolean) => {

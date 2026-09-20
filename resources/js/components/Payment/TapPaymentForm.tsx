@@ -1,6 +1,7 @@
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -28,6 +29,8 @@ export function TapPaymentForm({
     onCancel,
 }: TapPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -42,32 +45,32 @@ export function TapPaymentForm({
 
         try {
             // Create form and submit to handle redirect properly
-            const form = document.createElementranslate('form');
+            const form = document.createElement('form');
             form.method = 'POST';
             form.action = route('tap.create-payment');
 
             // Add CSRF token
-            const csrfInput = document.createElementranslate('input');
+            const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
-            csrfInput.value = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
 
             // Add form data
-            const planIdInput = document.createElementranslate('input');
+            const planIdInput = document.createElement('input');
             planIdInput.type = 'hidden';
             planIdInput.name = 'plan_id';
             planIdInput.value = planId.toString();
             form.appendChild(planIdInput);
 
-            const billingCycleInput = document.createElementranslate('input');
+            const billingCycleInput = document.createElement('input');
             billingCycleInput.type = 'hidden';
             billingCycleInput.name = 'billing_cycle';
             billingCycleInput.value = billingCycle;
             form.appendChild(billingCycleInput);
 
             if (couponCode) {
-                const couponInput = document.createElementranslate('input');
+                const couponInput = document.createElement('input');
                 couponInput.type = 'hidden';
                 couponInput.name = 'coupon_code';
                 couponInput.value = couponCode;

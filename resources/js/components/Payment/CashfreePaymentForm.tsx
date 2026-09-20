@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../../../css/cashfree-modal-fix.css';
@@ -30,6 +30,7 @@ export function CashfreePaymentForm({
     onCancel,
 }: CashfreePaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
 
     useEffect(() => {
         // Check if Cashfree SDK is already loaded
@@ -38,7 +39,7 @@ export function CashfreePaymentForm({
         }
 
         // Load Cashfree SDK
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
         script.async = true;
         script.onerror = () => {
@@ -52,24 +53,33 @@ export function CashfreePaymentForm({
                 document.body.removeChild(script);
             }
         };
-    }, [mode]);
+    }, [mode, translate]);
 
     const handlePayment = async () => {
         try {
             // Create payment session on the server
-            const response = await axios.post(route('cashfree.create-session'), {
-                plan_id: planId,
-                billing_cycle: billingCycle,
-                coupon_code: couponCode,
-                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+            const response = await fetch(route('cashfree.create-session'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    plan_id: planId,
+                    billing_cycle: billingCycle,
+                    coupon_code: couponCode,
+                }),
             });
 
-            if (response.data.error) {
-                toast.error(response.data.error);
+            const data = await response.json();
+
+            if (!response.ok || data.error) {
+                toast.error(data.error || translate('Failed to create payment session'));
                 return;
             }
 
-            const { payment_session_id, order_id, amount, mode: serverMode } = response.data;
+            const { payment_session_id, order_id, mode: serverMode } = data;
 
             if (!payment_session_id || !order_id) {
                 toast.error(translate('Invalid response from server'));
@@ -121,23 +131,33 @@ export function CashfreePaymentForm({
                     }
 
                     if (result.paymentDetails) {
-                        // Payment completed, verify on server
-                        axios
-                            .post(route('cashfree.verify-payment'), {
-                                order_id: order_id,
-                                cf_payment_id: result.paymentDetails?.paymentId,
-                                plan_id: planId,
-                                billing_cycle: billingCycle,
-                                coupon_code: couponCode,
-                                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
-                            })
-                            .then((response) => {
-                                onSuccess();
-                            })
-                            .catch((error) => {
-                                const errorMsg = error.response?.data?.error || translate('Payment verification failed');
-                                toast.error(errorMsg);
+                        try {
+                            const verifyResponse = await fetch(route('cashfree.verify-payment'), {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                },
+                                body: JSON.stringify({
+                                    order_id: order_id,
+                                    cf_payment_id: result.paymentDetails?.paymentId,
+                                    plan_id: planId,
+                                    billing_cycle: billingCycle,
+                                    coupon_code: couponCode,
+                                }),
                             });
+
+                            const verifyData = await verifyResponse.json();
+
+                            if (!verifyResponse.ok || verifyData.error) {
+                                throw new Error(verifyData.error || translate('Payment verification failed'));
+                            }
+
+                            onSuccess();
+                        } catch (error: any) {
+                            toast.error(error.message || translate('Payment verification failed'));
+                        }
                     } else {
                         toast.error(translate('Payment status unclear'));
                     }

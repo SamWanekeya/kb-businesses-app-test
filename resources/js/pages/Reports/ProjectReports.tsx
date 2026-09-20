@@ -256,7 +256,7 @@ export default function ProjectReports() {
                                                 <div className="flex items-center gap-1 text-[11px] whitespace-nowrap text-gray-500 dark:text-gray-500">
                                                     <Calendar className="h-3 w-3 shrink-0" />
                                                     <span className="text-end">
-                                                        {window.appSettings?.formatDateTime(project.end_date, false) ||
+                                                        {window.kbSettings.formatDateTime(project.end_date, false) ||
                                                             new Date(project.end_date).toLocaleDateString()}
                                                     </span>
                                                 </div>

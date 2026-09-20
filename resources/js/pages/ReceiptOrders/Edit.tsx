@@ -24,7 +24,7 @@ interface Errors {
     [key: string]: string;
 }
 
-const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixed(2)}`;
+const fmt = (n: number) => window.kbSettings.formatCurrency(n) ?? `$${n.toFixed(2)}`;
 
 function FieldError({ message }: { message?: string }) {
     if (!message) return null;
@@ -79,7 +79,7 @@ export default function ReceiptOrderEdit() {
     };
 
     const handlePurchaseOrderChange = async (id: string) => {
-        setranslate('purchase_order_id', id);
+        set('purchase_order_id', id);
         setFormData((prev) => ({ ...prev, return_order_id: '' }));
         if (!id) return;
         try {
@@ -118,7 +118,7 @@ export default function ReceiptOrderEdit() {
     };
 
     const handleReturnOrderChange = async (id: string) => {
-        setranslate('return_order_id', id);
+        set('return_order_id', id);
         setFormData((prev) => ({ ...prev, purchase_order_id: '' }));
         if (!id) return;
         try {
@@ -274,7 +274,7 @@ export default function ReceiptOrderEdit() {
                             </Label>
                             <Input
                                 value={form.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 placeholder={translate('e.g. Q1 Supplier Receipt')}
                                 className={errors.name ? 'border-red-500' : ''}
                             />
@@ -285,7 +285,7 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea
                                 value={form.description}
-                                onChange={(e) => setranslate('description', e.target.value)}
+                                onChange={(e) => set('description', e.target.value)}
                                 rows={2}
                                 placeholder={translate('Optional description about this receipt order...')}
                             />
@@ -338,7 +338,7 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
@@ -365,7 +365,7 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select contact')} />
                                 </SelectTrigger>
@@ -407,7 +407,7 @@ export default function ReceiptOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.receipt_date}
-                                    onChange={(e) => setranslate('receipt_date', e.target.value)}
+                                    onChange={(e) => set('receipt_date', e.target.value)}
                                     className={`cursor-pointer ${errors.receipt_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -430,7 +430,7 @@ export default function ReceiptOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.expected_date}
-                                    onChange={(e) => setranslate('expected_date', e.target.value)}
+                                    onChange={(e) => set('expected_date', e.target.value)}
                                     className={`cursor-pointer ${errors.expected_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -440,7 +440,7 @@ export default function ReceiptOrderEdit() {
                         {/* Status + Assigned To */}
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
-                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -458,7 +458,7 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -694,7 +694,7 @@ export default function ReceiptOrderEdit() {
                     <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
                     <Textarea
                         value={form.notes}
-                        onChange={(e) => setranslate('notes', e.target.value)}
+                        onChange={(e) => set('notes', e.target.value)}
                         rows={3}
                         placeholder={translate('Enter any additional notes...')}
                     />

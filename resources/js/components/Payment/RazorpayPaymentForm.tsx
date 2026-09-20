@@ -1,7 +1,6 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,7 +17,6 @@ interface RazorpayPaymentFormProps {
 
 export function RazorpayPaymentForm({
     planId,
-    planPrice,
     couponCode,
     billingCycle,
     razorpayKey,
@@ -35,7 +33,7 @@ export function RazorpayPaymentForm({
         }
 
         // Load Razorpay script
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
         script.onerror = () => {
@@ -49,23 +47,32 @@ export function RazorpayPaymentForm({
                 document.body.removeChild(script);
             }
         };
-    }, []);
+    }, [translate]);
 
     const handlePayment = async () => {
         try {
             // Create order on the server
-            const response = await axios.post(route('razorpay.create-order'), {
-                plan_id: planId,
-                billing_cycle: billingCycle,
-                coupon_code: couponCode,
+            const response = await fetch(route('razorpay.create-order'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({
+                    plan_id: planId,
+                    billing_cycle: billingCycle,
+                    coupon_code: couponCode,
+                }),
             });
 
-            if (response.data.error) {
-                toast.error(response.data.error);
+            const data = await response.json();
+
+            if (data.error) {
+                toast.error(data.error);
                 return;
             }
 
-            const { order_id, amount } = response.data;
+            const { order_id, amount } = data;
 
             if (!order_id || !amount) {
                 toast.error(translate('Invalid response from server'));
@@ -76,27 +83,37 @@ export function RazorpayPaymentForm({
                 key: razorpayKey,
                 amount: amount,
                 currency: currency,
-                name: 'VCardGo',
-                description: 'Plan Subscription',
+                name: 'Kakbima',
+                description: translate('Plan subscription'),
                 order_id: order_id,
-                handler: function (response: any) {
-                    // Verify payment on server
-                    axios
-                        .post(route('razorpay.verify-payment'), {
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                            plan_id: planId,
-                            billing_cycle: billingCycle,
-                            coupon_code: couponCode,
-                        })
-                        .then(() => {
-                            onSuccess();
-                        })
-                        .catch((error) => {
-                            const errorMsg = error.response?.data?.error || translate('Payment verification failed');
-                            toast.error(errorMsg);
+                handler: async function (response: any) {
+                    try {
+                        const verifyResponse = await fetch(route('razorpay.verify-payment'), {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                                plan_id: planId,
+                                billing_cycle: billingCycle,
+                                coupon_code: couponCode,
+                            }),
                         });
+
+                        const verifyData = await verifyResponse.json();
+
+                        if (!verifyResponse.ok || verifyData.error) {
+                            throw new Error(verifyData.error || translate('Payment verification failed'));
+                        }
+
+                        onSuccess();
+                    } catch (error: any) {
+                        toast.error(error.message || translate('Payment verification failed'));
+                    }
                 },
                 prefill: {
                     name: '',
@@ -107,7 +124,7 @@ export function RazorpayPaymentForm({
                     color: '#3B82F6',
                 },
                 modal: {
-                    ondismiss: onCancel,
+                    onDismiss: onCancel,
                 },
             };
 
@@ -119,8 +136,8 @@ export function RazorpayPaymentForm({
             const razorpay = new (window as any).Razorpay(options);
             razorpay.open();
         } catch (error: any) {
-            const errorMsg = error.response?.data?.error || translate('Failed to initialize payment');
-            toast.error(errorMsg);
+            toast.error(error.message || translate('Something went wrong'));
+            console.error('Razorpay error:', error);
         }
     };
 

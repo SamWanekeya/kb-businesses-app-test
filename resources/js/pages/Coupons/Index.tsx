@@ -338,13 +338,13 @@ export default function CouponsPage() {
             key: 'minimum_spend',
             label: translate('Min Spend'),
             render: (value) =>
-                value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
+                value ? <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'maximum_spend',
             label: translate('Max Spend'),
             render: (value) =>
-                value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
+                value ? <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'discount_amount',
@@ -354,7 +354,7 @@ export default function CouponsPage() {
                 return row.type === 'percentage' ? (
                     `${amount}%`
                 ) : (
-                    <span className="font-mono">{window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`}</span>
+                    <span className="font-mono">{window.kbSettings.formatCurrency(amount) || `$${amount.toFixed(2)}`}</span>
                 );
             },
         },
@@ -373,7 +373,7 @@ export default function CouponsPage() {
             label: translate('Expiry Date'),
             sortable: true,
             type: 'date',
-            // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            // render: (value) => window.kbSettings.formatDateTime(value, false) || '-'
         },
         {
             key: 'status',

@@ -29,7 +29,7 @@ export function NepalstePaymentForm({
     onCancel,
 }: NepalstePaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export function NepalstePaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     plan_id: planId,
@@ -60,12 +60,12 @@ export function NepalstePaymentForm({
             const data = await response.json();
 
             if (data.success) {
-                const form = document.createElementranslate('form');
+                const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = data.payment_url;
 
                 Object.keys(data.payment_data).forEach((key) => {
-                    const input = document.createElementranslate('input');
+                    const input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = key;
                     input.value = typeof data.payment_data[key] === 'object' ? JSON.stringify(data.payment_data[key]) : data.payment_data[key];

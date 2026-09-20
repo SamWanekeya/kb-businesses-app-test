@@ -54,12 +54,12 @@ export default function CouponDetailsPage() {
         {
             key: 'amount',
             label: translate('Order Amount'),
-            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
+            render: (value: number) => <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'discount_amount',
             label: translate('Discount Applied'),
-            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
+            render: (value: number) => <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'used_at',
@@ -68,14 +68,14 @@ export default function CouponDetailsPage() {
             render: (value: string) => (
                 <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
                     <Calendar className="h-3.5 w-3.5 shrink-0" />
-                    <span>{window.appSettings?.formatDateTime(value, false) || value}</span>
+                    <span>{window.kbSettings.formatDateTime(value, false) || value}</span>
                 </div>
             ),
         },
     ];
 
     const formatDiscount = (type: string, amount: number) => {
-        return type === 'percentage' ? `${amount}%` : window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`;
+        return type === 'percentage' ? `${amount}%` : window.kbSettings.formatCurrency(amount) || `$${amount.toFixed(2)}`;
     };
 
     const getStatusBadge = (status: boolean) => {
@@ -176,7 +176,7 @@ export default function CouponDetailsPage() {
                                     <h3 className="mt-2 text-xl font-semibold">
                                         {' '}
                                         {coupon.expiry_date
-                                            ? window.appSettings?.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
+                                            ? window.kbSettings.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
                                             : translate('Never')}
                                     </h3>
                                 </div>
@@ -207,7 +207,7 @@ export default function CouponDetailsPage() {
                                 <div>
                                     <label className="text-sm font-bold">{translate('Minimum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
-                                        {window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
+                                        {window.kbSettings.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
                                     </p>
                                 </div>
                             )}
@@ -215,7 +215,7 @@ export default function CouponDetailsPage() {
                                 <div>
                                     <label className="text-sm font-bold">{translate('Maximum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
-                                        {window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
+                                        {window.kbSettings.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
                                     </p>
                                 </div>
                             )}

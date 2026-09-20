@@ -219,7 +219,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                                             {log.user?.roles?.[0]?.name || log.type || '-'}
                                         </td>
                                         <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
-                                            {window.appSettings?.formatDateTime(log.created_at, false) || new Date(log.created_at).toLocaleString()}
+                                            {window.kbSettings.formatDateTime(log.created_at, false) || new Date(log.created_at).toLocaleString()}
                                         </td>
                                         <td className="px-6 py-4 text-center whitespace-nowrap">
                                             <Button

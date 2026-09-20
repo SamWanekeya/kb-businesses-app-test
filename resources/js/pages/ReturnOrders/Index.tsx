@@ -237,7 +237,7 @@ export default function ReturnOrders() {
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
-                    {window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
+                    {window.kbSettings.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
                 </span>
             ),
         },

@@ -161,13 +161,13 @@ export default function PublicQuote({
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     const formatCurrency = (amount: number) => {
-        const val = window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        const val = window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
         return <span className="font-mono">{val}</span>;
     };
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {

@@ -36,7 +36,7 @@ export function PayPalPaymentForm({
         if (!paypalClientId || !paypalRef.current) return;
 
         // Load PayPal SDK
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency.toUpperCase()}&disable-funding=credit,card`;
         script.async = true;
 
@@ -58,7 +58,7 @@ export function PayPalPaymentForm({
                         },
                         onApprove: (data: any, actions: any) => {
                             return actions.order.capture().then((details: any) => {
-                                processPaymentranslate('paypal', {
+                                processPayment('paypal', {
                                     planId,
                                     billingCycle,
                                     couponCode,

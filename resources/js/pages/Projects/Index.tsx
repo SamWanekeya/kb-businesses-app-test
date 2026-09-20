@@ -603,7 +603,7 @@ export default function Projects() {
                                                     >
                                                         <Calendar className="h-3 w-3" />
                                                         <span className="text-xs">
-                                                            {window.appSettings?.formatDateTime(project.end_date, false) || project.end_date}
+                                                            {window.kbSettings.formatDateTime(project.end_date, false) || project.end_date}
                                                         </span>
                                                     </p>
                                                 </div>
@@ -624,7 +624,7 @@ export default function Projects() {
                                             )}
                                             {project.budget && (
                                                 <span className="ml-auto font-mono text-xs font-medium text-gray-600 dark:text-gray-300">
-                                                    {window.appSettings?.formatCurrency(project.budget) ||
+                                                    {window.kbSettings.formatCurrency(project.budget) ||
                                                         `$${Number(project.budget).toLocaleString()}`}
                                                 </span>
                                             )}

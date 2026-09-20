@@ -89,7 +89,9 @@ export default function UserShow() {
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created At')}</label>
-                                    <p className="mt-2 text-base font-medium text-gray-700">{window.kbSettings.formatDateTimeSimple(user.created_at)}</p>
+                                    <p className="mt-2 text-base font-medium text-gray-700">
+                                        {window.kbSettings.formatDateTimeSimple(user.created_at)}
+                                    </p>
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created By')}</label>

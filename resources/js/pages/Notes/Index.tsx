@@ -457,7 +457,7 @@ export default function Notes() {
                                             {note.created_at ? (
                                                 <span className="flex items-center gap-1">
                                                     <Calendar className="h-4 w-4 text-gray-500" />
-                                                    {window.appSettings?.formatDateTime(note.created_at, false) ||
+                                                    {window.kbSettings.formatDateTime(note.created_at, false) ||
                                                         new Date(note.created_at).toLocaleDateString()}
                                                 </span>
                                             ) : (
@@ -553,7 +553,7 @@ export default function Notes() {
                                             {note.created_at ? (
                                                 <span className="flex items-center gap-1">
                                                     <Calendar className="h-4 w-4 text-gray-500" />
-                                                    {window.appSettings?.formatDateTime(note.created_at, false) ||
+                                                    {window.kbSettings.formatDateTime(note.created_at, false) ||
                                                         new Date(note.created_at).toLocaleDateString()}
                                                 </span>
                                             ) : (

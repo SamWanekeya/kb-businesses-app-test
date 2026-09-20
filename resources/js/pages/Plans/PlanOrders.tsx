@@ -232,22 +232,20 @@ export default function PlanOrdersPage() {
             key: 'original_price',
             label: translate('Original Price'),
             className: 'whitespace-nowrap',
-            render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
+            render: (value) => <span className="font-mono whitespace-nowrap">{window.kbSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'discount_amount',
             label: translate('Discount'),
             className: 'whitespace-nowrap',
-            render: (value) => (
-                <span className="font-mono whitespace-nowrap">{value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'}</span>
-            ),
+            render: (value) => <span className="font-mono whitespace-nowrap">{value > 0 ? `-${window.kbSettings.formatCurrency(value)}` : '-'}</span>,
         },
         {
             key: 'final_price',
             label: translate('Final Price'),
             sortable: true,
             className: 'whitespace-nowrap',
-            render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
+            render: (value) => <span className="font-mono whitespace-nowrap">{window.kbSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'status',
@@ -455,7 +453,7 @@ export default function PlanOrdersPage() {
                                         {translate('Order Date')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
-                                        {window.appSettings?.formatDateTime(currentItem.ordered_at, false) || '-'}
+                                        {window.kbSettings.formatDateTime(currentItem.ordered_at, false) || '-'}
                                     </p>
                                 </div>
                             </div>
@@ -518,7 +516,7 @@ export default function PlanOrdersPage() {
                                         {translate('Original Price')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
-                                        {window.appSettings.formatCurrency(currentItem.original_price)}
+                                        {window.kbSettings.formatCurrency(currentItem.original_price)}
                                     </p>
                                 </div>
                                 <div>
@@ -527,7 +525,7 @@ export default function PlanOrdersPage() {
                                         {translate('Discount')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
-                                        {currentItem.discount_amount > 0 ? `-${window.appSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
+                                        {currentItem.discount_amount > 0 ? `-${window.kbSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
                                     </p>
                                 </div>
                             </div>
@@ -540,7 +538,7 @@ export default function PlanOrdersPage() {
                                         {translate('Final Price')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
-                                        {window.appSettings.formatCurrency(currentItem.final_price)}
+                                        {window.kbSettings.formatCurrency(currentItem.final_price)}
                                     </p>
                                 </div>
                                 {currentItem.receipt_path && (
@@ -554,7 +552,7 @@ export default function PlanOrdersPage() {
                                                 size={'sm'}
                                                 varient={'primary'}
                                                 onClick={() => {
-                                                    const link = document.createElementranslate('a');
+                                                    const link = document.createElement('a');
                                                     link.href = resolveImageUrl(currentItem.receipt_path);
                                                     link.download = '';
                                                     document.body.appendChild(link);

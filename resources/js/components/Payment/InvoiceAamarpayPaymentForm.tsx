@@ -27,7 +27,7 @@ export function InvoiceAamarpayPaymentForm({
     onCancel,
 }: InvoiceAamarpayPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ export function InvoiceAamarpayPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -72,7 +72,7 @@ export function InvoiceAamarpayPaymentForm({
 
     const formatPrice = (price: number) => {
         return (
-            window.appSettings?.formatCurrency(Number(price || 0)) ||
+            window.kbSettings.formatCurrency(Number(price || 0)) ||
             new Intl.NumberFormatranslate('en-US', {
                 style: 'currency',
                 currency: currency,

@@ -25,7 +25,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['mercadopago_access_token'])) {
-                return response()->json(['error' => __('MercadoPago not configured')], 400);
+                return response()->json(['error' => __('Mercado Pago not configured')], 400);
             }
 
             // Validate payment amount and type
@@ -77,7 +77,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             ]);
 
         } catch (Exception $e) {
-            Log::error('MercadoPago preference creation failed', [
+            Log::error('Mercado Pago preference creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -132,7 +132,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
                     'payment_id' => $paymentId,
                 ]);
 
-                Log::info('MercadoPago payment successful', [
+                Log::info('Mercado Pago payment successful', [
                     'invoice_id' => $invoiceId,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
@@ -147,7 +147,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::error('MercadoPago payment processing failed', [
+            Log::error('Mercado Pago payment processing failed', [
                 'error' => $e->getMessage(),
                 'status' => $status,
             ]);

@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ArrowLeft, ChevronDown, ChevronUp, Copy, Plus, Trash2 } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -62,7 +61,7 @@ const emptyLine = (): ProductLine => ({
     discount_value: 0,
 });
 
-const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixed(2)}`;
+const fmt = (n: number) => window.kbSettings.formatCurrency(n) ?? `$${n.toFixed(2)}`;
 
 function SearchSelect({
     value,
@@ -239,11 +238,23 @@ export default function SalesOrderCreate() {
     };
 
     const handleQuoteChange = useCallback(async (quoteId: string) => {
-        setranslate('quote_id', quoteId);
+        set('quote_id', quoteId);
         if (!quoteId) return;
         setLoadingQuote(true);
+
         try {
-            const { data } = await axios.get(route('api.quotes.details', quoteId));
+            const response = await fetch(route('api.quotes.details', quoteId), {
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to load quote details');
+            }
+
+            const data = await response.json();
+
             setForm((p) => ({
                 ...p,
                 quote_id: quoteId,
@@ -272,6 +283,7 @@ export default function SalesOrderCreate() {
                       }))
                     : p.products,
             }));
+
             setErrors((prev) => {
                 const e = { ...prev };
                 delete e.account_id;
@@ -417,7 +429,7 @@ export default function SalesOrderCreate() {
                             <Field label={translate('Order Name')} required error={errors.name}>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    onChange={(e) => set('name', e.target.value)}
                                     placeholder={translate('e.g. Annual Hardware Order 2025')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
@@ -427,7 +439,7 @@ export default function SalesOrderCreate() {
                             <Field label={translate('Description')} error={errors.description}>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    onChange={(e) => set('description', e.target.value)}
                                     placeholder={translate('Describe the purpose or details of this order...')}
                                     rows={2}
                                 />
@@ -461,7 +473,7 @@ export default function SalesOrderCreate() {
                             )}
                         </Field>
                         <Field label={translate('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
@@ -497,7 +509,7 @@ export default function SalesOrderCreate() {
                                 <Input
                                     type="date"
                                     value={form.order_date}
-                                    onChange={(e) => setranslate('order_date', e.target.value)}
+                                    onChange={(e) => set('order_date', e.target.value)}
                                     className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -517,13 +529,13 @@ export default function SalesOrderCreate() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
-                                    onChange={(e) => setranslate('delivery_date', e.target.value)}
+                                    onChange={(e) => set('delivery_date', e.target.value)}
                                     className="cursor-pointer"
                                 />
                             </div>
                         </Field>
                         <Field label={translate('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -544,7 +556,7 @@ export default function SalesOrderCreate() {
                             </Select>
                         </Field>
                         <Field label={translate('Assign To')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -575,7 +587,7 @@ export default function SalesOrderCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <Field label={translate('Billing Contact')} required error={errors.billing_contact_id}>
-                            <Select value={form.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
+                            <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select billing contact')} />
                                 </SelectTrigger>
@@ -597,7 +609,7 @@ export default function SalesOrderCreate() {
                             )}
                         </Field>
                         <Field label={translate('Shipping Contact')} required error={errors.shipping_contact_id}>
-                            <Select value={form.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
+                            <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select shipping contact')} />
                                 </SelectTrigger>
@@ -611,7 +623,7 @@ export default function SalesOrderCreate() {
                             </Select>
                         </Field>
                         <Field label={translate('Shipping Provider')} required error={errors.shipping_provider_type_id}>
-                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
+                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select provider')} />
                                 </SelectTrigger>
@@ -871,7 +883,7 @@ export default function SalesOrderCreate() {
                                         <Field label={translate('Billing Address')} required error={errors.billing_address}>
                                             <Textarea
                                                 value={form.billing_address}
-                                                onChange={(e) => setranslate('billing_address', e.target.value)}
+                                                onChange={(e) => set('billing_address', e.target.value)}
                                                 placeholder={translate('e.g. 123 Main St, Suite 100')}
                                                 rows={2}
                                                 className={errors.billing_address ? 'border-red-500' : ''}
@@ -881,7 +893,7 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Billing City')} required error={errors.billing_city}>
                                                 <Input
                                                     value={form.billing_city}
-                                                    onChange={(e) => setranslate('billing_city', e.target.value)}
+                                                    onChange={(e) => set('billing_city', e.target.value)}
                                                     placeholder="New York"
                                                     className={errors.billing_city ? 'border-red-500' : ''}
                                                 />
@@ -889,7 +901,7 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Billing State')} required error={errors.billing_state}>
                                                 <Input
                                                     value={form.billing_state}
-                                                    onChange={(e) => setranslate('billing_state', e.target.value)}
+                                                    onChange={(e) => set('billing_state', e.target.value)}
                                                     placeholder="NY"
                                                     className={errors.billing_state ? 'border-red-500' : ''}
                                                 />
@@ -899,7 +911,7 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Billing Country')} required error={errors.billing_country}>
                                                 <Input
                                                     value={form.billing_country}
-                                                    onChange={(e) => setranslate('billing_country', e.target.value)}
+                                                    onChange={(e) => set('billing_country', e.target.value)}
                                                     placeholder="United States"
                                                     className={errors.billing_country ? 'border-red-500' : ''}
                                                 />
@@ -907,7 +919,7 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Billing Postal Code')} required error={errors.billing_postal_code}>
                                                 <Input
                                                     value={form.billing_postal_code}
-                                                    onChange={(e) => setranslate('billing_postal_code', e.target.value)}
+                                                    onChange={(e) => set('billing_postal_code', e.target.value)}
                                                     placeholder="10001"
                                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                                 />
@@ -923,7 +935,7 @@ export default function SalesOrderCreate() {
                                         <Field label={translate('Shipping Address')} error={errors.shipping_address}>
                                             <Textarea
                                                 value={form.shipping_address}
-                                                onChange={(e) => setranslate('shipping_address', e.target.value)}
+                                                onChange={(e) => set('shipping_address', e.target.value)}
                                                 placeholder={translate('e.g. 456 Elm St, Warehouse B')}
                                                 rows={2}
                                             />
@@ -932,14 +944,14 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Shipping City')} error={errors.shipping_city}>
                                                 <Input
                                                     value={form.shipping_city}
-                                                    onChange={(e) => setranslate('shipping_city', e.target.value)}
+                                                    onChange={(e) => set('shipping_city', e.target.value)}
                                                     placeholder="Los Angeles"
                                                 />
                                             </Field>
                                             <Field label={translate('Shipping State')} error={errors.shipping_state}>
                                                 <Input
                                                     value={form.shipping_state}
-                                                    onChange={(e) => setranslate('shipping_state', e.target.value)}
+                                                    onChange={(e) => set('shipping_state', e.target.value)}
                                                     placeholder="CA"
                                                 />
                                             </Field>
@@ -948,14 +960,14 @@ export default function SalesOrderCreate() {
                                             <Field label={translate('Shipping Country')} error={errors.shipping_country}>
                                                 <Input
                                                     value={form.shipping_country}
-                                                    onChange={(e) => setranslate('shipping_country', e.target.value)}
+                                                    onChange={(e) => set('shipping_country', e.target.value)}
                                                     placeholder="United States"
                                                 />
                                             </Field>
                                             <Field label={translate('Shipping Postal Code')} error={errors.shipping_postal_code}>
                                                 <Input
                                                     value={form.shipping_postal_code}
-                                                    onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
+                                                    onChange={(e) => set('shipping_postal_code', e.target.value)}
                                                     placeholder="90001"
                                                 />
                                             </Field>

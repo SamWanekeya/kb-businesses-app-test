@@ -35,7 +35,7 @@ export function PaystackPaymentForm({
     useEffect(() => {
         if (!paystackKey || initialized.current) return;
 
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
         script.async = true;
 
@@ -58,7 +58,7 @@ export function PaystackPaymentForm({
                     if (modalBackdrop) {
                         (modalBackdrop as HTMLElement).style.display = '';
                     }
-                    processPaymentranslate('paystack', {
+                    processPayment('paystack', {
                         planId,
                         billingCycle,
                         couponCode,

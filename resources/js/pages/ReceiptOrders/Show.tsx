@@ -50,10 +50,10 @@ export default function ShowReceiptOrder() {
 
     const formatDate = (d: string) => {
         if (!d) return translate('-');
-        return window.appSettings?.formatDateTime(d, false) || new Date(d).toLocaleDateString();
+        return window.kbSettings.formatDateTime(d, false) || new Date(d).toLocaleDateString();
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const calculateTotals = () => {
         let subtotal = 0,

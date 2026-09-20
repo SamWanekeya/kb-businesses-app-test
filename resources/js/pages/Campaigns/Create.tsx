@@ -99,7 +99,7 @@ export default function CampaignCreate() {
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. Q1 Email Blast, Summer Promo')}
                             />
@@ -110,7 +110,7 @@ export default function CampaignCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Campaign Type')}
                             </Label>
-                            <Select value={data.campaign_type_id} onValueChange={(v) => setranslate('campaign_type_id', v)}>
+                            <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
                                 <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select campaign type')} />
                                 </SelectTrigger>
@@ -137,7 +137,7 @@ export default function CampaignCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Target List')}
                             </Label>
-                            <Select value={data.target_list_id} onValueChange={(v) => setranslate('target_list_id', v)}>
+                            <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
                                 <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select target list')} />
                                 </SelectTrigger>
@@ -178,7 +178,7 @@ export default function CampaignCreate() {
                                 <Input
                                     type="date"
                                     value={data.start_date}
-                                    onChange={(e) => setranslate('start_date', e.target.value)}
+                                    onChange={(e) => set('start_date', e.target.value)}
                                     className={`cursor-pointer ${errors.start_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -203,7 +203,7 @@ export default function CampaignCreate() {
                                 <Input
                                     type="date"
                                     value={data.end_date}
-                                    onChange={(e) => setranslate('end_date', e.target.value)}
+                                    onChange={(e) => set('end_date', e.target.value)}
                                     className={`cursor-pointer ${errors.end_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -212,7 +212,7 @@ export default function CampaignCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -227,7 +227,7 @@ export default function CampaignCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Assign To')}
                             </Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -254,7 +254,7 @@ export default function CampaignCreate() {
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => setranslate('description', e.target.value)}
+                                onChange={(e) => set('description', e.target.value)}
                                 rows={3}
                                 placeholder={translate('Enter campaign description...')}
                             />
@@ -277,7 +277,7 @@ export default function CampaignCreate() {
                                     step="0.01"
                                     min="0"
                                     value={data.budget}
-                                    onChange={(e) => setranslate('budget', e.target.value)}
+                                    onChange={(e) => set('budget', e.target.value)}
                                     placeholder="0.00"
                                     className="pl-7"
                                 />
@@ -293,7 +293,7 @@ export default function CampaignCreate() {
                                     step="0.01"
                                     min="0"
                                     value={data.actual_cost}
-                                    onChange={(e) => setranslate('actual_cost', e.target.value)}
+                                    onChange={(e) => set('actual_cost', e.target.value)}
                                     placeholder="0.00"
                                     className="pl-7"
                                 />
@@ -306,7 +306,7 @@ export default function CampaignCreate() {
                                 type="number"
                                 min="0"
                                 value={data.expected_response}
-                                onChange={(e) => setranslate('expected_response', e.target.value)}
+                                onChange={(e) => set('expected_response', e.target.value)}
                                 placeholder="e.g. 500"
                             />
                         </div>

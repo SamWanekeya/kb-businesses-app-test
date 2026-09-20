@@ -28,7 +28,7 @@ export default function ProductShow() {
         { title: translate('View Product') },
     ];
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const pageActions = [
         {

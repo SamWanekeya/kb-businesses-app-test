@@ -39,7 +39,7 @@ class TapPaymentController extends Controller
                 'currency' => 'USD',
                 'threeDSecure' => 'true',
                 'description' => 'Plan: ' . $plan->name,
-                'statement_descriptor' => 'Plan Subscription',
+                'statement_descriptor' => __('Plan subscription'),
                 'customer' => [
                     'first_name' => $user->name ?? 'Customer',
                     'email' => $user->email,

@@ -88,7 +88,12 @@ export default function FloatingKakbimaIntelligence() {
                 </Button>
             </div>
 
-            <KakbimaIntelligenceModal isOpen={isOpen} onClose={handleModalClose} onGenerate={handleGenerate} title={translate('Kakbima Intelligence')} />
+            <KakbimaIntelligenceModal
+                isOpen={isOpen}
+                onClose={handleModalClose}
+                onGenerate={handleGenerate}
+                title={translate('Kakbima Intelligence')}
+            />
         </>,
         document.body,
     );

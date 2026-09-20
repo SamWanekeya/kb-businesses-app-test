@@ -86,11 +86,11 @@ export default function PurchaseOrderShow() {
         },
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {
@@ -485,7 +485,7 @@ export default function PurchaseOrderShow() {
                                                     router.post(
                                                         route('purchase-orders.comments.store', purchaseOrder.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                     );
                                                 }
                                             }}
@@ -920,7 +920,9 @@ export default function PurchaseOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(purchaseOrder.order_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(purchaseOrder.order_date)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
@@ -928,7 +930,9 @@ export default function PurchaseOrderShow() {
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
                                     <p className="text-foreground text-sm font-medium">
-                                        {purchaseOrder.expected_delivery_date ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date) : translate('-')}
+                                        {purchaseOrder.expected_delivery_date
+                                            ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date)
+                                            : translate('-')}
                                     </p>
                                 </div>
                             </div>

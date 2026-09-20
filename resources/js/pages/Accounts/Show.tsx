@@ -70,7 +70,7 @@ export default function AccountShow() {
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     return (
@@ -441,7 +441,7 @@ export default function AccountShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(meeting.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
@@ -524,7 +524,7 @@ export default function AccountShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(call.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
@@ -594,7 +594,7 @@ export default function AccountShow() {
                                                 router.post(
                                                     route('accounts.comments.store', account.id),
                                                     { comment: newComment },
-                                                    { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                    { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                 );
                                             }
                                         }}

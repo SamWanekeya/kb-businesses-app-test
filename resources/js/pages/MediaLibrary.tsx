@@ -42,7 +42,7 @@ interface MediaItem {
 
 export default function MediaLibraryDemo() {
     const { t: translate } = useTranslation();
-    const { csrf_token, storageSettings, auth, planLimits } = usePage().props;
+    const { csrfToken, storageSettings, auth, planLimits } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const allowedTypes = storageSettings?.allowed_file_types || 'jpg,png,webp,gif,pdf,doc,docx,txt,csv';
@@ -151,7 +151,7 @@ export default function MediaLibraryDemo() {
                 body: formData,
                 credentials: 'same-origin',
                 headers: {
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
             });
@@ -218,7 +218,7 @@ export default function MediaLibraryDemo() {
                 method: 'DELETE',
                 credentials: 'same-origin',
                 headers: {
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
             });
@@ -263,7 +263,7 @@ export default function MediaLibraryDemo() {
             if (response.ok) {
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
-                const link = document.createElementranslate('a');
+                const link = document.createElement('a');
                 link.href = url;
                 link.download = filename;
                 document.body.appendChild(link);
@@ -294,7 +294,7 @@ export default function MediaLibraryDemo() {
     };
 
     const formatDate = (dateString: string) => {
-        return window.appSettings?.formatDateTime(dateString);
+        return window.kbSettings.formatDateTime(dateString);
     };
 
     const getFileIcon = (mimeType: string, fileName: string = '') => {
@@ -564,7 +564,7 @@ export default function MediaLibraryDemo() {
                                                 <div className="text-muted-foreground flex items-center justify-between text-xs">
                                                     <span className="flex items-center gap-1">
                                                         <Calendar className="h-3 w-3" />
-                                                        {window.appSettings?.formatDateTime(item.created_at, false) || '-'}
+                                                        {window.kbSettings.formatDateTime(item.created_at, false) || '-'}
                                                     </span>
                                                 </div>
                                             </div>
@@ -864,7 +864,9 @@ export default function MediaLibraryDemo() {
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
                                                     {translate('Uploaded')}
                                                 </span>
-                                                <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(selectedMediaInfo.created_at)}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {window.kbSettings.formatDateTimeSimple(selectedMediaInfo.created_at)}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

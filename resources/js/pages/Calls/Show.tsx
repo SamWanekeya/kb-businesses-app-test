@@ -61,11 +61,11 @@ export default function CallShow() {
                                     <div>
                                         <p className="font-medium">{translate('Date & Time')}</p>
                                         <p className="text-muted-foreground text-sm">
-                                            {window.appSettings?.formatDateTime(call.start_date, false) ||
+                                            {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                 new Date(call.start_date).toLocaleDateString()}{' '}
-                                            {window.appSettings?.formatTime(call.start_time) || call.start_time} -{' '}
-                                            {window.appSettings?.formatDateTime(call.end_date, false) || new Date(call.end_date).toLocaleDateString()}{' '}
-                                            {window.appSettings?.formatTime(call.end_time) || call.end_time}
+                                            {window.kbSettings.formatTime(call.start_time) || call.start_time} -{' '}
+                                            {window.kbSettings.formatDateTime(call.end_date, false) || new Date(call.end_date).toLocaleDateString()}{' '}
+                                            {window.kbSettings.formatTime(call.end_time) || call.end_time}
                                         </p>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@ export default function CallShow() {
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
-                                        {window.appSettings?.formatDateTime(call.created_at, false) || new Date(call.created_at).toLocaleDateString()}
+                                        {window.kbSettings.formatDateTime(call.created_at, false) || new Date(call.created_at).toLocaleDateString()}
                                     </p>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@ export default function CallShow() {
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
-                                            {window.appSettings?.formatDateTime(call.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(call.created_at, false) ||
                                                 new Date(call.created_at).toLocaleDateString()}
                                         </p>
                                     </div>

@@ -147,7 +147,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             key: 'created_at',
             label: translate('Date'),
             type: 'date',
-            // render: (value) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
+            // render: (value) => window.kbSettings.formatDateTime(value, false) || new Date(value).toLocaleDateString()
         },
     ];
 

@@ -28,7 +28,7 @@ export function InvoiceKhaltiPaymentForm({
     onCancel,
 }: InvoiceKhaltiPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -47,7 +47,7 @@ export function InvoiceKhaltiPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -71,7 +71,7 @@ export function InvoiceKhaltiPaymentForm({
 
     const initializeKhaltiCheckout = (paymentData: any) => {
         if (!window.KhaltiCheckout) {
-            const script = document.createElementranslate('script');
+            const script = document.createElement('script');
             script.src = 'https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js';
             script.onload = () => {
                 createKhaltiCheckout(paymentData);

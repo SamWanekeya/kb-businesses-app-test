@@ -23,11 +23,11 @@ export default function CampaignShow() {
         { title: translate('View Campaign') },
     ];
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return '-';
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const getResponseRate = () => {

@@ -64,7 +64,7 @@ export default function CustomerReports() {
             title: translate('Contact Lifetime Value'),
             value: (
                 <span className="font-mono">
-                    {window.appSettings?.formatCurrency(summary.contact_lifetime_value) || `$${summary.contact_lifetime_value.toLocaleString()}`}
+                    {window.kbSettings.formatCurrency(summary.contact_lifetime_value) || `$${summary.contact_lifetime_value.toLocaleString()}`}
                 </span>
             ),
             icon: <DollarSign className="h-6 w-6 text-orange-600" />,
@@ -276,7 +276,7 @@ export default function CustomerReports() {
                                     </div>
                                     <div className="flex shrink-0 flex-col items-end gap-1">
                                         <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
-                                            {window.appSettings?.formatCurrency(contact.total_spent) || `$${contact.total_spent}`}
+                                            {window.kbSettings.formatCurrency(contact.total_spent) || `$${contact.total_spent}`}
                                         </span>
                                         <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
                                             {contact.order_count} {translate('Orders')}

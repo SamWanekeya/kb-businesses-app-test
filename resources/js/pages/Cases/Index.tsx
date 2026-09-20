@@ -773,7 +773,7 @@ export default function Cases() {
                                             <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                                 <Calendar className="h-3.5 w-3.5 shrink-0" />
                                                 <span>
-                                                    {window.appSettings?.formatDateTime(caseItem.created_at, false) ||
+                                                    {window.kbSettings.formatDateTime(caseItem.created_at, false) ||
                                                         new Date(caseItem.created_at).toLocaleDateString()}
                                                 </span>
                                             </div>

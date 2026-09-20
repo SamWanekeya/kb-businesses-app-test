@@ -481,7 +481,7 @@ export default function DocumentFolderView() {
                                                             {useHasPermission('view-documents') && doc.attachment_url && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
-                                                                        const l = document.createElementranslate('a');
+                                                                        const l = document.createElement('a');
                                                                         l.href = route('documents.download', doc.id);
                                                                         l.download = '';
                                                                         document.body.appendChild(l);
@@ -613,7 +613,7 @@ export default function DocumentFolderView() {
                                         {folder.created_at && <LucidIcons.Calendar className="h-4 w-4 text-gray-500" />}
                                         <span>
                                             {folder.created_at
-                                                ? window.appSettings?.formatDateTime(folder.created_at, false) ||
+                                                ? window.kbSettings.formatDateTime(folder.created_at, false) ||
                                                   new Date(folder.created_at).toLocaleDateString()
                                                 : '-'}
                                         </span>

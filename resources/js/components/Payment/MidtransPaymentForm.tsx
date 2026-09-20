@@ -29,7 +29,7 @@ export function MidtransPaymentForm({
     onCancel,
 }: MidtransPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export function MidtransPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     plan_id: planId,
@@ -72,7 +72,7 @@ export function MidtransPaymentForm({
 
     const initializeMidtransSnap = (snapToken: string, orderId: string) => {
         if (!window.snap) {
-            const script = document.createElementranslate('script');
+            const script = document.createElement('script');
             script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
             script.setAttribute('data-client-key', midtransSecretKey); // Use the provided key
             script.onload = () => {

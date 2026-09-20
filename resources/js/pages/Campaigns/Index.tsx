@@ -279,14 +279,14 @@ export default function Campaigns() {
                 <div className="flex flex-col text-sm text-gray-500">
                     <div className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                        <span className="whitespace-nowrap">{window.appSettings?.formatDateTime(row.start_date, false) || '-'}</span>
+                        <span className="whitespace-nowrap">{window.kbSettings.formatDateTime(row.start_date, false) || '-'}</span>
                     </div>
                     <div className="flex items-center gap-1.5 py-0.5 pl-[7px]">
                         <div className="h-3 w-px bg-gray-300" />
                     </div>
                     <div className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                        <span className="whitespace-nowrap">{window.appSettings?.formatDateTime(row.end_date, false) || '-'}</span>
+                        <span className="whitespace-nowrap">{window.kbSettings.formatDateTime(row.end_date, false) || '-'}</span>
                     </div>
                 </div>
             ),
@@ -297,7 +297,7 @@ export default function Campaigns() {
             sortable: true,
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
-                    {value ? window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}` : '-'}
+                    {value ? window.kbSettings.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}` : '-'}
                 </span>
             ),
         },
@@ -308,7 +308,7 @@ export default function Campaigns() {
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
-                    {window.appSettings?.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}
+                    {window.kbSettings.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}
                 </span>
             ),
         },
@@ -554,9 +554,8 @@ export default function Campaigns() {
                             const budget = parseFloat(campaign.budget || 0);
                             const actualCost = parseFloat(campaign.actual_cost || 0);
                             const spendPct = budget > 0 ? Math.min(Math.round((actualCost / budget) * 100), 100) : 0;
-                            const fmtCur = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
-                            const fmtDate = (d: string) =>
-                                d ? window.appSettings?.formatDateTime(d, false) || new Date(d).toLocaleDateString() : '-';
+                            const fmtCur = (v: number) => window.kbSettings.formatCurrency(v) || `$${v.toFixed(2)}`;
+                            const fmtDate = (d: string) => (d ? window.kbSettings.formatDateTime(d, false) || new Date(d).toLocaleDateString() : '-');
                             const fmtDuration = (start: string, end: string) => {
                                 if (!start || !end) return null;
                                 return (

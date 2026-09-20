@@ -1,6 +1,5 @@
 import { toast } from '@components/CustomToast';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -29,7 +28,7 @@ export function InvoiceFlutterwavePaymentForm({
     useEffect(() => {
         if (!flutterwaveKey || initialized.current) return;
 
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://checkout.flutterwave.com/v3.js';
         script.async = true;
 
@@ -43,7 +42,7 @@ export function InvoiceFlutterwavePaymentForm({
                 currency: currency.toUpperCase(),
                 payment_options: 'card,mobilemoney,ussd',
                 customer: {
-                    email: 'customer@kakbima.dev', // Should be dynamic if available
+                    email: 'customer@kakbima.dev',
                     phone_number: '',
                     name: 'Customer',
                 },
@@ -52,24 +51,36 @@ export function InvoiceFlutterwavePaymentForm({
                     description: `Invoice payment - ${paymentType}`,
                     logo: '',
                 },
-                callback: function (data: any) {
+                callback: async function (data: any) {
                     if (data.status === 'successful') {
-                        // Process payment on server
-                        axios
-                            .post(route('customer-facing.invoice.flutterwave.payment'), {
-                                invoice_id: invoiceId,
-                                amount: amount,
-                                payment_type: paymentType,
-                                payment_id: data.transaction_id,
-                                tx_ref: data.tx_ref,
-                            })
-                            .then(() => {
-                                onSuccess();
-                            })
-                            .catch((error) => {
-                                const errorMsg = error.response?.data?.error || translate('Payment processing failed');
-                                toast.error(errorMsg);
+                        try {
+                            const response = await fetch(route('customer-facing.invoice.flutterwave.payment'), {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    Accept: 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    invoice_id: invoiceId,
+                                    amount: amount,
+                                    payment_type: paymentType,
+                                    payment_id: data.transaction_id,
+                                    tx_ref: data.tx_ref,
+                                }),
                             });
+
+                            const responseData = await response.json();
+
+                            if (!response.ok || responseData.error) {
+                                toast.error(responseData.error || translate('Payment processing failed'));
+                                return;
+                            }
+
+                            onSuccess();
+                        } catch (error: any) {
+                            toast.error(error.message || translate('Payment processing failed'));
+                        }
                     } else {
                         toast.error(translate('Payment was not completed'));
                         onCancel();
@@ -92,7 +103,7 @@ export function InvoiceFlutterwavePaymentForm({
                 document.head.removeChild(script);
             }
         };
-    }, [flutterwaveKey, invoiceId, amount, paymentType, currency]);
+    }, [flutterwaveKey, invoiceId, amount, paymentType, currency, onSuccess, translate, onCancel]);
 
     if (!flutterwaveKey) {
         return <div className="p-4 text-center text-red-500">{translate('Flutterwave not configured')}</div>;

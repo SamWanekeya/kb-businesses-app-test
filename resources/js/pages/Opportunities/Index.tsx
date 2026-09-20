@@ -383,7 +383,7 @@ export default function Opportunities() {
             label: translate('Close Date'),
             sortable: true,
             type: 'date',
-            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.appSettings?.formatDateTime(value, false) || '-') : translate('-')}</span>
+            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.kbSettings.formatDateTime(value, false) || '-') : translate('-')}</span>
         },
         // {
         //     key: 'created_at',
@@ -889,7 +889,7 @@ export default function Opportunities() {
                                                                             <div className="flex items-center gap-1">
                                                                                 <Banknote className="h-3 w-3 flex-shrink-0 text-gray-400" />
                                                                                 <span className="font-mono text-xs text-gray-500">
-                                                                                    {window.appSettings?.formatCurrency(
+                                                                                    {window.kbSettings.formatCurrency(
                                                                                         parseFloat(opportunity.amount),
                                                                                     ) || `$${parseFloat(opportunity.amount).toFixed(2)}`}
                                                                                 </span>
@@ -909,7 +909,7 @@ export default function Opportunities() {
                                                                     <div className="flex items-center gap-1 text-xs text-gray-500">
                                                                         <Calendar className="h-3 w-3" />
                                                                         <span>
-                                                                            {window.appSettings?.formatDateTime(
+                                                                            {window.kbSettings.formatDateTime(
                                                                                 opportunity.close_date || opportunity.created_at,
                                                                                 false,
                                                                             ) ||
@@ -1054,7 +1054,7 @@ export default function Opportunities() {
                                                 {translate('Amount')}:{' '}
                                                 <span className="font-mono">
                                                     {opportunity.amount
-                                                        ? window.appSettings?.formatCurrency(parseFloat(opportunity.amount)) ||
+                                                        ? window.kbSettings.formatCurrency(parseFloat(opportunity.amount)) ||
                                                           `$${parseFloat(opportunity.amount).toFixed(2)}`
                                                         : translate('-')}
                                                 </span>
@@ -1067,10 +1067,8 @@ export default function Opportunities() {
                                                 <span>
                                                     {translate('Close Date')}:{' '}
                                                     {opportunity.close_date || opportunity.created_at
-                                                        ? window.appSettings?.formatDateTime(
-                                                              opportunity.close_date || opportunity.created_at,
-                                                              false,
-                                                          ) || new Date(opportunity.close_date || opportunity.created_at).toLocaleDateString()
+                                                        ? window.kbSettings.formatDateTime(opportunity.close_date || opportunity.created_at, false) ||
+                                                          new Date(opportunity.close_date || opportunity.created_at).toLocaleDateString()
                                                         : translate('-')}
                                                 </span>
                                             </span>
@@ -1102,7 +1100,7 @@ export default function Opportunities() {
 
                                         <span>
                                             {translate('Created:')}{' '}
-                                            {window.appSettings?.formatDateTime(opportunity.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(opportunity.created_at, false) ||
                                                 new Date(opportunity.created_at).toLocaleDateString()}
                                         </span>
                                     </div>

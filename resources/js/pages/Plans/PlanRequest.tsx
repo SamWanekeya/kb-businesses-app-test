@@ -224,7 +224,7 @@ export default function PlanRequestsPage() {
             label: translate('Request Date'),
             sortable: true,
             type: 'date',
-            // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            // render: (value) => window.kbSettings.formatDateTime(value, false) || '-'
         },
     ];
 

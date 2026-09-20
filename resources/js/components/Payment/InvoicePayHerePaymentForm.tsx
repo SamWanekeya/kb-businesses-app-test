@@ -27,7 +27,7 @@ export function InvoicePayHerePaymentForm({
     onCancel,
 }: InvoicePayHerePaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ export function InvoicePayHerePaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -58,12 +58,12 @@ export function InvoicePayHerePaymentForm({
             const data = await response.json();
 
             if (data.success) {
-                const form = document.createElementranslate('form');
+                const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = data.payment_url;
 
                 Object.keys(data.payment_data).forEach((key) => {
-                    const input = document.createElementranslate('input');
+                    const input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = key;
                     input.value = data.payment_data[key];

@@ -67,11 +67,11 @@ export default function OpportunityShow() {
         );
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {
@@ -386,7 +386,7 @@ export default function OpportunityShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(meeting.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
@@ -469,7 +469,7 @@ export default function OpportunityShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(call.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
@@ -699,7 +699,7 @@ export default function OpportunityShow() {
                                                 router.post(
                                                     route('opportunities.comments.store', opportunity.id),
                                                     { comment: newComment },
-                                                    { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                    { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                 );
                                             }
                                         }}

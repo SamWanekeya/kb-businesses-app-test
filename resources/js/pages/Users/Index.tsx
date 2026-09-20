@@ -360,7 +360,7 @@ export default function Users() {
             label: translate('Joined'),
             sortable: true,
             type: 'date',
-            // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            // render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
         },
     ];
 

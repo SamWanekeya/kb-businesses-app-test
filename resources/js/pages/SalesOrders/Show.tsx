@@ -60,11 +60,11 @@ export default function SalesOrderShow() {
         );
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {
@@ -408,7 +408,7 @@ export default function SalesOrderShow() {
                                                     router.post(
                                                         route('sales-orders.comments.store', salesOrder.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                     );
                                                 }
                                             }}
@@ -832,14 +832,18 @@ export default function SalesOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}
+                                    </p>
                                 </div>
                             </div>
                             {salesOrder.assigned_user && (

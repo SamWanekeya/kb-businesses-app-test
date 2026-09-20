@@ -193,7 +193,7 @@ export default function ProjectTaskShow() {
                                             <Calendar className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
                                                 {task.start_date
-                                                    ? window.appSettings?.formatDateTime(task.start_date, false) ||
+                                                    ? window.kbSettings.formatDateTime(task.start_date, false) ||
                                                       new Date(task.start_date).toLocaleDateString()
                                                     : translate('Not set')}
                                             </span>
@@ -205,7 +205,7 @@ export default function ProjectTaskShow() {
                                             <Calendar className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
                                                 {task.due_date
-                                                    ? window.appSettings?.formatDateTime(task.due_date, false) ||
+                                                    ? window.kbSettings.formatDateTime(task.due_date, false) ||
                                                       new Date(task.due_date).toLocaleDateString()
                                                     : translate('Not set')}
                                             </span>
@@ -263,7 +263,7 @@ export default function ProjectTaskShow() {
                                     <div className="mt-1 flex items-center gap-2">
                                         <Calendar className="h-4 w-4 text-gray-400" />
                                         <span className="text-gray-900 dark:text-white">
-                                            {window.appSettings?.formatDateTime(task.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(task.created_at, false) ||
                                                 new Date(task.created_at).toLocaleDateString()}
                                         </span>
                                     </div>

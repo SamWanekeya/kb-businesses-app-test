@@ -663,7 +663,7 @@ export default function Accounts() {
                                         <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
                                             <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             <span>
-                                                {window.appSettings?.formatDateTime(account.created_at, false) ||
+                                                {window.kbSettings.formatDateTime(account.created_at, false) ||
                                                     new Date(account.created_at).toLocaleDateString()}
                                             </span>
                                         </div>

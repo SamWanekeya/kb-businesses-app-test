@@ -27,7 +27,7 @@ export function InvoiceBenefitPaymentForm({
     onCancel,
 }: InvoiceBenefitPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export function InvoiceBenefitPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -76,7 +76,7 @@ export function InvoiceBenefitPaymentForm({
 
     const formatCurrency = (amount: number) => {
         return (
-            window.appSettings?.formatCurrency(Number(amount || 0)) ||
+            window.kbSettings.formatCurrency(Number(amount || 0)) ||
             new Intl.NumberFormatranslate('en-BH', {
                 style: 'currency',
                 currency: currency,

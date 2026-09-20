@@ -416,7 +416,7 @@ export default function Organizations() {
             render: (value: string) => (
                 <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
                     <Calendar className="h-3.5 w-3.5 shrink-0" />
-                    <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                    <span>{window.kbSettings.formatDateTime(value, false) || '-'}</span>
                 </div>
             ),
         },
@@ -662,7 +662,7 @@ export default function Organizations() {
                                         {organization.plan_expiry_date && (
                                             <div className="text-xs text-gray-500 dark:text-gray-400">
                                                 {translate('Expires')}:{' '}
-                                                {window.appSettings?.formatDateTime(organization.plan_expiry_date, false) ||
+                                                {window.kbSettings.formatDateTime(organization.plan_expiry_date, false) ||
                                                     new Date(organization.plan_expiry_date).toLocaleDateString()}
                                             </div>
                                         )}

@@ -19,7 +19,7 @@ export default function Taxes() {
     const { t: translate } = useTranslation();
     const { auth, taxes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
-    const currency_symbol = window?.appSettings?.currencySettings?.currency_symbol;
+    const currency_symbol = window?.kbSettings?.currencySettings?.currency_symbol;
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');

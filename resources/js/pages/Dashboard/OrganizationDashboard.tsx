@@ -106,7 +106,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
         router.reload({ data: { chart_year: chartYear, lead_year: year }, only: ['dashboardData'], preserveState: true });
     };
 
-    const formatCurrency = (val: number) => window.appSettings?.formatCurrency(val) ?? `$${val.toLocaleString()}`;
+    const formatCurrency = (val: number) => window.kbSettings.formatCurrency(val) ?? `$${val.toLocaleString()}`;
 
     const hour = new Date().getHours();
     const greetingText = hour < 12 ? translate('Good Morning') : hour < 18 ? translate('Good Afternoon') : translate('Good Evening');
@@ -487,11 +487,11 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                     <p
                                         className="truncate font-mono text-xl font-bold tracking-tight text-emerald-900 sm:text-2xl dark:text-emerald-100"
                                         title={
-                                            window.appSettings?.formatCurrency(stats.organizationRevenue || 0) ??
+                                            window.kbSettings.formatCurrency(stats.organizationRevenue || 0) ??
                                             `$${(stats.organizationRevenue || 0).toLocaleString()}`
                                         }
                                     >
-                                        {window.appSettings?.formatCurrency(stats.organizationRevenue || 0) ??
+                                        {window.kbSettings.formatCurrency(stats.organizationRevenue || 0) ??
                                             `$${(stats.organizationRevenue || 0).toLocaleString()}`}
                                     </p>
                                     <p className="mt-1.5 text-[11px] text-emerald-600 dark:text-emerald-500">
@@ -605,7 +605,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     </span>
                                                     <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
                                                         <Calendar className="h-3 w-3 shrink-0" />
-                                                        {window.appSettings?.formatDateTime(lead.created_at, false) ||
+                                                        {window.kbSettings.formatDateTime(lead.created_at, false) ||
                                                             new Date(lead.created_at).toLocaleDateString()}
                                                     </span>
                                                 </div>
@@ -660,7 +660,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     <p className="truncate text-sm leading-tight font-semibold">{sale.customer}</p>
                                                     <p className="text-muted-foreground mt-0.5 truncate font-mono text-xs">
                                                         {sale.amount
-                                                            ? (window.appSettings?.formatCurrency(sale.amount) ?? `$${sale.amount.toLocaleString()}`)
+                                                            ? (window.kbSettings.formatCurrency(sale.amount) ?? `$${sale.amount.toLocaleString()}`)
                                                             : ''}
                                                     </p>
                                                 </div>
@@ -672,7 +672,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     </span>
                                                     <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
                                                         <Calendar className="h-3 w-3 shrink-0" />
-                                                        {window.appSettings?.formatDateTime(sale.created_at, false) ||
+                                                        {window.kbSettings.formatDateTime(sale.created_at, false) ||
                                                             new Date(sale.created_at).toLocaleDateString()}
                                                     </span>
                                                 </div>
@@ -742,7 +742,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     </div>
                                                     <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                                         <Calendar className="h-3 w-3 shrink-0" />
-                                                        {window.appSettings?.formatDateTime(a.created_at, false) ||
+                                                        {window.kbSettings.formatDateTime(a.created_at, false) ||
                                                             new Date(a.created_at).toLocaleDateString()}
                                                     </p>
                                                 </div>
@@ -930,7 +930,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         )}
                                         {salesTab === 'revenue' && useHasPermission('view-managemanagemanage') && (
                                             <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
-                                                {window.appSettings?.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
+                                                {window.kbSettings.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
                                             </span>
                                         )}
                                         <Select
@@ -1022,7 +1022,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 className="text-muted-foreground"
                                                 axisLine={{ stroke: primaryColor }}
                                                 tickLine={{ stroke: primaryColor }}
-                                                tickFormatter={(v) => (v === 0 ? '$0' : (window.appSettings?.formatCurrency(v) ?? `$${v}`))}
+                                                tickFormatter={(v) => (v === 0 ? '$0' : (window.kbSettings.formatCurrency(v) ?? `$${v}`))}
                                                 width={80}
                                             />
                                             <Tooltip
@@ -1034,7 +1034,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     color: primaryColor,
                                                 }}
                                                 formatter={(value: number) => [
-                                                    window.appSettings?.formatCurrency(value) ?? `$${value}`,
+                                                    window.kbSettings.formatCurrency(value) ?? `$${value}`,
                                                     translate('Revenue'),
                                                 ]}
                                                 labelFormatter={(label, payload) => payload?.[0]?.payload?.month ?? label}
@@ -1211,7 +1211,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     <p className="truncate text-sm leading-tight font-semibold">{project.name}</p>
                                                     <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-gray-500 dark:text-gray-400">
                                                         <Calendar className="h-3 w-3 shrink-0" />
-                                                        {window.appSettings?.formatDateTime(project.created_at, false) ||
+                                                        {window.kbSettings.formatDateTime(project.created_at, false) ||
                                                             new Date(project.created_at).toLocaleDateString()}
                                                     </p>
                                                 </div>

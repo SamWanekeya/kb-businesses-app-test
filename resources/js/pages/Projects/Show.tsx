@@ -245,7 +245,7 @@ export default function ProjectShow() {
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
                                         {project.start_date
-                                            ? window.appSettings?.formatDateTime(project.start_date, false) ||
+                                            ? window.kbSettings.formatDateTime(project.start_date, false) ||
                                               new Date(project.start_date).toLocaleDateString()
                                             : 'Not set'}
                                     </p>
@@ -257,7 +257,7 @@ export default function ProjectShow() {
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
                                         {project.end_date
-                                            ? window.appSettings?.formatDateTime(project.end_date, false) ||
+                                            ? window.kbSettings.formatDateTime(project.end_date, false) ||
                                               new Date(project.end_date).toLocaleDateString()
                                             : 'Not set'}
                                     </p>
@@ -268,7 +268,7 @@ export default function ProjectShow() {
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
-                                        {window.appSettings?.formatDateTime(project.created_at, false) ||
+                                        {window.kbSettings.formatDateTime(project.created_at, false) ||
                                             new Date(project.created_at).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -289,7 +289,7 @@ export default function ProjectShow() {
                                     <BanknoteIcon className="text-muted-foreground mr-2 h-4 w-4" />
                                     <p className="mt-1 font-mono text-sm">
                                         {project.budget
-                                            ? window.appSettings?.formatCurrency(project.budget) || `$${project.budget.toLocaleString()}`
+                                            ? window.kbSettings.formatCurrency(project.budget) || `$${project.budget.toLocaleString()}`
                                             : 'Not set'}
                                     </p>
                                 </div>
@@ -389,7 +389,7 @@ export default function ProjectShow() {
                                                     <div className="min-w-0 flex-1">
                                                         <p className="truncate text-sm font-medium text-gray-900">{meeting.title}</p>
                                                         <p className="text-xs text-gray-500">
-                                                            {window.appSettings?.formatDateTime(meeting.start_date, false) ||
+                                                            {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                 new Date(meeting.start_date).toLocaleDateString()}
                                                         </p>
                                                         <p className="text-xs text-gray-500">{meeting.assigned_user?.name || 'Unassigned'}</p>
@@ -453,7 +453,7 @@ export default function ProjectShow() {
                                                     <div className="min-w-0 flex-1">
                                                         <p className="truncate text-sm font-medium text-gray-900">{call.title}</p>
                                                         <p className="text-xs text-gray-500">
-                                                            {window.appSettings?.formatDateTime(call.start_date, false) ||
+                                                            {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                 new Date(call.start_date).toLocaleDateString()}
                                                         </p>
                                                         <p className="text-xs text-gray-500">{call.assigned_user?.name || 'Unassigned'}</p>

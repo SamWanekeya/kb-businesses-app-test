@@ -282,7 +282,7 @@ export default function Products() {
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono font-semibold whitespace-nowrap text-green-600">
-                    {window.appSettings?.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}
+                    {window.kbSettings.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}
                 </span>
             ),
         },
@@ -649,7 +649,7 @@ export default function Products() {
                                                 <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 dark:border-green-700 dark:bg-green-900/20">
                                                     <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('Price')}</p>
                                                     <p className="font-mono text-sm font-bold text-green-600">
-                                                        {window.appSettings?.formatCurrency(parseFloat(product.price || 0)) ||
+                                                        {window.kbSettings.formatCurrency(parseFloat(product.price || 0)) ||
                                                             `$${parseFloat(product.price || 0).toFixed(2)}`}
                                                     </p>
                                                 </div>

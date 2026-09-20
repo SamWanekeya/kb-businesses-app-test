@@ -237,7 +237,7 @@ export default function Meetings() {
         }
     };
 
-    const formatTime = (timeStr: string) => (timeStr ? window.appSettings.formatTime(timeStr) : '');
+    const formatTime = (timeStr: string) => (timeStr ? window.kbSettings.formatTime(timeStr) : '');
 
     const calcDuration = (start: string, end: string, fallback?: number) => {
         if (start && end) {

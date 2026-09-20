@@ -3,7 +3,7 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { route } from '@utils/Routes';
@@ -29,6 +29,8 @@ interface Props {
 
 const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const stripe = useStripe();
     const elements = useElements();
     const [cardholderName, setCardholderName] = useState('');
@@ -61,13 +63,13 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
             return;
         }
 
-        const form = document.createElementranslate('form');
+        const form = document.createElement('form');
         form.method = 'POST';
         form.action = route('customer-facing.invoice.stripe.payment');
 
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        const csrfToken = csrfToken;
         if (csrfToken) {
-            const csrfInput = document.createElementranslate('input');
+            const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
@@ -83,7 +85,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         };
 
         Object.entries(fields).forEach(([key, value]) => {
-            const input = document.createElementranslate('input');
+            const input = document.createElement('input');
             input.type = 'hidden';
             input.name = key;
             input.value = value.toString();
@@ -135,7 +137,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                         </>
                     ) : (
                         translate('Pay {{amount}}', {
-                            amount: window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`,
+                            amount: window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`,
                         })
                     )}
                 </Button>
@@ -155,7 +157,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
     }, [paymentMethod, paymentSettings]);
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        return window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
     };
 
     return (

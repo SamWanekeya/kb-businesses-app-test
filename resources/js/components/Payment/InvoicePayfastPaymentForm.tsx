@@ -30,7 +30,7 @@ export function InvoicePayfastPaymentForm({
     onCancel,
 }: InvoicePayfastPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
@@ -84,7 +84,7 @@ export function InvoicePayfastPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -98,7 +98,7 @@ export function InvoicePayfastPaymentForm({
 
             if (data.success) {
                 // Create and submit form to PayFast
-                const form = document.createElementranslate('form');
+                const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = data.action;
                 form.innerHTML = data.inputs;
@@ -115,7 +115,7 @@ export function InvoicePayfastPaymentForm({
     };
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
+        return window.kbSettings.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
     };
 
     return (

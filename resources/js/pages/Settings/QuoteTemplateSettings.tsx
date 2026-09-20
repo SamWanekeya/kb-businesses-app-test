@@ -19,7 +19,6 @@ import Template7 from '@pages/quotes/Templates/Template7';
 import Template8 from '@pages/quotes/Templates/Template8';
 import Template9 from '@pages/quotes/Templates/Template9';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Save } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -259,7 +258,7 @@ export default function QuoteTemplateSettings() {
         setSaving(true);
 
         try {
-            const { data: result } = await axios.post(route('settings.quote-template'), {
+            const { data: result } = await fetch(route('settings.quote-template'), {
                 quoteTemplate: data.quoteTemplate,
                 quoteColor: data.quoteColor,
                 quoteQrEnabled: data.quoteQrEnabled,

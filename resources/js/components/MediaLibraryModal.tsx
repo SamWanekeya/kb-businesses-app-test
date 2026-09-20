@@ -37,7 +37,7 @@ export default function MediaLibraryModal({
     returnType = 'url',
     preSelected = [],
 }: MediaLibraryModalProps) {
-    const { auth, csrf_token, storageSettings } = usePage().props;
+    const { auth, csrfToken, storageSettings } = usePage().props;
     const permissions = auth?.permissions || [];
     const canCreateMedia = useHasPermission('create-media');
     const canManageMedia = useHasPermission('manage-media');
@@ -169,7 +169,7 @@ export default function MediaLibraryModal({
                 body: formData,
                 credentials: 'same-origin',
                 headers: {
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
             });

@@ -92,10 +92,10 @@ export default function Plans({
 
     // Helper function to safely format currency
     const formatCurrency = (amount: string | number) => {
-        if (typeof window !== 'undefined' && window.appSettings?.formatCurrency) {
+        if (typeof window !== 'undefined' && window.kbSettings.formatCurrency) {
             // Use numeric value if available, otherwise parse the string
             const numericAmount = typeof amount === 'number' ? amount : parseFloat(amount);
-            return window.appSettings.formatCurrency(numericAmount, { showSymbol: true });
+            return window.kbSettings.formatCurrency(numericAmount, { showSymbol: true });
         }
         // Fallback if appSettings is not available
         return amount;
@@ -114,7 +114,7 @@ export default function Plans({
                 setSelectedPlan({ ...updatedPlan, paymentMethods: selectedPlan.paymentMethods });
             }
         }
-    }, [plans, isSubscriptionModalOpen]);
+    }, [plans, isSubscriptionModalOpen, selectedPlan]);
 
     // Show flash messages
     useEffect(() => {
@@ -248,7 +248,7 @@ export default function Plans({
         // if (paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mercadopago',
-        //         name: translate('MercadoPago'),
+        //         name: translate('Mercado Pago'),
         //         icon: <Wallet className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -507,8 +507,8 @@ export default function Plans({
             const expiryDate = isTrial ? auth?.user?.trial_expiry_date : auth?.user?.plan_expiry_date;
 
             if (expiryDate) {
-                const formattedDate = window.appSettings?.formatDateTime
-                    ? window.appSettings.formatDateTime(expiryDate, false)
+                const formattedDate = window.kbSettings.formatDateTime
+                    ? window.kbSettings.formatDateTime(expiryDate, false)
                     : new Date(expiryDate).toLocaleDateString('en-GB', {
                           day: '2-digit',
                           month: 'short',

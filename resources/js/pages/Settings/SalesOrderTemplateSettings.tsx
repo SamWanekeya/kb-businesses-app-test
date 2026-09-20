@@ -19,7 +19,6 @@ import Template7 from '@pages/SalesOrders/Templates/Template7';
 import Template8 from '@pages/SalesOrders/Templates/Template8';
 import Template9 from '@pages/SalesOrders/Templates/Template9';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Save } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -256,7 +255,7 @@ export default function SalesOrderTemplateSettings() {
         setSaving(true);
 
         try {
-            const { data: result } = await axios.post(route('settings.sales-order-template'), {
+            const { data: result } = await fetch(route('settings.sales-order-template'), {
                 salesOrderTemplate: data.salesOrderTemplate,
                 salesOrderColor: data.salesOrderColor,
                 salesOrderQrEnabled: data.salesOrderQrEnabled,

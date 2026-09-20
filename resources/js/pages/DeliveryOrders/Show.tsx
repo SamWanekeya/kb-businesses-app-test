@@ -82,11 +82,11 @@ export default function DeliveryOrderShow() {
         icon: <AlertCircle className="h-3.5 w-3.5" />,
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (d: string) => {
         if (!d) return translate('-');
-        return window.appSettings?.formatDateTime(d, false) || new Date(d).toLocaleDateString();
+        return window.kbSettings.formatDateTime(d, false) || new Date(d).toLocaleDateString();
     };
 
     return (
@@ -451,14 +451,18 @@ export default function DeliveryOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(deliveryOrder.expected_delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(deliveryOrder.expected_delivery_date)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">

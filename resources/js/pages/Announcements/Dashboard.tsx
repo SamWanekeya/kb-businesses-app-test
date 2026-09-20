@@ -20,7 +20,7 @@ export default function AnnouncementDashboard() {
     const handleTabChange = (tab: 'all' | 'featured' | 'upcoming' | 'expired') => {
         setActiveTab(tab);
         const url = new URL(window.location.href);
-        tab === 'all' ? url.searchParams.delete('tab') : url.searchParams.setranslate('tab', tab);
+        tab === 'all' ? url.searchParams.delete('tab') : url.searchParams.set('tab', tab);
         window.history.replaceState(null, '', url.toString());
     };
 
@@ -188,11 +188,11 @@ export default function AnnouncementDashboard() {
                                                 <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-2 text-xs">
                                                     <div className="flex items-center gap-1">
                                                         <Calendar className="h-3 w-3 shrink-0" />
-                                                        {a.start_date && <span>{window.appSettings?.formatDateTime(a.start_date, false)}</span>}
+                                                        {a.start_date && <span>{window.kbSettings.formatDateTime(a.start_date, false)}</span>}
                                                         {a.end_date && (
                                                             <>
                                                                 <ArrowRight className="h-3 w-3 text-gray-300" />
-                                                                <span>{window.appSettings?.formatDateTime(a.end_date, false)}</span>
+                                                                <span>{window.kbSettings.formatDateTime(a.end_date, false)}</span>
                                                             </>
                                                         )}
                                                     </div>

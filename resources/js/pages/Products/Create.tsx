@@ -207,7 +207,7 @@ export default function ProductCreate() {
                                             <Label required>{translate('Name')}</Label>
                                             <Input
                                                 value={data.name}
-                                                onChange={(e) => setranslate('name', e.target.value)}
+                                                onChange={(e) => set('name', e.target.value)}
                                                 className={errors.name ? 'border-red-500' : ''}
                                                 placeholder={translate('Enter Name')}
                                             />
@@ -217,7 +217,7 @@ export default function ProductCreate() {
                                             <Label required>{translate('SKU')}</Label>
                                             <Input
                                                 value={data.sku}
-                                                onChange={(e) => setranslate('sku', e.target.value)}
+                                                onChange={(e) => set('sku', e.target.value)}
                                                 className={errors.sku ? 'border-red-500' : ''}
                                                 placeholder={translate('Enter SKU')}
                                             />
@@ -229,7 +229,7 @@ export default function ProductCreate() {
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Category')}</Label>
-                                            <Select value={data.category_id} onValueChange={(v) => setranslate('category_id', v)}>
+                                            <Select value={data.category_id} onValueChange={(v) => set('category_id', v)}>
                                                 <SelectTrigger className={errors.category_id ? 'border-red-500' : ''}>
                                                     <SelectValue placeholder={translate('Select Category')} />
                                                 </SelectTrigger>
@@ -245,7 +245,7 @@ export default function ProductCreate() {
                                         </div>
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Brand')}</Label>
-                                            <Select value={data.brand_id} onValueChange={(v) => setranslate('brand_id', v)}>
+                                            <Select value={data.brand_id} onValueChange={(v) => set('brand_id', v)}>
                                                 <SelectTrigger className={errors.brand_id ? 'border-red-500' : ''}>
                                                     <SelectValue placeholder={translate('Select Brand')} />
                                                 </SelectTrigger>
@@ -265,7 +265,7 @@ export default function ProductCreate() {
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Tax')}</Label>
-                                            <Select value={data.tax_id} onValueChange={(v) => setranslate('tax_id', v)}>
+                                            <Select value={data.tax_id} onValueChange={(v) => set('tax_id', v)}>
                                                 <SelectTrigger className={errors.tax_id ? 'border-red-500' : ''}>
                                                     <SelectValue placeholder={translate('Select Taxes')} />
                                                 </SelectTrigger>
@@ -286,7 +286,7 @@ export default function ProductCreate() {
                                         <Label>{translate('Description')}</Label>
                                         <Textarea
                                             value={data.description}
-                                            onChange={(e) => setranslate('description', e.target.value)}
+                                            onChange={(e) => set('description', e.target.value)}
                                             rows={5}
                                             placeholder={translate('Enter description...')}
                                         />
@@ -304,7 +304,7 @@ export default function ProductCreate() {
                                                 type="number"
                                                 step="0.01"
                                                 value={data.price}
-                                                onChange={(e) => setranslate('price', e.target.value)}
+                                                onChange={(e) => set('price', e.target.value)}
                                                 className={errors.price ? 'border-red-500' : ''}
                                                 placeholder={translate('e.g. 29.99')}
                                             />
@@ -315,7 +315,7 @@ export default function ProductCreate() {
                                             <Input
                                                 type="number"
                                                 value={data.stock_quantity}
-                                                onChange={(e) => setranslate('stock_quantity', e.target.value)}
+                                                onChange={(e) => set('stock_quantity', e.target.value)}
                                                 className={errors.stock_quantity ? 'border-red-500' : ''}
                                                 placeholder={translate('e.g. 100')}
                                             />
@@ -335,7 +335,7 @@ export default function ProductCreate() {
                                         <MediaPicker
                                             value={data.main_image_id ?? undefined}
                                             onChange={(v) => {
-                                                setranslate('main_image_id', v);
+                                                set('main_image_id', v);
                                                 if (v) {
                                                     fetch(route('media-library.media.index'), {
                                                         credentials: 'same-origin',
@@ -365,7 +365,7 @@ export default function ProductCreate() {
                                         </Label>
                                         <MediaPicker
                                             value={data.additional_image_ids || []}
-                                            onChange={(v) => setranslate('additional_image_ids', v)}
+                                            onChange={(v) => set('additional_image_ids', v)}
                                             placeholder={translate('Select additional images...')}
                                             multiple={true}
                                             showPreview={true}
@@ -382,7 +382,7 @@ export default function ProductCreate() {
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Assign To')}</Label>
-                                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                                     <SelectValue placeholder={translate('Select user')} />
                                                 </SelectTrigger>
@@ -398,7 +398,7 @@ export default function ProductCreate() {
                                         </div>
                                         <div className="space-y-1.5">
                                             <Label>{translate('Status')}</Label>
-                                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
+                                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                                 <SelectTrigger>
                                                     <SelectValue />
                                                 </SelectTrigger>

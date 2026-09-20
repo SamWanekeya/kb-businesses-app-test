@@ -60,11 +60,11 @@ export default function QuoteShow() {
         );
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const calculateProductTotals = () => {
@@ -385,7 +385,7 @@ export default function QuoteShow() {
                                                     router.post(
                                                         route('quotes.comments.store', quote.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                     );
                                                 }
                                             }}
@@ -811,7 +811,9 @@ export default function QuoteShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Quote Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(quote.quote_date || quote.created_at)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(quote.quote_date || quote.created_at)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">

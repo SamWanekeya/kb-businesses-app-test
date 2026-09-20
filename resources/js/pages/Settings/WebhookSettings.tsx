@@ -9,8 +9,8 @@ import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Edit, Link2, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,8 @@ interface WebhookSettingsProps {
 
 export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [webhookList, setWebhookList] = useState<Webhook[]>(webhooks);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingWebhook, setEditingWebhook] = useState<Webhook | null>(null);
@@ -65,19 +67,48 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
         try {
             if (editingWebhook) {
-                const response = await axios.put(route('settings.webhooks.update', editingWebhook.id), formData);
-                setWebhookList((prev) => prev.map((w) => (w.id === editingWebhook.id ? response.data.webhook : w)));
-                toast.success(response.data.message);
+                const response = await fetch(route('settings.webhooks.update', editingWebhook.id), {
+                    method: 'PUT',
+                    headers: {
+                        Accept: 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.message || translate('An error occurred'));
+                }
+
+                setWebhookList((prev) => prev.map((w) => (w.id === editingWebhook.id ? data.webhook : w)));
+
+                toast.success(data.message);
             } else {
-                const response = await axios.post(route('settings.webhooks.store'), formData);
-                setWebhookList((prev) => [...prev, response.data.webhook]);
-                toast.success(response.data.message);
+                const response = await fetch(route('settings.webhooks.store'), {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.message || translate('An error occurred'));
+                }
+
+                setWebhookList((prev) => [...prev, data.webhook]);
+                toast.success(data.message);
             }
+
             setIsDialogOpen(false);
             resetForm();
         } catch (error: any) {
-            const errorMessage = error.response?.data?.message || translate('An error occurred');
-            toast.error(errorMessage);
+            toast.error(error?.message || translate('An error occurred'));
         }
     };
 
@@ -90,12 +121,23 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
         if (!webhookToDelete) return;
 
         try {
-            const response = await axios.delete(route('settings.webhooks.destroy', webhookToDelete.id));
+            const response = await fetch(route('settings.webhooks.destroy', webhookToDelete.id), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || translate('An error occurred'));
+            }
+
             setWebhookList((prev) => prev.filter((w) => w.id !== webhookToDelete.id));
-            toast.success(response.data.message);
+            toast.success(data.message);
         } catch (error: any) {
-            const errorMessage = error.response?.data?.message || translate('An error occurred');
-            toast.error(errorMessage);
+            toast.error(error.message || translate('An error occurred'));
         } finally {
             setDeleteModalOpen(false);
             setWebhookToDelete(null);

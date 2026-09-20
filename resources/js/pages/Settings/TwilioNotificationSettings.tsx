@@ -6,7 +6,6 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Bell, Key, MessageSquare, Phone, Save, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,28 +32,40 @@ export default function TwilioNotificationSettings() {
 
     useEffect(() => {
         // Load available notifications
-        axios
-            .get(route('settings.twilio-notifications.available'))
-            .then((response) => {
-                setAvailableNotifications(response.data);
+        fetch(route('settings.twilio-notifications.available'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setAvailableNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
 
         // Load current settings
-        axios
-            .get(route('settings.twilio-notifications.get'))
-            .then((response) => {
-                setNotifications(response.data);
+        fetch(route('settings.twilio-notifications.get'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
 
         // Load Twilio configuration
-        axios
-            .get(route('settings.twilio-config.get'))
-            .then((response) => {
-                setTwilioSettings(response.data);
+        fetch(route('settings.twilio-config.get'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setTwilioSettings(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
     }, []);
 
     const handleToggle = (key: string, enabled: boolean) => {

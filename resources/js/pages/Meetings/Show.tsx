@@ -56,12 +56,12 @@ export default function MeetingShow() {
                                     <div>
                                         <p className="font-medium">{translate('Date & Time')}</p>
                                         <p className="text-muted-foreground text-sm">
-                                            {window.appSettings?.formatDateTime(meeting.start_date, false) ||
+                                            {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                 new Date(meeting.start_date).toLocaleDateString()}{' '}
-                                            {window.appSettings?.formatTime(meeting.start_time) || meeting.start_time} -{' '}
-                                            {window.appSettings?.formatDateTime(meeting.end_date, false) ||
+                                            {window.kbSettings.formatTime(meeting.start_time) || meeting.start_time} -{' '}
+                                            {window.kbSettings.formatDateTime(meeting.end_date, false) ||
                                                 new Date(meeting.end_date).toLocaleDateString()}{' '}
-                                            {window.appSettings?.formatTime(meeting.end_time) || meeting.end_time}
+                                            {window.kbSettings.formatTime(meeting.end_time) || meeting.end_time}
                                         </p>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@ export default function MeetingShow() {
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
-                                        {window.appSettings?.formatDateTime(meeting.created_at, false) ||
+                                        {window.kbSettings.formatDateTime(meeting.created_at, false) ||
                                             new Date(meeting.created_at).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -194,7 +194,7 @@ export default function MeetingShow() {
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
-                                            {window.appSettings?.formatDateTime(meeting.updated_at, false) ||
+                                            {window.kbSettings.formatDateTime(meeting.updated_at, false) ||
                                                 new Date(meeting.updated_at).toLocaleDateString()}
                                         </p>
                                     </div>

@@ -32,7 +32,7 @@ export function PayfastPaymentForm({
     onCancel,
 }: PayfastPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
@@ -86,7 +86,7 @@ export function PayfastPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     plan_id: planId,
@@ -100,7 +100,7 @@ export function PayfastPaymentForm({
 
             if (data.success) {
                 // Create and submit form to PayFast
-                const form = document.createElementranslate('form');
+                const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = data.action;
                 form.innerHTML = data.inputs;
@@ -126,7 +126,7 @@ export function PayfastPaymentForm({
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''} />
+                    <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
                     <input type="hidden" name="coupon_code" value={couponCode || ''} />

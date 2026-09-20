@@ -69,7 +69,7 @@ export default function View({ record }: ViewProps) {
                             {translate('Created At')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
-                            {record.created_at ? window.appSettings?.formatDateTime(record.created_at, false) || record.created_at : '-'}
+                            {record.created_at ? window.kbSettings.formatDateTime(record.created_at, false) || record.created_at : '-'}
                         </p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@ export default function View({ record }: ViewProps) {
                                 {translate('Plan Expires')}
                             </label>
                             <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
-                                {window.appSettings?.formatDateTime(record.plan_expiry_date, false) || record.plan_expiry_date}
+                                {window.kbSettings.formatDateTime(record.plan_expiry_date, false) || record.plan_expiry_date}
                             </p>
                         </div>
                     )}

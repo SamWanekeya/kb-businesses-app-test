@@ -1,7 +1,6 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -35,7 +34,7 @@ export function InvoiceRazorpayPaymentForm({
         }
 
         // Load Razorpay script
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
         script.onload = () => {
@@ -57,7 +56,7 @@ export function InvoiceRazorpayPaymentForm({
     const handlePayment = async () => {
         try {
             // Create order on the server first
-            const response = await axios.post(route('customer-facing.invoice.razorpay.create-order'), {
+            const response = await fetch(route('customer-facing.invoice.razorpay.create-order'), {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,
@@ -82,33 +81,50 @@ export function InvoiceRazorpayPaymentForm({
                 name: 'Invoice Payment',
                 description: `Invoice Payment - ${paymentType}`,
                 order_id: order_id,
-                handler: function (response: any) {
-                    // Process payment on server
-                    axios
-                        .post(route('customer-facing.invoice.razorpay.payment'), {
-                            invoice_id: invoiceId,
-                            amount: amount,
-                            payment_type: paymentType,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                        })
-                        .then(() => {
-                            onSuccess();
-                        })
-                        .catch((error) => {
-                            const errorMsg = error.response?.data?.error || translate('Payment processing failed');
-                            toast.error(errorMsg);
+
+                handler: async function (response: any) {
+                    try {
+                        const result = await fetch(route('customer-facing.invoice.razorpay.payment'), {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Accept: 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({
+                                invoice_id: invoiceId,
+                                amount: amount,
+                                payment_type: paymentType,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                            }),
                         });
+
+                        const data = await result.json();
+
+                        if (!result.ok) {
+                            throw new Error(data?.error || translate('Payment processing failed'));
+                        }
+
+                        onSuccess();
+                    } catch (error: any) {
+                        const errorMsg = error?.message || translate('Payment processing failed');
+
+                        toast.error(errorMsg);
+                    }
                 },
+
                 prefill: {
                     name: '',
                     email: '',
                     contact: '',
                 },
+
                 theme: {
                     color: '#3B82F6',
                 },
+
                 modal: {
                     ondismiss: onCancel,
                 },

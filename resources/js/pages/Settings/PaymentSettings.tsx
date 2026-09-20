@@ -633,7 +633,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <p className="text-muted-foreground text-xs">*/}
                             {/*                {translate(*/}
-                            {/*                    'For server-side API integration, use your Private Access Token (NOT your public key). You can find this in your MercadoPago Developer Dashboard under Credentials > Production/Test Credentials > Access token.',*/}
+                            {/*                    'For server-side API integration, use your Private Access Token (NOT your public key). You can find this in your Mercado Pago Developer Dashboard under Credentials > Production/Test Credentials > Access token.',*/}
                             {/*                )}*/}
                             {/*            </p>*/}
                             {/*            <Alert>*/}

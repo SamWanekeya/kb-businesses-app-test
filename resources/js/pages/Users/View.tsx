@@ -69,7 +69,7 @@ export default function View({ record }: ViewProps) {
                             {translate('Joined')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
-                            {record.created_at ? window.appSettings?.formatDateTime(record.created_at, false) || record.created_at : '-'}
+                            {record.created_at ? window.kbSettings.formatDateTime(record.created_at, false) || record.created_at : '-'}
                         </p>
                     </div>
                 </div>

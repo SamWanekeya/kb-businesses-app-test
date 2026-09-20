@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,8 @@ export function InvoicePayTabsPaymentForm({
     onCancel,
 }: InvoicePayTabsPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handlePayment = async () => {
@@ -38,10 +40,10 @@ export function InvoicePayTabsPaymentForm({
                 payment_type: paymentType,
                 payment_id: `inv_pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 transaction_id: `inv_txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                _token: csrfToken,
             };
 
-            const response = await axios.post(route('customer-facing.invoice.paytabs.payment'), paymentData, {
+            const response = await fetch(route('customer-facing.invoice.paytabs.payment'), paymentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',

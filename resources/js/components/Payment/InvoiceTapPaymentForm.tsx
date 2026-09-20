@@ -1,6 +1,7 @@
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -18,6 +19,8 @@ interface InvoiceTapPaymentFormProps {
 
 export function InvoiceTapPaymentForm({ invoiceId, amount, paymentType, tapSecretKey, currency, onSuccess, onCancel }: InvoiceTapPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -37,31 +40,31 @@ export function InvoiceTapPaymentForm({ invoiceId, amount, paymentType, tapSecre
 
         try {
             // Create form and submit to handle redirect properly
-            const form = document.createElementranslate('form');
+            const form = document.createElement('form');
             form.method = 'POST';
             form.action = route('customer-facing.invoice.tap.payment');
 
             // Add CSRF token
-            const csrfInput = document.createElementranslate('input');
+            const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
-            csrfInput.value = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
 
             // Add form data
-            const invoiceIdInput = document.createElementranslate('input');
+            const invoiceIdInput = document.createElement('input');
             invoiceIdInput.type = 'hidden';
             invoiceIdInput.name = 'invoice_id';
             invoiceIdInput.value = invoiceId.toString();
             form.appendChild(invoiceIdInput);
 
-            const amountInput = document.createElementranslate('input');
+            const amountInput = document.createElement('input');
             amountInput.type = 'hidden';
             amountInput.name = 'amount';
             amountInput.value = amount.toString();
             form.appendChild(amountInput);
 
-            const paymentTypeInput = document.createElementranslate('input');
+            const paymentTypeInput = document.createElement('input');
             paymentTypeInput.type = 'hidden';
             paymentTypeInput.name = 'payment_type';
             paymentTypeInput.value = paymentType;
@@ -77,7 +80,7 @@ export function InvoiceTapPaymentForm({ invoiceId, amount, paymentType, tapSecre
 
     const formatCurrency = (amount: number) => {
         return (
-            window.appSettings?.formatCurrency(Number(amount || 0)) ||
+            window.kbSettings.formatCurrency(Number(amount || 0)) ||
             new Intl.NumberFormatranslate('en-US', {
                 style: 'currency',
                 currency: currency,

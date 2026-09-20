@@ -423,7 +423,7 @@ export default function Leads() {
             sortable: true,
             render: (value: any) =>
                 value ? (
-                    <span className="font-mono">{window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`}</span>
+                    <span className="font-mono">{window.kbSettings.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`}</span>
                 ) : (
                     translate('-')
                 ),
@@ -954,7 +954,7 @@ export default function Leads() {
                                                                     <div className="mb-2 flex items-center gap-1.5">
                                                                         <Banknote className="h-3 w-3 flex-shrink-0 text-gray-400" />
                                                                         <span className="font-mono text-xs font-semibold text-gray-700 dark:text-gray-300">
-                                                                            {window.appSettings?.formatCurrency(parseFloat(lead.value)) ||
+                                                                            {window.kbSettings.formatCurrency(parseFloat(lead.value)) ||
                                                                                 `$${parseFloat(lead.value).toFixed(2)}`}
                                                                         </span>
                                                                     </div>
@@ -981,7 +981,7 @@ export default function Leads() {
                                                                     <div className="flex items-center gap-1 text-xs text-gray-500">
                                                                         <LucidIcons.Calendar className="h-3 w-3" />
                                                                         <span>
-                                                                            {window.appSettings?.formatDateTime(lead.created_at, false) ||
+                                                                            {window.kbSettings.formatDateTime(lead.created_at, false) ||
                                                                                 new Date(lead.created_at).toLocaleDateString()}
                                                                         </span>
                                                                     </div>
@@ -1107,7 +1107,7 @@ export default function Leads() {
                                         </div>
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {translate('Value')}: {lead.value ? (window.appSettings?.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : translate('-')}
+                                                {translate('Value')}: {lead.value ? (window.kbSettings.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : translate('-')}
                                             </span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">
@@ -1130,7 +1130,7 @@ export default function Leads() {
 
                     {/* Created date */}
                     {/* <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        {translate("Created:")} {window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
+                                        {translate("Created:")} {window.kbSettings.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
                                     </div> */}
                     {/* <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-4">
                                         <span>{translate("Created:")}</span>
@@ -1138,7 +1138,7 @@ export default function Leads() {
                                         {lead.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
 
                                         <span>
-                                            {window.appSettings?.formatDateTime(lead.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(lead.created_at, false) ||
                                                 new Date(lead.created_at).toLocaleDateString()}
                                         </span>
                                     </div> */}

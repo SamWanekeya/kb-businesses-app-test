@@ -113,5 +113,5 @@ export const formatRelativeTime = (dateString: string) => {
             unit: diffInDays === 1 ? translate('day') : translate('days'),
         });
 
-    return window.appSettings?.formatDateTime(date, false);
+    return window.kbSettings.formatDateTime(date, false);
 };

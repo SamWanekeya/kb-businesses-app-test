@@ -169,11 +169,11 @@ export default function InvoiceShow() {
         );
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return translate('-');
-        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
+        return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const handleSendReminder = () => {
@@ -677,7 +677,7 @@ export default function InvoiceShow() {
                                                     <td className="px-4 py-3 align-middle">
                                                         <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
                                                             <Calendar className="h-3.5 w-3.5 shrink-0" />
-                                                            {window.appSettings?.formatDateTime(reminder.created_at, true) ||
+                                                            {window.kbSettings.formatDateTime(reminder.created_at, true) ||
                                                                 new Date(reminder.created_at).toLocaleString()}
                                                         </div>
                                                     </td>
@@ -737,7 +737,7 @@ export default function InvoiceShow() {
                                                         <span className="flex items-center gap-2 whitespace-nowrap text-gray-500">
                                                             <Calendar className="h-4 w-4 shrink-0" />
                                                             <span className="text-sm">
-                                                                {window.appSettings?.formatDateTime(
+                                                                {window.kbSettings.formatDateTime(
                                                                     payment.processed_at || payment.created_at,
                                                                     false,
                                                                 ) || new Date(payment.processed_at || payment.created_at).toLocaleDateString()}
@@ -832,7 +832,7 @@ export default function InvoiceShow() {
                                                     router.post(
                                                         route('invoices.comments.store', invoice.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                     );
                                                 }
                                             }}
@@ -1245,7 +1245,9 @@ export default function InvoiceShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Invoice Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">
+                                        {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">

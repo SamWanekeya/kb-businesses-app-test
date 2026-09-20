@@ -69,7 +69,7 @@ export default function QuoteCreate() {
     };
 
     const handleOpportunityChange = async (opportunityId: string) => {
-        setranslate('opportunity_id', opportunityId);
+        set('opportunity_id', opportunityId);
         if (!opportunityId) return;
         try {
             const res = await fetch(route('api.opportunities.details', opportunityId));
@@ -180,7 +180,7 @@ export default function QuoteCreate() {
     const totalTax = data.products.reduce((s, r) => s + calcTax(r), 0);
     const grandTotal = subtotal - totalDiscount + totalTax;
 
-    const fmt = (v: number) => <span className="font-mono">{window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`}</span>;
+    const fmt = (v: number) => <span className="font-mono">{window.kbSettings.formatCurrency(v) || `$${v.toFixed(2)}`}</span>;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -252,7 +252,7 @@ export default function QuoteCreate() {
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. Annual Software License Quote')}
                             />
@@ -290,7 +290,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Account')}
                             </Label>
-                            <Select value={data.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
@@ -317,7 +317,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Billing Contact')}
                             </Label>
-                            <Select value={data.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
+                            <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select billing contact')} />
                                 </SelectTrigger>
@@ -344,7 +344,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Shipping Contact')}
                             </Label>
-                            <Select value={data.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
+                            <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select shipping contact')} />
                                 </SelectTrigger>
@@ -363,7 +363,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Shipping Provider')}
                             </Label>
-                            <Select value={data.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
+                            <Select value={data.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select shipping provider')} />
                                 </SelectTrigger>
@@ -388,7 +388,7 @@ export default function QuoteCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -418,7 +418,7 @@ export default function QuoteCreate() {
                                 <Input
                                     type="date"
                                     value={data.valid_until}
-                                    onChange={(e) => setranslate('valid_until', e.target.value)}
+                                    onChange={(e) => set('valid_until', e.target.value)}
                                     className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -429,7 +429,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Assign To')}
                             </Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -456,7 +456,7 @@ export default function QuoteCreate() {
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => setranslate('description', e.target.value)}
+                                onChange={(e) => set('description', e.target.value)}
                                 rows={2}
                                 placeholder={translate('Brief description of this quote...')}
                             />
@@ -707,7 +707,7 @@ export default function QuoteCreate() {
                                     <Textarea
                                         value={data.billing_address}
                                         onChange={(e) => {
-                                            setranslate('billing_address', e.target.value);
+                                            set('billing_address', e.target.value);
                                             if (sameAsBilling) setData('shipping_address' as any, e.target.value);
                                         }}
                                         className={errors.billing_address ? 'border-red-500' : ''}
@@ -724,7 +724,7 @@ export default function QuoteCreate() {
                                         <Input
                                             value={data.billing_city}
                                             onChange={(e) => {
-                                                setranslate('billing_city', e.target.value);
+                                                set('billing_city', e.target.value);
                                                 if (sameAsBilling) setData('shipping_city' as any, e.target.value);
                                             }}
                                             className={errors.billing_city ? 'border-red-500' : ''}
@@ -739,7 +739,7 @@ export default function QuoteCreate() {
                                         <Input
                                             value={data.billing_state}
                                             onChange={(e) => {
-                                                setranslate('billing_state', e.target.value);
+                                                set('billing_state', e.target.value);
                                                 if (sameAsBilling) setData('shipping_state' as any, e.target.value);
                                             }}
                                             className={errors.billing_state ? 'border-red-500' : ''}
@@ -754,7 +754,7 @@ export default function QuoteCreate() {
                                         <Input
                                             value={data.billing_country}
                                             onChange={(e) => {
-                                                setranslate('billing_country', e.target.value);
+                                                set('billing_country', e.target.value);
                                                 if (sameAsBilling) setData('shipping_country' as any, e.target.value);
                                             }}
                                             className={errors.billing_country ? 'border-red-500' : ''}
@@ -769,7 +769,7 @@ export default function QuoteCreate() {
                                         <Input
                                             value={data.billing_postal_code}
                                             onChange={(e) => {
-                                                setranslate('billing_postal_code', e.target.value);
+                                                set('billing_postal_code', e.target.value);
                                                 if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value);
                                             }}
                                             className={errors.billing_postal_code ? 'border-red-500' : ''}
@@ -787,7 +787,7 @@ export default function QuoteCreate() {
                                     <Label className="text-sm font-medium">{translate('Address')}</Label>
                                     <Textarea
                                         value={data.shipping_address}
-                                        onChange={(e) => setranslate('shipping_address', e.target.value)}
+                                        onChange={(e) => set('shipping_address', e.target.value)}
                                         rows={2}
                                         placeholder={translate('e.g. 456 Elm Street')}
                                     />
@@ -797,23 +797,19 @@ export default function QuoteCreate() {
                                         <Label className="text-sm font-medium">{translate('City')}</Label>
                                         <Input
                                             value={data.shipping_city}
-                                            onChange={(e) => setranslate('shipping_city', e.target.value)}
+                                            onChange={(e) => set('shipping_city', e.target.value)}
                                             placeholder="Los Angeles"
                                         />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('State')}</Label>
-                                        <Input
-                                            value={data.shipping_state}
-                                            onChange={(e) => setranslate('shipping_state', e.target.value)}
-                                            placeholder="CA"
-                                        />
+                                        <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} placeholder="CA" />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('Country')}</Label>
                                         <Input
                                             value={data.shipping_country}
-                                            onChange={(e) => setranslate('shipping_country', e.target.value)}
+                                            onChange={(e) => set('shipping_country', e.target.value)}
                                             placeholder="United States"
                                         />
                                     </div>
@@ -821,7 +817,7 @@ export default function QuoteCreate() {
                                         <Label className="text-sm font-medium">{translate('Postal Code')}</Label>
                                         <Input
                                             value={data.shipping_postal_code}
-                                            onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
+                                            onChange={(e) => set('shipping_postal_code', e.target.value)}
                                             placeholder="90001"
                                         />
                                     </div>

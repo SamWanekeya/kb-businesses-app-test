@@ -658,7 +658,7 @@ export default function ProjectGantt() {
                                 <div className="flex justify-between">
                                     <span className="text-gray-600 dark:text-gray-400">{translate('Start Date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
-                                        {window.appSettings?.formatDateTime(selectedTask.start_date, false) ||
+                                        {window.kbSettings.formatDateTime(selectedTask.start_date, false) ||
                                             new Date(selectedTask.start_date).toLocaleDateString()}
                                     </span>
                                 </div>
@@ -668,7 +668,7 @@ export default function ProjectGantt() {
                                 <div className="flex justify-between">
                                     <span className="text-gray-600 dark:text-gray-400">{translate('Due Date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
-                                        {window.appSettings?.formatDateTime(selectedTask.due_date, false) ||
+                                        {window.kbSettings.formatDateTime(selectedTask.due_date, false) ||
                                             new Date(selectedTask.due_date).toLocaleDateString()}
                                     </span>
                                 </div>

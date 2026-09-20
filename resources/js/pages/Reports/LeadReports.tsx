@@ -254,7 +254,7 @@ export default function LeadReports() {
                                             </span>
                                             <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
                                                 <Calendar className="h-3 w-3 shrink-0" />
-                                                {window.appSettings?.formatDateTime(lead.created_at, false) ||
+                                                {window.kbSettings.formatDateTime(lead.created_at, false) ||
                                                     new Date(lead.created_at).toLocaleDateString()}
                                             </span>
                                         </div>

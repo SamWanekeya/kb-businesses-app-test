@@ -83,7 +83,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         // if (paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mercadopago',
-        //         name: 'MercadoPago',
+        //         name: 'Mercado Pago',
         //         icon: <Wallet className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -318,7 +318,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
     }, [invoice.paymentMethods]);
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        return window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
     };
 
     // Calculate due amount (total - already paid)

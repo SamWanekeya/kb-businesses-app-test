@@ -44,7 +44,7 @@ class SkrillPaymentController extends Controller
                 'language' => 'EN',
                 'amount' => $pricing['final_price'],
                 'currency' => 'USD',
-                'detail1_description' => 'Plan Subscription',
+                'detail1_description' => __('Plan subscription'),
                 'detail1_text' => $plan->name,
                 'pay_from_email' => $validated['email'],
             ];

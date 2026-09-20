@@ -4,6 +4,7 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -31,6 +32,8 @@ export function ToyyibPayPaymentForm({
     onCancel,
 }: ToyyibPayPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
         name: '',
@@ -87,20 +90,20 @@ export function ToyyibPayPaymentForm({
             };
 
             // Create form and submit to handle redirect properly
-            const form = document.createElementranslate('form');
+            const form = document.createElement('form');
             form.method = 'POST';
             form.action = route('subscriptions.toyyibpay.payment');
 
             // Add CSRF token
-            const csrfInput = document.createElementranslate('input');
+            const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
-            csrfInput.value = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
 
             // Add form data
             Object.entries(formData).forEach(([key, value]) => {
-                const input = document.createElementranslate('input');
+                const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = key;
                 input.value = value.toString();

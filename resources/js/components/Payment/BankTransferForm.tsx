@@ -92,7 +92,7 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
                         <div className="whitespace-pre-line">{bankDetails}</div>
                         <div className="flex items-center justify-between rounded bg-gray-50 p-2">
                             <span className="font-medium">
-                                {translate('Amount')}: {window.appSettings.formatCurrency(planPrice)}
+                                {translate('Amount')}: {window.kbSettings.formatCurrency(planPrice)}
                             </span>
                             <Button
                                 variant="outline"

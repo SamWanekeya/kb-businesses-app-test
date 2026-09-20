@@ -27,7 +27,7 @@ export function InvoiceMidtransPaymentForm({
     onCancel,
 }: InvoiceMidtransPaymentFormProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
+    const { csrfToken } = usePage().props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ export function InvoiceMidtransPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
@@ -70,7 +70,7 @@ export function InvoiceMidtransPaymentForm({
 
     const initializeMidtransSnap = (snapToken: string, orderId: string) => {
         if (!window.snap) {
-            const script = document.createElementranslate('script');
+            const script = document.createElement('script');
             script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
             script.setAttribute('data-client-key', midtransClientKey);
             script.onload = () => {
@@ -127,7 +127,7 @@ export function InvoiceMidtransPaymentForm({
 
     const formatPrice = (price: number) => {
         return (
-            window.appSettings?.formatCurrency(Number(price || 0)) ||
+            window.kbSettings.formatCurrency(Number(price || 0)) ||
             new Intl.NumberFormatranslate('en-US', {
                 style: 'currency',
                 currency: currency,

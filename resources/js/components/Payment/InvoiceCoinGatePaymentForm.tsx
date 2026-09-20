@@ -1,5 +1,6 @@
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Coins, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -25,10 +26,12 @@ export function InvoiceCoingatePaymentForm({
     onCancel,
 }: InvoiceCoingatePaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
+        return window.kbSettings.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -36,14 +39,14 @@ export function InvoiceCoingatePaymentForm({
         setIsProcessing(true);
 
         // Create form and submit directly to avoid CORS
-        const form = document.createElementranslate('form');
+        const form = document.createElement('form');
         form.method = 'POST';
         form.action = route('customer-facing.invoice.coingate.payment');
 
         // Add CSRF token
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        const csrfToken = csrfToken;
         if (csrfToken) {
-            const csrfInput = document.createElementranslate('input');
+            const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
@@ -58,7 +61,7 @@ export function InvoiceCoingatePaymentForm({
         };
 
         Object.entries(formData).forEach(([key, value]) => {
-            const input = document.createElementranslate('input');
+            const input = document.createElement('input');
             input.type = 'hidden';
             input.name = key;
             input.value = String(value);

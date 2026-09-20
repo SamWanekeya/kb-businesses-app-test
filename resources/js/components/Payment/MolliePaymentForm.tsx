@@ -1,12 +1,13 @@
+import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '../custom-toast';
 
 interface MolliePaymentFormProps {
     planId: number;
@@ -30,6 +31,8 @@ export function MolliePaymentForm({
     onCancel,
 }: MolliePaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
         firstName: '',
@@ -56,7 +59,7 @@ export function MolliePaymentForm({
             </CardHeader>
             <CardContent>
                 <form action={route('subscriptions.mollie.payment')} method="POST" onSubmit={handleSubmit} className="space-y-4">
-                    <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''} />
+                    <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
                     <input type="hidden" name="coupon_code" value={couponCode || ''} />

@@ -70,7 +70,7 @@ export default function LeadShow() {
         );
     };
 
-    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     return (
         <PageTemplate
@@ -117,7 +117,7 @@ export default function LeadShow() {
                             },
                             {
                                 label: translate('Created'),
-                                value: window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString(),
+                                value: window.kbSettings.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString(),
                                 icon: Clock,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
@@ -334,7 +334,7 @@ export default function LeadShow() {
                                             <p className="text-muted-foreground mt-0.5 text-xs">
                                                 {translate('Budget')}:{' '}
                                                 <span className="font-mono">
-                                                    {window.appSettings?.formatCurrency(Number(lead.campaign.budget || 0)) ||
+                                                    {window.kbSettings.formatCurrency(Number(lead.campaign.budget || 0)) ||
                                                         `$${Number(lead.campaign.budget || 0).toFixed(2)}`}
                                                 </span>
                                             </p>
@@ -541,7 +541,7 @@ export default function LeadShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(meeting.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
@@ -625,7 +625,7 @@ export default function LeadShow() {
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-muted-foreground truncate text-xs">
-                                                                                {window.appSettings?.formatDateTime(call.start_date, false) ||
+                                                                                {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
@@ -696,7 +696,7 @@ export default function LeadShow() {
                                                 router.post(
                                                     route('leads.comments.store', lead.id),
                                                     { comment: newComment },
-                                                    { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
+                                                    { preserveScroll: true, onSuccess: () => setNewComment('') },
                                                 );
                                             }
                                         }}

@@ -33,7 +33,7 @@ export function InvoiceSkrillPaymentForm({
     const [email, setEmail] = useState('');
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
+        return window.kbSettings.formatCurrency(Number(amount || 0)) || `${currency} ${Number(amount || 0).toFixed(2)}`;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {

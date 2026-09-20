@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterf
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { CreditCard, Loader2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -71,7 +70,7 @@ export function InvoicePayTRPaymentForm({
         setIsProcessing(true);
 
         try {
-            const response = await axios.post(route('customer-facing.invoice.paytr.create-token'), {
+            const response = await fetch(route('customer-facing.invoice.paytr.create-token'), {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,

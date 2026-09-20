@@ -500,7 +500,7 @@ export default function ProjectKanban() {
                                                                 <Calendar className="h-3 w-3" />
                                                                 <span>
                                                                     {task.due_date
-                                                                        ? `${translate('Due')}: ${window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}`
+                                                                        ? `${translate('Due')}: ${window.kbSettings.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}`
                                                                         : translate('No due date')}
                                                                 </span>
                                                             </div>

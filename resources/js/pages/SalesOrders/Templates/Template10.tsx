@@ -34,7 +34,7 @@ export default function Template10({
 
     const formatCurrency = (amount: number | string): React.ReactNode => {
         if (typeof amount === 'string' && amount.startsWith('<')) return amount;
-        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        const val = window.kbSettings.formatCurrency(Number(amount)) || `$${Number(amount)}`;
         return <span style={{ fontFamily: 'monospace' }}>{val}</span>;
     };
 

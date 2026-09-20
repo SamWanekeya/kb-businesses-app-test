@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,19 +26,21 @@ export function InvoiceMolliePaymentForm({
     onCancel,
 }: InvoiceMolliePaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handlePayment = async () => {
         setIsProcessing(true);
 
         try {
-            const response = await axios.post(
+            const response = await fetch(
                 route('customer-facing.invoice.mollie.payment'),
                 {
                     invoice_id: invoiceId,
                     amount: amount,
                     payment_type: paymentType,
-                    _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                    _token: csrfToken,
                 },
                 {
                     headers: {

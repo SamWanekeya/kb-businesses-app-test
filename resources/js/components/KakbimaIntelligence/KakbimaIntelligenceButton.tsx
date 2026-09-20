@@ -10,7 +10,13 @@ interface KakbimaIntelligenceButtonProps {
     className?: string;
 }
 
-export function KakbimaIntelligenceButton({ onClick, text = 'Auto Generate', variant = 'outline', size = 'sm', className = '' }: KakbimaIntelligenceButtonProps) {
+export function KakbimaIntelligenceButton({
+    onClick,
+    text = 'Auto Generate',
+    variant = 'outline',
+    size = 'sm',
+    className = '',
+}: KakbimaIntelligenceButtonProps) {
     const { t: translate } = useTranslation();
 
     return (

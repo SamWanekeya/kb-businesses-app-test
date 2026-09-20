@@ -4,9 +4,9 @@ import { Button } from '@components/UserInterface/Button';
 import { Card } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/react/daygrid';
 import interactionPlugin from '@fullcalendar/react/interaction';
-import FullCalendar from '@fullcalendar/react';
 import '@fullcalendar/react/skeleton.css';
 import timeGridPlugin from '@fullcalendar/react/timegrid';
 import { router, usePage } from '@inertiajs/react';
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CalendarIndex() {
     const { t: translate, i18n } = useTranslation();
-    const { csrf_token, events, auth, settings = {}, globalSettings = {} } = usePage().props;
+    const { csrfToken, events, auth, settings = {}, globalSettings = {} } = usePage().props;
 
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -61,7 +61,7 @@ export default function CalendarIndex() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrf_token,
+                        'X-CSRF-TOKEN': csrfToken,
                     },
                 });
                 const data = await response.json();
@@ -445,7 +445,7 @@ export default function CalendarIndex() {
                                                     <Calendar className="h-3 w-3 shrink-0" />
 
                                                     <span className="truncate">
-                                                        {window.appSettings?.formatDateTime(event.start, false) ||
+                                                        {window.kbSettings.formatDateTime(event.start, false) ||
                                                             new Date(event.start).toLocaleString()}
                                                     </span>
                                                 </div>
@@ -530,13 +530,13 @@ export default function CalendarIndex() {
                                             <div className="flex items-center gap-2">
                                                 <strong className="text-gray-700">{translate('Start')}:</strong>
                                                 <span className="text-gray-600">
-                                                    {selectedEvent.start ? <>{window.appSettings?.formatDateTime(selectedEvent.start)}</> : '-'}
+                                                    {selectedEvent.start ? <>{window.kbSettings.formatDateTime(selectedEvent.start)}</> : '-'}
                                                 </span>
                                             </div>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <strong className="text-gray-700">{translate('End')}:</strong>
                                                 <span className="text-gray-600">
-                                                    {selectedEvent.end ? <>{window.appSettings?.formatDateTime(selectedEvent.end)}</> : '-'}
+                                                    {selectedEvent.end ? <>{window.kbSettings.formatDateTime(selectedEvent.end)}</> : '-'}
                                                 </span>
                                             </div>
                                         </div>

@@ -114,13 +114,13 @@ export default function AnnouncementShow() {
                             {announcement.start_date && (
                                 <div className="flex items-center gap-2">
                                     <CalendarDays className="h-4 w-4" /> <span className="font-bold">{translate('Start Date')}:</span>{' '}
-                                    {window.appSettings?.formatDateTime(announcement.start_date, false) || '-'}
+                                    {window.kbSettings.formatDateTime(announcement.start_date, false) || '-'}
                                 </div>
                             )}
                             {announcement.end_date && (
                                 <div className="flex items-center gap-2">
                                     <CalendarDays className="h-4 w-4" /> <span className="font-bold">{translate('End Date')}:</span>{' '}
-                                    {window.appSettings?.formatDateTime(announcement.end_date, false) || '-'}
+                                    {window.kbSettings.formatDateTime(announcement.end_date, false) || '-'}
                                 </div>
                             )}
                         </div>

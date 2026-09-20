@@ -6,8 +6,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
-import { Bell, Link, Save, Send, MessagesCircle } from 'lucide-react';
+import { Bell, Link, MessagesCircle, Save, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -29,29 +28,41 @@ export default function SlackNotificationSettings() {
 
     useEffect(() => {
         // Load available notifications
-        axios
-            .get(route('settings.slack-notifications.available'))
-            .then((response) => {
-                setAvailableNotifications(response.data);
+        fetch(route('settings.slack-notifications.available'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setAvailableNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
 
         // Load current settings
-        axios
-            .get(route('settings.slack-notifications.get'))
-            .then((response) => {
-                setNotifications(response.data);
+        fetch(route('settings.slack-notifications.get'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setNotifications(data);
             })
-            .catch((error) => {});
+            .catch(() => {});
 
         // Load Slack configuration
-        axios
-            .get(route('settings.slack-config.get'))
-            .then((response) => {
-                setSlackWebhookUrl(response.data.slack_webhook_url || '');
-                setIsAvailableSlackWebhookUrl(response.data.slack_webhook_url);
+        fetch(route('settings.slack-config.get'), {
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setSlackWebhookUrl(data.slack_webhook_url || '');
+                setIsAvailableSlackWebhookUrl(data.slack_webhook_url);
             })
-            .catch((error) => {});
+            .catch(() => {});
     }, []);
 
     const handleToggle = (key: string, enabled: boolean) => {

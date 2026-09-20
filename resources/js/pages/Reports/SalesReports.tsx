@@ -34,7 +34,7 @@ export default function SalesReports() {
             title: translate('Total Sales'),
             value: (
                 <span className="font-mono">
-                    {window.appSettings?.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}
+                    {window.kbSettings.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}
                 </span>
             ),
             icon: <DollarSign className="h-6 w-6 text-green-600" />,
@@ -50,7 +50,7 @@ export default function SalesReports() {
             title: translate('Average Order Value'),
             value: (
                 <span className="font-mono">
-                    {window.appSettings?.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`}
+                    {window.kbSettings.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`}
                 </span>
             ),
             icon: <Target className="h-6 w-6 text-purple-600" />,
@@ -131,7 +131,7 @@ export default function SalesReports() {
                                         itemStyle={{ color: primaryColor }}
                                         labelStyle={{ color: primaryColor }}
                                         formatter={(value) => [
-                                            window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
+                                            window.kbSettings.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
                                             translate('Revenue'),
                                         ]}
                                     />
@@ -184,7 +184,7 @@ export default function SalesReports() {
                                         itemStyle={{ color: primaryColor }}
                                         labelStyle={{ color: primaryColor }}
                                         formatter={(value) => [
-                                            window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
+                                            window.kbSettings.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
                                             translate('Amount'),
                                         ]}
                                     />
@@ -229,11 +229,11 @@ export default function SalesReports() {
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
                                             <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
-                                                {window.appSettings?.formatCurrency(sale.total_amount) || `$${sale.total_amount}`}
+                                                {window.kbSettings.formatCurrency(sale.total_amount) || `$${sale.total_amount}`}
                                             </span>
                                             <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
                                                 <Calendar className="h-3 w-3 shrink-0" />
-                                                {window.appSettings?.formatDateTime(sale.created_at, false) ||
+                                                {window.kbSettings.formatDateTime(sale.created_at, false) ||
                                                     new Date(sale.created_at).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -315,7 +315,7 @@ export default function SalesReports() {
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
                                             <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
-                                                {window.appSettings?.formatCurrency(product.total_revenue) || `$${product.total_revenue}`}
+                                                {window.kbSettings.formatCurrency(product.total_revenue) || `$${product.total_revenue}`}
                                             </span>
                                         </div>
                                     </div>

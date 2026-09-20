@@ -130,7 +130,7 @@ export default function DocumentShow() {
     };
 
     const handleDownload = () => {
-        const link = window.document.createElementranslate('a');
+        const link = window.document.createElement('a');
         link.href = route('documents.download', document.id);
         link.download = document.name;
         window.document.body.appendChild(link);
@@ -439,7 +439,7 @@ export default function DocumentShow() {
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             {document.publish_date && <LucidIcons.Calendar className="h-4 w-4" />}
                                             <span>
-                                                {window.appSettings?.formatDateTime(document.publish_date, false) ||
+                                                {window.kbSettings.formatDateTime(document.publish_date, false) ||
                                                     new Date(document.publish_date).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -449,7 +449,7 @@ export default function DocumentShow() {
                             {document.expiration_date && (
                                 // <DetailRow
                                 //     label={translate('Expiration Date')}
-                                //     value={window.appSettings?.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
+                                //     value={window.kbSettings.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
                                 //     expired={isExpired}
                                 // />
                                 <DetailRow
@@ -458,7 +458,7 @@ export default function DocumentShow() {
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             <LucidIcons.Calendar className={`h-4 w-4 ${isExpired ? 'text-red-500' : 'text-gray-500'}`} />
                                             <span className={isExpired ? 'text-red-500' : ''}>
-                                                {window.appSettings?.formatDateTime(document.expiration_date, false) ||
+                                                {window.kbSettings.formatDateTime(document.expiration_date, false) ||
                                                     new Date(document.expiration_date).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -472,7 +472,7 @@ export default function DocumentShow() {
                                     <div className="flex items-center gap-2 whitespace-nowrap">
                                         {document.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
                                         <span>
-                                            {window.appSettings?.formatDateTime(document.created_at, false) ||
+                                            {window.kbSettings.formatDateTime(document.created_at, false) ||
                                                 new Date(document.created_at).toLocaleDateString()}
                                         </span>
                                     </div>

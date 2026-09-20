@@ -4,15 +4,15 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Loader2, Tag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { BankTransferForm } from '@components/Payment/BankTransferForm';
 import { PaystackPaymentForm } from '@components/Payment/PaystackPaymentForm';
 import { router } from '@inertiajs/react';
-import axios from 'axios';
-import { BankTransferForm } from './BankTransferForm';
 
 interface PaymentMethod {
     id: string;
@@ -40,6 +40,8 @@ interface PaymentProcessorProps {
 
 export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_symbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
@@ -69,17 +71,26 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
 
         setCouponLoading(true);
         try {
-            const { data } = await axios.post(route('subscriptions.coupons.validate'), {
-                coupon_code: couponCode,
-                plan_id: plan.id,
-                amount: originalPrice,
+            const response = await fetch(route('subscriptions.coupons.validate'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    coupon_code: couponCode,
+                    plan_id: plan.id,
+                    amount: originalPrice,
+                }),
             });
 
-            if (data.valid) {
+            const data = await response.json();
+
+            if (response.ok && data.valid) {
                 setAppliedCoupon(data.coupon);
-                toast.success(translate(data.message || 'Coupon applied successfully'));
+                toast.success(translate('Coupon applied successfully'));
             } else {
-                toast.error(translate(data.message || 'Invalid coupon code'));
+                toast.error(data.message || translate('Invalid coupon code'));
                 setAppliedCoupon(null);
             }
         } catch (error: any) {

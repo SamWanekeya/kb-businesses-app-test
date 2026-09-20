@@ -42,7 +42,7 @@ export default function ProductReports() {
             title: translate('Total Revenue'),
             value: (
                 <span className="font-mono">
-                    {window.appSettings?.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`}
+                    {window.kbSettings.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`}
                 </span>
             ),
             icon: <DollarSign className="h-6 w-6 text-purple-600" />,
@@ -106,7 +106,7 @@ export default function ProductReports() {
                                     itemStyle={{ color: primaryColor }}
                                     labelStyle={{ color: primaryColor }}
                                     formatter={(value) => [
-                                        window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
+                                        window.kbSettings.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
                                         translate('Revenue'),
                                     ]}
                                 />
@@ -324,7 +324,7 @@ export default function ProductReports() {
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
                                             <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
-                                                {window.appSettings?.formatCurrency(product.revenue) || `$${product.revenue.toLocaleString()}`}
+                                                {window.kbSettings.formatCurrency(product.revenue) || `$${product.revenue.toLocaleString()}`}
                                             </span>
                                         </div>
                                     </div>

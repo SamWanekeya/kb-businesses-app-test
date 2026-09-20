@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../../../css/cashfree-modal-fix.css';
@@ -28,13 +28,14 @@ export function InvoiceCashfreePaymentForm({
     onCancel,
 }: InvoiceCashfreePaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
 
     useEffect(() => {
         if (window && (window as any).Cashfree) {
             return;
         }
 
-        const script = document.createElementranslate('script');
+        const script = document.createElement('script');
         script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
         script.async = true;
         script.onerror = () => {
@@ -51,19 +52,29 @@ export function InvoiceCashfreePaymentForm({
 
     const handlePayment = async () => {
         try {
-            const response = await axios.post(route('customer-facing.invoice.cashfree.create-session'), {
-                invoice_id: invoiceId,
-                amount: amount,
-                payment_type: paymentType,
-                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+            const response = await fetch(route('customer-facing.invoice.cashfree.create-session'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    invoice_id: invoiceId,
+                    amount: amount,
+                    payment_type: paymentType,
+                    _token: csrfToken,
+                }),
             });
 
-            if (response.data.error) {
-                toast.error(response.data.error);
+            const data = await response.json();
+
+            if (data.error) {
+                toast.error(data.error);
                 return;
             }
 
-            const { payment_session_id, order_id, amount: orderAmount, mode: serverMode } = response.data;
+            const { payment_session_id, order_id, amount: orderAmount, mode: serverMode } = data;
 
             if (!payment_session_id || !order_id) {
                 toast.error(translate('Invalid response from server'));
@@ -82,18 +93,16 @@ export function InvoiceCashfreePaymentForm({
 
             const cashfreeMode = serverMode === 'production' ? 'PROD' : 'SANDBOX';
 
+            let cashfree;
+
             try {
-                const cashfree = (window as any).Cashfree({
+                cashfree = (window as any).Cashfree({
                     mode: cashfreeMode,
                 });
-            } catch (error) {
+            } catch (error: any) {
                 toast.error('Failed to initialize Cashfree: ' + error.message);
                 return;
             }
-
-            const cashfree = (window as any).Cashfree({
-                mode: cashfreeMode,
-            });
 
             const checkoutOptions = {
                 paymentSessionId: payment_session_id,
@@ -107,29 +116,42 @@ export function InvoiceCashfreePaymentForm({
 
             cashfree
                 .checkout(checkoutOptions)
-                .then((result: any) => {
+                .then(async (result: any) => {
                     if (result.error) {
                         toast.error(result.error.message || translate('Payment failed'));
                         return;
                     }
 
                     if (result.paymentDetails) {
-                        axios
-                            .post(route('customer-facing.invoice.cashfree.verify-payment'), {
-                                order_id: order_id,
-                                invoice_id: invoiceId,
-                                amount: amount,
-                                payment_type: paymentType,
-                                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
-                            })
-                            .then((response) => {
-                                toast.success(translate('Payment successful'));
-                                onSuccess();
-                            })
-                            .catch((error) => {
-                                const errorMsg = error.response?.data?.error || translate('Payment verification failed');
-                                toast.error(errorMsg);
+                        try {
+                            const verifyResponse = await fetch(route('customer-facing.invoice.cashfree.verify-payment'), {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    Accept: 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    order_id: order_id,
+                                    invoice_id: invoiceId,
+                                    amount: amount,
+                                    payment_type: paymentType,
+                                    _token: csrfToken,
+                                }),
                             });
+
+                            const verifyData = await verifyResponse.json();
+
+                            if (!verifyResponse.ok || verifyData.error) {
+                                toast.error(verifyData.error || translate('Payment verification failed'));
+                                return;
+                            }
+
+                            toast.success(translate('Payment successful'));
+                            onSuccess();
+                        } catch (error: any) {
+                            toast.error(error.message || translate('Payment verification failed'));
+                        }
                     } else {
                         toast.error(translate('Payment status unclear'));
                     }
@@ -138,8 +160,12 @@ export function InvoiceCashfreePaymentForm({
                     toast.error(error.message || translate('Payment initialization failed'));
                 });
         } catch (error: any) {
-            const errorMsg = error.response?.data?.error || translate('Failed to initialize payment');
-            toast.error(errorMsg);
+            try {
+                const errorData = await error?.response?.json?.();
+                toast.error(errorData?.error || translate('Failed to initialize payment'));
+            } catch {
+                toast.error(error?.message || translate('Failed to initialize payment'));
+            }
         }
     };
 

@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -59,7 +58,7 @@ const emptyLine = (): ProductLine => ({
     discount_value: 0,
 });
 
-const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixed(2)}`;
+const fmt = (n: number) => window.kbSettings.formatCurrency(n) ?? `$${n.toFixed(2)}`;
 
 function Field({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
     return (
@@ -138,105 +137,157 @@ export default function InvoiceCreate() {
         }));
     };
 
-    const handleSalesOrderChange = useCallback(async (soId: string) => {
-        setranslate('sales_order_id', soId);
-        if (!soId) return;
-        setLoadingSalesOrder(true);
-        try {
-            const { data } = await axios.get(route('api.invoices.sales-orders.details', soId));
-            setForm((p) => ({
-                ...p,
-                sales_order_id: soId,
-                account_id: String(data.account_id || ''),
-                contact_id: String(data.contact_id || ''),
-                quote_id: String(data.quote_id || ''),
-                opportunity_id: String(data.opportunity_id || ''),
-                billing_address: data.billing_address || '',
-                billing_city: data.billing_city || '',
-                billing_state: data.billing_state || '',
-                billing_country: data.billing_country || '',
-                billing_postal_code: data.billing_postal_code || '',
-                products: data.products?.length
-                    ? data.products.map((pr: any) => ({
-                          id: crypto.randomUUID(),
-                          product_id: String(pr.product_id),
-                          quantity: pr.quantity || 1,
-                          unit_price: parseFloat(pr.unit_price) || 0,
-                          discount_type: pr.discount_type === 'none' ? 'none' : pr.discount_type || 'none',
-                          discount_value: parseFloat(pr.discount_value) || 0,
-                      }))
-                    : p.products,
-            }));
-            setErrors({});
-        } catch {
-            toast.error(translate('Failed to load sales order details'));
-        } finally {
-            setLoadingSalesOrder(false);
-        }
-    }, []);
+    const handleSalesOrderChange = useCallback(
+        async (soId: string) => {
+            set('sales_order_id', soId);
+            if (!soId) return;
+            setLoadingSalesOrder(true);
+            try {
+                const response = await fetch(route('api.invoices.sales-orders.details', soId), {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                });
 
-    const handleQuoteChange = useCallback(async (quoteId: string) => {
-        setranslate('quote_id', quoteId);
-        if (!quoteId) return;
-        setLoadingQuote(true);
-        try {
-            const { data } = await axios.get(route('api.invoices.quotes.details', quoteId));
-            setForm((p) => ({
-                ...p,
-                quote_id: quoteId,
-                account_id: String(data.account_id || p.account_id),
-                contact_id: String(data.contact_id || p.contact_id),
-                billing_address: data.billing_address || p.billing_address,
-                billing_city: data.billing_city || p.billing_city,
-                billing_state: data.billing_state || p.billing_state,
-                billing_country: data.billing_country || p.billing_country,
-                billing_postal_code: data.billing_postal_code || p.billing_postal_code,
-                products: data.products?.length
-                    ? data.products.map((pr: any) => ({
-                          id: crypto.randomUUID(),
-                          product_id: String(pr.product_id),
-                          quantity: pr.quantity || 1,
-                          unit_price: parseFloat(pr.unit_price) || 0,
-                          discount_type: pr.discount_type || 'none',
-                          discount_value: parseFloat(pr.discount_value) || 0,
-                      }))
-                    : p.products,
-            }));
-        } catch {
-            toast.error(translate('Failed to load quote details'));
-        } finally {
-            setLoadingQuote(false);
-        }
-    }, []);
+                const data = await response.json();
 
-    const handleOpportunityChange = useCallback(async (opportunityId: string) => {
-        setranslate('opportunity_id', opportunityId);
-        if (!opportunityId) return;
-        setLoadingOpportunity(true);
-        try {
-            const { data } = await axios.get(route('api.invoices.opportunities.details', opportunityId));
-            setForm((p) => ({
-                ...p,
-                opportunity_id: opportunityId,
-                account_id: String(data.account_id || p.account_id),
-                contact_id: String(data.contact_id || p.contact_id),
-                products: data.products?.length
-                    ? data.products.map((pr: any) => ({
-                          id: crypto.randomUUID(),
-                          product_id: String(pr.product_id),
-                          quantity: pr.quantity || 1,
-                          unit_price: parseFloat(pr.unit_price) || 0,
-                          discount_type: pr.discount_type || 'none',
-                          discount_value: parseFloat(pr.discount_value) || 0,
-                      }))
-                    : p.products,
-            }));
-        } catch {
-            toast.error(translate('Failed to load opportunity details'));
-        } finally {
-            setLoadingOpportunity(false);
-        }
-    }, []);
+                if (!response.ok) {
+                    throw new Error(data?.error || 'Failed to load sales order details');
+                }
+
+                setForm((p) => ({
+                    ...p,
+                    sales_order_id: soId,
+                    account_id: String(data.account_id || ''),
+                    contact_id: String(data.contact_id || ''),
+                    quote_id: String(data.quote_id || ''),
+                    opportunity_id: String(data.opportunity_id || ''),
+                    billing_address: data.billing_address || '',
+                    billing_city: data.billing_city || '',
+                    billing_state: data.billing_state || '',
+                    billing_country: data.billing_country || '',
+                    billing_postal_code: data.billing_postal_code || '',
+                    products: data.products?.length
+                        ? data.products.map((pr: any) => ({
+                              id: crypto.randomUUID(),
+                              product_id: String(pr.product_id),
+                              quantity: pr.quantity || 1,
+                              unit_price: parseFloat(pr.unit_price) || 0,
+                              discount_type: pr.discount_type === 'none' ? 'none' : pr.discount_type || 'none',
+                              discount_value: parseFloat(pr.discount_value) || 0,
+                          }))
+                        : p.products,
+                }));
+
+                setErrors({});
+            } catch {
+                toast.error(translate('Failed to load sales order details'));
+            } finally {
+                setLoadingSalesOrder(false);
+            }
+        },
+        [translate],
+    );
+
+    const handleQuoteChange = useCallback(
+        async (quoteId: string) => {
+            set('quote_id', quoteId);
+
+            if (!quoteId) return;
+
+            setLoadingQuote(true);
+
+            try {
+                const response = await fetch(route('api.invoices.quotes.details', quoteId), {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.error || 'Failed to load quote details');
+                }
+
+                setForm((p) => ({
+                    ...p,
+                    quote_id: quoteId,
+                    account_id: String(data.account_id || p.account_id),
+                    contact_id: String(data.contact_id || p.contact_id),
+                    billing_address: data.billing_address || p.billing_address,
+                    billing_city: data.billing_city || p.billing_city,
+                    billing_state: data.billing_state || p.billing_state,
+                    billing_country: data.billing_country || p.billing_country,
+                    billing_postal_code: data.billing_postal_code || p.billing_postal_code,
+                    products: data.products?.length
+                        ? data.products.map((pr: any) => ({
+                              id: crypto.randomUUID(),
+                              product_id: String(pr.product_id),
+                              quantity: pr.quantity || 1,
+                              unit_price: parseFloat(pr.unit_price) || 0,
+                              discount_type: pr.discount_type || 'none',
+                              discount_value: parseFloat(pr.discount_value) || 0,
+                          }))
+                        : p.products,
+                }));
+            } catch {
+                toast.error(translate('Failed to load quote details'));
+            } finally {
+                setLoadingQuote(false);
+            }
+        },
+        [translate],
+    );
+
+    const handleOpportunityChange = useCallback(
+        async (opportunityId: string) => {
+            set('opportunity_id', opportunityId);
+
+            if (!opportunityId) return;
+
+            setLoadingOpportunity(true);
+
+            try {
+                const response = await fetch(route('api.invoices.opportunities.details', opportunityId), {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.error || 'Failed to load opportunity details');
+                }
+
+                setForm((p) => ({
+                    ...p,
+                    opportunity_id: opportunityId,
+                    account_id: String(data.account_id || p.account_id),
+                    contact_id: String(data.contact_id || p.contact_id),
+                    products: data.products?.length
+                        ? data.products.map((pr: any) => ({
+                              id: crypto.randomUUID(),
+                              product_id: String(pr.product_id),
+                              quantity: pr.quantity || 1,
+                              unit_price: parseFloat(pr.unit_price) || 0,
+                              discount_type: pr.discount_type || 'none',
+                              discount_value: parseFloat(pr.discount_value) || 0,
+                          }))
+                        : p.products,
+                }));
+            } catch {
+                toast.error(translate('Failed to load opportunity details'));
+            } finally {
+                setLoadingOpportunity(false);
+            }
+        },
+        [translate],
+    );
 
     const calcLine = (l: ProductLine) => {
         const gross = l.quantity * l.unit_price;
@@ -351,7 +402,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Invoice Name')} required error={errors.name}>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    onChange={(e) => set('name', e.target.value)}
                                     placeholder={translate('e.g. Annual Software License Invoice')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
@@ -441,7 +492,7 @@ export default function InvoiceCreate() {
                             </Field>
                         </div>
                         <Field label={translate('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select Account')} />
                                 </SelectTrigger>
@@ -463,7 +514,7 @@ export default function InvoiceCreate() {
                             )}
                         </Field>
                         <Field label={translate('Contact')} required error={errors.contact_id}>
-                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select Contact')} />
                                 </SelectTrigger>
@@ -501,7 +552,7 @@ export default function InvoiceCreate() {
                                 <Input
                                     type="date"
                                     value={form.invoice_date}
-                                    onChange={(e) => setranslate('invoice_date', e.target.value)}
+                                    onChange={(e) => set('invoice_date', e.target.value)}
                                     className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -521,13 +572,13 @@ export default function InvoiceCreate() {
                                 <Input
                                     type="date"
                                     value={form.due_date}
-                                    onChange={(e) => setranslate('due_date', e.target.value)}
+                                    onChange={(e) => set('due_date', e.target.value)}
                                     className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
                         </Field>
                         <Field label={translate('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -545,7 +596,7 @@ export default function InvoiceCreate() {
                             </Select>
                         </Field>
                         <Field label={translate('Assign To')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select User')} />
                                 </SelectTrigger>
@@ -572,7 +623,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Description')} error={errors.description}>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    onChange={(e) => set('description', e.target.value)}
                                     placeholder={translate('Enter invoice description...')}
                                     rows={2}
                                 />
@@ -582,7 +633,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Notes')} error={errors.notes}>
                                 <Textarea
                                     value={form.notes}
-                                    onChange={(e) => setranslate('notes', e.target.value)}
+                                    onChange={(e) => set('notes', e.target.value)}
                                     placeholder={translate('Additional notes...')}
                                     rows={2}
                                 />
@@ -600,7 +651,7 @@ export default function InvoiceCreate() {
                         <Field label={translate('Billing Address')} required error={errors.billing_address}>
                             <Textarea
                                 value={form.billing_address}
-                                onChange={(e) => setranslate('billing_address', e.target.value)}
+                                onChange={(e) => set('billing_address', e.target.value)}
                                 placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 rows={2}
                                 className={errors.billing_address ? 'border-red-500' : ''}
@@ -610,7 +661,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('City')} required error={errors.billing_city}>
                                 <Input
                                     value={form.billing_city}
-                                    onChange={(e) => setranslate('billing_city', e.target.value)}
+                                    onChange={(e) => set('billing_city', e.target.value)}
                                     placeholder="New York"
                                     className={errors.billing_city ? 'border-red-500' : ''}
                                 />
@@ -618,7 +669,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('State')} required error={errors.billing_state}>
                                 <Input
                                     value={form.billing_state}
-                                    onChange={(e) => setranslate('billing_state', e.target.value)}
+                                    onChange={(e) => set('billing_state', e.target.value)}
                                     placeholder="NY"
                                     className={errors.billing_state ? 'border-red-500' : ''}
                                 />
@@ -626,7 +677,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Country')} required error={errors.billing_country}>
                                 <Input
                                     value={form.billing_country}
-                                    onChange={(e) => setranslate('billing_country', e.target.value)}
+                                    onChange={(e) => set('billing_country', e.target.value)}
                                     placeholder="United States"
                                     className={errors.billing_country ? 'border-red-500' : ''}
                                 />
@@ -634,7 +685,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Postal Code')} required error={errors.billing_postal_code}>
                                 <Input
                                     value={form.billing_postal_code}
-                                    onChange={(e) => setranslate('billing_postal_code', e.target.value)}
+                                    onChange={(e) => set('billing_postal_code', e.target.value)}
                                     placeholder="10001"
                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                 />
@@ -643,7 +694,7 @@ export default function InvoiceCreate() {
                         <Field label={translate('Terms')} error={errors.terms}>
                             <Textarea
                                 value={form.terms}
-                                onChange={(e) => setranslate('terms', e.target.value)}
+                                onChange={(e) => set('terms', e.target.value)}
                                 placeholder={translate('Payment terms and conditions...')}
                                 rows={2}
                             />

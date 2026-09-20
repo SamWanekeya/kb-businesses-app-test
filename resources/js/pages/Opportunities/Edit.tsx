@@ -92,7 +92,7 @@ export default function OpportunityEdit() {
     const subtotal = data.products.reduce((s, r) => s + calcLineTotal(r), 0);
     const totalTax = data.products.reduce((s, r) => s + calcTaxAmount(r), 0);
     const grandTotal = subtotal + totalTax;
-    const fmt = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
+    const fmt = (v: number) => window.kbSettings.formatCurrency(v) || `$${v.toFixed(2)}`;
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
         { name: 'name', label: translate('Opportunity Name') },

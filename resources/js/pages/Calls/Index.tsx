@@ -302,11 +302,11 @@ export default function Calls() {
                 <div className="flex flex-col gap-1 whitespace-nowrap">
                     <span className="flex items-center gap-1 text-xs text-gray-500">
                         <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-                        {window.appSettings?.formatDateTime(`${value.split('T')[0]}T${row.start_time}`, true) || '-'}
+                        {window.kbSettings.formatDateTime(`${value.split('T')[0]}T${row.start_time}`, true) || '-'}
                     </span>
                     <span className="flex items-center gap-1 text-xs text-gray-500">
                         <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-                        {window.appSettings?.formatDateTime(`${row.end_date.split('T')[0]}T${row.end_time}`, true) || '-'}
+                        {window.kbSettings.formatDateTime(`${row.end_date.split('T')[0]}T${row.end_time}`, true) || '-'}
                     </span>
                 </div>
             ),

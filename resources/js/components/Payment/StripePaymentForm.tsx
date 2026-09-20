@@ -68,7 +68,7 @@ const CheckoutForm = ({
 
         if (invoiceId && amount && paymentType) {
             // Invoice payment
-            processPaymentranslate('stripe', {
+            processPayment('stripe', {
                 invoiceId,
                 amount,
                 paymentType,
@@ -77,7 +77,7 @@ const CheckoutForm = ({
             });
         } else {
             // Plan payment
-            processPaymentranslate('stripe', {
+            processPayment('stripe', {
                 planId,
                 billingCycle,
                 couponCode,

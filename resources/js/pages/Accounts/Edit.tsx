@@ -155,7 +155,7 @@ export default function AccountEdit() {
                             <Input
                                 id="name"
                                 value={data.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. Acme Corporation')}
                             />
@@ -170,7 +170,7 @@ export default function AccountEdit() {
                                 id="email"
                                 type="email"
                                 value={data.email}
-                                onChange={(e) => setranslate('email', e.target.value)}
+                                onChange={(e) => set('email', e.target.value)}
                                 className={errors.email ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. contact@acmecorp.com')}
                             />
@@ -184,7 +184,7 @@ export default function AccountEdit() {
                             <Input
                                 id="phone"
                                 value={data.phone}
-                                onChange={(e) => setranslate('phone', e.target.value)}
+                                onChange={(e) => set('phone', e.target.value)}
                                 className={errors.phone ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. +1 234 567 8900')}
                             />
@@ -196,7 +196,7 @@ export default function AccountEdit() {
                             <Input
                                 id="website"
                                 value={data.website}
-                                onChange={(e) => setranslate('website', e.target.value)}
+                                onChange={(e) => set('website', e.target.value)}
                                 className={errors.website ? 'border-red-500' : ''}
                                 placeholder="e.g. https://acmecorp.com"
                             />
@@ -213,7 +213,7 @@ export default function AccountEdit() {
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
                             <Label required>{translate('Account Type')}</Label>
-                            <Select value={data.account_type_id} onValueChange={(v) => setranslate('account_type_id', v)}>
+                            <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
                                 <SelectTrigger className={errors.account_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select account type')} />
                                 </SelectTrigger>
@@ -238,7 +238,7 @@ export default function AccountEdit() {
 
                         <div className="space-y-1.5">
                             <Label required>{translate('Assign To')}</Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
@@ -263,7 +263,7 @@ export default function AccountEdit() {
 
                         <div className="space-y-1.5">
                             <Label required>{translate('Industry')}</Label>
-                            <Select value={data.account_industry_id} onValueChange={(v) => setranslate('account_industry_id', v)}>
+                            <Select value={data.account_industry_id} onValueChange={(v) => set('account_industry_id', v)}>
                                 <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select industry')} />
                                 </SelectTrigger>
@@ -288,7 +288,7 @@ export default function AccountEdit() {
 
                         <div className="space-y-1.5">
                             <Label>{translate('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
+                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -316,7 +316,7 @@ export default function AccountEdit() {
                                 <Textarea
                                     id="billing_address"
                                     value={data.billing_address}
-                                    onChange={(e) => setranslate('billing_address', e.target.value)}
+                                    onChange={(e) => set('billing_address', e.target.value)}
                                     className={errors.billing_address ? 'border-red-500' : ''}
                                     rows={2}
                                     placeholder={translate('e.g. 123 Main Street, Suite 100')}
@@ -331,7 +331,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="billing_city"
                                         value={data.billing_city}
-                                        onChange={(e) => setranslate('billing_city', e.target.value)}
+                                        onChange={(e) => set('billing_city', e.target.value)}
                                         className={errors.billing_city ? 'border-red-500' : ''}
                                         placeholder={translate('e.g. New York')}
                                     />
@@ -344,7 +344,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="billing_state"
                                         value={data.billing_state}
-                                        onChange={(e) => setranslate('billing_state', e.target.value)}
+                                        onChange={(e) => set('billing_state', e.target.value)}
                                         className={errors.billing_state ? 'border-red-500' : ''}
                                         placeholder={translate('e.g. NY')}
                                     />
@@ -357,7 +357,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="billing_country"
                                         value={data.billing_country}
-                                        onChange={(e) => setranslate('billing_country', e.target.value)}
+                                        onChange={(e) => set('billing_country', e.target.value)}
                                         className={errors.billing_country ? 'border-red-500' : ''}
                                         placeholder={translate('e.g. United States')}
                                     />
@@ -370,7 +370,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="billing_postal_code"
                                         value={data.billing_postal_code}
-                                        onChange={(e) => setranslate('billing_postal_code', e.target.value)}
+                                        onChange={(e) => set('billing_postal_code', e.target.value)}
                                         className={errors.billing_postal_code ? 'border-red-500' : ''}
                                         placeholder={translate('e.g. 10001')}
                                     />
@@ -419,7 +419,7 @@ export default function AccountEdit() {
                                 <Textarea
                                     id="shipping_address"
                                     value={data.shipping_address}
-                                    onChange={(e) => setranslate('shipping_address', e.target.value)}
+                                    onChange={(e) => set('shipping_address', e.target.value)}
                                     rows={2}
                                     placeholder={translate('e.g. 456 Elm Street')}
                                 />
@@ -430,7 +430,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="shipping_city"
                                         value={data.shipping_city}
-                                        onChange={(e) => setranslate('shipping_city', e.target.value)}
+                                        onChange={(e) => set('shipping_city', e.target.value)}
                                         placeholder={translate('e.g. Los Angeles')}
                                     />
                                 </div>
@@ -439,7 +439,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="shipping_state"
                                         value={data.shipping_state}
-                                        onChange={(e) => setranslate('shipping_state', e.target.value)}
+                                        onChange={(e) => set('shipping_state', e.target.value)}
                                         placeholder={translate('e.g. CA')}
                                     />
                                 </div>
@@ -448,7 +448,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="shipping_country"
                                         value={data.shipping_country}
-                                        onChange={(e) => setranslate('shipping_country', e.target.value)}
+                                        onChange={(e) => set('shipping_country', e.target.value)}
                                         placeholder={translate('e.g. United States')}
                                     />
                                 </div>
@@ -457,7 +457,7 @@ export default function AccountEdit() {
                                     <Input
                                         id="shipping_postal_code"
                                         value={data.shipping_postal_code}
-                                        onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
+                                        onChange={(e) => set('shipping_postal_code', e.target.value)}
                                         placeholder={translate('e.g. 90001')}
                                     />
                                 </div>

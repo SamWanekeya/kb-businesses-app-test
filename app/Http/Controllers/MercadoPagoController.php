@@ -85,7 +85,7 @@ class MercadoPagoController extends Controller
             // Get MercadoPago credentials
             $credentials = $this->getMercadoPagoCredentials();
             if (!$credentials['access_token']) {
-                throw new Exception(__('MercadoPago API credentials not found'));
+                throw new Exception(__('Mercado Pago API credentials not found'));
             }
 
             // Initialize MercadoPago SDK
@@ -94,7 +94,7 @@ class MercadoPagoController extends Controller
 
                 // For MercadoPago, access tokens for API v1 should start with APP_USR- or TEST-
                 if (empty($accessToken)) {
-                    throw new Exception(__('MercadoPago access token is empty'));
+                    throw new Exception(__('Mercado Pago access token is empty'));
                 }
 
                 // Set the access token
@@ -163,14 +163,14 @@ class MercadoPagoController extends Controller
 
             // Check if preference was created successfully
             if (!$preference->id) {
-                throw new Exception(__('MercadoPago preference was not created properly'));
+                throw new Exception(__('Mercado Pago preference was not created properly'));
             }
 
             // Determine redirect URL based on mode
             $redirectUrl = $credentials['mode'] === 'sandbox' ? $preference->sandbox_init_point : $preference->init_point;
 
             if (!$redirectUrl) {
-                throw new Exception(__('MercadoPago redirect URL is not available'));
+                throw new Exception(__('Mercado Pago redirect URL is not available'));
             }
 
             // Return response based on request type
@@ -353,7 +353,7 @@ class MercadoPagoController extends Controller
             $credentials = $this->getMercadoPagoCredentials();
 
             if (!$credentials['access_token']) {
-                throw new Exception(__('MercadoPago API credentials not found'));
+                throw new Exception(__('Mercado Pago API credentials not found'));
             }
 
             // Initialize MercadoPago SDK

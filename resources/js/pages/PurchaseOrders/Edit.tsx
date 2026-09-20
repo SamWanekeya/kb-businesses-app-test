@@ -66,7 +66,7 @@ export default function PurchaseOrderEdit() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        setranslate('sales_order_id', id);
+        set('sales_order_id', id);
         if (!id) return;
         try {
             const res = await fetch(route('api.sales-orders.details', id));
@@ -163,7 +163,7 @@ export default function PurchaseOrderEdit() {
     const totalDiscount = data.products.reduce((s, r) => s + calcDiscount(r), 0);
     const totalTax = data.products.reduce((s, r) => s + calcTax(r), 0);
     const grandTotal = subtotal + totalTax;
-    const fmt = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
+    const fmt = (v: number) => window.kbSettings.formatCurrency(v) || `$${v.toFixed(2)}`;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -232,7 +232,7 @@ export default function PurchaseOrderEdit() {
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => setranslate('name', e.target.value)}
+                                onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
                                 placeholder={translate('e.g. Q3 Raw Materials Restock')}
                             />
@@ -243,7 +243,7 @@ export default function PurchaseOrderEdit() {
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => setranslate('description', e.target.value)}
+                                onChange={(e) => set('description', e.target.value)}
                                 rows={3}
                                 placeholder={translate('Brief description of this purchase order...')}
                             />
@@ -274,7 +274,7 @@ export default function PurchaseOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Account')}
                                 </Label>
-                                <Select value={data.account_id} onValueChange={(v) => setranslate('account_id', v)}>
+                                <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
@@ -296,7 +296,7 @@ export default function PurchaseOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Billing Contact')}
                                 </Label>
-                                <Select value={data.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
+                                <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                     <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select billing contact')} />
                                     </SelectTrigger>
@@ -315,7 +315,7 @@ export default function PurchaseOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Shipping Contact')}
                                 </Label>
-                                <Select value={data.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
+                                <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                     <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select shipping contact')} />
                                     </SelectTrigger>
@@ -335,7 +335,7 @@ export default function PurchaseOrderEdit() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium">{translate('Status')}</Label>
-                                <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
+                                <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -367,7 +367,7 @@ export default function PurchaseOrderEdit() {
                                     <Input
                                         type="date"
                                         value={data.order_date}
-                                        onChange={(e) => setranslate('order_date', e.target.value)}
+                                        onChange={(e) => set('order_date', e.target.value)}
                                         className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -393,7 +393,7 @@ export default function PurchaseOrderEdit() {
                                     <Input
                                         type="date"
                                         value={data.expected_delivery_date}
-                                        onChange={(e) => setranslate('expected_delivery_date', e.target.value)}
+                                        onChange={(e) => set('expected_delivery_date', e.target.value)}
                                         className={`cursor-pointer ${errors.expected_delivery_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -404,7 +404,7 @@ export default function PurchaseOrderEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Assign To')}
                                 </Label>
-                                <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
+                                <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>

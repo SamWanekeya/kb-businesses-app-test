@@ -117,7 +117,7 @@ function useInertiaDiagnostics(): void {
             console.groupEnd();
 
             if (lastPageName === newPage) {
-                console.warn(`Inertia re-rendered the same page (${newPage}) — possible hydration issue.`,);
+                console.warn(`Inertia re-rendered the same page (${newPage}) — possible hydration issue.`);
             }
 
             lastPageName = newPage;
