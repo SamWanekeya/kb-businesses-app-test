@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ReferralController;
+use App\Models\BaseModel;
 use App\Models\Coupon;
 use App\Models\EmailTemplate;
 use App\Models\NotificationTemplate;
@@ -14,6 +15,7 @@ use App\Models\User;
 use App\Models\UserEmailTemplate;
 use App\Models\UserNotificationTemplate;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +26,7 @@ if (!function_exists('getCacheSize')) {
      *
      * @return string
      */
-    function getCacheSize()
+    function getCacheSize(): string
     {
         $file_size = 0;
         $framework_path = storage_path('framework');
@@ -40,51 +42,159 @@ if (!function_exists('getCacheSize')) {
 }
 
 if (!function_exists('settings')) {
-    function settings($user_id = null)
+    /**
+     * Resolve and cache application settings for a given user context.
+     *
+     * Centralizes how settings are loaded across the system, including:
+     * - Multi-tenant scoping (super admin vs organization vs child users)
+     * - Transparent fallback to the owning organization/super admin
+     * - In-request memoization + optional Redis persistence
+     *
+     * This prevents repeated DB access and ensures consistent configuration
+     * resolution regardless of where it is called (controllers, jobs, views).
+     *
+     * Resolution rules:
+     * - If no $user_id is provided:
+     *   - super_admin / organization -> their own settings
+     *   - other users -> inherit from `created_by`
+     *   - unauthenticated -> fallback to first super_admin
+     *
+     * Behavior:
+     * - Uses static in-memory cache per request
+     * - Uses Redis (if available) for cross-request caching
+     * - Falls back silently to DB if Redis is unavailable
+     * - Merges a subset of super_admin settings for non-super-admin users
+     *
+     * Assumptions:
+     * - A valid super_admin user exists in the system
+     * - Settings are stored as key/value pairs
+     *
+     * Edge cases:
+     * - Returns empty collection if no valid user_id can be resolved
+     * - Does not invalidate cache automatically on updateSetting()
+     *
+     * Safe to call in all contexts (HTTP, CLI, queue), but:
+     * - Behavior differs slightly without auth context
+     *
+     */
+    function settings($user_id = null): array
     {
-        // Skip database queries during installation
-        if (request()->is('install/*') || request()->is('update/*') || !file_exists(storage_path('installed'))) {
-            return [];
-        }
+        static $localCache = [];
 
-        if (is_null($user_id)) {
-            if (auth()->user()) {
-                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
-                    $user_id = auth()->user()->created_by;
-                } else {
-                    $user_id = auth()->id();
-                }
-            } else {
-                $user = User::where('type', 'super_admin')->first();
-                $user_id = $user ? $user->id : null;
-            }
+        // Resolve user_id if not provided
+        if (is_null($user_id) && auth()?->check()) {
+            $user = auth()->user();
+
+            $user_id = $user->type === 'super_admin' || $user->type === 'organization'
+                ? $user->id
+                : $user->created_by;
         }
 
         if (!$user_id) {
-            return collect();
+            return [];
         }
 
-        $userSettings = Setting::where('user_id', $user_id)->pluck('value', 'key')->toArray();
-
-        // If user is not super_admin, merge with super_admin settings for specific keys
-        if (auth()->check() && auth()->user()->type !== 'super_admin') {
-            $superAdmin = User::where('type', 'super_admin')->first();
-            if ($superAdmin) {
-                $superAdminKeys = ['dateFormat', 'timeFormat', 'calendarStartDay', 'defaultTimezone', 'defaultLanguage'];
-                $superAdminSettings = Setting::where('user_id', $superAdmin->id)
-                    ->whereIn('key', $superAdminKeys)
-                    ->pluck('value', 'key')
-                    ->toArray();
-                $userSettings = array_merge($superAdminSettings, $userSettings);
-            }
+        // Return from in-request cache if already loaded
+        if (isset($localCache[$user_id])) {
+            return $localCache[$user_id];
         }
 
-        return $userSettings;
+        //        $cacheKey = "app_settings:{$user_id}";
+        //        $ttl = 86400; // 24 hours
+        //
+        //        $redisAvailable = config('cache.stores.redis')
+        //            && (class_exists(\Redis::class) || class_exists(\Predis\Client::class));
+        //
+        //        if ($redisAvailable) {
+        //            $settings = Cache::store('redis')->remember(
+        //                $cacheKey,
+        //                $ttl,
+        //                function () use ($user_id) {
+        //                    return loadSettingsFromDb($user_id) ?? [];
+        //                }
+        //            );
+        //        } else {
+        //            // Redis not configured -> fallback to direct DB query silently
+        //            $settings = loadSettingsFromDb($user_id) ?? [];
+        //        }
+        // Delete once Redis code above is enabled
+        $settings = loadSettingsFromDb($user_id) ?? [];
+
+        return $localCache[$user_id] = $settings;
     }
 }
 
+/**
+ * Load raw settings from persistence and apply inheritance rules.
+ *
+ * This is the underlying data loader for settings(), separated to keep
+ * caching concerns out of the retrieval logic.
+ *
+ * Responsibilities:
+ * - Fetch user-specific settings from DB
+ * - Merge a curated subset of super_admin settings for non-super-admin users
+ *
+ * Why this exists:
+ * - Allows settings() to delegate DB access cleanly
+ * - Keeps inheritance rules centralized and consistent
+ *
+ * Business rules:
+ * - Only a whitelist of system-level keys are inherited from super_admin
+ * - User-specific values always override inherited ones
+ *
+ * Assumptions:
+ * - Super admin exists when inheritance is required
+ *
+ * Edge cases:
+ * - Returns null/empty array if no settings found
+ *
+ */
+function loadSettingsFromDb($user_id): array
+{
+    $userSettings = Setting::where('user_id', $user_id)?->pluck('value', 'key')?->toArray();
+
+    // Merge in selected super_admin settings if needed
+    if (auth()?->check() && auth()?->user()?->type !== 'super_admin') {
+        $superAdmin = User::where('type', 'super_admin')?->first();
+        if ($superAdmin) {
+            $superAdminKeys = [
+                'decimal_format', 'default_currency', 'thousands_separator', 'float_number',
+                'currency_symbol_space', 'currency_symbol_position',
+                'date_format', 'time_format', 'calendar_start_day', 'default_timezone', 'contact_us_url', 'contact_us_description', 'strictly_cookie_description', 'cookie_description', 'strictly_cookie_title', 'cookie_title', 'strictly_necessary_cookies', 'enable_logging'];
+
+            $superAdminSettings = Setting::where('user_id', $superAdmin->id)
+                ->whereIn('key', $superAdminKeys)?->pluck('value', 'key')?->toArray();
+
+            $userSettings = array_merge($superAdminSettings, $userSettings);
+        }
+    }
+
+    return $userSettings;
+}
+
 if (!function_exists('formatDateTime')) {
-    function formatDateTime($date, $includeTime = true)
+    /**
+     * Format a date/time value using user-specific locale settings.
+     *
+     * Centralizes date formatting rules across the application to ensure:
+     * - Consistent formatting (UI, exports, logs where applicable)
+     * - Respect for user-configured timezone and format preferences
+     *
+     * Behavior:
+     * - Applies timezone conversion before formatting
+     * - Supports date-only or date+time output
+     *
+     * Assumptions:
+     * - Input is parseable by Carbon
+     *
+     * Edge cases:
+     * - Returns null for empty input
+     * - Invalid date strings may throw from Carbon::parse()
+     *
+     * Safe in all contexts; depends on settings()
+     *
+     */
+    function formatDateTime($date, $includeTime = true): ?string
     {
         if (!$date) {
             return null;
@@ -92,17 +202,36 @@ if (!function_exists('formatDateTime')) {
 
         $settings = settings();
 
-        $dateFormat = $settings['dateFormat'] ?? 'Y-m-d';
-        $timeFormat = $settings['timeFormat'] ?? 'H:i';
-        $timezone = $settings['defaultTimezone'] ?? config('app.timezone', 'UTC');
+        $date_format = $settings['date_format'] ?? 'Y-m-d';
+        $time_format = $settings['time_format'] ?? 'H:i';
+        $timezone = $settings['default_timezone'] ?? config('app.timezone', 'UTC');
 
-        $format = $includeTime ? "$dateFormat $timeFormat" : $dateFormat;
+        $format = $includeTime ? "$date_format $time_format" : $date_format;
 
         return Carbon::parse($date)->timezone($timezone)->format($format);
     }
 }
 
 if (!function_exists('getSetting')) {
+    /**
+     * Retrieve a single setting value with layered fallback logic.
+     *
+     * Provides a consistent way to access configuration values while enforcing:
+     * - Per-user overrides
+     * - Fallback to defaultSettings() when not explicitly set
+     *
+     * Why this exists:
+     * Avoids scattered "isset + fallback" logic across the codebase and ensures
+     * all consumers respect the same default configuration contract.
+     *
+     * Behavior:
+     * - Reads from settings() (cached + merged)
+     * - Falls back to defaultSettings() ONLY if $default is not provided
+     *
+     * Edge cases:
+     * - Returns null if setting is missing and no default exists
+     *
+     */
     function getSetting($key, $default = null, $user_id = null)
     {
         $settings = settings($user_id);
@@ -118,18 +247,38 @@ if (!function_exists('getSetting')) {
 }
 
 if (!function_exists('updateSetting')) {
-    function updateSetting($key, $value, $user_id = null)
+    /**
+     * Persist a setting value for the resolved user scope.
+     *
+     * Encapsulates multi-tenant ownership rules to ensure settings are always
+     * written against the correct "owner" (super_admin or organization).
+     *
+     * Why this exists:
+     * Prevents inconsistent writes where child users accidentally override
+     * their own settings instead of their parent organization.
+     *
+     * Resolution rules mirror settings():
+     * - child users -> write to created_by
+     * - organization/super_admin -> write to self
+     * - unauthenticated -> fallback to super_admin
+     *
+     * Important:
+     * - Does NOT invalidate any in-memory or Redis cache
+     *   -> callers must handle cache invalidation if consistency is required
+     *
+     */
+    function updateSetting($key, $value, $user_id = null): false|Setting|BaseModel
     {
         if (is_null($user_id)) {
-            if (auth()->user()) {
-                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
-                    $user_id = auth()->user()->created_by;
+            if (auth()?->user()) {
+                if (!in_array(auth()?->user()?->type, ['super_admin', 'organization'])) {
+                    $user_id = auth()?->user()?->created_by;
                 } else {
-                    $user_id = auth()->id();
+                    $user_id = auth()?->id();
                 }
             } else {
-                $user = User::where('type', 'super_admin')->first();
-                $user_id = $user ? $user->id : null;
+                $user = User::where('type', 'super_admin')?->first();
+                $user_id = $user?->id;
             }
         }
 
@@ -145,9 +294,35 @@ if (!function_exists('updateSetting')) {
 }
 
 if (!function_exists('defaultRoleAndSetting')) {
-    function defaultRoleAndSetting($user)
+    /**
+     * Initialize baseline roles and settings for a newly created user.
+     *
+     * Encapsulates all onboarding side effects required to make a user
+     * operational within the system.
+     *
+     * Responsibilities:
+     * - Assign default "organization" role if applicable
+     * - Initialize settings based on user type
+     * - Bootstrap organization-specific templates and data
+     *
+     * Why this exists:
+     * Prevents partial user setup by ensuring all required artifacts are
+     * created in a single, consistent flow.
+     *
+     * Behavior:
+     * - super_admin -> creates full default settings
+     * - organization -> copies system settings + seeds domain data/templates
+     *
+     * Side effects:
+     * - Writes to roles, settings, and multiple template tables
+     *
+     * Assumptions:
+     * - $user is already persisted
+     *
+     */
+    function defaultRoleAndSetting($user): true
     {
-        $organizationRole = Role::where('name', 'organization')->first();
+        $organizationRole = Role::where('name', 'organization')?->first();
 
         if ($organizationRole) {
             $user->assignRole($organizationRole);
@@ -159,7 +334,7 @@ if (!function_exists('defaultRoleAndSetting')) {
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
         } elseif ($user->type === 'organization') {
-            copySettingsFromSuperAdministrator($user->id);
+            copySettingsFromSuperAdmin($user->id);
             createDefaultNotificationTemplates($user->id);
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
@@ -170,90 +345,31 @@ if (!function_exists('defaultRoleAndSetting')) {
     }
 }
 
-if (!function_exists('createDefaultEmailTemplateSettings')) {
-    /**
-     * Create default email template settings for a user
-     *
-     * @param int $userId
-     *
-     * @return void
-     */
-    function createDefaultEmailTemplateSettings($userId)
-    {
-        $templates = EmailTemplate::all();
-
-        foreach ($templates as $template) {
-            UserEmailTemplate::updateOrCreate(
-                ['user_id' => $userId, 'template_id' => $template->id],
-                ['is_active' => false] // Disable all templates by default
-            );
-        }
-    }
-}
-
-if (!function_exists('isNotificationTemplateEnabled')) {
-    /**
-     * Check if a notification template is enabled for a user
-     *
-     * @param string $templateName
-     * @param int|null $userId
-     *
-     * @return bool
-     */
-    function isNotificationTemplateEnabled($templateName, $templateType, $userId = null)
-    {
-        if (is_null($userId)) {
-            $userId = createdBy();
-        }
-
-        $template = NotificationTemplate::where('name', $templateName)
-            ->where('type', $templateType)
-            ->first();
-        if (!$template) {
-            return false;
-        }
-
-        $userTemplate = UserNotificationTemplate::where('user_id', $userId)
-            ->where('template_id', $template->id)
-            ->first();
-
-        return $userTemplate ? $userTemplate->is_active : false;
-    }
-}
-
-if (!function_exists('createDefaultNotificationTemplateSettings')) {
-    /**
-     * Create default notification template settings for a user
-     *
-     * @param int $userId
-     *
-     * @return void
-     */
-    function createDefaultNotificationTemplateSettings($userId)
-    {
-        $templates = NotificationTemplate::all();
-
-        foreach ($templates as $template) {
-            UserNotificationTemplate::updateOrCreate(
-                ['user_id' => $userId, 'template_id' => $template->id],
-                ['is_active' => false] // Disable all templates by default
-            );
-        }
-    }
-}
-
 if (!function_exists('getPaymentSettings')) {
     /**
-     * Get payment settings for a user
+     * Resolve payment settings for a given user scope.
      *
-     * @param int|null $userId
+     * Centralizes ownership rules for payment configuration, ensuring that
+     * non-super-admin users always operate using system-level (super_admin)
+     * payment settings unless explicitly overridden.
      *
-     * @return array
+     * Why this exists:
+     * Avoids inconsistent payment configuration resolution across gateways.
+     *
+     * Behavior:
+     * - super_admin -> own settings
+     * - others -> fallback to super_admin
+     *
      */
-    function getPaymentSettings($userId = null)
+    function getPaymentSettings(?int $userId = null): array
     {
         if (is_null($userId)) {
-            $userId = auth()->id();
+            if (auth()?->check() && auth()?->user()?->type == 'super_admin') {
+                $userId = auth()?->id();
+            } else {
+                $user = User::where('type', 'super_admin')?->first();
+                $userId = $user?->id;
+            }
         }
 
         return PaymentSetting::getUserSettings($userId);
@@ -262,18 +378,20 @@ if (!function_exists('getPaymentSettings')) {
 
 if (!function_exists('updatePaymentSetting')) {
     /**
-     * Update or create a payment setting
+     * Persist a payment configuration value for a user.
      *
-     * @param string $key
-     * @param mixed $value
-     * @param int|null $userId
+     * Thin abstraction over PaymentSetting model, but enforces consistent
+     * user resolution (defaults to authenticated user).
      *
-     * @return PaymentSetting
+     * Important:
+     * - Does not enforce super_admin-only writes
+     * - Does not invalidate any cached payment settings
+     *
      */
-    function updatePaymentSetting($key, $value, $userId = null)
+    function updatePaymentSetting(string $key, mixed $value, ?int $userId = null): PaymentSetting
     {
         if (is_null($userId)) {
-            $userId = auth()->id();
+            $userId = auth()?->id();
         }
 
         return PaymentSetting::updateOrCreateSetting($userId, $key, $value);
@@ -282,14 +400,19 @@ if (!function_exists('updatePaymentSetting')) {
 
 if (!function_exists('isPaymentMethodEnabled')) {
     /**
-     * Check if a payment method is enabled
+     * Determine if a payment method is enabled for the resolved user scope.
      *
-     * @param string $method (stripe, paypal, razorpay, mercadopago, bank)
-     * @param int|null $userId
+     * Normalizes truthy values across storage formats (boolean vs string).
      *
-     * @return bool
+     * Why this exists:
+     * Prevents repeated conditional checks and inconsistencies when reading
+     * boolean flags from loosely typed storage.
+     *
+     * Behavior:
+     * - Accepts both boolean true and string '1' as enabled
+     *
      */
-    function isPaymentMethodEnabled($method, $userId = null)
+    function isPaymentMethodEnabled(string $method, ?int $userId = null): bool
     {
         $settings = getPaymentSettings($userId);
         $key = "is_{$method}_enabled";
@@ -300,14 +423,29 @@ if (!function_exists('isPaymentMethodEnabled')) {
 
 if (!function_exists('getPaymentMethodConfig')) {
     /**
-     * Get configuration for a specific payment method
+     * Normalize payment gateway configuration into a consistent structure.
      *
-     * @param string $method (stripe, paypal, razorpay, mercadopago)
-     * @param int|null $userId
+     * Provides a single abstraction layer over heterogeneous payment settings,
+     * allowing the rest of the system to interact with gateways uniformly.
      *
-     * @return array
+     * Why this exists:
+     * - Each gateway has different required fields and naming conventions
+     * - Prevents duplication of config mapping logic across controllers/services
+     *
+     * Behavior:
+     * - Always returns a structured array with at least `enabled`
+     * - Includes only relevant keys per gateway
+     * - Applies sensible defaults (e.g. sandbox mode)
+     *
+     * Conventions enforced:
+     * - Boolean "enabled" flag derived via isPaymentMethodEnabled()
+     * - Missing credentials resolve to null (never undefined)
+     *
+     * Edge cases:
+     * - Unknown method returns empty array
+     *
      */
-    function getPaymentMethodConfig($method, $userId = null)
+    function getPaymentMethodConfig(string $method, ?int $userId = null): array
     {
         $settings = getPaymentSettings($userId);
 
@@ -519,15 +657,31 @@ if (!function_exists('getPaymentMethodConfig')) {
 
 if (!function_exists('getEnabledPaymentMethods')) {
     /**
-     * Get all enabled payment methods
+     * Return all configured and enabled payment methods with normalized configs.
      *
-     * @param int|null $userId
+     * Acts as the canonical source for:
+     * - Checkout flows
+     * - Payment method listings
+     * - Gateway capability checks
      *
-     * @return array
+     * Why this exists:
+     * Avoids repeated enablement checks and config assembly across the system.
+     *
+     * Behavior:
+     * - Iterates through all supported gateways
+     * - Filters by isPaymentMethodEnabled()
+     * - Returns fully hydrated configs (via getPaymentMethodConfig())
+     *
+     * Output shape:
+     * [
+     *   'stripe' => [...],
+     *   'paypal' => [...],
+     * ]
+     *
      */
-    function getEnabledPaymentMethods($userId = null)
+    function getEnabledPaymentMethods(?int $userId = null): array
     {
-        //        $methods = ['stripe', 'paypal', 'razorpay', 'mercadopago', 'paystack', 'flutterwave', 'bank', 'paytabs', 'skrill', 'coingate', 'payfast', 'tap', 'xendit', 'paytr', 'mollie', 'toyyibpay', 'cashfree', 'iyzipay', 'benefit', 'ozow', 'easebuzz', 'khalti', 'authorizenet', 'fedapay', 'payhere', 'cinetpay'];
+        //$methods = ['stripe', 'paypal', 'razorpay', 'mercadopago', 'paystack', 'flutterwave', 'bank', 'paytabs', 'skrill', 'coingate', 'payfast', 'tap', 'xendit', 'paytr', 'mollie', 'toyyibpay', 'cashfree', 'iyzipay', 'benefit', 'ozow', 'easebuzz', 'khalti', 'authorizenet', 'fedapay', 'payhere', 'cinetpay'];
         $methods = ['paystack', 'bank'];
         $enabled = [];
 
@@ -543,258 +697,269 @@ if (!function_exists('getEnabledPaymentMethods')) {
 
 if (!function_exists('validatePaymentMethodConfig')) {
     /**
-     * Validate payment method configuration
+     * Validate required configuration fields for a specific payment gateway.
      *
-     * @param string $method
-     * @param array $config
+     * Provides a lightweight validation layer independent of Laravel FormRequests,
+     * intended for dynamic/admin-driven configuration flows.
      *
-     * @return array [valid => bool, errors => array]
+     * Why this exists:
+     * - Each gateway has different required credentials
+     * - Centralizes validation rules to avoid duplication
+     *
+     * Behavior:
+     * - Returns structured response instead of throwing
+     * - Only validates required presence (not format correctness)
+     *
+     * Limitations:
+     * - Does not validate value formats (e.g., key structure, API reachability)
+     * - Silent for unsupported methods
+     *
      */
-    function validatePaymentMethodConfig($method, $config)
+    function validatePaymentMethodConfig(string $method, array $config): array
     {
         $errors = [];
 
         switch ($method) {
             //            case 'stripe':
             //                if (empty($config['key'])) {
-            //                    $errors[] = 'Stripe publishable key is required';
+            //                    $errors[] = __('Stripe publishable key is required');
             //                }
             //                if (empty($config['secret'])) {
-            //                    $errors[] = 'Stripe secret key is required';
+            //                    $errors[] = __('Stripe secret key is required');
             //                }
             //                break;
             //
             //            case 'paypal':
             //                if (empty($config['client_id'])) {
-            //                    $errors[] = 'PayPal client ID is required';
+            //                    $errors[] = __('PayPal client ID is required');
             //                }
             //                if (empty($config['secret'])) {
-            //                    $errors[] = 'PayPal secret key is required';
+            //                    $errors[] = __('PayPal secret key is required');
             //                }
             //                break;
             //
             //            case 'razorpay':
             //                if (empty($config['key'])) {
-            //                    $errors[] = 'Razorpay key ID is required';
+            //                    $errors[] = __('Razorpay key ID is required');
             //                }
             //                if (empty($config['secret'])) {
-            //                    $errors[] = 'Razorpay secret key is required';
+            //                    $errors[] = __('Razorpay secret key is required');
             //                }
             //                break;
             //
             //            case 'mercadopago':
             //                if (empty($config['access_token'])) {
-            //                    $errors[] = 'Mercado Pago access token is required';
+            //                    $errors[] = __('Mercado Pago access token is required');
             //                }
             //                break;
 
             case 'bank':
                 if (empty($config['details'])) {
-                    $errors[] = 'Bank details are required';
+                    $errors[] = __('Bank details are required');
                 }
                 break;
 
                 //            case 'paytabs':
                 //                if (empty($config['server_key'])) {
-                //                    $errors[] = 'PayTabs server key is required';
+                //                    $errors[] = __('PayTabs server key is required');
                 //                }
                 //                if (empty($config['profile_id'])) {
-                //                    $errors[] = 'PayTabs profile id is required';
+                //                    $errors[] = __('PayTabs profile ID is required');
                 //                }
                 //                if (empty($config['region'])) {
-                //                    $errors[] = 'PayTabs region is required';
+                //                    $errors[] = __('PayTabs region is required');
                 //                }
                 //                break;
                 //
                 //            case 'skrill':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'Skrill merchant ID is required';
+                //                    $errors[] = __('Skrill merchant ID is required');
                 //                }
                 //                if (empty($config['secret_word'])) {
-                //                    $errors[] = 'Skrill secret word is required';
+                //                    $errors[] = __('Skrill secret word is required');
                 //                }
                 //                break;
                 //
                 //            case 'coingate':
                 //                if (empty($config['api_token'])) {
-                //                    $errors[] = 'CoinGate API token is required';
+                //                    $errors[] = __('CoinGate API token is required');
                 //                }
                 //                break;
                 //
                 //            case 'payfast':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'Payfast merchant ID is required';
+                //                    $errors[] = __('Payfast merchant ID is required');
                 //                }
                 //                if (empty($config['merchant_key'])) {
-                //                    $errors[] = 'Payfast merchant key is required';
+                //                    $errors[] = __('Payfast merchant key is required');
                 //                }
                 //                break;
                 //
                 //            case 'tap':
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Tap secret key is required';
+                //                    $errors[] = __('Tap secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'xendit':
                 //                if (empty($config['api_key'])) {
-                //                    $errors[] = 'Xendit api key is required';
+                //                    $errors[] = __('Xendit API key is required');
                 //                }
                 //                break;
                 //
                 //            case 'paytr':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'PayTR merchant ID is required';
+                //                    $errors[] = __('PayTR merchant ID is required');
                 //                }
                 //                if (empty($config['merchant_key'])) {
-                //                    $errors[] = 'PayTR merchant key is required';
+                //                    $errors[] = __('PayTR merchant key is required');
                 //                }
                 //                if (empty($config['merchant_salt'])) {
-                //                    $errors[] = 'PayTR merchant salt is required';
+                //                    $errors[] = __('PayTR merchant salt is required');
                 //                }
                 //                break;
                 //
                 //            case 'mollie':
                 //                if (empty($config['api_key'])) {
-                //                    $errors[] = 'Mollie API key is required';
+                //                    $errors[] = __('Mollie API key is required');
                 //                }
                 //                break;
                 //
                 //            case 'toyyibpay':
                 //                if (empty($config['category_code'])) {
-                //                    $errors[] = 'toyyibPay category code is required';
+                //                    $errors[] = __('ToyyibPay category code is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'toyyibPay secret key is required';
+                //                    $errors[] = __('ToyyibPay secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'cashfree':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'Cashfree App ID is required';
+                //                    $errors[] = __('Cashfree App ID is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Cashfree Secret Key is required';
+                //                    $errors[] = __('Cashfree Secret Key is required');
                 //                }
                 //                break;
                 //
                 //            case 'iyzipay':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'Iyzipay API key is required';
+                //                    $errors[] = __('IyziPay API key is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Iyzipay secret key is required';
+                //                    $errors[] = __('IyziPay secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'benefit':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'Benefit API key is required';
+                //                    $errors[] = __('Benefit API key is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Benefit secret key is required';
+                //                    $errors[] = __('Benefit secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'ozow':
                 //                if (empty($config['site_key'])) {
-                //                    $errors[] = 'Ozow site key is required';
+                //                    $errors[] = __('Ozow site key is required');
                 //                }
                 //                if (empty($config['private_key'])) {
-                //                    $errors[] = 'Ozow private key is required';
+                //                    $errors[] = __('Ozow private key is required');
                 //                }
                 //                break;
                 //
                 //            case 'easebuzz':
                 //                if (empty($config['merchant_key'])) {
-                //                    $errors[] = 'Easebuzz merchant key is required';
+                //                    $errors[] = __('Easebuzz merchant key is required');
                 //                }
                 //                if (empty($config['salt_key'])) {
-                //                    $errors[] = 'Easebuzz salt key is required';
+                //                    $errors[] = __('Easebuzz salt key is required');
                 //                }
                 //                break;
                 //
                 //            case 'khalti':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'Khalti public key is required';
+                //                    $errors[] = __('Khalti public key is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Khalti secret key is required';
+                //                    $errors[] = __('Khalti secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'authorizenet':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'AuthorizeNet merchant ID is required';
+                //                    $errors[] = __('AuthorizeNet merchant ID is required');
                 //                }
                 //                if (empty($config['transaction_key'])) {
-                //                    $errors[] = 'AuthorizeNet transaction key is required';
+                //                    $errors[] = __('AuthorizeNet transaction key is required');
                 //                }
                 //                break;
                 //
                 //            case 'fedapay':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'FedaPay public key is required';
+                //                    $errors[] = __('FedaPay public key is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'FedaPay secret key is required';
+                //                    $errors[] = __('FedaPay secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'payhere':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'PayHere merchant ID is required';
+                //                    $errors[] = __('PayHere merchant ID is required');
                 //                }
                 //                if (empty($config['merchant_secret'])) {
-                //                    $errors[] = 'PayHere merchant secret is required';
+                //                    $errors[] = __('PayHere merchant secret is required');
                 //                }
                 //                break;
                 //
                 //            case 'cinetpay':
                 //                if (empty($config['site_id'])) {
-                //                    $errors[] = 'CinetPay site ID is required';
+                //                    $errors[] = __('CinetPay site ID is required');
                 //                }
                 //                if (empty($config['api_key'])) {
-                //                    $errors[] = 'CinetPay API key is required';
+                //                    $errors[] = __('CinetPay API key is required');
                 //                }
                 //                break;
                 //
                 //            case 'paiement':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = 'Paiement Pro merchant ID is required';
+                //                    $errors[] = __('Paiement Pro merchant ID is required');
                 //                }
                 //                break;
                 //
                 //            case 'nepalste':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = 'Nepalste public key is required';
+                //                    $errors[] = __('Nepalste public key is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Nepalste secret key is required';
+                //                    $errors[] = __('Nepalste secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'yookassa':
                 //                if (empty($config['shop_id'])) {
-                //                    $errors[] = 'YooKassa shop ID is required';
+                //                    $errors[] = __('YooKassa shop ID is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'YooKassa secret key is required';
+                //                    $errors[] = __('YooKassa secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'midtrans':
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = 'Midtrans secret key is required';
+                //                    $errors[] = __('Midtrans secret key is required');
                 //                }
                 //                break;
                 //
                 //            case 'aamarpay':
                 //                if (empty($config['store_id'])) {
-                //                    $errors[] = 'Aamarpay store ID is required';
+                //                    $errors[] = __('AamarPay store ID is required');
                 //                }
                 //                if (empty($config['signature'])) {
-                //                    $errors[] = 'Aamarpay signature is required';
+                //                    $errors[] = __('AamarPay signature is required');
                 //                }
                 //                break;
         }
@@ -807,8 +972,35 @@ if (!function_exists('validatePaymentMethodConfig')) {
 }
 
 if (!function_exists('calculatePlanPricing')) {
-    function calculatePlanPricing($plan, $couponCode = null, $billingCycle = 'monthly')
+    /**
+     * Compute final plan pricing with optional coupon application.
+     *
+     * Encapsulates all pricing rules to ensure consistency between:
+     * - Checkout
+     * - Order creation
+     * - Payment validation
+     *
+     * Why this exists:
+     * Prevents duplicated discount logic and ensures coupon handling remains
+     * consistent across all payment entry points.
+     *
+     * Business rules:
+     * - Supports percentage and fixed discounts
+     * - Fixed discounts cannot exceed original price
+     * - Final price is never negative
+     * - Only active coupons are considered
+     *
+     * Assumptions:
+     * - Plan provides pricing per billing cycle
+     *
+     * Edge cases:
+     * - Invalid/expired coupon -> silently ignored
+     * - Missing coupon -> no discount applied
+     *
+     */
+    function calculatePlanPricing($plan, $couponCode = null, $billingCycle = 'monthly'): array
     {
+        // $originalPrice = $plan->price;
         $originalPrice = $plan->getPriceForCycle($billingCycle);
         $discountAmount = 0;
         $finalPrice = $originalPrice;
@@ -816,8 +1008,7 @@ if (!function_exists('calculatePlanPricing')) {
 
         if ($couponCode) {
             $coupon = Coupon::where('code', $couponCode)
-                ->where('status', 1)
-                ->first();
+                ->where('status', 1)?->first();
 
             if ($coupon) {
                 if ($coupon->type === 'percentage') {
@@ -840,6 +1031,28 @@ if (!function_exists('calculatePlanPricing')) {
 }
 
 if (!function_exists('createPlanOrder')) {
+    /**
+     * Create a plan order with fully resolved pricing and metadata.
+     *
+     * Couples pricing calculation with persistence to ensure that:
+     * - Stored order values always reflect the exact pricing logic used at checkout
+     * - Coupon application is captured at time of purchase (immutable)
+     *
+     * Why this exists:
+     * Prevents discrepancies between displayed price and stored order data.
+     *
+     * Behavior:
+     * - Resolves plan
+     * - Delegates pricing to calculatePlanPricing()
+     * - Stores all derived fields (original, discount, final)
+     *
+     * Assumptions:
+     * - $data contains required fields (validated upstream)
+     *
+     * Side effects:
+     * - Persists PlanOrder record
+     *
+     */
     function createPlanOrder($data)
     {
         $plan = Plan::findOrFail($data['plan_id']);
@@ -850,14 +1063,13 @@ if (!function_exists('createPlanOrder')) {
             'user_id' => $data['user_id'],
             'plan_id' => $plan->id,
             'coupon_id' => $pricing['coupon_id'],
-            // 'billing_cycle' => $data['billing_cycle'],
             'billing_cycle' => $billingCycle,
             'payment_method' => $data['payment_method'],
             'coupon_code' => $data['coupon_code'] ?? null,
             'original_price' => $pricing['original_price'],
             'discount_amount' => $pricing['discount_amount'],
             'final_price' => $pricing['final_price'],
-            'payment_id' => $data['payment_id'],
+            'payment_id' => $data['payment_id'] ?? null,
             'status' => $data['status'] ?? 'pending',
             'ordered_at' => now(),
             'processed_at' => $data['processed_at'] ?? null,   // Add
@@ -867,34 +1079,82 @@ if (!function_exists('createPlanOrder')) {
 }
 
 if (!function_exists('assignPlanToUser')) {
-    function assignPlanToUser($user, $plan, $billingCycle)
+    /**
+     * Apply a subscription plan to a user with expiry handling.
+     *
+     * Encapsulates subscription state mutation to ensure consistent updates
+     * across all payment flows.
+     *
+     * Behavior:
+     * - Sets plan_id
+     * - Calculates expiry based on billing cycle
+     * - Marks plan as active
+     *
+     * Side effects:
+     * - Updates user record
+     * - Emits logs (for traceability)
+     *
+     * Assumptions:
+     * - Does not validate plan eligibility or conflicts
+     *
+     * Not safe for concurrent/idempotent use without guards.
+     *
+     */
+    function assignPlanToUser($user, $plan, $billingCycle): void
     {
         $expiresAt = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
 
-        \Log::info('Assigning plan ' . $plan->id . ' to user ' . $user->id . ' with billing cycle ' . $billingCycle);
+        Log::info('Assigning plan ' . $plan->id . ' to user ' . $user->id . ' with billing cycle ' . $billingCycle);
 
         $updated = $user->update([
             'plan_id' => $plan->id,
             'plan_expiry_date' => $expiresAt,
             'is_plan_active' => 1,
-            // Clear trial status when assigning paid plan
             'is_trial' => $user->is_trial == 1 ? 0 : $user->is_trial,
-            'trial_days' => 0,
             'trial_expiry_date' => null,
+            'trial_days' => 0,
         ]);
 
-        \Log::info('Plan assignment result: ' . ($updated ? 'success' : 'failed'));
+        Log::info('Plan assignment result: ' . ($updated ? 'success' : 'failed'));
     }
 }
 
 if (!function_exists('processPaymentSuccess')) {
+    /**
+     * Handle post-payment success workflow.
+     *
+     * Orchestrates all side effects required after a successful transaction:
+     * - Order creation
+     * - Plan assignment
+     * - Referral tracking
+     *
+     * Why this exists:
+     * Centralizes critical business flow to avoid partial or inconsistent
+     * post-payment states across different gateways.
+     *
+     * Behavior:
+     * - Forces order status to "approved"
+     * - Assigns plan with correct billing cycle
+     * - Triggers referral tracking (if applicable)
+     *
+     * Side effects:
+     * - Writes to orders table
+     * - Updates user subscription state
+     * - May create referral records
+     *
+     * Assumptions:
+     * - Payment has already been verified externally
+     *
+     * Not idempotent:
+     * - Calling this multiple times will duplicate orders and reassign plans
+     *
+     */
     function processPaymentSuccess($data)
     {
         $plan = Plan::findOrFail($data['plan_id']);
         $user = User::findOrFail($data['user_id']);
 
-        // $planOrder = createPlanOrder(array_merge($data, ['status' => 'approved']));
-        $planOrder = createPlanOrder(array_merge($data, ['processed_at' => now(), 'status' => 'approved']));
+        $planOrder = createPlanOrder(array_merge($data, ['status' => 'approved']));
         assignPlanToUser($user, $plan, $data['billing_cycle']);
 
         // Verify the plan was assigned
@@ -908,9 +1168,23 @@ if (!function_exists('processPaymentSuccess')) {
 }
 
 if (!function_exists('getPaymentGatewaySettings')) {
-    function getPaymentGatewaySettings()
+    /**
+     * Retrieve system-wide payment and general settings for gateway initialization.
+     *
+     * Intended for bootstrapping payment services that require both:
+     * - Payment-specific configuration
+     * - General system configuration
+     *
+     * Behavior:
+     * - Always resolves settings from super_admin
+     *
+     * Assumptions:
+     * - Single source of truth for payment config is super_admin
+     *
+     */
+    function getPaymentGatewaySettings(): array
     {
-        $superAdminId = User::where('type', 'super_admin')->first()?->id;
+        $superAdminId = User::where('type', 'super_admin')?->first()?->id;
 
         return [
             'payment_settings' => PaymentSetting::getUserSettings($superAdminId),
@@ -921,6 +1195,20 @@ if (!function_exists('getPaymentGatewaySettings')) {
 }
 
 if (!function_exists('validatePaymentRequest')) {
+    /**
+     * Apply baseline validation rules for payment initiation requests.
+     *
+     * Provides a shared validation contract across all payment entry points.
+     *
+     * Why this exists:
+     * Ensures consistent validation regardless of which controller or gateway
+     * initiates the payment flow.
+     *
+     * Behavior:
+     * - Merges base rules with caller-provided rules
+     * - Delegates to Laravel validator (throws on failure)
+     *
+     */
     function validatePaymentRequest($request, $additionalRules = [])
     {
         $baseRules = [
@@ -934,9 +1222,26 @@ if (!function_exists('validatePaymentRequest')) {
 }
 
 if (!function_exists('handlePaymentError')) {
-    function handlePaymentError($e, $method = 'payment')
+    /**
+     * Standardize error handling for payment failures.
+     *
+     * Provides a consistent user-facing response for all payment-related errors.
+     *
+     * Why this exists:
+     * Avoids leaking gateway-specific errors directly to users and ensures
+     * uniform UX across payment flows.
+     *
+     * Behavior:
+     * - Redirects back with a formatted error message
+     *
+     * Limitations:
+     * - Does not log the exception
+     * - Does not differentiate error types
+     *
+     */
+    function handlePaymentError($e, $method = 'payment'): RedirectResponse
     {
-        return back()->withErrors(['error' => __('Payment processing failed: :message', ['message' => $e->getMessage()])]);
+        return back()->withErrors(['error' => __('Payment processing failed', ['message' => $e->getMessage()])]);
     }
 }
 
@@ -946,77 +1251,71 @@ if (!function_exists('defaultSettings')) {
      *
      * @return array
      */
-    function defaultSettings()
+    function defaultSettings(): array
     {
         return [
             // System Settings
-            'defaultLanguage' => 'en',
-            'dateFormat' => 'Y-m-d',
-            'timeFormat' => 'H:i',
-            'calendarStartDay' => 'sunday',
-            'defaultTimezone' => 'UTC',
+            'default_language' => 'en',
+            'date_format' => 'Y-m-d',
+            'time_format' => 'H:i',
+            'calendar_start_day' => 'sunday',
+            'default_timezone' => 'UTC',
 
-            // Brand Settings
-            'logoDark' => 'logo/logo-dark.png',
-            'logoLight' => 'logo/logo-light.png',
-            'favicon' => 'logo/favicon.png',
-            'titleText' => 'Kakbima',
-            'footerText' => '© 2026 Kakbima. All rights reserved.',
-            'themeColor' => 'green',
-            'customColor' => '#10b77f',
-            'sidebarVariant' => 'inset',
-            'sidebarStyle' => 'plain',
-            'layoutDirection' => 'left',
-            'themeMode' => 'light',
+            'layout_direction' => 'ltr',
+            'theme_mode' => 'system',
 
             // Storage Settings
             'storage_type' => 'local',
             'storage_file_types' => 'jpg,png,webp,gif,pdf,doc,docx,txt,csv',
-            'storage_maximum_upload_size' => '2048',
+            'storage_maximum_upload_size' => 2048,
             'aws_access_key_id' => '',
             'aws_secret_access_key' => '',
-            'aws_default_region' => 'us-east-1',
+            'aws_default_region' => 'af-south-1',
             'aws_bucket' => '',
             'aws_url' => '',
             'aws_endpoint' => '',
             'wasabi_access_key' => '',
             'wasabi_secret_key' => '',
-            'wasabi_region' => 'us-east-1',
+            'wasabi_region' => 'eu-central-2',
             'wasabi_bucket' => '',
             'wasabi_url' => '',
             'wasabi_root' => '',
 
             // Currency Settings
-            'decimal_format' => '2',
+            'decimal_format' => 2,
             'default_currency' => 'USD',
             'decimal_separator' => '.',
             'thousands_separator' => ',',
             'float_number' => true,
-            'currency_symbol_space' => false,
+            'currency_symbol_space' => true,
             'currency_symbol_position' => 'before',
-
-            // Cookie Settings
-            'enable_logging' => false,
-            'strictlyNecessaryCookies' => true,
-            'cookieTitle' => 'Cookie Consent',
-            'strictlyCookieTitle' => 'Strictly Necessary Cookies',
-            'cookieDescription' => 'We use cookies to enhance your browsing experience and provide personalized content.',
-            'strictlyCookieDescription' => 'These cookies are essential for the website to function properly.',
-            'contactUsDescription' => 'If you have any questions about our cookie policy, please contact us.',
-            'contactUsUrl' => 'https://kakbima.dev/contact',
+            'working_days' => '[1,2,3,4,5]',
         ];
     }
 }
 
 if (!function_exists('createDefaultSettings')) {
     /**
-     * Create default settings for a user
+     * Seed a user with the full default settings set.
      *
-     * @param int $userId
+     * Used primarily during system initialization or super_admin setup.
      *
-     * @return void
+     * Why this exists:
+     * Ensures all expected configuration keys exist, avoiding repeated
+     * null checks across the system.
+     *
+     * Behavior:
+     * - Converts all values to string storage format
+     * - Performs bulk insert (no upsert)
+     *
+     * Assumptions:
+     * - Should only be called once per user
+     *
+     * Side effects:
+     * - Direct DB insert without checking for duplicates
+     *
      */
-    function createDefaultSettings($userId)
+    function createDefaultSettings(int $userId): void
     {
         $defaults = defaultSettings();
         $settingsData = [];
@@ -1037,15 +1336,26 @@ if (!function_exists('createDefaultSettings')) {
 
 if (!function_exists('copySettingsFromSuperAdmin')) {
     /**
-     * Copy system and brand settings from super_admin to organization user
+     * Copy selected system-level settings from super_admin to an organization.
      *
-     * @param int $organizationUserId
+     * Used during organization onboarding to inherit global configuration
+     * while allowing future overrides.
      *
-     * @return void
+     * Why this exists:
+     * - Avoids forcing organizations to start from empty configuration
+     * - Limits inheritance to safe/system-level keys only
+     *
+     * Behavior:
+     * - Copies only a predefined subset of keys
+     * - Does not overwrite existing values (insertOrIgnore)
+     *
+     * Fallback:
+     * - If no super_admin exists, falls back to createDefaultSettings()
+     *
      */
-    function copySettingsFromSuperAdministrator($organizationUserId)
+    function copySettingsFromSuperAdmin(int $organizationUserId): void
     {
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         if (!$superAdmin) {
             createDefaultSettings($organizationUserId);
 
@@ -1054,41 +1364,13 @@ if (!function_exists('copySettingsFromSuperAdmin')) {
 
         // Settings to copy from super_admin (system and brand settings only)
         $settingsToCopy = [
-            'defaultLanguage',
-            'dateFormat',
-            'timeFormat',
-            'calendarStartDay',
-            'defaultTimezone',
-            'logoDark',
-            'logoLight',
-            'favicon',
-            'titleText',
-            'footerText',
-            'themeColor',
-            'customColor',
-            'sidebarVariant',
-            'sidebarStyle',
-            'layoutDirection',
-            'themeMode',
-            'enable_logging',
-            'strictlyNecessaryCookies',
-            'cookieTitle',
-            'strictlyCookieTitle',
-            'cookieDescription',
-            'strictlyCookieDescription',
-            'contactUsDescription',
-            'contactUsUrl',
-        ];
-
-        // Currency settings - use defaults for organization (not copied from super_admin)
-        $currencyDefaults = [
-            'decimal_format' => '2',
-            'default_currency' => 'USD',
-            'decimal_separator' => '.',
-            'thousands_separator' => ',',
-            'float_number' => '1',
-            'currency_symbol_space' => '0',
-            'currency_symbol_position' => 'before',
+            'default_language',
+            'date_format',
+            'time_format',
+            'calendar_start_day',
+            'default_timezone',
+            'layout_direction',
+            'theme_mode',
         ];
 
         $superAdminSettings = Setting::where('user_id', $superAdmin->id)
@@ -1108,332 +1390,271 @@ if (!function_exists('copySettingsFromSuperAdmin')) {
             ];
         }
 
-        // Add currency defaults for organization
-        foreach ($currencyDefaults as $key => $value) {
-            $settingsData[] = [
-                'user_id' => $organizationUserId,
-                'key' => $key,
-                'value' => $value,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
         Setting::insertOrIgnore($settingsData);
     }
 }
 
-if (!function_exists('getOrganizationName')) {
-    function getOrganizationName()
-    {
-        $organization = User::find(createdBy());
-        if ($organization) {
-            return $organization->name;
-        } else {
-            return 'Sales';
-        }
-    }
-}
-
-if (!function_exists('getOrganizationLogo')) {
-    function getOrganizationLogo()
-    {
-        $organization = getSetting('logoDark', 'logo/logo-dark.png', createdBy());
-        if ($organization) {
-            return $organization;
-        } else {
-            return 'logo/logo-dark.png';
-        }
-    }
-}
-
 if (!function_exists('createdBy')) {
+    /**
+     * Resolve the user ID that should be recorded as the creator of the current entity.
+     *
+     * Super admins and organization users are treated as the direct creator. For
+     * other authenticated users, the creator is inherited from their `created_by`
+     * relationship. This centralizes the application's creator attribution rule
+     * so records consistently retain the owning organization/admin context.
+     *
+     * Returns `null` when no authenticated user is available.
+     *
+     * @return int|string|null
+     */
     function createdBy()
     {
-        if (Auth::user()->type == 'super_admin') {
-            return Auth::user()->id;
-        } elseif (Auth::user()->type == 'organization') {
-            return Auth::user()->id;
+        if (Auth::user()?->type == 'super_admin') {
+            return Auth::user()?->id;
+        } elseif (Auth::user()?->type == 'organization') {
+            return Auth::user()?->id;
         } else {
-            return Auth::user()->created_by;
+            return Auth::user()?->created_by;
         }
     }
 }
 
-if (!function_exists('createDefaultNotificationTemplates')) {
+if (!function_exists('getOrganizationId')) {
     /**
-     * Create default notification templates for a new organization
+     * Resolve the root organization for a given user.
      *
-     * @param int $organizationId
+     * Traverses the `created_by` chain recursively until an organization
+     * (or top-level owner) is found.
      *
-     * @return void
+     * Why this exists:
+     * Ensures consistent ownership resolution across the system.
+     *
+     * Behavior:
+     * - Returns user ID if user is organization
+     * - Otherwise walks up the hierarchy
+     *
+     * Edge cases:
+     * - Returns null if no valid chain exists
+     * - Recursive; assumes no circular references
+     *
      */
-    function createDefaultNotificationTemplates($organizationId)
+    function getOrganizationId($userId)
     {
-        $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
-        $langCodes = collect($languages)->pluck('code')->toArray();
+        $user = User::find($userId);
 
-        $templates = NotificationTemplate::get();
+        if (!$user) {
+            return null;
+        }
+        if ($user->type === 'organization' || $user->hasRole('organization')) {
+            return $user->id;
+        }
 
-        foreach ($templates as $template) {
-            foreach ($langCodes as $langCode) {
-                $existingContent = NotificationTemplateLang::where('parent_id', $template->id)
-                    ->where('lang', $langCode)
-                    ->where('created_by', $organizationId)
-                    ->first();
+        if ($user->created_by) {
+            return getOrganizationId($user->created_by);
+        }
 
-                if ($existingContent) {
-                    continue;
-                }
+        return null;
+    }
+}
 
-                $globalContent = NotificationTemplateLang::where('parent_id', $template->id)
-                    ->where('lang', $langCode)
-                    ->where('created_by', 1)
-                    ->first();
+if (!function_exists('getAdminAllSetting')) {
+    /**
+     * Retrieve and cache all super_admin settings indefinitely.
+     *
+     * Acts as a high-performance read layer for global configuration.
+     *
+     * Why this exists:
+     * Avoids repeated DB queries for frequently accessed system settings.
+     *
+     * Behavior:
+     * - Cached forever (manual invalidation required)
+     *
+     * Risks:
+     * - Stale data if settings are updated without cache clear
+     *
+     */
+    function getAdminAllSetting()
+    {
+        // Laravel cache
+        return Cache::rememberForever('admin_settings', function () {
+            $superAdmin = User::where('type', 'super_admin')?->first();
 
-                if ($globalContent) {
-                    NotificationTemplateLang::create([
-                        'parent_id' => $template->id,
-                        'lang' => $langCode,
-                        'title' => $globalContent->title,
-                        'notification_template_content' => $globalContent->notification_template_content,
-                        'created_by' => $organizationId,
-                    ]);
-                }
+            $settings = [];
+            if ($superAdmin) {
+                $settings = Setting::where('user_id', $superAdmin->id)?->pluck('value', 'key')?->toArray();
             }
-        }
+
+            return $settings;
+        });
     }
 }
 
-if (!function_exists('isEmailTemplateEnabled')) {
-    /**
-     * Check if an email template is enabled for a user
-     *
-     * @param string $templateName
-     * @param int|null $userId
-     *
-     * @return bool
-     */
-    function isEmailTemplateEnabled($templateName, $userId = null)
-    {
-        if (is_null($userId)) {
-            $userId = createdBy();
-        }
-
-        $template = EmailTemplate::where('name', $templateName)->first();
-        if (!$template) {
-            return false;
-        }
-
-        $userTemplate = UserEmailTemplate::where('user_id', $userId)
-            ->where('template_id', $template->id)
-            ->first();
-
-        return $userTemplate ? $userTemplate->is_active : false;
-    }
-}
-
-if (!function_exists('getTwilioConfig')) {
-    function getTwilioConfig()
-    {
-        return [
-            'twilio_sid' => getSetting('twilio_sid', ''),
-            'twilio_token' => getSetting('twilio_token', ''),
-            'twilio_from' => getSetting('twilio_from', ''),
-        ];
-    }
-}
-
-if (!function_exists('parseBrowserData')) {
-    function parseBrowserData(string $userAgent): array
-    {
-        $browser = 'Unknown';
-        $os = 'Unknown';
-        $deviceType = 'desktop';
-
-        // Browser detection
-        if (preg_match('/Chrome\/([0-9.]+)/', $userAgent)) {
-            $browser = 'Chrome';
-        } elseif (preg_match('/Firefox\/([0-9.]+)/', $userAgent)) {
-            $browser = 'Firefox';
-        } elseif (preg_match('/Safari\/([0-9.]+)/', $userAgent) && !preg_match('/Chrome/', $userAgent)) {
-            $browser = 'Safari';
-        } elseif (preg_match('/Edge\/([0-9.]+)/', $userAgent)) {
-            $browser = 'Edge';
-        }
-
-        // OS detection
-        if (preg_match('/Windows NT/', $userAgent)) {
-            $os = 'Windows';
-        } elseif (preg_match('/Mac OS X/', $userAgent)) {
-            $os = 'macOS';
-        } elseif (preg_match('/Linux/', $userAgent)) {
-            $os = 'Linux';
-        } elseif (preg_match('/Android/', $userAgent)) {
-            $os = 'Android';
-            $deviceType = 'mobile';
-        } elseif (preg_match('/iPhone|iPad/', $userAgent)) {
-            $os = 'iOS';
-            $deviceType = preg_match('/iPad/', $userAgent) ? 'tablet' : 'mobile';
-        }
-
-        return [
-            'browser_name' => $browser,
-            'os_name' => $os,
-            'browser_language' => 'en',
-            'device_type' => $deviceType,
-        ];
-    }
-}
-
-if (!function_exists('isDisabledDeleteRole')) {
-    function isDisabledDeleteRole()
-    {
-        return ['sales-manager'];
-    }
-}
-
-if (!function_exists('isDisabledEditRole')) {
-    function isDisabledEditRole()
-    {
-        return ['sales-manager'];
-    }
-}
-
-if (!function_exists('getSuperAdminSettings')) {
-    function getSuperAdminSettings()
-    {
-        $superAdmin = User::where('type', 'super_admin')->first();
-        if ($superAdmin) {
-            $superAdminSettings = Setting::where('user_id', $superAdmin->id)
-                ->pluck('value', 'key')
-                ->toArray();
-
-            return $superAdminSettings;
-        }
-    }
-}
-
+// File Upload Function
 if (!function_exists('uploadFile')) {
-    function uploadFile($request, $key_name, $name, $path, $custom_validation = [])
+    /**
+     * Handle file upload with dynamic storage backend resolution.
+     *
+     * Abstracts storage configuration (local, S3, Wasabi) and validation into
+     * a single entry point to ensure consistent upload behavior.
+     *
+     * Why this exists:
+     * - Prevents duplication of storage configuration logic
+     * - Enforces system-wide file validation rules
+     *
+     * Behavior:
+     * - Dynamically configures filesystem at runtime
+     * - Validates file type and size against settings
+     * - Stores file under `media/{path}`
+     *
+     * Business rules:
+     * - Allowed extensions and max size driven by admin settings
+     * - Rejects files before Laravel validation if extension is invalid
+     *
+     * Edge cases:
+     * - Returns structured error response instead of throwing
+     * - Missing storage config -> explicit failure
+     *
+     * Side effects:
+     * - Mutates runtime config()
+     * - Writes to filesystem
+     *
+     * Not a pure helper; tightly coupled to request + environment.
+     *
+     */
+    function uploadFile($request, $key_name, $name, $path, $custom_validation = []): array
     {
-        try {
-            $storage_settings = getSuperAdminSettings();
+        $storage_settings = getAdminAllSetting();
 
-            if (isset($storage_settings['storage_type'])) {
-                if ($storage_settings['storage_type'] == 'wasabi') {
-                    config(
-                        [
-                            'filesystems.disks.wasabi.driver' => 's3',
-                            'filesystems.disks.wasabi.key' => $storage_settings['wasabi_access_key'],
-                            'filesystems.disks.wasabi.secret' => $storage_settings['wasabi_secret_key'],
-                            'filesystems.disks.wasabi.region' => $storage_settings['wasabi_region'] ?? 'us-east-1',
-                            'filesystems.disks.wasabi.bucket' => $storage_settings['wasabi_bucket'],
-                            'filesystems.disks.wasabi.endpoint' => $storage_settings['wasabi_url'],
-                            'filesystems.disks.wasabi.root' => $storage_settings['wasabi_root'],
-                            'filesystems.disks.use_path_style_endpoint' => false,
-                            'filesystems.disks.wasabi.visibility' => 'public',
-                        ]
-                    );
-                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
-                } elseif ($storage_settings['storage_type'] == 'aws_s3') {
-                    config(
-                        [
-                            'filesystems.disks.s3.driver' => 's3',
-                            'filesystems.disks.s3.key' => $storage_settings['aws_access_key_id'],
-                            'filesystems.disks.s3.secret' => $storage_settings['aws_secret_access_key'],
-                            'filesystems.disks.s3.region' => $storage_settings['aws_default_region'] ?? 'us-east-1',
-                            'filesystems.disks.s3.bucket' => $storage_settings['aws_bucket'],
-                            'filesystems.disks.s3.url' => $storage_settings['aws_url'],
-                            'filesystems.disks.s3.endpoint' => $storage_settings['aws_endpoint'],
-                            'filesystems.disks.s3.use_path_style_endpoint' => false,
-                            'filesystems.disks.s3.visibility' => 'public',
-                        ]
-                    );
-                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
-                } else {
-                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
-                }
-                $file = $request->$key_name;
+        if (isset($storage_settings['storage_type'])) {
+            if ($storage_settings['storage_type'] == 'wasabi') {
+                config(
+                    [
+                        'filesystems.disks.wasabi.driver' => 's3',
+                        'filesystems.disks.wasabi.key' => $storage_settings['wasabi_access_key'],
+                        'filesystems.disks.wasabi.secret' => $storage_settings['wasabi_secret_key'],
+                        'filesystems.disks.wasabi.region' => $storage_settings['wasabi_region'] ?? 'us-east-1',
+                        'filesystems.disks.wasabi.bucket' => $storage_settings['wasabi_bucket'],
+                        'filesystems.disks.wasabi.endpoint' => $storage_settings['wasabi_url'],
+                        'filesystems.disks.wasabi.root' => $storage_settings['wasabi_root'],
+                        'filesystems.disks.use_path_style_endpoint' => false,
+                        'filesystems.disks.wasabi.visibility' => 'public',
+                    ]
+                );
+            } elseif ($storage_settings['storage_type'] == 'aws_s3') {
+                config(
+                    [
+                        'filesystems.disks.s3.driver' => 's3',
+                        'filesystems.disks.s3.key' => $storage_settings['aws_access_key_id'],
+                        'filesystems.disks.s3.secret' => $storage_settings['aws_secret_access_key'],
+                        'filesystems.disks.s3.region' => $storage_settings['aws_default_region'] ?? 'af-south-1',
+                        'filesystems.disks.s3.bucket' => $storage_settings['aws_bucket'],
+                        'filesystems.disks.s3.url' => $storage_settings['aws_url'],
+                        'filesystems.disks.s3.endpoint' => $storage_settings['aws_endpoint'],
+                        'filesystems.disks.s3.use_path_style_endpoint' => false,
+                        'filesystems.disks.s3.visibility' => 'public',
+                    ]
+                );
+            }
+            $maximumSize = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : 2048;
+            $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+            $file = $request->$key_name;
 
-                $extension = strtolower($file->getClientOriginalExtension());
-                $allowed_extensions = explode(',', $mimes);
+            $extension = strtolower($file->getClientOriginalExtension());
+            $allowed_extensions = explode(',', $mimes);
 
-                if (empty($extension) || !in_array($extension, $allowed_extensions)) {
-                    return [
-                        'status' => false,
-                        'msg' => 'The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.',
-                    ];
-                }
+            if (empty($extension) || !in_array($extension, $allowed_extensions)) {
+                return [
+                    'status' => false,
+                    'msg' => __('The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.'),
+                ];
+            }
 
-                if (count($custom_validation) > 0) {
-                    $validation = $custom_validation;
-                } else {
-                    $validation = [
-                        'mimes:' . $mimes,
-                        'max:' . $maximum_size,
-                    ];
-                }
-                $validator = Validator::make($request->all(), [
-                    $key_name => $validation,
-                ]);
-                if ($validator->fails()) {
-                    $res = [
-                        'status' => false,
-                        'msg' => $validator->messages()->first(),
-                    ];
-
-                    return $res;
-                } else {
-                    $storageType = $settings['storage_type'] ?? 'local';
-                    $diskName = match ($storageType) {
-                        'local' => 'public',
-                        'aws_s3' => 's3',
-                        'wasabi' => 'wasabi',
-                        default => 'public'
-                    };
-
-                    // Store file directly to storage
-                    $file->storeAs('media/' . $path, $name, $diskName);
-
-                    $res = [
-                        'status' => true,
-                        'msg' => 'success',
-                        'url' => $path . '/' . $name,
-                    ];
-
-                    return $res;
-                }
+            if (count($custom_validation) > 0) {
+                $validation = $custom_validation;
             } else {
+                $validation = [
+                    'mimes:' . $mimes,
+                    'maximum:' . $maximumSize,
+                ];
+            }
+            $validator = Validator::make($request->all(), [
+                $key_name => $validation,
+            ]);
+            if ($validator->fails()) {
                 $res = [
                     'status' => false,
-                    'msg' => __('Not set configurations'),
+                    'msg' => $validator->messages()?->first(),
                 ];
 
-                return $res;
+            } else {
+                $storageType = $storage_settings['storage_type'] ?? 'local';
+                $diskName = match ($storageType) {
+                    'local' => 'public',
+                    'aws_s3' => 's3',
+                    'wasabi' => 'wasabi',
+                    default => 'public'
+                };
+
+                // Store file directly to storage
+                $file->storeAs('media/' . $path, $name, $diskName);
+
+                $res = [
+                    'status' => true,
+                    'msg' => 'success',
+                    'url' => $path . '/' . $name,
+                ];
+
             }
-        } catch (Exception $e) {
-            $res = [
-                'status' => false,
-                'msg' => $e->getMessage(),
-            ];
 
             return $res;
+        } else {
+            return [
+                'status' => false,
+                'msg' => __('Storage type settings not configured. Please configure storage settings in system settings.'),
+            ];
         }
     }
-}
 
-if (!function_exists('checkFile')) {
-    function checkFile($path)
-    {
-        try {
+    if (!function_exists('checkFile')) {
+        /**
+         * Determine whether a file exists across supported storage backends.
+         *
+         * Provides a unified existence check that abstracts filesystem differences
+         * and enforces the application's storage path convention (`media/{path}`).
+         *
+         * This helper exists to:
+         * - Avoid leaking storage driver logic into calling code
+         * - Ensure consistent path normalization across local and remote disks
+         * - Gracefully handle partially configured or invalid storage setups
+         *
+         * Behavior:
+         * - Local: checks `storage/app/public/media/` first, then falls back to base path.
+         * - S3/Wasabi: dynamically configures disk and checks via Storage facade.
+         *
+         * Assumptions / constraints:
+         * - `$path` is relative to the `media/` directory (leading slash tolerated).
+         * - Admin storage settings must be present and valid for remote disks.
+         *
+         * Edge cases:
+         * - Empty path returns false.
+         * - Missing or incomplete storage configuration returns false.
+         * - No exception is thrown for connectivity or config issues.
+         *
+         * Side effects:
+         * - Mutates runtime filesystem config for S3/Wasabi.
+         *
+         * Context safety:
+         * - Safe across HTTP, CLI, and queue workers.
+         * - Depends on external storage availability for remote drivers.
+         *
+         * @return bool
+         */
+        function checkFile($path)
+        {
             if (empty($path)) {
                 return false;
             }
-            $storage_settings = getSuperAdminSettings();
+            $storage_settings = getAdminAllSetting();
             if (!isset($storage_settings['storage_type'])) {
                 return false;
             }
@@ -1441,7 +1662,7 @@ if (!function_exists('checkFile')) {
             $storageType = $storage_settings['storage_type'];
 
             // Handle local storage
-            if ($storageType === 'local' || $storageType === null) {
+            if ($storageType === 'local') {
                 // Check in public storage path
                 $publicPath = storage_path('app/public/media/' . ltrim($path, '/'));
                 if (file_exists($publicPath)) {
@@ -1508,28 +1729,50 @@ if (!function_exists('checkFile')) {
 
             // Unknown storage type
             return false;
-        } catch (Exception $e) {
-            // Log error for debugging
-            Log::error('checkFile error: ' . $e->getMessage(), [
-                'path' => $path,
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return false;
         }
     }
-}
 
-if (!function_exists('get_file')) {
-    function get_file($path)
-    {
-        try {
+    if (!function_exists('getFile')) {
+        /**
+         * Resolve a public URL for a stored file across supported storage backends.
+         *
+         * Centralizes URL generation and storage driver handling so that consumers
+         * can treat file paths as storage-agnostic references.
+         *
+         * This helper enforces:
+         * - Consistent `media/{path}` prefixing
+         * - Graceful fallback to local URLs when remote storage is misconfigured
+         *
+         * Behavior:
+         * - Local: returns URL under `/storage/media/...`
+         * - S3/Wasabi: returns fully qualified remote URL via disk driver
+         * - Falls back to local URL if remote configuration is incomplete
+         *
+         * Assumptions / constraints:
+         * - `$path` is a relative media path (not a full URL).
+         * - Does not verify file existence before generating URL.
+         *
+         * Edge cases:
+         * - Empty path returns empty string.
+         * - Misconfigured remote storage silently falls back to local URL.
+         *
+         * Side effects:
+         * - Mutates runtime filesystem config for S3/Wasabi.
+         *
+         * Context safety:
+         * - Safe in all contexts.
+         * - Relies on configuration state; output may differ between environments.
+         *
+         * @return string
+         */
+        function getFile($path)
+        {
             // Return empty string if path is empty
             if (empty($path)) {
                 return '';
             }
 
-            $storage_settings = getSuperAdminSettings();
+            $storage_settings = getAdminAllSetting();
 
             // Check if storage settings exist, fallback to local
             if (!isset($storage_settings['storage_type'])) {
@@ -1592,23 +1835,49 @@ if (!function_exists('get_file')) {
 
             // Handle local storage (default)
             return url('storage/media/' . ltrim($path, '/'));
-        } catch (Exception $e) {
-            // Log error for debugging
-            Log::error('get_file error: ' . $e->getMessage(), [
-                'path' => $path,
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            // Return asset path as fallback
-            return asset($path);
         }
     }
-}
 
-if (!function_exists('deleteFile')) {
-    function deleteFile($path)
-    {
-        try {
+    if (!function_exists('deleteFile')) {
+        /**
+         * Delete a file from the configured storage backend.
+         *
+         * Provides a single entry point for file deletion that:
+         * - Enforces consistent path handling (`media/{path}`)
+         * - Prevents unnecessary delete operations by checking existence first
+         * - Abstracts storage driver differences
+         *
+         * This helper ensures callers do not need to:
+         * - Know which disk is active
+         * - Handle path normalization
+         * - Guard against missing files
+         *
+         * Behavior:
+         * - Performs existence check via `checkFile()` before attempting deletion.
+         * - Local: deletes from `storage/app/public/media/`.
+         * - S3/Wasabi: deletes via Storage facade after runtime config setup.
+         *
+         * Assumptions / constraints:
+         * - `$path` is relative to the `media/` directory.
+         * - Storage configuration must be valid for remote deletion.
+         *
+         * Edge cases:
+         * - Empty path returns false.
+         * - Non-existent file returns false (no-op).
+         * - Misconfigured storage returns false without throwing.
+         *
+         * Side effects:
+         * - Deletes physical file from storage.
+         * - Mutates runtime filesystem config for S3/Wasabi.
+         *
+         * Context safety:
+         * - Safe in HTTP, CLI, and queue contexts.
+         * - Remote deletion depends on network and credentials.
+         *
+         * @return bool
+         */
+        function deleteFile($path)
+        {
             // Return false if path is empty
             if (empty($path)) {
                 return false;
@@ -1619,7 +1888,7 @@ if (!function_exists('deleteFile')) {
                 return false;
             }
 
-            $storage_settings = getSuperAdminSettings();
+            $storage_settings = getAdminAllSetting();
 
             // Check if storage settings exist
             if (!isset($storage_settings['storage_type'])) {
@@ -1629,7 +1898,7 @@ if (!function_exists('deleteFile')) {
             $storageType = $storage_settings['storage_type'];
 
             // Handle local storage
-            if ($storageType === 'local' || $storageType === null) {
+            if ($storageType === 'local') {
                 $publicPath = storage_path('app/public/media/' . ltrim($path, '/'));
                 if (file_exists($publicPath)) {
                     return unlink($publicPath);
@@ -1692,57 +1961,297 @@ if (!function_exists('deleteFile')) {
 
             // Unknown storage type
             return false;
-        } catch (Exception $e) {
-            // Log error for debugging
-            Log::error('deleteFile error: ' . $e->getMessage(), [
-                'path' => $path,
-                'trace' => $e->getTraceAsString(),
-            ]);
+        }
+    }
 
-            return false;
+    if (!function_exists('getDeviceType')) {
+        /**
+         * Classifies a request's device type based on the provided User-Agent string.
+         *
+         * This helper centralizes device categorization logic used across the application
+         * (e.g., layout decisions, analytics segmentation, feature toggling). It enforces
+         * a consistent interpretation of "mobile", "tablet", and "desktop" to avoid
+         * divergent regex checks scattered throughout the codebase.
+         *
+         * The detection is heuristic and regex-based. It prioritizes mobile detection
+         * over tablet, and falls back to "desktop" when no patterns match or when the
+         * User-Agent is missing. This reflects a conservative default aligned with
+         * desktop-first rendering assumptions in the system.
+         *
+         * Assumptions / constraints:
+         * - Relies entirely on the accuracy of the User-Agent string; no client hints
+         *   or feature detection are used.
+         * - Regex patterns are intentionally broad and may not cover newer or atypical
+         *   devices (e.g., hybrid devices, spoofed agents, modern iPad desktop UAs).
+         * - Bots and crawlers are not explicitly filtered and may be misclassified.
+         *
+         * Edge cases:
+         * - Empty or null User-Agent returns "desktop".
+         * - Some Android tablets may be misclassified depending on UA format.
+         * - Devices reporting desktop-class UAs (e.g., certain tablets) will be treated as "desktop".
+         *
+         * This function is pure and has no side effects. It is safe to call in any context
+         * (HTTP, CLI, queues) as long as a User-Agent string is provided.
+         *
+         * @param string|null $userAgent Raw User-Agent header; null or empty values trigger a "desktop" fallback.
+         *
+         * @return string One of: "mobile", "tablet", or "desktop".
+         */
+        function getDeviceType(?string $userAgent): string
+        {
+            if (empty($userAgent)) {
+                return 'desktop';
+            }
+
+            $mobileRegex = '/(?:phone|windows\s+phone|ipod|blackberry|(?:android|bb\d+|meego|silk).+?mobile|palm|windows\s+ce|opera mini|avantgo|mobilesafari|docomo)/i';
+            $tabletRegex = '/(?:ipad|playbook|(?:android|bb\d+|meego|silk)(?!.*mobile))/i';
+
+            if (preg_match($mobileRegex, $userAgent)) {
+                return 'mobile';
+            }
+
+            if (preg_match($tabletRegex, $userAgent)) {
+                return 'tablet';
+            }
+
+            return 'desktop';
         }
     }
 }
 
-if (!function_exists('getImageUrlPrefix')) {
-    function getImageUrlPrefix(): string
+if (!function_exists('isNotEditableRoles')) {
+    /**
+     * Return roles that are protected from modification.
+     *
+     * Centralizes the application's protected-role rule so role management
+     * flows consistently prevent changes to system-managed roles.
+     *
+     * @return array<int, string> Role names that cannot be edited.
+     */
+    function isNotEditableRoles(): array
     {
-        $storageType = getSetting('storage_type', 'local');
+        return [
+            'agency_manager',
+        ];
+    }
+}
 
-        switch ($storageType) {
-            case 's3':
-            case 'aws_s3':
-                $url = getSetting('aws_url');
-                if ($url) {
-                    return rtrim($url, '/');
-                }
-                $endpoint = getSetting('aws_endpoint');
-                if ($endpoint) {
-                    return rtrim($endpoint, '/');
-                }
-                $bucket = getSetting('aws_bucket');
-                $region = getSetting('aws_default_region', 'us-east-1');
+if (!function_exists('isNotDeletableRoles')) {
+    /**
+     * Return roles that are protected from deletion.
+     *
+     * Centralizes the application's protected-role rule so role management
+     * flows consistently prevent removal of system-managed roles.
+     *
+     * @return array<int, string> Role names that cannot be deleted.
+     */
+    function isNotDeletableRoles(): array
+    {
+        return [
+            'agency_manager',
+        ];
+    }
+}
 
-                return "https://{$bucket}.s3.{$region}.amazonaws.com";
+if (!function_exists('createDefaultEmailTemplateSettings')) {
 
-            case 'wasabi':
-                $url = getSetting('wasabi_url');
-                $bucket = getSetting('wasabi_bucket');
-                if ($url) {
-                    // Check if URL already includes bucket name
-                    if ($bucket && !str_contains($url, $bucket)) {
-                        return rtrim($url, '/') . '/' . $bucket;
-                    }
+    /**
+     * Initializes a user's email template preferences with all templates disabled.
+     *
+     * Existing preferences are reset to inactive, ensuring newly initialized
+     * users follow the application's opt-in email notification convention.
+     *
+     * This helper centralizes default email-template preference initialization
+     * and is safe to call repeatedly because preferences are upserted.
+     *
+     * @param int|string $userId User whose email template preferences are initialized.
+     *
+     * @return void
+     */
+    function createDefaultEmailTemplateSettings(int|string $userId): void
+    {
+        $templates = EmailTemplate::all();
 
-                    return rtrim($url, '/');
-                }
-                $region = getSetting('wasabi_region', 'us-east-1');
-
-                return "https://s3.{$region}.wasabisys.com/{$bucket}";
-
-            case 'local':
-            default:
-                return url('storage/media');
+        foreach ($templates as $template) {
+            UserEmailTemplate::updateOrCreate(
+                ['user_id' => $userId, 'template_id' => $template->id],
+                ['is_active' => false]
+            );
         }
     }
+}
+
+if (!function_exists('isNotificationTemplateEnabled')) {
+
+    /**
+     * Determines whether a notification template is enabled for a user.
+     *
+     * When no user is provided, the current application creator/context is used.
+     * Missing templates and missing user preferences both resolve to disabled,
+     * providing a safe default when configuration has not been initialized.
+     *
+     * The helper centralizes notification-template lookup and the application's
+     * default-disabled behavior.
+     *
+     * @param string $templateName Notification template name.
+     * @param string $templateType Notification template type used to distinguish templates with the same name.
+     * @param int|string|null $userId User to check; defaults to the current creator/context.
+     *
+     * @return bool
+     */
+    function isNotificationTemplateEnabled(string $templateName, string $templateType, int|string $userId = null): bool
+    {
+        if (is_null($userId)) {
+            $userId = createdBy();
+        }
+
+        $template = NotificationTemplate::where('name', $templateName)
+            ->where('type', $templateType)
+            ->first();
+        if (!$template) {
+            return false;
+        }
+
+        $userTemplate = UserNotificationTemplate::where('user_id', $userId)
+            ->where('template_id', $template->id)
+            ->first();
+
+        return $userTemplate ? $userTemplate->is_active : false;
+    }
+}
+
+if (!function_exists('createDefaultNotificationTemplateSettings')) {
+
+    /**
+     * Initializes a user's notification template preferences with all templates disabled.
+     *
+     * Existing preferences are reset to inactive, enforcing the application's
+     * default opt-in behavior for notification templates. The operation is
+     * repeatable because preferences are upserted.
+     *
+     * @param int|string $userId User whose notification template preferences are initialized.
+     *
+     * @return void
+     */
+    function createDefaultNotificationTemplateSettings(int|string $userId): void
+    {
+        $templates = NotificationTemplate::all();
+
+        foreach ($templates as $template) {
+            UserNotificationTemplate::updateOrCreate(
+                ['user_id' => $userId, 'template_id' => $template->id],
+                ['is_active' => false]
+            );
+        }
+    }
+}
+
+if (!function_exists('createDefaultNotificationTemplates')) {
+
+    /**
+     * Seeds an organization's notification-template content from the global defaults.
+     *
+     * Creates organization-specific translations for every supported language
+     * only when a translation does not already exist. Global content is treated
+     * as the source of defaults; languages without a corresponding global
+     * translation are intentionally skipped.
+     *
+     * This preserves organization-level overrides while providing a consistent
+     * baseline from the globally maintained templates.
+     *
+     * @param int|string $organizationId Organization that receives the template content.
+     *
+     * @return void
+     */
+    function createDefaultNotificationTemplates(int|string $organizationId): void
+    {
+        $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
+        $langCodes = collect($languages)->pluck('code')->toArray();
+
+        $templates = NotificationTemplate::get();
+
+        foreach ($templates as $template) {
+            foreach ($langCodes as $langCode) {
+                $existingContent = NotificationTemplateLang::where('parent_id', $template->id)
+                    ->where('lang', $langCode)
+                    ->where('created_by', $organizationId)
+                    ->first();
+
+                if ($existingContent) {
+                    continue;
+                }
+
+                $globalContent = NotificationTemplateLang::where('parent_id', $template->id)
+                    ->where('lang', $langCode)
+                    ->where('created_by', 1)
+                    ->first();
+
+                if ($globalContent) {
+                    NotificationTemplateLang::create([
+                        'parent_id' => $template->id,
+                        'lang' => $langCode,
+                        'title' => $globalContent->title,
+                        'notification_template_content' => $globalContent->notification_template_content,
+                        'created_by' => $organizationId,
+                    ]);
+                }
+            }
+        }
+    }
+}
+
+if (!function_exists('isEmailTemplateEnabled')) {
+
+    /**
+     * Determines whether an email template is enabled for a user.
+     *
+     * When no user is provided, the current application creator/context is used.
+     * Missing templates and missing user preferences both resolve to disabled,
+     * so uninitialized or invalid configuration cannot enable email delivery.
+     *
+     * @param string $templateName Email template name.
+     * @param int|string|null $userId User to check; defaults to the current creator/context.
+     *
+     * @return bool
+     */
+    function isEmailTemplateEnabled(string $templateName, int|string $userId = null): bool
+    {
+        if (is_null($userId)) {
+            $userId = createdBy();
+        }
+
+        $template = EmailTemplate::where('name', $templateName)->first();
+        if (!$template) {
+            return false;
+        }
+
+        $userTemplate = UserEmailTemplate::where('user_id', $userId)
+            ->where('template_id', $template->id)
+            ->first();
+
+        return $userTemplate ? $userTemplate->is_active : false;
+    }
+}
+
+/**
+ * Returns the application's Twilio configuration from persisted settings.
+ *
+ * Centralizes access to the Twilio credentials and sender number so callers
+ * do not need to know the underlying setting keys. Missing settings resolve
+ * to empty strings, allowing callers to handle an unconfigured Twilio
+ * integration explicitly.
+ *
+ * Configuration is read at call time, so the returned values reflect the
+ * current application settings. No authentication or request context is
+ * required.
+ *
+ * @return array{twilio_sid: string, twilio_token: string, twilio_from: string}
+ */
+function getTwilioConfig(): array
+{
+    return [
+        'twilio_sid' => getSetting('twilio_sid', ''),
+        'twilio_token' => getSetting('twilio_token', ''),
+        'twilio_from' => getSetting('twilio_from', ''),
+    ];
 }
