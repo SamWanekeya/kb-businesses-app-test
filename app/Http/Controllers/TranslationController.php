@@ -11,6 +11,30 @@ use Illuminate\Support\Facades\File;
 class TranslationController extends BaseController
 {
     /**
+     * Main endpoint: Get translation data for a given locale.
+     *
+     * Frontend usage examples:
+     *  - Initial language load
+     *  - Language switch event
+     *
+     * Example call:
+     *  GET /translations/sw
+     *
+     * @param string|null $locale
+     *
+     * @return JsonResponse
+     */
+    public function getTranslations(?string $locale = null): JsonResponse
+    {
+        $resolvedLocale = $this->resolveLocale($locale);
+        $data = $this->loadTranslations($resolvedLocale);
+
+        $this->persistLocalePreference($data['locale'], $data['layout_direction']);
+
+        return response()->json($data);
+    }
+
+    /**
      * Resolve the preferred locale based on multiple factors.
      *
      * Order of precedence:
@@ -38,20 +62,6 @@ class TranslationController extends BaseController
         }
 
         return 'en';
-    }
-
-    /**
-     * Determine layout direction based on locale.
-     *
-     * @param string $locale
-     *
-     * @return string 'rtl' or 'ltr'
-     */
-    protected function getLayoutDirection(string $locale): string
-    {
-        $rtlLocales = ['ar', 'ar-sa', 'ar-ae', 'ar-eg', 'ar-ma', 'ar-dz', 'ar-qa', 'ar-lb', 'he-il', 'fa', 'ur'];
-
-        return in_array(strtolower($locale), $rtlLocales, true) ? 'rtl' : 'ltr';
     }
 
     /**
@@ -86,6 +96,20 @@ class TranslationController extends BaseController
     }
 
     /**
+     * Determine layout direction based on locale.
+     *
+     * @param string $locale
+     *
+     * @return string 'rtl' or 'ltr'
+     */
+    protected function getLayoutDirection(string $locale): string
+    {
+        $rtlLocales = ['ar', 'ar-sa', 'ar-ae', 'ar-eg', 'ar-ma', 'ar-dz', 'ar-qa', 'ar-lb', 'he-il', 'fa', 'ur'];
+
+        return in_array(strtolower($locale), $rtlLocales, true) ? 'rtl' : 'ltr';
+    }
+
+    /**
      * Persist the user's language preference via cookie and database.
      *
      * @param string $locale
@@ -106,30 +130,6 @@ class TranslationController extends BaseController
                 ['value' => $layoutDirection]
             );
         }
-    }
-
-    /**
-     * Main endpoint: Get translation data for a given locale.
-     *
-     * Frontend usage examples:
-     *  - Initial language load
-     *  - Language switch event
-     *
-     * Example call:
-     *  GET /translations/sw
-     *
-     * @param string|null $locale
-     *
-     * @return JsonResponse
-     */
-    public function getTranslations(?string $locale = null): JsonResponse
-    {
-        $resolvedLocale = $this->resolveLocale($locale);
-        $data = $this->loadTranslations($resolvedLocale);
-
-        $this->persistLocalePreference($data['locale'], $data['layout_direction']);
-
-        return response()->json($data);
     }
 
     /**

@@ -9,7 +9,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 

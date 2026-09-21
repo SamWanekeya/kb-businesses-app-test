@@ -169,57 +169,6 @@ class ProjectTaskController extends Controller
         return redirect()->back()->with('success', __('Task created successfully.'));
     }
 
-    public function update(Request $request, $taskId)
-    {
-        $task = ProjectTask::where('id', $taskId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($task) {
-            try {
-                $validated = $request->validate([
-                    'title' => 'required|string|max:255',
-                    'description' => 'nullable|string',
-                    'project_id' => 'required|exists:projects,id',
-                    'parent_id' => 'nullable|exists:project_tasks,id',
-                    'assigned_to' => 'required|exists:users,id',
-                    'start_date' => 'nullable|date',
-                    'due_date' => 'nullable|date|after_or_equal:start_date',
-                    'priority' => 'nullable|in:low,medium,high,urgent',
-                    'task_status_id' => 'required|integer',
-                    'estimated_hours' => 'nullable|numeric|min:0',
-                    'actual_hours' => 'nullable|numeric|min:0',
-                    'progress' => 'nullable|integer|min:0|max:100',
-                ]);
-
-                // Convert empty string or 'unassigned' to null
-                if (empty($validated['assigned_to']) || $validated['assigned_to'] === 'unassigned') {
-                    $validated['assigned_to'] = null;
-                }
-
-                // Validate task_status_id belongs to current user
-                if (!empty($validated['task_status_id'])) {
-                    $statusExists = TaskStatus::where('id', $validated['task_status_id'])
-                        ->where('created_by', createdBy())
-                        ->where('status', 'active')
-                        ->exists();
-
-                    if (!$statusExists) {
-                        return redirect()->back()->with('error', __('Invalid task status.'));
-                    }
-                }
-
-                $task->update($validated);
-
-                return redirect()->back()->with('success', __('Task updated successfully.'));
-            } catch (Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Task not found.'));
-        }
-    }
-
     public function destroy($taskId)
     {
         $task = ProjectTask::with('taskStatus')
@@ -272,6 +221,57 @@ class ProjectTaskController extends Controller
                 return redirect()->back()->with('success', __('Task status updated successfully.'));
             } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task status.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Task not found.'));
+        }
+    }
+
+    public function update(Request $request, $taskId)
+    {
+        $task = ProjectTask::where('id', $taskId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($task) {
+            try {
+                $validated = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'description' => 'nullable|string',
+                    'project_id' => 'required|exists:projects,id',
+                    'parent_id' => 'nullable|exists:project_tasks,id',
+                    'assigned_to' => 'required|exists:users,id',
+                    'start_date' => 'nullable|date',
+                    'due_date' => 'nullable|date|after_or_equal:start_date',
+                    'priority' => 'nullable|in:low,medium,high,urgent',
+                    'task_status_id' => 'required|integer',
+                    'estimated_hours' => 'nullable|numeric|min:0',
+                    'actual_hours' => 'nullable|numeric|min:0',
+                    'progress' => 'nullable|integer|min:0|max:100',
+                ]);
+
+                // Convert empty string or 'unassigned' to null
+                if (empty($validated['assigned_to']) || $validated['assigned_to'] === 'unassigned') {
+                    $validated['assigned_to'] = null;
+                }
+
+                // Validate task_status_id belongs to current user
+                if (!empty($validated['task_status_id'])) {
+                    $statusExists = TaskStatus::where('id', $validated['task_status_id'])
+                        ->where('created_by', createdBy())
+                        ->where('status', 'active')
+                        ->exists();
+
+                    if (!$statusExists) {
+                        return redirect()->back()->with('error', __('Invalid task status.'));
+                    }
+                }
+
+                $task->update($validated);
+
+                return redirect()->back()->with('success', __('Task updated successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task.'));
             }
         } else {
             return redirect()->back()->with('error', __('Task not found.'));

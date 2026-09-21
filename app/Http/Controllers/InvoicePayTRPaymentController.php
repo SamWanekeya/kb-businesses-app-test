@@ -9,7 +9,7 @@ use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoicePayTRPaymentController extends Controller
 {

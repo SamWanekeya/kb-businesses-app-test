@@ -9,7 +9,7 @@ use App\Models\Setting;
 use App\Package\Payment;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceTapPaymentController extends Controller
 {

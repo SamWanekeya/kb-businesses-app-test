@@ -180,7 +180,7 @@ class RoleController extends BaseController
     {
         if (Auth::user()->can('view-roles')) {
             $role->load(['permissions', 'creator']);
-            $role->is_editable = !in_array($role->name, isDisabledEditRole());
+            $role->is_editable = !in_array($role->name, isNotEditableRoles());
 
             $permissions = $this->getFilteredPermissions();
 
@@ -200,7 +200,7 @@ class RoleController extends BaseController
     {
         if (Auth::user()->can('edit-roles')) {
             $role->load(['permissions', 'creator']);
-            $role->is_editable = !in_array($role->name, isDisabledEditRole());
+            $role->is_editable = !in_array($role->name, isNotEditableRoles());
 
             $permissions = $this->getFilteredPermissions();
 
@@ -225,7 +225,7 @@ class RoleController extends BaseController
             $newSlug = Str::slug($request->label);
 
             // Only update name if it's different to avoid duplicate key error
-            if ($role->name !== $newSlug && !in_array($role->name, isDisabledEditRole())) {
+            if ($role->name !== $newSlug && !in_array($role->name, isNotEditableRoles())) {
                 $role->name = $newSlug;
                 $role->label = $request->label;
             }
@@ -250,8 +250,12 @@ class RoleController extends BaseController
     {
         if ($role) {
             // Prevent deletion of system roles
-            if ($role->is_system_role || in_array($role->name, isDisabledDeleteRole())) {
-                return redirect()->back()->with('error', __('System roles cannot be deleted!'));
+            if ($role->is_system_role) {
+                return redirect()->back()->with('error', __('System roles cannot be deleted.'));
+            }
+
+            if (in_array($role->name, isNotDeletableRoles())) {
+                return redirect()->back()->with('error', __('System roles cannot be deleted.'));
             }
 
             // if the role has users assigned, prevent deletion

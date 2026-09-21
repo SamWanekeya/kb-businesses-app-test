@@ -154,6 +154,76 @@ class OrganizationController extends Controller
         return redirect()->back()->with('success', __('Organization created successfully'));
     }
 
+    /**
+     * Create default lead statuses for a new organization
+     */
+    private function createDefaultLeadStatuses($organizationId)
+    {
+        $defaultStatuses = [
+            ['name' => 'New', 'color' => '#3B82F6'],
+            ['name' => 'Contacted', 'color' => '#F59E0B'],
+            ['name' => 'Qualified', 'color' => '#10b77f'],
+            ['name' => 'Proposal Sent', 'color' => '#8B5CF6'],
+            ['name' => 'Converted', 'color' => '#059669'],
+            ['name' => 'Lost', 'color' => '#EF4444'],
+        ];
+
+        foreach ($defaultStatuses as $status) {
+            LeadStatus::create([
+                'name' => $status['name'],
+                'color' => $status['color'],
+                'created_by' => $organizationId,
+            ]);
+        }
+    }
+
+    /**
+     * Create default opportunity stages for a new organization
+     */
+    private function createDefaultOpportunityStages($organizationId)
+    {
+        $defaultStages = [
+            ['name' => 'Prospecting', 'color' => '#6B7280', 'probability' => 10],
+            ['name' => 'Qualification', 'color' => '#3B82F6', 'probability' => 25],
+            ['name' => 'Proposal', 'color' => '#F59E0B', 'probability' => 50],
+            ['name' => 'Negotiation', 'color' => '#8B5CF6', 'probability' => 75],
+            ['name' => 'Closed Won', 'color' => '#10b77f', 'probability' => 100],
+            ['name' => 'Closed Lost', 'color' => '#EF4444', 'probability' => 0],
+        ];
+
+        foreach ($defaultStages as $stage) {
+            OpportunityStage::create([
+                'name' => $stage['name'],
+                'color' => $stage['color'],
+                'probability' => $stage['probability'],
+                'status' => 'active',
+                'created_by' => $organizationId,
+            ]);
+        }
+    }
+
+    /**
+     * Create default task statuses for a new organization
+     */
+    private function createDefaultTaskStatuses($organizationId)
+    {
+        $defaultStatuses = [
+            ['name' => 'To Do', 'color' => '#6B7280'],
+            ['name' => 'In Progress', 'color' => '#3B82F6'],
+            ['name' => 'Review', 'color' => '#F59E0B'],
+            ['name' => 'Done', 'color' => '#10b77f'],
+        ];
+
+        foreach ($defaultStatuses as $status) {
+            TaskStatus::create([
+                'name' => $status['name'],
+                'color' => $status['color'],
+                'status' => 'active',
+                'created_by' => $organizationId,
+            ]);
+        }
+    }
+
     public function update(Request $request, User $organization)
     {
         // Ensure this is a organization type user
@@ -363,75 +433,5 @@ class OrganizationController extends Controller
         assignPlanToUser($organization, $plan, $validated['duration']);
 
         return back()->with('success', __('Plan upgraded successfully'));
-    }
-
-    /**
-     * Create default lead statuses for a new organization
-     */
-    private function createDefaultLeadStatuses($organizationId)
-    {
-        $defaultStatuses = [
-            ['name' => 'New', 'color' => '#3B82F6'],
-            ['name' => 'Contacted', 'color' => '#F59E0B'],
-            ['name' => 'Qualified', 'color' => '#10b77f'],
-            ['name' => 'Proposal Sent', 'color' => '#8B5CF6'],
-            ['name' => 'Converted', 'color' => '#059669'],
-            ['name' => 'Lost', 'color' => '#EF4444'],
-        ];
-
-        foreach ($defaultStatuses as $status) {
-            LeadStatus::create([
-                'name' => $status['name'],
-                'color' => $status['color'],
-                'created_by' => $organizationId,
-            ]);
-        }
-    }
-
-    /**
-     * Create default opportunity stages for a new organization
-     */
-    private function createDefaultOpportunityStages($organizationId)
-    {
-        $defaultStages = [
-            ['name' => 'Prospecting', 'color' => '#6B7280', 'probability' => 10],
-            ['name' => 'Qualification', 'color' => '#3B82F6', 'probability' => 25],
-            ['name' => 'Proposal', 'color' => '#F59E0B', 'probability' => 50],
-            ['name' => 'Negotiation', 'color' => '#8B5CF6', 'probability' => 75],
-            ['name' => 'Closed Won', 'color' => '#10b77f', 'probability' => 100],
-            ['name' => 'Closed Lost', 'color' => '#EF4444', 'probability' => 0],
-        ];
-
-        foreach ($defaultStages as $stage) {
-            OpportunityStage::create([
-                'name' => $stage['name'],
-                'color' => $stage['color'],
-                'probability' => $stage['probability'],
-                'status' => 'active',
-                'created_by' => $organizationId,
-            ]);
-        }
-    }
-
-    /**
-     * Create default task statuses for a new organization
-     */
-    private function createDefaultTaskStatuses($organizationId)
-    {
-        $defaultStatuses = [
-            ['name' => 'To Do', 'color' => '#6B7280'],
-            ['name' => 'In Progress', 'color' => '#3B82F6'],
-            ['name' => 'Review', 'color' => '#F59E0B'],
-            ['name' => 'Done', 'color' => '#10b77f'],
-        ];
-
-        foreach ($defaultStatuses as $status) {
-            TaskStatus::create([
-                'name' => $status['name'],
-                'color' => $status['color'],
-                'status' => 'active',
-                'created_by' => $organizationId,
-            ]);
-        }
     }
 }

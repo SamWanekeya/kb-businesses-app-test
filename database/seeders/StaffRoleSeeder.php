@@ -31,9 +31,9 @@ class StaffRoleSeeder extends Seeder
         if (config('app.demo')) {
             $roleTemplates = [
                 [
-                    'name' => 'sales-manager',
-                    'label' => 'Sales Manager',
-                    'description' => 'Sales Manager has access to manage sales operations',
+                    'name' => 'agency_manager',
+                    'label' => 'Agency manager',
+                    'description' => 'Oversees the entire organizations sales operations, managing multiple teams, setting targets, and directing overall agent recruitment and growth strategies',
                     'permissions' => [
                         'manage-dashboard',
 
@@ -771,9 +771,9 @@ class StaffRoleSeeder extends Seeder
         } else {
             $roleTemplates = [
                 [
-                    'name' => 'sales-manager',
-                    'label' => 'Sales Manager',
-                    'description' => 'Sales Manager has access to manage sales operations',
+                    'name' => 'agency_manager',
+                    'label' => 'Agency manager',
+                    'description' => 'Oversees the entire organizations sales operations, managing multiple teams, setting targets, and directing overall agent recruitment and growth strategies',
                     'permissions' => [
                         'manage-dashboard',
 

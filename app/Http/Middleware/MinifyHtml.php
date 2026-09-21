@@ -23,10 +23,10 @@ class MinifyHtml
      * This method minifies the HTML content of the response when in production.
      * Non-HTML responses or requests in non-production environments are left untouched.
      *
-     * @param \Illuminate\Http\Request $request The incoming HTTP request instance.
-     * @param \Closure $next Callback to pass the request to the next middleware.
+     * @param Request $request The incoming HTTP request instance.
+     * @param Closure $next Callback to pass the request to the next middleware.
      *
-     * @return \Symfony\Component\HttpFoundation\Response The HTTP response with minified HTML.
+     * @return Response The HTTP response with minified HTML.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -62,7 +62,7 @@ class MinifyHtml
     /**
      * Determine if the response is an HTML response that can be minified.
      *
-     * @param \Symfony\Component\HttpFoundation\Response $response The HTTP response to check.
+     * @param Response $response The HTTP response to check.
      *
      * @return bool True if the response is HTML and can be safely minified; false otherwise.
      */

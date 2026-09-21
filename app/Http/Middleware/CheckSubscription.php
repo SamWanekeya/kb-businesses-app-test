@@ -30,10 +30,10 @@ class CheckSubscription
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
+     * @param Request $request
+     * @param Closure $next
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\NotificationTemplate;
 use Exception;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
 
 class TwilioService

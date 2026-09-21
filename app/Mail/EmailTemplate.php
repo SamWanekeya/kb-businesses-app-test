@@ -36,11 +36,11 @@ class EmailTemplate extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-                    ->from($this->fromEmail, $this->fromName)
-                    ->view('emails.notification')
-                    ->with([
-                        'subject' => $this->subject,
-                        'content' => $this->content,
-                    ]);
+            ->from($this->fromEmail, $this->fromName)
+            ->view('emails.notification')
+            ->with([
+                'subject' => $this->subject,
+                'content' => $this->content,
+            ]);
     }
 }

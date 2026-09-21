@@ -18,24 +18,6 @@ use MercadoPago\SDK;
 class MercadoPagoController extends Controller
 {
     /**
-     * Get MercadoPago API credentials
-     *
-     * @return array
-     */
-    private function getMercadoPagoCredentials()
-    {
-        $settings = getPaymentGatewaySettings();
-
-        $accessToken = $settings['payment_settings']['mercadopago_access_token'] ?? null;
-
-        return [
-            'access_token' => $accessToken,
-            'mode' => $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox',
-            'currency' => $settings['general_settings']['default_currency'] ?? 'BRL',
-        ];
-    }
-
-    /**
      * Create a MercadoPago checkout preference
      *
      * @param Request $request
@@ -194,6 +176,24 @@ class MercadoPagoController extends Controller
 
             return redirect()->back()->with('error', __('Failed to create payment preference: :message', ['message' => $e->getMessage()]));
         }
+    }
+
+    /**
+     * Get MercadoPago API credentials
+     *
+     * @return array
+     */
+    private function getMercadoPagoCredentials()
+    {
+        $settings = getPaymentGatewaySettings();
+
+        $accessToken = $settings['payment_settings']['mercadopago_access_token'] ?? null;
+
+        return [
+            'access_token' => $accessToken,
+            'mode' => $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox',
+            'currency' => $settings['general_settings']['default_currency'] ?? 'BRL',
+        ];
     }
 
     /**

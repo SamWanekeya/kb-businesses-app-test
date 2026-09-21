@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
  *
  * @package App\Http\Middleware
  */
-
 class TrustProxies extends Middleware
 {
     /**

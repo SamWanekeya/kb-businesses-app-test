@@ -8,20 +8,10 @@ use App\Models\PaymentSetting;
 use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceToyyibPayPaymentController extends Controller
 {
-    private function getToyyibPayCredentials($organizationId)
-    {
-        $settings = $this->getInvoicePaymentSettings($organizationId);
-
-        return [
-            'secret_key' => $settings['payment_settings']['toyyibpay_secret_key'] ?? null,
-            'category_code' => $settings['payment_settings']['toyyibpay_category_code'] ?? null,
-        ];
-    }
-
     public function processPayment(Request $request)
     {
         $validated = $this->validateInvoicePaymentRequest($request, [
@@ -133,6 +123,35 @@ class InvoiceToyyibPayPaymentController extends Controller
         }
     }
 
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getToyyibPayCredentials($organizationId)
+    {
+        $settings = $this->getInvoicePaymentSettings($organizationId);
+
+        return [
+            'secret_key' => $settings['payment_settings']['toyyibpay_secret_key'] ?? null,
+            'category_code' => $settings['payment_settings']['toyyibpay_category_code'] ?? null,
+        ];
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
     public function success(Request $request)
     {
         try {
@@ -231,24 +250,5 @@ class InvoiceToyyibPayPaymentController extends Controller
 
             return response('ERROR', 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => Setting::getUserSettings($organizationId),
-        ];
     }
 }

@@ -7,14 +7,14 @@ use Illuminate\Support\ServiceProvider;
 class TapServiceProvider extends ServiceProvider
 {
     /**
-       * Bootstrap the application events.
-       *
-       * @return void
-       */
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/tap_payment.php' => config_path('tap_payment.php'),
+            __DIR__ . '/../config/tap_payment.php' => config_path('tap_payment.php'),
         ], 'tap_payment-config');
 
     }
@@ -26,7 +26,7 @@ class TapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $packageConfigFile = __DIR__.'/../config/tap_payment.php';
+        $packageConfigFile = __DIR__ . '/../config/tap_payment.php';
 
         $this->mergeConfigFrom(
             $packageConfigFile,

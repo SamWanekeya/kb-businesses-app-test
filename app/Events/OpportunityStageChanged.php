@@ -18,8 +18,8 @@ class OpportunityStageChanged
      */
     public function __construct(
         public Opportunity $opportunity,
-        public string $oldStage,
-        public string $newStage
+        public string      $oldStage,
+        public string      $newStage
     ) {
         //
     }

@@ -265,7 +265,7 @@ function _emptyValidation($params, $salt)
     if ($empty_value !== false) {
         return [
             'status' => 0,
-            'data' => 'Mandatory Parameter '.$empty_value.' can not empty',
+            'data' => 'Mandatory Parameter ' . $empty_value . ' can not empty',
         ];
     }
 
@@ -380,7 +380,7 @@ function _getDateTransaction($params_array, $salt_key, $url)
     $params_array['hash'] = $hash_key;
 
     // call curl_call() for initiate pay link
-    $curl_result = _curlCall($url.'transaction/v1/retrieve/date', http_build_query($params_array));
+    $curl_result = _curlCall($url . 'transaction/v1/retrieve/date', http_build_query($params_array));
 
     return $curl_result;
 }

@@ -33,7 +33,7 @@ class MailConfigService
      * - `encryption = 'none'` is explicitly mapped to `null` to disable encryption.
      *
      * Dependencies:
-     * - {@see \App\Models\User} for resolving ownership hierarchy.
+     * - {@see User} for resolving ownership hierarchy.
      * - `Auth` facade for current user context.
      * - `Config` facade for runtime configuration overrides.
      * - `settings($userId)` helper for retrieving persisted tenant settings.

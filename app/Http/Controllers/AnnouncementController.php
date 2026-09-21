@@ -9,14 +9,6 @@ use Inertia\Inertia;
 
 class AnnouncementController extends Controller
 {
-    private function updateStatus()
-    {
-        Announcement::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->whereDate('end_date', '<', now())
-            ->update(['status' => 'expired']);
-    }
-
     public function dashboard()
     {
         $this->updateStatus();
@@ -29,6 +21,33 @@ class AnnouncementController extends Controller
         return Inertia::render('Announcements/Dashboard', [
             'announcements' => $announcements,
         ]);
+    }
+
+    private function updateStatus()
+    {
+        Announcement::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->whereDate('end_date', '<', now())
+            ->update(['status' => 'expired']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $announcement = Announcement::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255|unique:announcements,title,' . $id . ',id,created_by,' . createdBy(),
+            'announcement_content' => 'required|string',
+            'announcement_category_id' => 'required|exists:announcement_categories,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:active,inactive,expired',
+            'is_featured' => 'boolean',
+        ]);
+
+        $announcement->update($validated);
+
+        return redirect()->back()->with('success', __('Announcement updated successfully.'));
     }
 
     public function index(Request $request)
@@ -115,25 +134,6 @@ class AnnouncementController extends Controller
         Announcement::create($validated);
 
         return redirect()->back()->with('success', __('Announcement created successfully.'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $announcement = Announcement::findOrFail($id);
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255|unique:announcements,title,' . $id . ',id,created_by,' . createdBy(),
-            'announcement_content' => 'required|string',
-            'announcement_category_id' => 'required|exists:announcement_categories,id',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:active,inactive,expired',
-            'is_featured' => 'boolean',
-        ]);
-
-        $announcement->update($validated);
-
-        return redirect()->back()->with('success', __('Announcement updated successfully.'));
     }
 
     public function destroy($id)

@@ -9,7 +9,7 @@ use App\Models\Setting;
 use CoinGate\Client;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceCoingatePaymentController extends Controller
 {

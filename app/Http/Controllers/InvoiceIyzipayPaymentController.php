@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
 use Iyzipay\Model\BasketItemType;
@@ -21,7 +22,6 @@ use Iyzipay\Model\PaymentGroup;
 use Iyzipay\Options;
 use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
 use Iyzipay\Request\RetrieveCheckoutFormRequest;
-use Log;
 
 class InvoiceIyzipayPaymentController extends Controller
 {

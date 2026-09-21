@@ -8,7 +8,7 @@ use App\Models\PaymentSetting;
 use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceFlutterwavePaymentController extends Controller
 {

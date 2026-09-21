@@ -7,9 +7,9 @@ use App\Models\User;
 use App\Services\StorageConfigService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
-use Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Storage;
 use Validator;
@@ -51,8 +51,8 @@ class MediaController extends Controller
                     try {
                         $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
                     } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+                        // Fail silently but log once for investigation
+                        Log::error($e);
                         // If thumb conversion fails, use original
                     }
 
@@ -68,8 +68,9 @@ class MediaController extends Controller
                         'created_at' => $media->created_at,
                     ];
                 } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+                    // Fail silently but log once for investigation
+                    Log::error($e);
+
                     // Skip media files with unavailable storage disks
                     return null;
                 }
@@ -160,8 +161,8 @@ class MediaController extends Controller
                 try {
                     $media->getUrl('thumb');
                 } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+                    // Fail silently but log once for investigation
+                    Log::error($e);
                     // Thumbnail generation failed, but continue
                 }
 
@@ -171,8 +172,8 @@ class MediaController extends Controller
                 try {
                     $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
                 } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+                    // Fail silently but log once for investigation
+                    Log::error($e);
                     // If thumb conversion fails, use original
                 }
 
@@ -232,8 +233,8 @@ class MediaController extends Controller
 
             return null; // No error
         } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+            // Fail silently but log once for investigation
+            Log::error($e);
 
             return response()->json([
                 'message' => __('Storage configuration error'),
@@ -383,8 +384,8 @@ class MediaController extends Controller
 
             return response()->download($filePath, $media->file_name);
         } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+            // Fail silently but log once for investigation
+            Log::error($e);
             abort(404, __('File storage unavailable'));
         }
     }
@@ -407,8 +408,8 @@ class MediaController extends Controller
         try {
             $media->delete();
         } catch (Exception $e) {
-                // Fail silently but log once for investigation
-                Log::error($e);
+            // Fail silently but log once for investigation
+            Log::error($e);
             // If storage disk is unavailable, force delete from database
             $media->forceDelete();
         }

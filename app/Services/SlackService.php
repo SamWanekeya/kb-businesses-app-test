@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\NotificationTemplate;
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class SlackService
 {

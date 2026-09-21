@@ -11,22 +11,6 @@ use Razorpay\Api\Api;
 class RazorpayController extends Controller
 {
     /**
-     * Get Razorpay API credentials
-     *
-     * @return array
-     */
-    private function getRazorpayCredentials()
-    {
-        $settings = getPaymentGatewaySettings();
-
-        return [
-            'key' => $settings['payment_settings']['razorpay_key'] ?? null,
-            'secret' => $settings['payment_settings']['razorpay_secret'] ?? null,
-            'currency' => $settings['general_settings']['default_currency'] ?? 'INR',
-        ];
-    }
-
-    /**
      * Create a Razorpay order
      *
      * @param Request $request
@@ -71,6 +55,22 @@ class RazorpayController extends Controller
         } catch (Exception $e) {
             return response()->json(['error' => __('Failed to create payment order: ') . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Get Razorpay API credentials
+     *
+     * @return array
+     */
+    private function getRazorpayCredentials()
+    {
+        $settings = getPaymentGatewaySettings();
+
+        return [
+            'key' => $settings['payment_settings']['razorpay_key'] ?? null,
+            'secret' => $settings['payment_settings']['razorpay_secret'] ?? null,
+            'currency' => $settings['general_settings']['default_currency'] ?? 'INR',
+        ];
     }
 
     /**

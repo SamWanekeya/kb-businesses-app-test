@@ -106,14 +106,14 @@ function _refund($params, $merchant_key, $salt, $env)
     }
 
     // again refund amount convert into string
-    $diff_amount_string = abs(strlen($params['refund_amount']) - strlen("".$postedArray['refund_amount'].""));
+    $diff_amount_string = abs(strlen($params['refund_amount']) - strlen("" . $postedArray['refund_amount'] . ""));
     $diff_amount_string = ($diff_amount_string === 2) ? 1 : 2;
-    $postedArray['refund_amount'] = sprintf("%.".$diff_amount_string."f", $postedArray['refund_amount']);
+    $postedArray['refund_amount'] = sprintf("%." . $diff_amount_string . "f", $postedArray['refund_amount']);
 
     // again amount convert into string
-    $diff_amount_string = abs(strlen($params['amount']) - strlen("".$postedArray['amount'].""));
+    $diff_amount_string = abs(strlen($params['amount']) - strlen("" . $postedArray['amount'] . ""));
     $diff_amount_string = ($diff_amount_string === 2) ? 1 : 2;
-    $postedArray['amount'] = sprintf("%.".$diff_amount_string."f", $postedArray['amount']);
+    $postedArray['amount'] = sprintf("%." . $diff_amount_string . "f", $postedArray['amount']);
 
     // email validation
     if (!empty($postedArray['email'])) {
@@ -261,7 +261,7 @@ function _emptyValidation($params, $salt)
     if ($empty_value !== false) {
         return [
             'status' => 0,
-            'data' => 'Mandatory Parameter '.$empty_value.' can not empty',
+            'data' => 'Mandatory Parameter ' . $empty_value . ' can not empty',
         ];
     }
 
@@ -441,7 +441,7 @@ function _refundPayment($params_array, $salt_key, $url)
     $params_array['hash'] = $hash_key;
 
     // call curl_call() for initiate pay link
-    $curl_result = _curlCall($url.'transaction/v1/refund', http_build_query($params_array));
+    $curl_result = _curlCall($url . 'transaction/v1/refund', http_build_query($params_array));
 
     return $curl_result;
 }

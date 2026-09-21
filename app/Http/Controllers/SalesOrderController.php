@@ -92,25 +92,9 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    public function create()
+    private function getFilteredProducts()
     {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('SalesOrders/Create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'quotes' => $quotes,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'taxes' => $taxes,
-            'users' => $users,
-        ]);
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function store(Request $request)
@@ -191,6 +175,44 @@ class SalesOrderController extends Controller
         return redirect()->route('sales-orders.index', $salesOrder->id)->with('success', __('Sales order created successfully.'));
     }
 
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
+        $products = $this->getFilteredProducts();
+        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('SalesOrders/Create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'quotes' => $quotes,
+            'products' => $products,
+            'shippingProviderTypes' => $shippingProviderTypes,
+            'taxes' => $taxes,
+            'users' => $users,
+        ]);
+    }
+
+    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
+    {
+        if (!$discountType || !$discountValue) {
+            return 0;
+        }
+
+        if ($discountType === 'percentage') {
+            return ($lineTotal * $discountValue) / 100;
+        }
+
+        if ($discountType === 'fixed') {
+            return min($discountValue, $lineTotal);
+        }
+
+        return 0;
+    }
+
     public function show($salesOrderId)
     {
         $salesOrder = SalesOrder::where('id', $salesOrderId)
@@ -258,6 +280,41 @@ class SalesOrderController extends Controller
         } else {
             return redirect()->route('sales-orders.index')->with('error', __('Sales order not found.'));
         }
+    }
+
+    public function destroy($salesOrderId)
+    {
+        $salesOrder = SalesOrder::where('id', $salesOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$salesOrder) {
+            return redirect()->back()->with('error', __('Sales order not found.'));
+        }
+
+        $salesOrder->products()->detach();
+        $salesOrder->delete();
+
+        return redirect()->back()->with('success', __('Sales order deleted successfully.'));
+    }
+
+    public function toggleStatus(Request $request, $salesOrderId)
+    {
+        $salesOrder = SalesOrder::where('id', $salesOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$salesOrder) {
+            return redirect()->back()->with('error', __('Sales order not found.'));
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:draft,confirmed,processing,shipped,delivered,cancelled',
+        ]);
+
+        $salesOrder->update(['status' => $validated['status']]);
+
+        return redirect()->back()->with('success', __('Sales order status updated successfully.'));
     }
 
     public function update(Request $request, $salesOrderId)
@@ -331,41 +388,6 @@ class SalesOrderController extends Controller
         return redirect()->route('sales-orders.index', $salesOrder->id)->with('success', __('Sales order updated successfully.'));
     }
 
-    public function destroy($salesOrderId)
-    {
-        $salesOrder = SalesOrder::where('id', $salesOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$salesOrder) {
-            return redirect()->back()->with('error', __('Sales order not found.'));
-        }
-
-        $salesOrder->products()->detach();
-        $salesOrder->delete();
-
-        return redirect()->back()->with('success', __('Sales order deleted successfully.'));
-    }
-
-    public function toggleStatus(Request $request, $salesOrderId)
-    {
-        $salesOrder = SalesOrder::where('id', $salesOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$salesOrder) {
-            return redirect()->back()->with('error', __('Sales order not found.'));
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:draft,confirmed,processing,shipped,delivered,cancelled',
-        ]);
-
-        $salesOrder->update(['status' => $validated['status']]);
-
-        return redirect()->back()->with('success', __('Sales order status updated successfully.'));
-    }
-
     public function assignUser(Request $request, $salesOrderId)
     {
         $salesOrder = SalesOrder::where('id', $salesOrderId)
@@ -383,28 +405,6 @@ class SalesOrderController extends Controller
         $salesOrder->update(['assigned_to' => $validated['assigned_to']]);
 
         return redirect()->back()->with('success', __('User assigned to sales order successfully.'));
-    }
-
-    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
-    {
-        if (!$discountType || !$discountValue) {
-            return 0;
-        }
-
-        if ($discountType === 'percentage') {
-            return ($lineTotal * $discountValue) / 100;
-        }
-
-        if ($discountType === 'fixed') {
-            return min($discountValue, $lineTotal);
-        }
-
-        return 0;
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function deleteActivities($salesOrderId)

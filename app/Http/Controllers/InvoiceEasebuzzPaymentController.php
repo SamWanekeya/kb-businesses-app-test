@@ -10,7 +10,7 @@ use App\Models\User;
 use Easebuzz;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceEasebuzzPaymentController extends Controller
 {

@@ -31,8 +31,8 @@ class EnsureSuperAdmin
      * This middleware intercepts each request, verifies the user’s role, and either
      * grants access or redirects/returns a 403 response based on the request context.
      *
-     * @param \Illuminate\Http\Request $request The incoming HTTP request.
-     * @param \Closure $next The next middleware or request handler.
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware or request handler.
      *
      * @return mixed The next middleware response or a redirect/JSON response if unauthorized.
      *

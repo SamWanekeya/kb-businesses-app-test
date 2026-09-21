@@ -33,10 +33,10 @@ class ApplySettings
      * This method adjusts configuration parameters (e.g., timezone) before
      * passing control to the next middleware or request handler.
      *
-     * @param \Illuminate\Http\Request $request The current HTTP request.
-     * @param \Closure $next The next middleware or request handler.
+     * @param Request $request The current HTTP request.
+     * @param Closure $next The next middleware or request handler.
      *
-     * @return \Symfony\Component\HttpFoundation\Response The HTTP response after processing.
+     * @return Response The HTTP response after processing.
      *
      * @example
      * // Example registration in `app/Http/Kernel.php`

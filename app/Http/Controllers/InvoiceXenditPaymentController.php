@@ -9,7 +9,7 @@ use App\Models\Setting;
 use Exception;
 use Http;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceXenditPaymentController extends Controller
 {

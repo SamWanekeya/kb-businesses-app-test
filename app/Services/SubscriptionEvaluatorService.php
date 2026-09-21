@@ -27,9 +27,9 @@ class SubscriptionEvaluatorService
     /**
      * Evaluate whether the given user has valid access.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      *
-     * @return \App\Services\SubscriptionResultService
+     * @return SubscriptionResultService
      */
     public function evaluate(User $user): SubscriptionResultService
     {
@@ -53,7 +53,7 @@ class SubscriptionEvaluatorService
      * Evaluate subscription rules for organization owners.
      */
     protected function evaluateOrganization(
-        User $user,
+        User              $user,
         DateTimeImmutable $now
     ): SubscriptionResultService {
         if (!$user->plan_id) {
@@ -92,10 +92,29 @@ class SubscriptionEvaluatorService
     }
 
     /**
+     * Determine whether an expiry date is still valid.
+     *
+     * @param string|null $expiryDate
+     * @param DateTimeImmutable $currentDate
+     *
+     * @return bool
+     */
+    protected function isActiveDate(
+        ?string           $expiryDate,
+        DateTimeImmutable $currentDate
+    ): bool {
+        if (!$expiryDate) {
+            return false;
+        }
+
+        return $currentDate <= new DateTimeImmutable($expiryDate);
+    }
+
+    /**
      * Evaluate subscription rules for organization members.
      */
     protected function evaluateOrganizationMember(
-        User $user,
+        User              $user,
         DateTimeImmutable $now
     ): SubscriptionResultService {
         $organization = $user->organization;
@@ -124,24 +143,5 @@ class SubscriptionEvaluatorService
         }
 
         return SubscriptionResultService::allow();
-    }
-
-    /**
-     * Determine whether an expiry date is still valid.
-     *
-     * @param string|null $expiryDate
-     * @param \DateTimeImmutable $currentDate
-     *
-     * @return bool
-     */
-    protected function isActiveDate(
-        ?string $expiryDate,
-        DateTimeImmutable $currentDate
-    ): bool {
-        if (!$expiryDate) {
-            return false;
-        }
-
-        return $currentDate <= new DateTimeImmutable($expiryDate);
     }
 }

@@ -25,7 +25,7 @@ function initiate_payment($params, $redirect, $merchant_key, $salt, $env)
     $result = _payment($params, $redirect, $merchant_key, $salt, $env);
 
     if ($redirect) {
-        return _paymentResponse((object) $result);
+        return _paymentResponse((object)$result);
     } else {
 
         if ($result->status == 1) {
@@ -136,7 +136,7 @@ function _payment($params, $redirect, $merchant_key, $salt, $env)
 
     // check amount should be float or not
     if (preg_match("/^([\d]+)\.([\d]?[\d])$/", $postedArray['amount'])) {
-        $postedArray['amount'] = (float) $postedArray['amount'];
+        $postedArray['amount'] = (float)$postedArray['amount'];
     }
 
     // type validation

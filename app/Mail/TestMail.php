@@ -27,6 +27,6 @@ class TestMail extends Mailable
     public function build()
     {
         return $this->subject('Test Email from ' . config('app.name'))
-                    ->view('emails.test');
+            ->view('emails.test');
     }
 }

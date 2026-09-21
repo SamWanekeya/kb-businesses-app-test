@@ -7,7 +7,7 @@ use App\Models\Meeting;
 use App\Services\GoogleCalendarService;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class GoogleCalendarController extends Controller
 {

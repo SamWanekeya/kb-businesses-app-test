@@ -17,7 +17,7 @@ class QuoteStatusChanged
      * Create a new event instance.
      */
     public function __construct(
-        public Quote $quote,
+        public Quote  $quote,
         public string $oldStatus,
         public string $newStatus
     ) {

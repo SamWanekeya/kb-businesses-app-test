@@ -113,37 +113,6 @@ class OpportunityController extends Controller
         ]);
     }
 
-    public function create(Request $request)
-    {
-        $accounts = Account::where('created_by', createdBy())
-            ->where('status', 'active')->get(['id', 'name']);
-
-        $contacts = Contact::where('created_by', createdBy())
-            ->where('status', 'active')->get(['id', 'name', 'account_id']);
-
-        $products = Product::where('created_by', createdBy())
-            ->where('status', 'active')->with('tax')->get(['id', 'name', 'price', 'tax_id']);
-
-        $opportunityStages = OpportunityStage::where('created_by', createdBy())
-            ->where('status', 'active')->get(['id', 'name', 'color']);
-
-        $opportunitySources = OpportunitySource::where('created_by', createdBy())
-            ->where('status', 'active')->get(['id', 'name']);
-
-        $users = User::where('created_by', createdBy())
-            ->where('status', 'active')->select('id', 'name', 'email')->get();
-
-        return Inertia::render('Opportunities/Create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'products' => $products,
-            'opportunityStages' => $opportunityStages,
-            'opportunitySources' => $opportunitySources,
-            'users' => $users,
-            'prefilledOpportunityStageId' => $request->input('opportunity_stage_id', ''),
-        ]);
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -210,6 +179,37 @@ class OpportunityController extends Controller
         }
 
         return redirect()->route('opportunities.index')->with('success', __('Opportunity created successfully.'));
+    }
+
+    public function create(Request $request)
+    {
+        $accounts = Account::where('created_by', createdBy())
+            ->where('status', 'active')->get(['id', 'name']);
+
+        $contacts = Contact::where('created_by', createdBy())
+            ->where('status', 'active')->get(['id', 'name', 'account_id']);
+
+        $products = Product::where('created_by', createdBy())
+            ->where('status', 'active')->with('tax')->get(['id', 'name', 'price', 'tax_id']);
+
+        $opportunityStages = OpportunityStage::where('created_by', createdBy())
+            ->where('status', 'active')->get(['id', 'name', 'color']);
+
+        $opportunitySources = OpportunitySource::where('created_by', createdBy())
+            ->where('status', 'active')->get(['id', 'name']);
+
+        $users = User::where('created_by', createdBy())
+            ->where('status', 'active')->select('id', 'name', 'email')->get();
+
+        return Inertia::render('Opportunities/Create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'products' => $products,
+            'opportunityStages' => $opportunityStages,
+            'opportunitySources' => $opportunitySources,
+            'users' => $users,
+            'prefilledOpportunityStageId' => $request->input('opportunity_stage_id', ''),
+        ]);
     }
 
     public function show($opportunityId)
@@ -283,83 +283,6 @@ class OpportunityController extends Controller
             'opportunitySources' => $opportunitySources,
             'users' => $users,
         ]);
-    }
-
-    public function update(Request $request, $opportunityId)
-    {
-        $opportunity = Opportunity::where('id', $opportunityId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($opportunity) {
-            try {
-                $validated = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'description' => 'nullable|string',
-                    'amount' => 'nullable|numeric|min:0',
-                    'close_date' => 'nullable|date',
-                    'notes' => 'nullable|string',
-                    'account_id' => 'required|exists:accounts,id',
-                    'contact_id' => 'required|exists:contacts,id',
-                    'opportunity_stage_id' => 'required|exists:opportunity_stages,id',
-                    'opportunity_source_id' => 'required|exists:opportunity_sources,id',
-                    'status' => 'nullable|in:active,inactive',
-                    'assigned_to' => 'required|exists:users,id',
-                    'products' => 'required|array|min:1',
-                    'products.*.product_id' => 'required|exists:products,id',
-                    'products.*.quantity' => 'required|integer|min:1',
-                    'products.*.unit_price' => 'required|numeric|min:0',
-                ]);
-
-                $products = $validated['products'] ?? [];
-                unset($validated['products']);
-
-                // Remove amount from validated data if products exist to prevent auto-calculation override
-                if ($opportunity->products()->count() > 0) {
-                    unset($validated['amount']);
-                }
-
-                $opportunity->fill($validated);
-
-                if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id')) {
-                    $old = $opportunity->getOriginal('opportunity_stage_id');
-                    $new = $opportunity->opportunity_stage_id;
-
-                    $oldStageName = OpportunityStage::find($old)?->name ?? 'N/A';
-                    $newStageName = OpportunityStage::find($new)?->name ?? 'N/A';
-                    event(new OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
-                }
-
-                $opportunity->update($validated);
-
-                // Only sync products if products data is provided
-                if (isset($request->products)) {
-                    $opportunity->products()->detach();
-                    if (!empty($products)) {
-                        foreach ($products as $product) {
-                            $opportunity->products()->attach($product['product_id'], [
-                                'quantity' => $product['quantity'],
-                                'unit_price' => $product['unit_price'],
-                                'total_price' => $product['quantity'] * $product['unit_price'],
-                            ]);
-                        }
-
-                        // Calculate and update totals
-                        $opportunity->load('products.tax');
-                        $opportunity->calculateTotals();
-                    } else {
-                        // If no products, set amount to 0
-                        $opportunity->updateQuietly(['amount' => 0]);
-                    }
-                }
-
-                return redirect()->route('opportunities.index')->with('success', __('Opportunity updated successfully.'));
-            } catch (Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Opportunity not found.'));
-        }
     }
 
     public function destroy($opportunityId)
@@ -451,6 +374,83 @@ class OpportunityController extends Controller
         ]);
 
         return redirect()->back()->with('success', __('Opportunity status updated successfully.'));
+    }
+
+    public function update(Request $request, $opportunityId)
+    {
+        $opportunity = Opportunity::where('id', $opportunityId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($opportunity) {
+            try {
+                $validated = $request->validate([
+                    'name' => 'required|string|max:255',
+                    'description' => 'nullable|string',
+                    'amount' => 'nullable|numeric|min:0',
+                    'close_date' => 'nullable|date',
+                    'notes' => 'nullable|string',
+                    'account_id' => 'required|exists:accounts,id',
+                    'contact_id' => 'required|exists:contacts,id',
+                    'opportunity_stage_id' => 'required|exists:opportunity_stages,id',
+                    'opportunity_source_id' => 'required|exists:opportunity_sources,id',
+                    'status' => 'nullable|in:active,inactive',
+                    'assigned_to' => 'required|exists:users,id',
+                    'products' => 'required|array|min:1',
+                    'products.*.product_id' => 'required|exists:products,id',
+                    'products.*.quantity' => 'required|integer|min:1',
+                    'products.*.unit_price' => 'required|numeric|min:0',
+                ]);
+
+                $products = $validated['products'] ?? [];
+                unset($validated['products']);
+
+                // Remove amount from validated data if products exist to prevent auto-calculation override
+                if ($opportunity->products()->count() > 0) {
+                    unset($validated['amount']);
+                }
+
+                $opportunity->fill($validated);
+
+                if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id')) {
+                    $old = $opportunity->getOriginal('opportunity_stage_id');
+                    $new = $opportunity->opportunity_stage_id;
+
+                    $oldStageName = OpportunityStage::find($old)?->name ?? 'N/A';
+                    $newStageName = OpportunityStage::find($new)?->name ?? 'N/A';
+                    event(new OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
+                }
+
+                $opportunity->update($validated);
+
+                // Only sync products if products data is provided
+                if (isset($request->products)) {
+                    $opportunity->products()->detach();
+                    if (!empty($products)) {
+                        foreach ($products as $product) {
+                            $opportunity->products()->attach($product['product_id'], [
+                                'quantity' => $product['quantity'],
+                                'unit_price' => $product['unit_price'],
+                                'total_price' => $product['quantity'] * $product['unit_price'],
+                            ]);
+                        }
+
+                        // Calculate and update totals
+                        $opportunity->load('products.tax');
+                        $opportunity->calculateTotals();
+                    } else {
+                        // If no products, set amount to 0
+                        $opportunity->updateQuietly(['amount' => 0]);
+                    }
+                }
+
+                return redirect()->route('opportunities.index')->with('success', __('Opportunity updated successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Opportunity not found.'));
+        }
     }
 
     public function fileExport()

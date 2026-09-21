@@ -2,6 +2,8 @@
 
 namespace App\Libraries\Coingate;
 
+use Illuminate\Support\Facades\Log;
+
 class Coingate
 {
     public const VERSION = '3.0.5';
@@ -64,7 +66,7 @@ class Coingate
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $curlopt_ssl_verifypeer);
 
         // Debug logging
-        \Log::info('CoinGate Request Debug', [
+        Log::info('CoinGate Request Debug', [
             'url' => $url,
             'headers' => $headers,
             'auth_token' => substr(self::$auth_token, 0, 10) . '...',

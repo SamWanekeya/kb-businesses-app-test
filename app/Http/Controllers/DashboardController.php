@@ -51,38 +51,6 @@ class DashboardController extends Controller
         return $this->redirectToFirstAvailablePage();
     }
 
-    public function redirectToFirstAvailablePage()
-    {
-        $user = auth()->user();
-
-        // Define available routes with their permissions
-        $routes = [
-            ['route' => 'users-permissions.users.index', 'permission' => 'manage-users'],
-            ['route' => 'users-permissions.roles.index', 'permission' => 'manage-roles'],
-
-            ['route' => 'subscriptions.plans.index', 'permission' => 'manage-plans'],
-            ['route' => 'referral-program.index', 'permission' => 'manage-referral-program'],
-            ['route' => 'settings.index', 'permission' => 'manage-settings'],
-        ];
-
-        // Find first available route
-        foreach ($routes as $routeData) {
-            try {
-                if ($user->hasPermissionTo($routeData['permission'])) {
-                    return redirect()->route($routeData['route']);
-                }
-            } catch (Exception $e) {
-                // Permission doesn't exist, continue to next route
-                continue;
-            }
-        }
-
-        // If no permissions found, logout user
-        auth()->logout();
-
-        return redirect()->route('login')->with('error', __('No access permissions found.'));
-    }
-
     private function renderDashboard()
     {
         $user = auth()->user();
@@ -537,6 +505,38 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard/OrganizationDashboard', [
             'dashboardData' => $dashboardData,
         ]);
+    }
+
+    public function redirectToFirstAvailablePage()
+    {
+        $user = auth()->user();
+
+        // Define available routes with their permissions
+        $routes = [
+            ['route' => 'users-permissions.users.index', 'permission' => 'manage-users'],
+            ['route' => 'users-permissions.roles.index', 'permission' => 'manage-roles'],
+
+            ['route' => 'subscriptions.plans.index', 'permission' => 'manage-plans'],
+            ['route' => 'referral-program.index', 'permission' => 'manage-referral-program'],
+            ['route' => 'settings.index', 'permission' => 'manage-settings'],
+        ];
+
+        // Find first available route
+        foreach ($routes as $routeData) {
+            try {
+                if ($user->hasPermissionTo($routeData['permission'])) {
+                    return redirect()->route($routeData['route']);
+                }
+            } catch (Exception $e) {
+                // Permission doesn't exist, continue to next route
+                continue;
+            }
+        }
+
+        // If no permissions found, logout user
+        auth()->logout();
+
+        return redirect()->route('login')->with('error', __('No access permissions found.'));
     }
 
     private function getDirectorySize($directory)

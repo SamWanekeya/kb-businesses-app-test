@@ -27,14 +27,6 @@ class PermissionController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(PermissionRequest $request)
@@ -52,6 +44,14 @@ class PermissionController extends BaseController
         }
 
         return redirect()->back()->with('error', __('Unable to create Permission. Please try again!'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**

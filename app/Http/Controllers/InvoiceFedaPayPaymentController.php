@@ -11,7 +11,7 @@ use Exception;
 use FedaPay\FedaPay;
 use FedaPay\Transaction;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceFedaPayPaymentController extends Controller
 {

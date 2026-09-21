@@ -8,7 +8,7 @@ use App\Models\PaymentSetting;
 use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 use YooKassa\Client;
 
 class InvoiceYooKassaPaymentController extends Controller
@@ -93,6 +93,25 @@ class InvoiceYooKassaPaymentController extends Controller
         }
     }
 
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
     public function success(Request $request)
     {
         try {
@@ -174,24 +193,5 @@ class InvoiceYooKassaPaymentController extends Controller
 
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => Setting::getUserSettings($organizationId),
-        ];
     }
 }

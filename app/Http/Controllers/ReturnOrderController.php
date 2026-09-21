@@ -75,23 +75,9 @@ class ReturnOrderController extends Controller
         ]);
     }
 
-    public function create()
+    private function getFilteredProducts()
     {
-        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('ReturnOrders/Create', [
-            'salesOrders' => $salesOrders,
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'users' => $users,
-        ]);
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function store(Request $request)
@@ -158,6 +144,25 @@ class ReturnOrderController extends Controller
         }
 
         return redirect()->route('return-orders.index')->with('success', __('Return order created successfully.'));
+    }
+
+    public function create()
+    {
+        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $products = $this->getFilteredProducts();
+        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('ReturnOrders/Create', [
+            'salesOrders' => $salesOrders,
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'products' => $products,
+            'shippingProviderTypes' => $shippingProviderTypes,
+            'users' => $users,
+        ]);
     }
 
     public function show($returnOrderId)
@@ -334,11 +339,6 @@ class ReturnOrderController extends Controller
                 ];
             })->filter(fn ($p) => $p['quantity'] > 0)->values(),
         ]);
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function fileExport()

@@ -93,7 +93,7 @@ class SignUpUserController extends Controller
      */
     protected function resolvePlanId(?string $encrypted): ?int
     {
-        if (! $encrypted) {
+        if (!$encrypted) {
             return null;
         }
 

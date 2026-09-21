@@ -16,10 +16,10 @@ class FilterRequest
      * - Removes script tags and inline JavaScript.
      * - Strips suspicious keywords and characters that may indicate XSS payloads.
      *
-     * @param \Illuminate\Http\Request $request The incoming HTTP request instance.
-     * @param \Closure $next The next middleware or request handler in the pipeline.
+     * @param Request $request The incoming HTTP request instance.
+     * @param Closure $next The next middleware or request handler in the pipeline.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {

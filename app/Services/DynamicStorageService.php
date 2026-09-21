@@ -10,27 +10,23 @@ use Illuminate\Support\Facades\Storage;
 class DynamicStorageService
 {
     /**
-     * Configure dynamic storage disks based on database settings
+     * Get the active storage disk instance
      */
-    public static function configureDynamicDisks(): void
+    public static function getActiveDiskInstance()
     {
+        $diskName = StorageConfigService::getActiveDisk();
+
+        // Ensure disk is configured
+        self::configureDynamicDisks();
+
         try {
-            $config = StorageConfigService::getStorageConfig();
-
-            // Configure S3 disk if credentials exist
-            if (!empty($config['s3']['key']) && !empty($config['s3']['secret'])) {
-                self::configureS3Disk($config['s3']);
-            }
-
-            // Configure Wasabi disk if credentials exist
-            if (!empty($config['wasabi']['key']) && !empty($config['wasabi']['secret'])) {
-                self::configureWasabiDisk($config['wasabi']);
-            }
+            return Storage::disk($diskName);
         } catch (Exception $e) {
-            Log::error('Failed to configure dynamic storage disks', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+            // Fail silently but log once for investigation
+            Log::error($e);
+
+            // Fallback to public disk
+            return Storage::disk('public');
         }
     }
 
@@ -54,6 +50,31 @@ class DynamicStorageService
     //         'visibility' => 'public',
     //     ]);
     // }
+
+    /**
+     * Configure dynamic storage disks based on database settings
+     */
+    public static function configureDynamicDisks(): void
+    {
+        try {
+            $config = StorageConfigService::getStorageConfig();
+
+            // Configure S3 disk if credentials exist
+            if (!empty($config['s3']['key']) && !empty($config['s3']['secret'])) {
+                self::configureS3Disk($config['s3']);
+            }
+
+            // Configure Wasabi disk if credentials exist
+            if (!empty($config['wasabi']['key']) && !empty($config['wasabi']['secret'])) {
+                self::configureWasabiDisk($config['wasabi']);
+            }
+        } catch (Exception $e) {
+            Log::error('Failed to configure dynamic storage disks', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+    }
 
     private static function configureS3Disk(array $s3Config): void
     {
@@ -84,27 +105,6 @@ class DynamicStorageService
             'use_path_style_endpoint' => false,
             'visibility' => 'public',
         ]);
-    }
-
-    /**
-     * Get the active storage disk instance
-     */
-    public static function getActiveDiskInstance()
-    {
-        $diskName = StorageConfigService::getActiveDisk();
-
-        // Ensure disk is configured
-        self::configureDynamicDisks();
-
-        try {
-            return Storage::disk($diskName);
-        } catch (Exception $e) {
-            // Fail silently but log once for investigation
-            Log::error($e);
-
-            // Fallback to public disk
-            return Storage::disk('public');
-        }
     }
 
     /**

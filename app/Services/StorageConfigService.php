@@ -32,67 +32,6 @@ class StorageConfigService
     }
 
     /**
-     * Get file validation rules based on settings
-     */
-    public static function getFileValidationRules(): array
-    {
-        $config = self::getStorageConfig();
-
-        $allowedTypes = $config['allowed_file_types'] ?? '';
-        $maximumSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
-
-        return [
-            'mimes:' . $allowedTypes,
-            'maximum:' . $maximumSize,
-        ];
-    }
-
-    /**
-     * Get complete storage configuration
-     */
-    public static function getStorageConfig(): array
-    {
-        try {
-            // Check if user is authenticated
-            if (!Auth::check() || !Auth::user()) {
-                return self::getDefaultConfig();
-            }
-
-            $user = Auth::user();
-            $userId = null;
-
-            if ($user->type === 'super_admin') {
-                $userId = $user->id;
-            } else {
-                $userId = getOrganizationId($user->created_by) ?? null;
-            }
-
-            if (!$userId) {
-                return self::getDefaultConfig();
-            }
-
-            $cacheKey = 'active_storage_config_' . $userId;
-
-            // return Cache::remember($cacheKey, 300, function () use ($userId) {
-            return self::loadStorageConfigFromDB($userId);
-            // });
-        } catch (Exception $e) {
-            Log::error('Error in getStorageConfig', ['error' => $e->getMessage()]);
-
-            return self::getDefaultConfig();
-        }
-    }
-
-    /**
-     * Clear storage configuration cache
-     */
-    public static function clearCache(): void
-    {
-        Cache::forget('active_storage_config');
-        Cache::forget('admin_settings');
-    }
-
-    /**
      * Load storage configuration from database
      */
     private static function loadStorageConfigFromDB($userId = null): array
@@ -160,7 +99,7 @@ class StorageConfigService
             return [
                 'disk' => $diskName,
                 'allowed_file_types' => $superAdminSettings['storage_file_types'] ?? 'jpg,jpeg,png,webp,gif,pdf,doc,docx,csv,txt,zip,mp4,mp3',
-                'maximum_file_size_mb' => (int) ($superAdminSettings['storage_maximum_upload_size'] ?? 2),
+                'maximum_file_size_mb' => (int)($superAdminSettings['storage_maximum_upload_size'] ?? 2),
                 's3' => [
                     'key' => $superAdminSettings['aws_access_key_id'] ?? '',
                     'secret' => $superAdminSettings['aws_secret_access_key'] ?? '',
@@ -197,5 +136,66 @@ class StorageConfigService
             's3' => [],
             'wasabi' => [],
         ];
+    }
+
+    /**
+     * Get file validation rules based on settings
+     */
+    public static function getFileValidationRules(): array
+    {
+        $config = self::getStorageConfig();
+
+        $allowedTypes = $config['allowed_file_types'] ?? '';
+        $maximumSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
+
+        return [
+            'mimes:' . $allowedTypes,
+            'maximum:' . $maximumSize,
+        ];
+    }
+
+    /**
+     * Get complete storage configuration
+     */
+    public static function getStorageConfig(): array
+    {
+        try {
+            // Check if user is authenticated
+            if (!Auth::check() || !Auth::user()) {
+                return self::getDefaultConfig();
+            }
+
+            $user = Auth::user();
+            $userId = null;
+
+            if ($user->type === 'super_admin') {
+                $userId = $user->id;
+            } else {
+                $userId = getOrganizationId($user->created_by) ?? null;
+            }
+
+            if (!$userId) {
+                return self::getDefaultConfig();
+            }
+
+            $cacheKey = 'active_storage_config_' . $userId;
+
+            // return Cache::remember($cacheKey, 300, function () use ($userId) {
+            return self::loadStorageConfigFromDB($userId);
+            // });
+        } catch (Exception $e) {
+            Log::error('Error in getStorageConfig', ['error' => $e->getMessage()]);
+
+            return self::getDefaultConfig();
+        }
+    }
+
+    /**
+     * Clear storage configuration cache
+     */
+    public static function clearCache(): void
+    {
+        Cache::forget('active_storage_config');
+        Cache::forget('admin_settings');
     }
 }

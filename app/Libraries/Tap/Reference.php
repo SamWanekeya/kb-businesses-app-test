@@ -2,145 +2,148 @@
 
 namespace App\Package;
 
+use Exception;
+use InvalidArgumentException;
+
 class Reference
 {
     protected $REQUIRED_CONFIG_VARS = ['organization_tap_secret_key' => true];
 
     protected $CONFIG_VARS = ['organization_tap_secret_key' => null];
 
-    protected $CARD_VARS = ['number' => null,'exp_month' => null,'exp_year' => null,'cvc' => null,'name' => null,'country' => null,'line1' => null,'city' => null,'street' => null,'avenue' => null];
+    protected $CARD_VARS = ['number' => null, 'exp_month' => null, 'exp_year' => null, 'cvc' => null, 'name' => null, 'country' => null, 'line1' => null, 'city' => null, 'street' => null, 'avenue' => null];
 
     protected $REQUIRED_CUSTOMER_VARS = ['name'];
 
-    protected $REQUIRED_CARD_VARS = ['number' => true,'exp_month' => true,'exp_year' => true,'cvc' => true];
+    protected $REQUIRED_CARD_VARS = ['number' => true, 'exp_month' => true, 'exp_year' => true, 'cvc' => true];
 
     protected $REQUIRED_CHARGE_VARS = [
-      'customer' => [
-        'first_name' => true,'middle_name' => false,'last_name' => false,'email' => false,
-        'phone' => [
-          'country_code' => false,'number' => false,
+        'customer' => [
+            'first_name' => true, 'middle_name' => false, 'last_name' => false, 'email' => false,
+            'phone' => [
+                'country_code' => false, 'number' => false,
+            ],
         ],
-      ],
-      'address' => [
-        'country' => false,'city' => false,'line1' => false,'ip_address' => false,
-      ],
-      'amount' => true,'currency' => true,'save_card' => false,'threeDSecure' => true,'description' => true,'statement_descriptor' => false,
-      'metadata' => [
-        'udf1' => false,'udf2' => false,
-      ],
-      'reference' => [
-        'transaction' => false,'order' => false,
-      ],
-      'receipt' => [
-        'email' => false,'sms' => false,
-      ],
-      'merchant' => [
-        'id' => false,
-      ],
-      'source' => [
-        'id' => false,
-      ],
-      'post' => [
-        'url' => true,
-      ],
-      'redirect' => [
-        'url' => true,
-      ],
+        'address' => [
+            'country' => false, 'city' => false, 'line1' => false, 'ip_address' => false,
+        ],
+        'amount' => true, 'currency' => true, 'save_card' => false, 'threeDSecure' => true, 'description' => true, 'statement_descriptor' => false,
+        'metadata' => [
+            'udf1' => false, 'udf2' => false,
+        ],
+        'reference' => [
+            'transaction' => false, 'order' => false,
+        ],
+        'receipt' => [
+            'email' => false, 'sms' => false,
+        ],
+        'merchant' => [
+            'id' => false,
+        ],
+        'source' => [
+            'id' => false,
+        ],
+        'post' => [
+            'url' => true,
+        ],
+        'redirect' => [
+            'url' => true,
+        ],
     ];
 
     protected $CHARGE_VARS = [
-      'customer' => [
-        'first_name' => null,'middle_name' => null,'last_name' => null,'email' => null,
-        'phone' => [
-          'country_code' => null, 'number' => null,
+        'customer' => [
+            'first_name' => null, 'middle_name' => null, 'last_name' => null, 'email' => null,
+            'phone' => [
+                'country_code' => null, 'number' => null,
+            ],
         ],
-      ],
-      'address' => [
-        'country' => null,'city' => null,'line1' => null,'ip_address' => null,
-      ],
-      'amount' => null,'currency' => null,'save_card' => 'false','description' => null,'threeDSecure' => 'true','statement_descriptor' => null,
-      'metadata' => [
-        'udf1' => null,'udf2' => null,
-      ],
-      'reference' => [
-        'transaction' => null,'order' => null,
-      ],
-      'receipt' => [
-        'email' => 'true','sms' => 'true',
-      ],
-      'merchant' => [
-        'id' => null,
-      ],
-      'source' => [
-        'id' => null,
-      ],
-      'post' => [
-        'url' => null,
-      ],
-      'redirect' => [
-        'url',
-      ],
+        'address' => [
+            'country' => null, 'city' => null, 'line1' => null, 'ip_address' => null,
+        ],
+        'amount' => null, 'currency' => null, 'save_card' => 'false', 'description' => null, 'threeDSecure' => 'true', 'statement_descriptor' => null,
+        'metadata' => [
+            'udf1' => null, 'udf2' => null,
+        ],
+        'reference' => [
+            'transaction' => null, 'order' => null,
+        ],
+        'receipt' => [
+            'email' => 'true', 'sms' => 'true',
+        ],
+        'merchant' => [
+            'id' => null,
+        ],
+        'source' => [
+            'id' => null,
+        ],
+        'post' => [
+            'url' => null,
+        ],
+        'redirect' => [
+            'url',
+        ],
     ];
 
     protected $REFUND_VARS = [
-      'charge_id' => null,
-      'amount' => null,
-      'currency' => null,
-      'description' => null,
-      'reason' => null,
-      'reference' => [
-        'merchant' => null,
-      ],
-      'metadata' => [
-        'udf1' => null,
-        'udf2' => null,
-      ],
-      'post' => [
-        'url' => null,
-      ],
+        'charge_id' => null,
+        'amount' => null,
+        'currency' => null,
+        'description' => null,
+        'reason' => null,
+        'reference' => [
+            'merchant' => null,
+        ],
+        'metadata' => [
+            'udf1' => null,
+            'udf2' => null,
+        ],
+        'post' => [
+            'url' => null,
+        ],
     ];
 
     protected $REQUIRED_REFUND_VARS = [
-      'charge_id' => true,
-      'amount' => true,
-      'currency' => true,
-      'description' => false,
-      'reason' => true,
-      'reference' => [
-        'merchant' => false,
-      ],
-      'metadata' => [
-        'udf1' => false,
-        'udf2' => false,
-      ],
-      'post' => [
-        'url' => true,
-      ],
+        'charge_id' => true,
+        'amount' => true,
+        'currency' => true,
+        'description' => false,
+        'reason' => true,
+        'reference' => [
+            'merchant' => false,
+        ],
+        'metadata' => [
+            'udf1' => false,
+            'udf2' => false,
+        ],
+        'post' => [
+            'url' => true,
+        ],
     ];
 
     protected $CHARGES_FILTER = [
-      'period' => [
-        'date' => [
-          'from' => 'null',
-          'to' => 'null',
+        'period' => [
+            'date' => [
+                'from' => 'null',
+                'to' => 'null',
+            ],
         ],
-      ],
-      'status' => 'null',
-      'limit' => 24,
+        'status' => 'null',
+        'limit' => 24,
     ];
 
     protected $REFUNDS_FILTER = [
-      'period' => [
-        'date' => [
-          'from' => 'null',
-          'to' => 'null',
+        'period' => [
+            'date' => [
+                'from' => 'null',
+                'to' => 'null',
+            ],
         ],
-      ],
-      'limit' => 24,
+        'limit' => 24,
     ];
 
     protected $CHARGE_STATUS_LIST = [
-      'INITIATED','ABANDONED','CANCELLED','FAILED','DECLINED','RESTRICTED','CAPTURED','VOID','TIMEDOUT','UNKNOWN',
+        'INITIATED', 'ABANDONED', 'CANCELLED', 'FAILED', 'DECLINED', 'RESTRICTED', 'CAPTURED', 'VOID', 'TIMEDOUT', 'UNKNOWN',
     ];
 
     protected function cardValidator($data)
@@ -151,7 +154,7 @@ class Reference
             } else {
                 if ($req_status) {
                     // missing required parm
-                    throw new \InvalidArgumentException("InvalidArgumentException $parm field");
+                    throw new InvalidArgumentException("InvalidArgumentException $parm field");
                 }
             }
         }
@@ -171,11 +174,11 @@ class Reference
                             } else {
                                 if ($req_status3) {
                                     // missing required parm
-                                    throw new \InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey.$Thirdkey required");
+                                    throw new InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey.$Thirdkey required");
                                 } else {
-                                    if (in_array($Thirdkey, ['country_code','number']) && $this->CHARGE_VARS[$Firstkey][$Secondkey][$Thirdkey] == null) {
+                                    if (in_array($Thirdkey, ['country_code', 'number']) && $this->CHARGE_VARS[$Firstkey][$Secondkey][$Thirdkey] == null) {
                                         if (!isset($this->CHARGE_VARS['customer']['email']) || isset($this->CHARGE_VARS['customer']['email']) && $this->CHARGE_VARS['customer']['email'] == null) {
-                                            throw new \InvalidArgumentException("InvalidArgumentException $Firstkey.phone or $Firstkey.email is required");
+                                            throw new InvalidArgumentException("InvalidArgumentException $Firstkey.phone or $Firstkey.email is required");
                                         }
                                     }
                                 }
@@ -187,7 +190,7 @@ class Reference
                         } else {
                             if ($req_status2) {
                                 // missing required parm
-                                throw new \InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey required");
+                                throw new InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey required");
                             }
                         }
                     }
@@ -198,7 +201,7 @@ class Reference
                 } else {
                     if ($req_status) {
                         // missing required parm
-                        throw new \InvalidArgumentException("InvalidArgumentException $Firstkey field");
+                        throw new InvalidArgumentException("InvalidArgumentException $Firstkey field");
                     }
                 }
             }
@@ -216,7 +219,7 @@ class Reference
                     } else {
                         if ($req_status2) {
                             // missing required parm
-                            throw new \InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey required");
+                            throw new InvalidArgumentException("InvalidArgumentException $Firstkey.$Secondkey required");
                         }
                     }
                 }
@@ -226,7 +229,7 @@ class Reference
                 } else {
                     if ($req_status) {
                         // missing required parm
-                        throw new \InvalidArgumentException("InvalidArgumentException $Firstkey field");
+                        throw new InvalidArgumentException("InvalidArgumentException $Firstkey field");
                     }
                 }
             }
@@ -241,7 +244,7 @@ class Reference
                 if ($strtotime != false && $strtotime > 0) {
                     $this->CHARGES_FILTER['period']['date']['from'] = $strtotime;
                 } else {
-                    throw new \Exception("Exception period from date not valid !");
+                    throw new Exception("Exception period from date not valid !");
                 }
             }
 
@@ -250,7 +253,7 @@ class Reference
                 if ($strtotime != false && $strtotime > 0) {
                     $this->CHARGES_FILTER['period']['date']['to'] = $strtotime;
                 } else {
-                    throw new \Exception("Exception period to date not valid !");
+                    throw new Exception("Exception period to date not valid !");
                 }
             }
         }
@@ -259,7 +262,7 @@ class Reference
             if (in_array($options['status'], $this->CHARGE_STATUS_LIST)) {
                 $this->CHARGES_FILTER['status'] = $options['status'];
             } else {
-                throw new \Exception("Exception charge status not valid !");
+                throw new Exception("Exception charge status not valid !");
             }
         }
 
@@ -267,7 +270,7 @@ class Reference
             if (is_numeric($options['limit']) && $options['limit'] > 0 && $options['limit'] < 51) {
                 $this->CHARGES_FILTER['limit'] = $options['limit'];
             } else {
-                throw new \Exception("Exception charges limit not valid !");
+                throw new Exception("Exception charges limit not valid !");
             }
         }
     }
@@ -280,7 +283,7 @@ class Reference
                 if ($strtotime != false && $strtotime > 0) {
                     $this->REFUNDS_FILTER['period']['date']['from'] = $strtotime;
                 } else {
-                    throw new \Exception("Exception period from date not valid !");
+                    throw new Exception("Exception period from date not valid !");
                 }
             }
 
@@ -289,7 +292,7 @@ class Reference
                 if ($strtotime != false && $strtotime > 0) {
                     $this->REFUNDS_FILTER['period']['date']['to'] = $strtotime;
                 } else {
-                    throw new \Exception("Exception period to date not valid !");
+                    throw new Exception("Exception period to date not valid !");
                 }
             }
         }
@@ -298,7 +301,7 @@ class Reference
             if (is_numeric($options['limit']) && $options['limit'] > 0 && $options['limit'] < 51) {
                 $this->REFUNDS_FILTER['limit'] = $options['limit'];
             } else {
-                throw new \Exception("Exception refunds limit not valid !");
+                throw new Exception("Exception refunds limit not valid !");
             }
         }
     }

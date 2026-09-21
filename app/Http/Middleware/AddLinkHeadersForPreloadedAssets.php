@@ -29,7 +29,7 @@ class AddLinkHeadersForPreloadedAssets extends Middleware
      * @param Closure $next
      * @param null $limit
      *
-     * @return \Symfony\Component\HttpFoundation\Response The HTTP response with optional headers.
+     * @return Response The HTTP response with optional headers.
      */
     public function handle($request, $next, $limit = null): Response
     {

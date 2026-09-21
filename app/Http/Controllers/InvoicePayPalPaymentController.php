@@ -6,7 +6,7 @@ use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoicePayPalPaymentController extends Controller
 {

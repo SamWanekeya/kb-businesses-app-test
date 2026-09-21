@@ -8,7 +8,7 @@ use App\Models\PaymentSetting;
 use App\Models\Setting;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 use MercadoPago\Item;
 use MercadoPago\Preference;
 use MercadoPago\SDK;
@@ -86,19 +86,28 @@ class InvoiceMercadoPagoPaymentController extends Controller
         }
     }
 
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
     public function success(Request $request)
     {
         return $this->handlePaymentCallback($request, 'success');
-    }
-
-    public function failure(Request $request)
-    {
-        return $this->handlePaymentCallback($request, 'failure');
-    }
-
-    public function pending(Request $request)
-    {
-        return $this->handlePaymentCallback($request, 'pending');
     }
 
     private function handlePaymentCallback(Request $request, string $status)
@@ -156,22 +165,13 @@ class InvoiceMercadoPagoPaymentController extends Controller
         }
     }
 
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    public function failure(Request $request)
     {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
+        return $this->handlePaymentCallback($request, 'failure');
     }
 
-    private function getInvoicePaymentSettings($organizationId)
+    public function pending(Request $request)
     {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => Setting::getUserSettings($organizationId),
-        ];
+        return $this->handlePaymentCallback($request, 'pending');
     }
 }

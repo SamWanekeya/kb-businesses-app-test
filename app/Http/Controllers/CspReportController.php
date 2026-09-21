@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -24,9 +25,9 @@ class CspReportController extends Controller
     /**
      * Handle an incoming CSP violation report.
      *
-     * @param \Illuminate\Http\Request $request Incoming HTTP request with JSON body.
+     * @param Request $request Incoming HTTP request with JSON body.
      *
-     * @return \Illuminate\Http\Response 204 No Content on success.
+     * @return Response 204 No Content on success.
      */
     public function __invoke(Request $request)
     {

@@ -10,7 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceCashfreePaymentController extends Controller
 {

@@ -14,6 +14,62 @@ use Inertia\Inertia;
 
 class ReferralController extends Controller
 {
+    /**
+     * Create referral record when user purchases a plan
+     */
+    public static function createReferralRecord(User $user, $billingCycle = null)
+    {
+        $settings = ReferralSetting::current();
+
+        if (!$settings->is_enabled || !$user->referral_code_used || !$user->plan) {
+            return;
+        }
+
+        // Check if referral record already exists
+        $existingReferral = Referral::where('user_id', $user->id)
+            ->where('plan_id', $user->plan_id)
+            ->first();
+
+        if ($existingReferral) {
+            return; // Already created
+        }
+
+        $referrer = User::where('referral_code', $user->referral_code_used)
+            ->where('type', 'organization')
+            ->first();
+
+        if (!$referrer) {
+            return;
+        }
+
+        // Get the actual paid amount from the most recent plan order
+        $planOrder = PlanOrder::where('user_id', $user->id)
+            ->where('plan_id', $user->plan_id)
+            ->where('status', 'approved')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        // Use the actual paid amount if available, otherwise use plan price based on billing cycle
+        if ($planOrder && $planOrder->final_price > 0) {
+            $planPrice = $planOrder->final_price;
+        } elseif ($planOrder && $planOrder->billing_cycle === 'yearly' && $user->plan->yearly_price) {
+            $planPrice = $user->plan->yearly_price;
+        } else {
+            $planPrice = $user->plan->price ?? 0;
+        }
+        $commissionAmount = ($planPrice * $settings->commission_percentage) / 100;
+
+        if ($commissionAmount > 0) {
+            Referral::create([
+                'user_id' => $user->id,
+                'organization_id' => $referrer->id,
+                'commission_percentage' => $settings->commission_percentage,
+                'amount' => $commissionAmount,
+                'plan_id' => $user->plan_id,
+            ]);
+        }
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -314,61 +370,5 @@ class ReferralController extends Controller
             'currency' => $currency,
             'currency_symbol' => $currency_symbol,
         ]);
-    }
-
-    /**
-     * Create referral record when user purchases a plan
-     */
-    public static function createReferralRecord(User $user, $billingCycle = null)
-    {
-        $settings = ReferralSetting::current();
-
-        if (!$settings->is_enabled || !$user->referral_code_used || !$user->plan) {
-            return;
-        }
-
-        // Check if referral record already exists
-        $existingReferral = Referral::where('user_id', $user->id)
-            ->where('plan_id', $user->plan_id)
-            ->first();
-
-        if ($existingReferral) {
-            return; // Already created
-        }
-
-        $referrer = User::where('referral_code', $user->referral_code_used)
-            ->where('type', 'organization')
-            ->first();
-
-        if (!$referrer) {
-            return;
-        }
-
-        // Get the actual paid amount from the most recent plan order
-        $planOrder = PlanOrder::where('user_id', $user->id)
-            ->where('plan_id', $user->plan_id)
-            ->where('status', 'approved')
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        // Use the actual paid amount if available, otherwise use plan price based on billing cycle
-        if ($planOrder && $planOrder->final_price > 0) {
-            $planPrice = $planOrder->final_price;
-        } elseif ($planOrder && $planOrder->billing_cycle === 'yearly' && $user->plan->yearly_price) {
-            $planPrice = $user->plan->yearly_price;
-        } else {
-            $planPrice = $user->plan->price ?? 0;
-        }
-        $commissionAmount = ($planPrice * $settings->commission_percentage) / 100;
-
-        if ($commissionAmount > 0) {
-            Referral::create([
-                'user_id' => $user->id,
-                'organization_id' => $referrer->id,
-                'commission_percentage' => $settings->commission_percentage,
-                'amount' => $commissionAmount,
-                'plan_id' => $user->plan_id,
-            ]);
-        }
     }
 }

@@ -58,20 +58,6 @@ class AccountTypeController extends Controller
         return redirect()->back()->with('success', __('Account type created successfully.'));
     }
 
-    public function update(Request $request, AccountType $accountType)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:account_types,name,' . $accountType->id . ',id,created_by,' . createdBy(),
-            'description' => 'nullable|string',
-            'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $accountType->update($request->all());
-
-        return redirect()->back()->with('success', __('Account type updated successfully.'));
-    }
-
     public function destroy(AccountType $accountType)
     {
         if ($accountType->accounts()->count() > 0) {
@@ -90,5 +76,19 @@ class AccountTypeController extends Controller
         ]);
 
         return redirect()->back()->with('success', __('Account type status updated successfully.'));
+    }
+
+    public function update(Request $request, AccountType $accountType)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:account_types,name,' . $accountType->id . ',id,created_by,' . createdBy(),
+            'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $accountType->update($request->all());
+
+        return redirect()->back()->with('success', __('Account type updated successfully.'));
     }
 }

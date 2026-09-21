@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\InvoiceStripePaymentController;
 use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
 use App\Http\Controllers\Settings\OrganizationPaymentSettingController;

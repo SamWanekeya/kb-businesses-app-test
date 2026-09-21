@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
      * This method ensures that Inertia automatically reloads pages
      * when assets are updated, such as after a deployment.
      *
-     * @param \Illuminate\Http\Request $request The current HTTP request.
+     * @param Request $request The current HTTP request.
      *
      * @return string|null The current asset version identifier.
      *
@@ -63,7 +63,7 @@ class HandleInertiaRequests extends Middleware
      *
      * Shared data may be accessed in any Inertia page component via `usePage().props`.
      *
-     * @param \Illuminate\Http\Request $request The current HTTP request.
+     * @param Request $request The current HTTP request.
      *
      * @return array The array of shared props passed to all Inertia responses.
      *
@@ -118,7 +118,7 @@ class HandleInertiaRequests extends Middleware
             ],
 
             // Impersonation and routing
-            'isOnBehalfOf' => (bool) session('on_behalf_of_by'),
+            'isOnBehalfOf' => (bool)session('on_behalf_of_by'),
             'namedRoutes' => function () use ($request): array {
                 // If user is signed in, give them all routes
                 if ($request->user()) {

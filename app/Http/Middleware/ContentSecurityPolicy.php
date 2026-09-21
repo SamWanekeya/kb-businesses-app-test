@@ -6,6 +6,10 @@ use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Horizon\Horizon;
+use Laravel\Telescope\Telescope;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ContentSecurityPolicy
@@ -25,12 +29,13 @@ class ContentSecurityPolicy
     /**
      * Handle an incoming request and attach CSP headers.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
+     * @param Request $request
+     * @param Closure $next
      *
-     * @throws \RuntimeException If the nonce is missing from container (shouldn’t happen if provider registers it).
+     * @throws RuntimeException If the nonce is missing from container (shouldn’t happen if provider registers it).
      *
      * @return mixed
+     *
      */
     public function handle(Request $request, Closure $next)
     {
@@ -41,7 +46,7 @@ class ContentSecurityPolicy
 
         // Retrieve nonce from container (AppServiceProvider should register it).
         if (!app()->bound('cspNonce')) {
-            throw new \RuntimeException('CSP nonce is not bound in the container. Ensure AppServiceProvider registers cspNonce');
+            throw new RuntimeException('CSP nonce is not bound in the container. Ensure AppServiceProvider registers cspNonce');
         }
 
         $nonce = app('cspNonce');
@@ -69,19 +74,19 @@ class ContentSecurityPolicy
     /**
      * Determine whether the request should be exempt from CSP (e.g. Telescope, Horizon).
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
      * @return bool
      */
     private function shouldBypassForDevTools(Request $request): bool
     {
         // If Telescope is installed and the request is for Telescope, skip enforcement to avoid breaking dev tooling
-        if (class_exists(\Laravel\Telescope\Telescope::class) && $request->is(config('telescope.path', 'telescope') . '*')) {
+        if (class_exists(Telescope::class) && $request->is(config('telescope.path', 'telescope') . '*')) {
             return true;
         }
 
         // If Horizon is installed and the request is for Horizon
-        if (class_exists(\Laravel\Horizon\Horizon::class) && $request->is(config('horizon.path', 'horizon') . '*')) {
+        if (class_exists(Horizon::class) && $request->is(config('horizon.path', 'horizon') . '*')) {
             return true;
         }
 
@@ -89,9 +94,29 @@ class ContentSecurityPolicy
     }
 
     /**
+     * Quick check if response looks like HTML.
+     *
+     * @param mixed $response
+     *
+     * @return bool
+     */
+    private function isHtmlResponse($response): bool
+    {
+        // Some responses use Symfony Response; normalize header check.
+        $contentType = $response->headers->get('Content-Type', '');
+
+        if (stripos($contentType, 'text/html') !== false) {
+            return true;
+        }
+
+        // Inertia's initial HTML root is text/html; API and Inertia JSON are not.
+        return false;
+    }
+
+    /**
      * Attach CSP and related headers to the response.
      *
-     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param Response $response
      * @param string $nonce
      *
      * @return void
@@ -101,9 +126,9 @@ class ContentSecurityPolicy
         $cfg = $this->loadValidatedConfig();
 
         // Convert CSV hashes to quoted tokens (cached per request)
-        $scriptHashes = $this->csvToQuotedTokens((string) ($cfg['script_hashes'] ?? ''), 'script');
-        $styleHashes = $this->csvToQuotedTokens((string) ($cfg['style_hashes'] ?? ''), 'style');
-        $styleAttrHashes = $this->csvToQuotedTokens((string) ($cfg['style_attribute_hashes'] ?? ''), 'style-attribute');
+        $scriptHashes = $this->csvToQuotedTokens((string)($cfg['script_hashes'] ?? ''), 'script');
+        $styleHashes = $this->csvToQuotedTokens((string)($cfg['style_hashes'] ?? ''), 'style');
+        $styleAttrHashes = $this->csvToQuotedTokens((string)($cfg['style_attribute_hashes'] ?? ''), 'style-attribute');
 
         // Build script-src with nonce + strict-dynamic + safe fallbacks
         // Note: strict-dynamic trusts scripts loaded by nonce; include 'https:' fallback for older browsers.
@@ -139,7 +164,7 @@ class ContentSecurityPolicy
         $reportToGroup = $cfg['report_to_group'] ?? 'hf-csp';
         $reportTo = [
             'group' => $reportToGroup,
-            'maximum_age' => (int) ($cfg['report_to_maximum_age'] ?? 5184000),
+            'maximum_age' => (int)($cfg['report_to_maximum_age'] ?? 5184000),
             'endpoints' => [
                 ['url' => route($cfg['report_route'] ?? 'csp.report')],
             ],
@@ -178,69 +203,6 @@ class ContentSecurityPolicy
 
         // Set header (enforced mode)
         $response->headers->set('Content-Security-Policy', $cspHeader);
-    }
-
-    /**
-     * Fast injection of nonce attributes into <script> tags (both inline and external).
-     *
-     * This implementation:
-     * - Targets <script ...> tags that do NOT already have a nonce attribute.
-     * - Adds nonce="{value}" before the closing '>' of the opening script tag.
-     * - Is PCRE-safe (no variable-length lookbehinds).
-     * - Intentionally conservative: it won’t attempt to parse the inner script contents.
-     *
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param string $nonce
-     *
-     * @return void
-     */
-    private function injectNonceIntoAssets($response, string $nonce): void
-    {
-        $content = $response->getContent();
-
-        if (empty($content) || !is_string($content)) {
-            return;
-        }
-
-        /**
-         * Pattern explanation:
-         * - <script\b            : opening script tag
-         * - (?![^>]*\bnonce=)    : negative lookahead to ensure no 'nonce=' appears in the tag
-         * - ([^>]*)              : capture all attributes (if any) up to the closing '>'
-         * - >                    : the tag close
-         *
-         * We match both inline and external scripts. We avoid greedy traps by stopping at the first '>'.
-         */
-        $pattern = '/<script\b(?![^>]*\bnonce=)([^>]*)>/i';
-
-        $callback = function (array $matches) use ($nonce) {
-            // $matches[0] = full opening tag, e.g. "<script type=\"module\">"
-            // $matches[1] = attributes string (may be empty or contain src, type, etc.)
-            $attrChunk = $matches[1];
-
-            // Build nonce attribute (escaped)
-            $nonceAttr = ' nonce="' . htmlspecialchars($nonce, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
-
-            // If tag is self-closing (e.g. <script ... />), place before "/>"
-            if (str_ends_with($matches[0], '/>')) {
-                return rtrim(substr($matches[0], 0, -2)) . $nonceAttr . ' />';
-            }
-
-            // Normal tag: insert before closing '>'
-            return rtrim(substr($matches[0], 0, -1)) . $nonceAttr . '>';
-        };
-
-        try {
-            $new = preg_replace_callback($pattern, $callback, $content);
-
-            // If preg_replace_callback returned null, an error occurred. We keep original content then.
-            if ($new !== null) {
-                $response->setContent($new);
-            }
-        } catch (Exception $e) {
-            // Fail silently but log once for investigation
-            Log::warning('CSP: regex injection failed: ' . $e->getMessage());
-        }
     }
 
     /**
@@ -367,22 +329,65 @@ class ContentSecurityPolicy
     }
 
     /**
-     * Quick check if response looks like HTML.
+     * Fast injection of nonce attributes into <script> tags (both inline and external).
      *
-     * @param mixed $response
+     * This implementation:
+     * - Targets <script ...> tags that do NOT already have a nonce attribute.
+     * - Adds nonce="{value}" before the closing '>' of the opening script tag.
+     * - Is PCRE-safe (no variable-length lookbehinds).
+     * - Intentionally conservative: it won’t attempt to parse the inner script contents.
      *
-     * @return bool
+     * @param Response $response
+     * @param string $nonce
+     *
+     * @return void
      */
-    private function isHtmlResponse($response): bool
+    private function injectNonceIntoAssets($response, string $nonce): void
     {
-        // Some responses use Symfony Response; normalize header check.
-        $contentType = $response->headers->get('Content-Type', '');
+        $content = $response->getContent();
 
-        if (stripos($contentType, 'text/html') !== false) {
-            return true;
+        if (empty($content) || !is_string($content)) {
+            return;
         }
 
-        // Inertia's initial HTML root is text/html; API and Inertia JSON are not.
-        return false;
+        /**
+         * Pattern explanation:
+         * - <script\b            : opening script tag
+         * - (?![^>]*\bnonce=)    : negative lookahead to ensure no 'nonce=' appears in the tag
+         * - ([^>]*)              : capture all attributes (if any) up to the closing '>'
+         * - >                    : the tag close
+         *
+         * We match both inline and external scripts. We avoid greedy traps by stopping at the first '>'.
+         */
+        $pattern = '/<script\b(?![^>]*\bnonce=)([^>]*)>/i';
+
+        $callback = function (array $matches) use ($nonce) {
+            // $matches[0] = full opening tag, e.g. "<script type=\"module\">"
+            // $matches[1] = attributes string (may be empty or contain src, type, etc.)
+            $attrChunk = $matches[1];
+
+            // Build nonce attribute (escaped)
+            $nonceAttr = ' nonce="' . htmlspecialchars($nonce, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
+
+            // If tag is self-closing (e.g. <script ... />), place before "/>"
+            if (str_ends_with($matches[0], '/>')) {
+                return rtrim(substr($matches[0], 0, -2)) . $nonceAttr . ' />';
+            }
+
+            // Normal tag: insert before closing '>'
+            return rtrim(substr($matches[0], 0, -1)) . $nonceAttr . '>';
+        };
+
+        try {
+            $new = preg_replace_callback($pattern, $callback, $content);
+
+            // If preg_replace_callback returned null, an error occurred. We keep original content then.
+            if ($new !== null) {
+                $response->setContent($new);
+            }
+        } catch (Exception $e) {
+            // Fail silently but log once for investigation
+            Log::warning('CSP: regex injection failed: ' . $e->getMessage());
+        }
     }
 }

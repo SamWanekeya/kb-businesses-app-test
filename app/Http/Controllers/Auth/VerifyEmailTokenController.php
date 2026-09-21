@@ -55,7 +55,7 @@ class VerifyEmailTokenController extends Controller
         }
 
         // Ensure token belongs to authenticated user
-        if ((int) $record->user_id !== (int) $user->id) {
+        if ((int)$record->user_id !== (int)$user->id) {
             return redirect()
                 ->route('login')
                 ->with('error', __('Your verification link is invalid or expired. Please sign in to request a new one'));

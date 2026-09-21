@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Webhook;
+use Throwable;
 
 class WebhookService
 {
@@ -51,7 +52,7 @@ class WebhookService
                 } else {
                     return false;
                 }
-            } catch (\Throwable $th) {
+            } catch (Throwable $th) {
                 return false;
             }
         } else {

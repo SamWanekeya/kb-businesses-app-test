@@ -218,7 +218,7 @@ function _emptyValidation($params, $salt)
     if ($empty_value !== false) {
         return [
             'status' => 0,
-            'data' => 'Mandatory Parameter '.$empty_value.' is empty',
+            'data' => 'Mandatory Parameter ' . $empty_value . ' is empty',
         ];
     }
 
@@ -378,7 +378,7 @@ function _payoutPayment($params_array, $salt_key, $url)
     $params_array['hash'] = $hash_key;
 
     // call curl_call() for initiate payout link
-    $curl_result = _curlCall($url.'payout/v1/retrieve', http_build_query($params_array));
+    $curl_result = _curlCall($url . 'payout/v1/retrieve', http_build_query($params_array));
 
     return $curl_result;
 }

@@ -6,7 +6,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class NepalstePaymentController extends Controller
 {

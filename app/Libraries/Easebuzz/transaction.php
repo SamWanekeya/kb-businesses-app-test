@@ -106,11 +106,11 @@ function _transaction($params, $merchant_key, $salt, $env)
     //echo $temp;
     $diff_amount_string = '';
     if (strlen($temp[1]) == 0) {
-        $diff_amount_string = $temp[0].'.0';
+        $diff_amount_string = $temp[0] . '.0';
         $postedArray['amount'] = $diff_amount_string;
 
     } elseif (strlen($temp[1]) == 1 || strlen($temp[1]) == 2) {
-        $diff_amount_string = $temp[0].'.'.$temp[1];
+        $diff_amount_string = $temp[0] . '.' . $temp[1];
 
     } else {
         return [
@@ -263,7 +263,7 @@ function _emptyValidation($params, $salt)
     if ($empty_value !== false) {
         return [
             'status' => 0,
-            'data' => 'Mandatory Parameter '.$empty_value.' can not empty',
+            'data' => 'Mandatory Parameter ' . $empty_value . ' can not empty',
         ];
     }
 
@@ -437,7 +437,7 @@ function _getTransaction($params_array, $salt_key, $url)
     $params_array['hash'] = $hash_key;
 
     // call curl_call() for initiate pay link
-    $curl_result = _curlCall($url.'transaction/v1/retrieve', http_build_query($params_array));
+    $curl_result = _curlCall($url . 'transaction/v1/retrieve', http_build_query($params_array));
 
     return $curl_result;
 }
@@ -630,7 +630,7 @@ function _getReverseHashKey($response_obj, $s_key)
     // make an array or split into array base on pipe sign.
     $reverse_hash = "";
     $reverse_hash_sequence_array = explode('|', $reverse_hash_sequence);
-    $reverse_hash .= $s_key.'|' . $response_obj['data']->status;
+    $reverse_hash .= $s_key . '|' . $response_obj['data']->status;
 
     // prepare a string based on reverse hash sequence from the $response_obj array.
     foreach ($reverse_hash_sequence_array as $value) {

@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Mail\TestMail;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EmailSettingController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         return Inertia::render('Settings/EmailSettings');
     }
@@ -21,7 +23,7 @@ class EmailSettingController extends Controller
     /**
      * Get email settings for the authenticated user.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getEmailSettings()
     {
@@ -48,7 +50,7 @@ class EmailSettingController extends Controller
     /**
      * Update email settings for the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function updateEmailSettings(Request $request)
     {
@@ -85,7 +87,7 @@ class EmailSettingController extends Controller
     /**
      * Send a test email.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function sendTestEmail(Request $request)
     {

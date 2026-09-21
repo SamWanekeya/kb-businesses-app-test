@@ -50,14 +50,6 @@ class DocumentTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -75,6 +67,14 @@ class DocumentTypeController extends Controller
 
         return redirect()->route('document-types.index')
             ->with('success', __('Document type created successfully.'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -100,30 +100,6 @@ class DocumentTypeController extends Controller
     public function edit(DocumentType $documentType)
     {
         //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DocumentType $documentType)
-    {
-        // Check if user has access to this document type
-        if ($documentType->created_by !== createdBy()) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        $request->validate([
-            'type_name' => 'required|string|max:255|unique:document_types,type_name,' . $documentType->id . ',id,created_by,' . createdBy(),
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $documentType->update([
-            'type_name' => $request->type_name,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('document-types.index')
-            ->with('success', __('Document type updated successfully.'));
     }
 
     /**
@@ -157,5 +133,29 @@ class DocumentTypeController extends Controller
 
         return redirect()->route('document-types.index')
             ->with('success', __('Document type status updated successfully.'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, DocumentType $documentType)
+    {
+        // Check if user has access to this document type
+        if ($documentType->created_by !== createdBy()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $request->validate([
+            'type_name' => 'required|string|max:255|unique:document_types,type_name,' . $documentType->id . ',id,created_by,' . createdBy(),
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $documentType->update([
+            'type_name' => $request->type_name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('document-types.index')
+            ->with('success', __('Document type updated successfully.'));
     }
 }

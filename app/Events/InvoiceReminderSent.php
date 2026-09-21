@@ -15,7 +15,7 @@ class InvoiceReminderSent
 
     public function __construct(
         public Invoice $invoice,
-        public string $recipientEmail,
+        public string  $recipientEmail,
         public ?string $recipientName = null
     ) {
         //

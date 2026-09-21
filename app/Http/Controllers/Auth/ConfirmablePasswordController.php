@@ -25,7 +25,7 @@ class ConfirmablePasswordController extends Controller
     /**
      * Confirm the user's password.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -40,7 +40,7 @@ class ConfirmablePasswordController extends Controller
 
         $user = $request->user();
 
-        if (! $user || ! Auth::guard('web')->validate([
+        if (!$user || !Auth::guard('web')->validate([
                 'email' => $user->email,
                 'password' => $request->password,
             ])) {

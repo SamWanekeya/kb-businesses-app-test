@@ -2,30 +2,19 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 trait AutoApplyPermissionCheck
 {
     /**
-     * Apply permission check to a model query
-     *
-     * @param string $modelClass The fully qualified model class name
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function queryWithPermission($modelClass)
-    {
-        return $modelClass::withPermissionCheck();
-    }
-
-    /**
      * Apply permission scope to the query based on user's permissions
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      * @param string $module The module name (e.g., 'roles', 'permissions')
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function applyPermissionScope($query, $module)
     {
@@ -95,5 +84,17 @@ trait AutoApplyPermissionCheck
 
         // If user doesn't have any relevant permissions, return no results
         return $query;
+    }
+
+    /**
+     * Apply permission check to a model query
+     *
+     * @param string $modelClass The fully qualified model class name
+     *
+     * @return Builder
+     */
+    protected function queryWithPermission($modelClass)
+    {
+        return $modelClass::withPermissionCheck();
     }
 }

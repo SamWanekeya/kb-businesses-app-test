@@ -10,8 +10,8 @@ use App\Models\Opportunity;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class DocumentController extends Controller
@@ -51,30 +51,6 @@ class DocumentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-
-        $folders = DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get();
-
-        $types = DocumentType::where('created_by', createdBy())->select('id', 'type_name')->get();
-
-        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
-
-        return Inertia::render('Documents/Create', [
-            'users' => $users,
-            'accounts' => $accounts,
-            'folders' => $folders,
-            'types' => $types,
-            'opportunities' => $opportunities,
-        ]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -110,6 +86,30 @@ class DocumentController extends Controller
 
         return redirect()->back()
             ->with('success', __('Document created successfully.'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+
+        $folders = DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get();
+
+        $types = DocumentType::where('created_by', createdBy())->select('id', 'type_name')->get();
+
+        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
+
+        return Inertia::render('Documents/Create', [
+            'users' => $users,
+            'accounts' => $accounts,
+            'folders' => $folders,
+            'types' => $types,
+            'opportunities' => $opportunities,
+        ]);
     }
 
     /**
@@ -156,6 +156,33 @@ class DocumentController extends Controller
             'types' => $types,
             'opportunities' => $opportunities,
         ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Document $document)
+    {
+        $folderId = $document->folder_id;
+        $document->delete();
+
+        if ($folderId) {
+            return redirect()->route('documents.folder', $folderId)->with('success', __('Document deleted successfully.'));
+        }
+
+        return redirect()->route('documents.index')->with('success', __('Document deleted successfully.'));
+    }
+
+    /**
+     * Toggle the status of the specified resource.
+     */
+    public function toggleStatus(Document $document)
+    {
+        $newStatus = $document->status === 'active' ? 'inactive' : 'active';
+        $document->update(['status' => $newStatus]);
+
+        return redirect()->back()
+            ->with('success', __('Document status updated successfully.'));
     }
 
     /**
@@ -212,33 +239,6 @@ class DocumentController extends Controller
 
         return redirect()->back()
             ->with('success', __('Document updated successfully.'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Document $document)
-    {
-        $folderId = $document->folder_id;
-        $document->delete();
-
-        if ($folderId) {
-            return redirect()->route('documents.folder', $folderId)->with('success', __('Document deleted successfully.'));
-        }
-
-        return redirect()->route('documents.index')->with('success', __('Document deleted successfully.'));
-    }
-
-    /**
-     * Toggle the status of the specified resource.
-     */
-    public function toggleStatus(Document $document)
-    {
-        $newStatus = $document->status === 'active' ? 'inactive' : 'active';
-        $document->update(['status' => $newStatus]);
-
-        return redirect()->back()
-            ->with('success', __('Document status updated successfully.'));
     }
 
     /**

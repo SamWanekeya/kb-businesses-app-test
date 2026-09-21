@@ -9,7 +9,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Support\Facades\Log;
 use net\authorize\api\constants\ANetEnvironment;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
@@ -89,6 +89,25 @@ class InvoiceAuthorizeNetPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment processing failed. Please try again.')]);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     private function createAuthorizeNetTransaction($paymentData, $invoice, $organization, $settings)
@@ -197,24 +216,5 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             default:
                 return ['success' => false, 'error' => __('Unknown transaction response'), 'transaction_id' => null];
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => Setting::getUserSettings($organizationId),
-        ];
     }
 }

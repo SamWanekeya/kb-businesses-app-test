@@ -345,9 +345,9 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     public function organizationDefaultData($organization)
     {
         $roles = [
-            'sales-manager' => [
-                'label' => 'Sales Manager',
-                'description' => 'Sales Manager has access to manage sales operations',
+            'agency_manager' => [
+                'label' => 'Agency manager',
+                'description' => 'Oversees the entire organizations sales operations, managing multiple teams, setting targets, and directing overall agent recruitment and growth strategies',
                 'permissions' => $this->getSalesManagerPermissions(),
             ],
         ];
