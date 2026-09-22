@@ -103,7 +103,7 @@ class RazorpayController extends Controller
             ]);
 
             processPaymentSuccess([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'razorpay',

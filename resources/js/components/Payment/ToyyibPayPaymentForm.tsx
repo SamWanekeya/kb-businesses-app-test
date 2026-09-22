@@ -152,7 +152,7 @@ export function ToyyibPayPaymentForm({
                     </AlertDescription>
                 </Alert>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">{translate('Full Name')} *</Label>
                         <Input
@@ -162,7 +162,6 @@ export function ToyyibPayPaymentForm({
                                 setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));
                                 if (errors.name) setErrors((prev) => ({ ...prev, name: '' }));
                             }}
-                            placeholder={translate('Enter your full name')}
                             className={errors.name ? 'border-red-500' : ''}
                             required
                         />
@@ -179,7 +178,6 @@ export function ToyyibPayPaymentForm({
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
                                 if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
                             }}
-                            placeholder={translate('Enter your email address')}
                             className={errors.email ? 'border-red-500' : ''}
                             required
                         />
@@ -196,7 +194,6 @@ export function ToyyibPayPaymentForm({
                                 setCustomerDetails((prev) => ({ ...prev, phone: formatted }));
                                 if (errors.phone) setErrors((prev) => ({ ...prev, phone: '' }));
                             }}
-                            placeholder="60123456789"
                             className={errors.phone ? 'border-red-500' : ''}
                             maxLength={12}
                             required

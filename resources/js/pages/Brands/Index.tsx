@@ -209,7 +209,7 @@ export default function Brands() {
     const canToggleStatus = useHasPermission('toggle-status-brands');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Product Setup') },
         { title: translate('Brands') },
     ];
@@ -220,7 +220,6 @@ export default function Brands() {
             description={translate('Manage brands associated with your products.')}
             url="/brands"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -236,7 +235,7 @@ export default function Brands() {
                                     : translate('Update the brand details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Brand Name')}
@@ -248,7 +247,6 @@ export default function Brands() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Nike, Apple, Samsung')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -264,7 +262,6 @@ export default function Brands() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, website: e.target.value });
                                     }}
-                                    placeholder="e.g. https://www.kakbima.dev"
                                     className={formErrors.website ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                 />
@@ -278,7 +275,6 @@ export default function Brands() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter brand description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -328,7 +324,6 @@ export default function Brands() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search brands...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -356,7 +351,7 @@ export default function Brands() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

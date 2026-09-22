@@ -203,7 +203,7 @@ export default function CalendarIndex() {
         return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Calendar') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Calendar') }];
 
     const pageActions = [];
     if (isGoogleCalendarSynced && isGoogleEnabled) {

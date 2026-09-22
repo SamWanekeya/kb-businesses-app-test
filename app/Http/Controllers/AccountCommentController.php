@@ -21,16 +21,16 @@ class AccountCommentController extends Controller
 
         $comment = AccountComment::create([
             'account_id' => $account->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'comment' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
 
         AccountActivity::create([
             'account_id' => $account->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);

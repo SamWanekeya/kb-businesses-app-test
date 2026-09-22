@@ -26,7 +26,7 @@ class PaiementPaymentController extends Controller
 
             if ($validated['status'] === 'success') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'paiement',
@@ -57,7 +57,7 @@ class PaiementPaymentController extends Controller
                 return response()->json(['error' => __('Paiement Pro not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $transactionId = 'REF-' . time();
 
             $data = [

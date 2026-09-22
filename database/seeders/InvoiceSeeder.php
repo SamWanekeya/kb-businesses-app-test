@@ -44,7 +44,7 @@ class InvoiceSeeder extends Seeder
 
             for ($i = 1; $i <= 15; $i++) {
                 $account = $accounts->random();
-                $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
+                $contact = $contacts->where('account_id', $account->id)?->first() ?? $contacts->random();
                 $invoiceDate = $faker->dateTimeBetween('-2 months', 'now');
                 $dueDate = $faker->dateTimeBetween($invoiceDate, '+1 month');
 

@@ -301,7 +301,7 @@ export default function CouponsPage() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Coupons') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Coupons') }];
 
     // Define table columns
     const columns = [
@@ -436,7 +436,6 @@ export default function CouponsPage() {
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             description={translate('Manage your coupons and discounts.')}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -538,6 +537,7 @@ export default function CouponsPage() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -546,7 +546,6 @@ export default function CouponsPage() {
                             label: translate('Coupon Name'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('Enter coupon name'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
@@ -567,7 +566,6 @@ export default function CouponsPage() {
                             required: true,
                             min: 0,
                             step: 0.01,
-                            placeholder: translate('Enter value'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
@@ -575,7 +573,6 @@ export default function CouponsPage() {
                             label: translate('Total Usage Limit'),
                             type: 'number',
                             min: 1,
-                            placeholder: translate('Leave empty for unlimited'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
@@ -595,7 +592,6 @@ export default function CouponsPage() {
                             label: translate('Coupon Code'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('Enter coupon code'),
                             width: 'calc(50% - 0.5rem)',
                             render: (field, formData, handleChange) => {
                                 const isAutoGenerate = formData.code_type === 'auto';
@@ -607,7 +603,6 @@ export default function CouponsPage() {
                                                     id={field.name}
                                                     name={field.name}
                                                     type="text"
-                                                    placeholder={translate('Click generate to create code')}
                                                     value={formData[field.name] || ''}
                                                     readOnly
                                                     className="flex-1"
@@ -627,7 +622,6 @@ export default function CouponsPage() {
                                                 id={field.name}
                                                 name={field.name}
                                                 type="text"
-                                                placeholder={field.placeholder}
                                                 value={formData[field.name] || ''}
                                                 onChange={(e) => {
                                                     handleChange(field.name, e.target.value);
@@ -644,7 +638,6 @@ export default function CouponsPage() {
                             type: 'number',
                             min: 0,
                             step: 0.01,
-                            placeholder: translate('Optional'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
@@ -653,7 +646,6 @@ export default function CouponsPage() {
                             type: 'number',
                             min: 0,
                             step: 0.01,
-                            placeholder: translate('Optional'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
@@ -661,7 +653,6 @@ export default function CouponsPage() {
                             label: translate('Usage Limit Per User'),
                             type: 'number',
                             min: 1,
-                            placeholder: translate('Leave empty for unlimited'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {

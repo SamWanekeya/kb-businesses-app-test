@@ -172,7 +172,7 @@ export default function DocumentTypes() {
     const canToggleStatus = useHasPermission('toggle-status-document-types');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Types') },
     ];
@@ -183,7 +183,6 @@ export default function DocumentTypes() {
             description={translate('Manage document types for your documents.')}
             url="/document-types"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -199,7 +198,7 @@ export default function DocumentTypes() {
                                     : translate('Update the document type details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="type_name" required>
                                     {translate('Type Name')}
@@ -211,7 +210,6 @@ export default function DocumentTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, type_name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Contract, NDA, Invoice, Report')}
                                     className={formErrors.type_name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -261,7 +259,6 @@ export default function DocumentTypes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search document types...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -289,7 +286,7 @@ export default function DocumentTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

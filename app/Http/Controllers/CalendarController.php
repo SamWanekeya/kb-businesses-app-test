@@ -104,7 +104,7 @@ class CalendarController extends Controller
         }
 
         return Inertia::render('Calendar/Index', [
-            'events' => $events->values()->toArray(),
+            'events' => $events->values()?->toArray(),
             'settings' => settings(createdBy()),
         ]);
     }

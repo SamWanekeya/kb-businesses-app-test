@@ -45,8 +45,8 @@ class ProductSeeder extends Seeder
             }
 
             foreach ($productTemplates as $index => $template) {
-                $brand = $brands->where('name', $template['brand'])->first();
-                $category = $categories->where('name', $template['category'])->first();
+                $brand = $brands->where('name', $template['brand'])?->first();
+                $category = $categories->where('name', $template['category'])?->first();
 
                 if (!$brand || !$category) {
                     continue;
@@ -62,7 +62,7 @@ class ProductSeeder extends Seeder
                         'stock_quantity' => random_int(10, 100),
                         'category_id' => $category->id,
                         'brand_id' => $brand->id,
-                        'tax_id' => $taxes->random()->id,
+                        'tax_id' => $taxes->random()?->id,
                         'status' => 'active',
                         'created_by' => $organization->id,
                         'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,

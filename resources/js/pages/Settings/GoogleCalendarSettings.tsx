@@ -130,7 +130,6 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                     onChange={(e) => {
                                         setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }));
                                     }}
-                                    placeholder={translate("Enter your Google Calendar ID or 'primary'")}
                                     disabled={!formData.googleCalendarEnabled}
                                 />
                             </div>

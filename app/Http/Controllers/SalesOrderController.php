@@ -447,11 +447,11 @@ class SalesOrderController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-sales-orders')) {
+        if (!auth()?->user()?->can('export-sales-orders')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
-        return Excel::download(new SalesOrderExport(), 'sales-orders-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
+        return Excel::download(new SalesOrderExport(), 'sales-orders-' . now()?->format('Y-m-d-H-i-s') . '.xlsx');
     }
 
     public function getQuoteDetails($quoteId)

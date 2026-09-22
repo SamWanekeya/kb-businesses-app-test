@@ -21,7 +21,7 @@ class CoinGatePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $user = auth()->user();
+            $user = auth()?->user();
 
             // Get payment settings exactly like reference project
             $settings = getPaymentGatewaySettings();
@@ -94,7 +94,7 @@ class CoinGatePaymentController extends Controller
     public function callback(Request $request)
     {
         try {
-            $user = auth()->user();
+            $user = auth()?->user();
             $coingateData = session('coingate_data');
 
             if (!$coingateData) {
@@ -102,7 +102,7 @@ class CoinGatePaymentController extends Controller
             }
 
             $orderId = is_object($coingateData) ? $coingateData->order_id : $coingateData['order_id'];
-            $planOrder = PlanOrder::where('payment_id', $orderId)->first();
+            $planOrder = PlanOrder::where('payment_id', $orderId)?->first();
 
             if (!$planOrder) {
                 return redirect()->route('subscriptions.plans.index')->with('error', 'Order not found');

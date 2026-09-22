@@ -83,7 +83,7 @@ if (!function_exists('settings')) {
 
         // Resolve user_id if not provided
         if (is_null($user_id) && auth()?->check()) {
-            $user = auth()->user();
+            $user = auth()?->user();
 
             $user_id = $user->type === 'super_admin' || $user->type === 'organization'
                 ? $user->id
@@ -208,7 +208,7 @@ if (!function_exists('formatDateTime')) {
 
         $format = $includeTime ? "$date_format $time_format" : $date_format;
 
-        return Carbon::parse($date)->timezone($timezone)->format($format);
+        return Carbon::parse($date)->timezone($timezone)?->format($format);
     }
 }
 
@@ -2095,11 +2095,11 @@ if (!function_exists('isNotificationTemplateEnabled')) {
      *
      * @param string $templateName Notification template name.
      * @param string $templateType Notification template type used to distinguish templates with the same name.
-     * @param int|string|null $userId User to check; defaults to the current creator/context.
+     * @param int|string $userId User to check; defaults to the current creator/context.
      *
      * @return bool
      */
-    function isNotificationTemplateEnabled(string $templateName, string $templateType, int|string $userId = null): bool
+    function isNotificationTemplateEnabled(string $templateName, string $templateType, int|string $userId): bool
     {
         if (is_null($userId)) {
             $userId = createdBy();
@@ -2166,7 +2166,7 @@ if (!function_exists('createDefaultNotificationTemplates')) {
     function createDefaultNotificationTemplates(int|string $organizationId): void
     {
         $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
-        $langCodes = collect($languages)->pluck('code')->toArray();
+        $langCodes = collect($languages)?->pluck('code')?->toArray();
 
         $templates = NotificationTemplate::get();
 
@@ -2214,13 +2214,13 @@ if (!function_exists('isEmailTemplateEnabled')) {
      *
      * @return bool
      */
-    function isEmailTemplateEnabled(string $templateName, int|string $userId = null): bool
+    function isEmailTemplateEnabled(string $templateName, int|string $userId): bool
     {
         if (is_null($userId)) {
             $userId = createdBy();
         }
 
-        $template = EmailTemplate::where('name', $templateName)->first();
+        $template = EmailTemplate::where('name', $templateName)?->first();
         if (!$template) {
             return false;
         }

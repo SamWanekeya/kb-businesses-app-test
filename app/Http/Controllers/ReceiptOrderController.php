@@ -435,7 +435,7 @@ class ReceiptOrderController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-receipt-orders')) {
+        if (!auth()?->user()?->can('export-receipt-orders')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

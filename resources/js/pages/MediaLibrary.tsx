@@ -408,7 +408,6 @@ export default function MediaLibraryDemo() {
             breadcrumbs={breadcrumbs}
             description={translate('Manage all your media files in one place.')}
             actions={pageActions}
-            noPadding
         >
             <div className="space-y-6">
                 {/* Search and Stats Bar */}

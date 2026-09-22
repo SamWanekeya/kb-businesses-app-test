@@ -210,7 +210,6 @@ export function AuthorizeNetPaymentForm({
                             onChange={(e) => {
                                 handleInputChange('cardholder_name', e.target.value);
                             }}
-                            placeholder={translate('Enter cardholder name')}
                             className={validationErrors.cardholder_name ? 'border-red-500' : ''}
                         />
                         {validationErrors.cardholder_name && <p className="mt-1 text-sm text-red-500">{validationErrors.cardholder_name}</p>}
@@ -224,7 +223,6 @@ export function AuthorizeNetPaymentForm({
                             onChange={(e) => {
                                 handleInputChange('card_number', e.target.value);
                             }}
-                            placeholder="1234 5678 9012 3456"
                             maxLength={23}
                             className={validationErrors.card_number ? 'border-red-500' : ''}
                         />
@@ -240,7 +238,6 @@ export function AuthorizeNetPaymentForm({
                                 onChange={(e) => {
                                     handleInputChange('expiry_month', e.target.value);
                                 }}
-                                placeholder="MM"
                                 maxLength={2}
                                 className={validationErrors.expiry_month ? 'border-red-500' : ''}
                             />
@@ -254,7 +251,6 @@ export function AuthorizeNetPaymentForm({
                                 onChange={(e) => {
                                     handleInputChange('expiry_year', e.target.value);
                                 }}
-                                placeholder="YY"
                                 maxLength={2}
                                 className={validationErrors.expiry_year ? 'border-red-500' : ''}
                             />
@@ -268,7 +264,6 @@ export function AuthorizeNetPaymentForm({
                                 onChange={(e) => {
                                     handleInputChange('cvv', e.target.value);
                                 }}
-                                placeholder="123"
                                 maxLength={4}
                                 className={validationErrors.cvv ? 'border-red-500' : ''}
                             />

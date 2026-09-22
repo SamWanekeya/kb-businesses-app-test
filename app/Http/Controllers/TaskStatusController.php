@@ -84,7 +84,7 @@ class TaskStatusController extends Controller
         }
 
         // Check if any tasks are using this status
-        $taskCount = ProjectTask::where('task_status_id', $taskStatus->id)->count();
+        $taskCount = ProjectTask::where('task_status_id', $taskStatus->id)?->count();
 
         if ($taskCount > 0) {
             return redirect()->back()->with('error', __('Cannot delete task status. ' . $taskCount . ' task(s) are using this status.'));

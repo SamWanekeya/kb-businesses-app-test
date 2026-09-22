@@ -84,23 +84,19 @@ class ReferralController extends Controller
 
     private function superAdminView($settings)
     {
-        $totalReferralUsers = User::whereNotNull('referral_code_used')->where('referral_code_used', '!=', 0)->count();
-        $pendingPayouts = PayoutRequest::where('status', 'pending')->count();
+        $totalReferralUsers = User::whereNotNull('referral_code_used')->where('referral_code_used', '!=', 0)?->count();
+        $pendingPayouts = PayoutRequest::where('status', 'pending')?->count();
         $totalCommissionPaid = PayoutRequest::where('status', 'approved')->sum('amount');
 
         $monthlyReferrals = User::whereNotNull('referral_code_used')
             ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', date('Y'))
-            ->groupBy('month')
-            ->pluck('count', 'month')
-            ->toArray();
+            ->groupBy('month')?->pluck('count', 'month')?->toArray();
 
         $monthlyPayouts = PayoutRequest::where('status', 'approved')
             ->selectRaw('MONTH(created_at) as month, SUM(amount) as total')
             ->whereYear('created_at', date('Y'))
-            ->groupBy('month')
-            ->pluck('total', 'month')
-            ->toArray();
+            ->groupBy('month')?->pluck('total', 'month')?->toArray();
 
         $topOrganizations = User::select('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
             ->selectRaw('COUNT(referrals.id) as referral_count, SUM(referrals.amount) as total_earned')
@@ -116,12 +112,12 @@ class ReferralController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
         $currency_symbol = '$';
         if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)->first();
+            $currencyData = Currency::where('code', $currency)?->first();
             $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
@@ -144,12 +140,11 @@ class ReferralController extends Controller
 
         $usersWithPlans = (clone $referredUsersQuery)->whereHas('plan', function ($query) {
             $query->where('is_default', 0);
-        })->count();
+        })?->count();
 
         $totalCommissionEarned = (clone $referredUsersQuery)
             ->with('referrals')
-            ->get()
-            ->pluck('referrals')
+            ->get()?->pluck('referrals')
             ->flatten()
             ->sum('amount');
 
@@ -178,9 +173,9 @@ class ReferralController extends Controller
 
     private function organizationView($user, $settings)
     {
-        $totalReferrals = Referral::where('organization_id', $user->id)->count();
+        $totalReferrals = Referral::where('organization_id', $user->id)?->count();
         $totalEarned = Referral::where('organization_id', $user->id)->sum('amount');
-        $totalPayoutRequests = PayoutRequest::where('organization_id', $user->id)->count();
+        $totalPayoutRequests = PayoutRequest::where('organization_id', $user->id)?->count();
         $pendingAmount = PayoutRequest::where('organization_id', $user->id)
             ->where('status', 'pending')
             ->sum('amount');
@@ -193,7 +188,7 @@ class ReferralController extends Controller
             ->paginate(10);
 
         // Get referred users count (users who used this organization's referral code)
-        $referredUsersCount = User::where('referral_code_used', $user->referral_code)->count();
+        $referredUsersCount = User::where('referral_code_used', $user->referral_code)?->count();
 
         // Get recent referred users
         $recentReferredUsers = User::where('referral_code_used', $user->referral_code)
@@ -224,12 +219,11 @@ class ReferralController extends Controller
 
         $usersWithPlans = (clone $referredUsersQuery)->whereHas('plan', function ($query) {
             $query->where('is_default', 0);
-        })->count();
+        })?->count();
 
         $totalCommissionEarned = (clone $referredUsersQuery)
             ->with('referrals')
-            ->get()
-            ->pluck('referrals')
+            ->get()?->pluck('referrals')
             ->flatten()
             ->sum('amount');
 
@@ -237,12 +231,12 @@ class ReferralController extends Controller
             ->withQueryString();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
         $currency_symbol = '$';
         if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)->first();
+            $currencyData = Currency::where('code', $currency)?->first();
             $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
@@ -335,12 +329,12 @@ class ReferralController extends Controller
     {
         $user = Auth::user();
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
         $currency_symbol = '$';
         if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)->first();
+            $currencyData = Currency::where('code', $currency)?->first();
             $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
         if ($user->isSuperAdministrator()) {

@@ -24,9 +24,9 @@ class SalesOrderCommentController extends Controller
 
         SalesOrderActivity::create([
             'sales_order_id' => $salesOrder->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -47,7 +47,7 @@ class SalesOrderCommentController extends Controller
         $activity = SalesOrderActivity::where('id', $activityId)
             ->where('sales_order_id', $salesOrder->id)
             ->where('activity_type', 'comment')
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$activity) {

@@ -22,7 +22,7 @@ export default function ContactShow() {
     const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Contact Management') },
         { title: translate('Contacts'), href: route('contacts.index') },
         { title: translate('View Contact') },
@@ -62,7 +62,6 @@ export default function ContactShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="mx-auto space-y-6">
                 {/* Summary Stat Cards */}

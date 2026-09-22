@@ -21,8 +21,8 @@ class KakbimaIntelligenceController extends Controller
         ]);
 
         try {
-            $apiKey = Setting::where('key', 'kakbima_intelligence_key')->value('value');
-            $model = Setting::where('key', 'kakbima_intelligence_model')->value('value') ?? 'gpt-3.5-turbo';
+            $apiKey = Setting::where('key', 'kakbima_intelligence_key')?->value('value');
+            $model = Setting::where('key', 'kakbima_intelligence_model')?->value('value') ?? 'gpt-3.5-turbo';
 
             if (!$apiKey) {
                 return response()->json([

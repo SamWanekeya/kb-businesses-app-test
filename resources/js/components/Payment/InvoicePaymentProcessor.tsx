@@ -763,7 +763,6 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                     max={dueAmount}
                     min="0.01"
                     step="0.01"
-                    placeholder="0.00"
                 />
                 <div className="text-muted-foreground space-y-1 text-sm">
                     <p>Total: {formatCurrency(invoice.total_amount)}</p>

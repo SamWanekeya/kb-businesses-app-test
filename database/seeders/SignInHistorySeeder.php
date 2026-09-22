@@ -211,7 +211,7 @@ class SignInHistorySeeder extends Seeder
 
             return $superAdmin ? $superAdmin->id : $user->id;
         } else {
-            return $user->created_by ?: ($organizationUsers->first() ? $organizationUsers->first()->id : $user->id);
+            return $user->created_by ?: ($organizationUsers->first() ? $organizationUsers->first()?->id : $user->id);
         }
     }
 }

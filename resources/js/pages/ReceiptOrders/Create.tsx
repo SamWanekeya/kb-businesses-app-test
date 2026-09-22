@@ -56,7 +56,7 @@ export default function ReceiptOrderCreate() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Receipt Orders'), href: route('receipt-orders.index') },
         { title: translate('Create') },
     ];
@@ -238,7 +238,7 @@ export default function ReceiptOrderCreate() {
             description={translate('Fill in the details to create a new receipt order')}
             breadcrumbs={breadcrumbs}
             url="/receipt-orders"
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),

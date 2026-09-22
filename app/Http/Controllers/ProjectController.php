@@ -69,7 +69,7 @@ class ProjectController extends Controller
         $projects = $query->paginate($perPage)->withQueryString();
 
         // Eager-load task counts per project
-        $projectIds = $projects->pluck('id');
+        $projectIds = $projects)?->pluck('id');
         $taskData = ProjectTask::whereIn('project_id', $projectIds)
             ->where('created_by', createdBy())
             ->selectRaw('project_id, count(*) as total, SUM(CASE WHEN progress = 100 THEN 1 ELSE 0 END) as done_count')
@@ -120,19 +120,19 @@ class ProjectController extends Controller
             }
         }
         $stats = [
-            'total' => (clone $statsQuery)->count(),
-            'ongoing' => (clone $statsQuery)->where('status', 'active')->count(),
-            'on_hold' => (clone $statsQuery)->where('status', 'on_hold')->count(),
-            'completed' => (clone $statsQuery)->where('status', 'completed')->count(),
-            'inactive' => (clone $statsQuery)->where('status', 'inactive')->count(),
-            'overdue' => (clone $statsQuery)->whereNotIn('status', ['completed'])->whereNotNull('end_date')->whereDate('end_date', '<', now())->count(),
+            'total' => (clone $statsQuery)?->count(),
+            'ongoing' => (clone $statsQuery)->where('status', 'active')?->count(),
+            'on_hold' => (clone $statsQuery)->where('status', 'on_hold')?->count(),
+            'completed' => (clone $statsQuery)->where('status', 'completed')?->count(),
+            'inactive' => (clone $statsQuery)->where('status', 'inactive')?->count(),
+            'overdue' => (clone $statsQuery)->whereNotIn('status', ['completed'])->whereNotNull('end_date')->whereDate('end_date', '<', now())?->count(),
         ];
 
         // Get plan limits
         $planLimits = null;
         $user = User::find(createdBy());
         $plan = $user->getCurrentPlan();
-        $currentProjectCount = Project::where('created_by', $user->id)->count();
+        $currentProjectCount = Project::where('created_by', $user->id)?->count();
         $planLimits = [
             'current_projects' => $currentProjectCount,
             'maximum_projects' => $plan->maximum_projects,
@@ -165,8 +165,7 @@ class ProjectController extends Controller
             ->groupBy('taskStatus.name')
             ->map(function ($tasks) {
                 return $tasks->count();
-            })
-            ->toArray();
+            })?->toArray();
 
         $totalTasks = array_sum($taskStats);
         $completedTasks = $taskStats['Done'] ?? 0;
@@ -190,7 +189,7 @@ class ProjectController extends Controller
                 return $call;
             });
 
-        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
+        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')?->values();
 
         // Get all task statuses for dynamic display
         $taskStatuses = TaskStatus::where('created_by', createdBy())
@@ -229,12 +228,12 @@ class ProjectController extends Controller
         ]);
 
         // Check project limit for organization users
-        if (auth()->user()->type === 'organization') {
-            $user = auth()->user();
+        if (auth()?->user()?->type === 'organization') {
+            $user = auth()?->user();
             $plan = $user->getCurrentPlan();
 
             if ($plan && $plan->maximum_projects > 0) {
-                $currentProjectCount = Project::where('created_by', $user->id)->count();
+                $currentProjectCount = Project::where('created_by', $user->id)?->count();
 
                 if ($currentProjectCount >= $plan->maximum_projects) {
                     return redirect()->back()->with('error', __('Project limit exceeded. Your plan allows maximum :limit projects.', ['limit' => $plan->maximum_projects]));
@@ -329,7 +328,7 @@ class ProjectController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-projects')) {
+        if (!auth()?->user()?->can('export-projects')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

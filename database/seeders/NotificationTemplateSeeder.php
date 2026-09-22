@@ -12,7 +12,7 @@ class NotificationTemplateSeeder extends Seeder
     public function run(): void
     {
         $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
-        $langCodes = collect($languages)->pluck('code')->toArray();
+        $langCodes = collect($languages)?->pluck('code')?->toArray();
 
         $templates = [
             // Lead Create

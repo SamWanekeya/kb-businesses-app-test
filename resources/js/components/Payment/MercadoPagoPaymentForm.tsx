@@ -35,46 +35,35 @@ export function MercadoPagoPaymentForm({
             setIsLoading(true);
 
             // Create a preference and redirect to Mercado Pago checkout
-            const response = await fetch(
-                route('mercadopago.create-preference'),
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    body: JSON.stringify({
-                        plan_id: planId,
-                        billing_cycle: billingCycle,
-                        coupon_code: couponCode ?? undefined,
-                    }),
-                }
-            );
+            const response = await fetch(route('mercadopago.create-preference'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({
+                    plan_id: planId,
+                    billing_cycle: billingCycle,
+                    coupon_code: couponCode ?? undefined,
+                }),
+            });
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(
-                    data?.error ||
-                    translate('Failed to create payment preference')
-                );
+                throw new Error(data?.error || translate('Failed to create payment preference'));
             }
 
             if (data.redirect_url) {
                 // Redirect to Mercado Pago checkout
                 window.location.href = data.redirect_url;
             } else {
-                toast.error(
-                    translate('Failed to create payment preference')
-                );
+                toast.error(translate('Failed to create payment preference'));
                 setIsLoading(false);
             }
         } catch (error: any) {
-            toast.error(
-                error.message ||
-                translate('Failed to create payment preference')
-            );
+            toast.error(error.message || translate('Failed to create payment preference'));
             setIsLoading(false);
         }
     };

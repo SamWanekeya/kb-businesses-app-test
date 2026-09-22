@@ -18,7 +18,7 @@ export default function CampaignShow() {
     const getInitials = useInitials();
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaigns'), href: route('campaigns.index') },
         { title: translate('View Campaign') },
     ];
@@ -64,7 +64,6 @@ export default function CampaignShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="space-y-6">
                 {/* Header */}

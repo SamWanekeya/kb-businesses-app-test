@@ -91,10 +91,10 @@ class AnnouncementController extends Controller
 
         $statsQuery = Announcement::where('created_by', createdBy());
         $stats = [
-            'total' => (clone $statsQuery)->count(),
-            'active' => (clone $statsQuery)->where('status', 'active')->count(),
-            'inactive' => (clone $statsQuery)->where('status', 'inactive')->count(),
-            'expired' => (clone $statsQuery)->where('status', 'expired')->count(),
+            'total' => (clone $statsQuery)?->count(),
+            'active' => (clone $statsQuery)->where('status', 'active')?->count(),
+            'inactive' => (clone $statsQuery)->where('status', 'inactive')?->count(),
+            'expired' => (clone $statsQuery)->where('status', 'expired')?->count(),
         ];
 
         return Inertia::render('Announcements/Index', [

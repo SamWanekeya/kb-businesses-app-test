@@ -18,7 +18,7 @@ export default function MeetingShow() {
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Meetings'), href: route('meetings.index') },
         { title: translate('View Meeting') },
     ];
@@ -39,7 +39,6 @@ export default function MeetingShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Main Content */}

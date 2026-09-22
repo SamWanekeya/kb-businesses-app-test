@@ -23,7 +23,7 @@ class TapPaymentController extends Controller
                 return response()->json(['error' => __('Tap not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $transactionId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             // Initialize Tap Payment library
@@ -104,8 +104,8 @@ class TapPaymentController extends Controller
                         ]);
 
                         // Log the user in if not already authenticated
-                        if (!auth()->check()) {
-                            auth()->login($user);
+                        if (!auth()?->check()) {
+                            auth()?->login($user);
                         }
 
                         return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));

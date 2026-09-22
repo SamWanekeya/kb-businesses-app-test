@@ -109,8 +109,8 @@ class HandleInertiaRequests extends Middleware
                     $request->user()?->toArray(),
                     [
                         'avatar' => checkFile($request->user()?->avatar) ?? getFile($request->user()?->avatar),
-                        'plan' => $request->user()->type === 'organization'
-                            ? optional($request->user()->plan)->only(['id', 'name', 'maximum_staffs', 'maximum_users'])
+                        'plan' => $request->user()?->type === 'organization'
+                            ? optional($request->user()?->plan)->only(['id', 'name', 'maximum_staffs', 'maximum_users'])
                             : null,
                     ]
                 ) : null,

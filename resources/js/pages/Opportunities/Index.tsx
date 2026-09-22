@@ -300,7 +300,7 @@ export default function Opportunities() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Opportunity Management') },
         { title: translate('Opportunities') },
     ];
@@ -432,7 +432,7 @@ export default function Opportunities() {
             url="/opportunities"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             className={activeView === 'kanban' ? 'overflow-hidden' : ''}
         >
             {/* Search and filters section */}

@@ -64,7 +64,7 @@ export default function DeliveryOrderCreate() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Delivery Orders'), href: route('delivery-orders.index') },
         { title: translate('Create') },
     ];
@@ -187,7 +187,7 @@ export default function DeliveryOrderCreate() {
             description={translate('Fill in the details to create a new delivery order')}
             breadcrumbs={breadcrumbs}
             url="/delivery-orders"
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),
@@ -208,23 +208,13 @@ export default function DeliveryOrderCreate() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Delivery Order Name')} <span className="text-red-500">*</span>
                             </Label>
-                            <Input
-                                value={form.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                placeholder={translate('e.g. Q1 Hardware Delivery')}
-                                className={errors.name ? 'border-red-500' : ''}
-                            />
+                            <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
-                            <Textarea
-                                value={form.description}
-                                onChange={(e) => set('description', e.target.value)}
-                                rows={2}
-                                placeholder={translate('Optional notes about this delivery...')}
-                            />
+                            <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
 
                         <div className="space-y-1.5">
@@ -233,7 +223,7 @@ export default function DeliveryOrderCreate() {
                             </Label>
                             <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                 <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select sales order')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {salesOrders.map((so: any) => (
@@ -260,7 +250,7 @@ export default function DeliveryOrderCreate() {
                             </Label>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select account')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -287,7 +277,7 @@ export default function DeliveryOrderCreate() {
                             </Label>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select contact')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -314,7 +304,7 @@ export default function DeliveryOrderCreate() {
                             </Label>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select shipping provider')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {shippingProviderTypes.map((s: any) => (
@@ -407,7 +397,6 @@ export default function DeliveryOrderCreate() {
                                     step="0.01"
                                     value={form.shipping_cost}
                                     onChange={(e) => set('shipping_cost', e.target.value)}
-                                    placeholder="0.00"
                                 />
                             </div>
                         </div>
@@ -418,7 +407,7 @@ export default function DeliveryOrderCreate() {
                             </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -507,7 +496,7 @@ export default function DeliveryOrderCreate() {
                                                             }}
                                                         >
                                                             <SelectTrigger>
-                                                                <SelectValue placeholder={translate('Select product')} />
+                                                                <SelectValue placeholder={translate('Select...')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>
                                                                 {products
@@ -623,7 +612,6 @@ export default function DeliveryOrderCreate() {
                                 value={form.delivery_address}
                                 onChange={(e) => set('delivery_address', e.target.value)}
                                 rows={2}
-                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 className={errors.delivery_address ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_address} />
@@ -636,7 +624,6 @@ export default function DeliveryOrderCreate() {
                             <Input
                                 value={form.delivery_city}
                                 onChange={(e) => set('delivery_city', e.target.value)}
-                                placeholder={translate('e.g. New York')}
                                 className={errors.delivery_city ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_city} />
@@ -649,7 +636,6 @@ export default function DeliveryOrderCreate() {
                             <Input
                                 value={form.delivery_state}
                                 onChange={(e) => set('delivery_state', e.target.value)}
-                                placeholder={translate('e.g. NY')}
                                 className={errors.delivery_state ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_state} />
@@ -662,7 +648,6 @@ export default function DeliveryOrderCreate() {
                             <Input
                                 value={form.delivery_country}
                                 onChange={(e) => set('delivery_country', e.target.value)}
-                                placeholder={translate('e.g. United States')}
                                 className={errors.delivery_country ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_country} />
@@ -674,7 +659,6 @@ export default function DeliveryOrderCreate() {
                             <Input
                                 value={form.delivery_postal_code}
                                 onChange={(e) => set('delivery_postal_code', e.target.value)}
-                                placeholder={translate('e.g. 10001')}
                                 className={errors.delivery_postal_code ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_postal_code} />
@@ -682,12 +666,7 @@ export default function DeliveryOrderCreate() {
 
                         <div className="space-y-1.5 md:col-span-2">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
-                            <Textarea
-                                value={form.delivery_notes}
-                                onChange={(e) => set('delivery_notes', e.target.value)}
-                                rows={3}
-                                placeholder={translate('e.g. Leave at reception, handle with care...')}
-                            />
+                            <Textarea value={form.delivery_notes} onChange={(e) => set('delivery_notes', e.target.value)} rows={3} />
                         </div>
                     </div>
                 </div>

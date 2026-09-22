@@ -41,7 +41,7 @@ class OpportunitySeeder extends Seeder
 
             for ($i = 1; $i <= 12; $i++) {
                 $account = $accounts->random();
-                $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
+                $contact = $contacts->where('account_id', $account->id)?->first() ?? $contacts->random();
                 $createdDate = $faker->dateTimeBetween('-3 months', 'now');
                 $closeDate = $faker->dateTimeBetween($createdDate, '+4 months');
 
@@ -54,8 +54,8 @@ class OpportunitySeeder extends Seeder
                     'status' => 'active',
                     'account_id' => $account->id,
                     'contact_id' => $contact?->id,
-                    'opportunity_stage_id' => $opportunityStages->random()->id,
-                    'opportunity_source_id' => $opportunitySources->random()->id,
+                    'opportunity_stage_id' => $opportunityStages->random()?->id,
+                    'opportunity_source_id' => $opportunitySources->random()?->id,
                     'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $createdDate,

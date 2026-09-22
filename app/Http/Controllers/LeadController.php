@@ -260,7 +260,7 @@ class LeadController extends Controller
                     return $call;
                 });
 
-            $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
+            $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')?->values();
 
             return Inertia::render('Leads/Show', [
                 'lead' => $lead,
@@ -277,7 +277,7 @@ class LeadController extends Controller
 
     public function edit($id)
     {
-        $lead = Lead::where('id', $id)->where('created_by', createdBy())->first();
+        $lead = Lead::where('id', $id)->where('created_by', createdBy())?->first();
 
         if (!$lead) {
             return redirect()->route('leads.index')->with('error', __('Lead not found.'));
@@ -475,7 +475,7 @@ class LeadController extends Controller
         foreach ($leadStatuses as $status) {
             $kanbanData[$status->id] = [
                 'status' => $status,
-                'leads' => $leads->where('lead_status_id', $status->id)->values()->toArray(),
+                'leads' => $leads->where('lead_status_id', $status->id)?->values()?->toArray(),
             ];
         }
 
@@ -575,7 +575,7 @@ class LeadController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-leads')) {
+        if (!auth()?->user()?->can('export-leads')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -586,7 +586,7 @@ class LeadController extends Controller
 
     public function downloadTemplate()
     {
-        if (!auth()->user()->can('import-leads')) {
+        if (!auth()?->user()?->can('import-leads')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 
@@ -601,7 +601,7 @@ class LeadController extends Controller
 
     public function parseFile(Request $request)
     {
-        if (!auth()->user()->can('import-leads')) {
+        if (!auth()?->user()?->can('import-leads')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -659,7 +659,7 @@ class LeadController extends Controller
 
     public function fileImport(Request $request)
     {
-        if (!auth()->user()->can('import-leads')) {
+        if (!auth()?->user()?->can('import-leads')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

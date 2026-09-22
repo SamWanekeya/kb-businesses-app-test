@@ -65,7 +65,7 @@ export default function CampaignEdit() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaigns'), href: route('campaigns.index') },
         { title: translate('Edit') },
     ];
@@ -85,9 +85,8 @@ export default function CampaignEdit() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Card 1 — Campaign Information */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
@@ -98,12 +97,7 @@ export default function CampaignEdit() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Campaign Name')}
                             </Label>
-                            <Input
-                                value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                className={errors.name ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. Q1 Email Blast, Summer Promo')}
-                            />
+                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
@@ -113,7 +107,7 @@ export default function CampaignEdit() {
                             </Label>
                             <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
                                 <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select campaign type')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {campaignTypes.map((type: any) => (
@@ -132,7 +126,7 @@ export default function CampaignEdit() {
                             </Label>
                             <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
                                 <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select target list')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {targetLists.map((list: any) => (
@@ -214,7 +208,7 @@ export default function CampaignEdit() {
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -229,12 +223,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1 md:col-span-2">
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
-                            <Textarea
-                                value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
-                                rows={3}
-                                placeholder={translate('Enter campaign description...')}
-                            />
+                            <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={3} />
                         </div>
                     </CardContent>
                 </Card>
@@ -255,7 +244,6 @@ export default function CampaignEdit() {
                                     min="0"
                                     value={data.budget}
                                     onChange={(e) => set('budget', e.target.value)}
-                                    placeholder="0.00"
                                     className="pl-7"
                                 />
                             </div>
@@ -271,7 +259,6 @@ export default function CampaignEdit() {
                                     min="0"
                                     value={data.actual_cost}
                                     onChange={(e) => set('actual_cost', e.target.value)}
-                                    placeholder="0.00"
                                     className="pl-7"
                                 />
                             </div>
@@ -279,13 +266,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Expected Response')}</Label>
-                            <Input
-                                type="number"
-                                min="0"
-                                value={data.expected_response}
-                                onChange={(e) => set('expected_response', e.target.value)}
-                                placeholder="e.g. 500"
-                            />
+                            <Input type="number" min="0" value={data.expected_response} onChange={(e) => set('expected_response', e.target.value)} />
                         </div>
                     </CardContent>
                 </Card>

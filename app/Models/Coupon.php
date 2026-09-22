@@ -39,7 +39,7 @@ class Coupon extends Model
 
     public function getUsedCountAttribute()
     {
-        return $this->history()->where("status", "!=", "rejected")->count();
+        return $this->history()->where("status", "!=", "rejected")?->count();
     }
 
     public function history()

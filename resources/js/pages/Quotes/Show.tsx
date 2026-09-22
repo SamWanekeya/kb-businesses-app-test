@@ -37,7 +37,7 @@ export default function QuoteShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Quotes'), href: route('quotes.index') },
         { title: translate('View Quote') },
     ];
@@ -104,7 +104,6 @@ export default function QuoteShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid w-full max-w-full min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
                 {/* Left Column */}
@@ -379,6 +378,7 @@ export default function QuoteShow() {
                                 {useHasPermission('create-quotes') && (
                                     <div className="border-b px-4 pt-4 pb-4 sm:px-5">
                                         <form
+                                            autoComplete="off"
                                             onSubmit={(e) => {
                                                 e.preventDefault();
                                                 if (newComment.trim()) {
@@ -408,7 +408,6 @@ export default function QuoteShow() {
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => {
                                                             setNewComment(e.target.value);

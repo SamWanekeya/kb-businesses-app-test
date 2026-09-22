@@ -672,7 +672,7 @@ export default function Plans({
         storage: <HardDrive className="h-4 w-4 text-yellow-500" />,
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Plans') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Plans') }];
     const isSuperAdmin = auth?.user?.type === 'super_admin';
 
     return (

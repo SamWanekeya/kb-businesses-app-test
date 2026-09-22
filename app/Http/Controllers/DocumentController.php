@@ -35,8 +35,7 @@ class DocumentController extends Controller
             ->whereNull('parent_folder_id')
             ->select('id', 'name')
             ->orderBy('name')
-            ->get()
-            ->toArray();
+            ->get()?->toArray();
 
         return Inertia::render('Documents/Index', [
             'rootFolders' => $rootFolders,

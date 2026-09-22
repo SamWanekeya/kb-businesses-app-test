@@ -41,7 +41,7 @@ export default function OpportunityEdit() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Opportunity Management') },
         { title: translate('Opportunities'), href: route('opportunities.index') },
         { title: translate('Edit') },
@@ -150,9 +150,8 @@ export default function OpportunityEdit() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* ROW 1 — Basic Information + Classification */}
                 <div className="grid grid-cols-1 items-stretch gap-6 xl:grid-cols-2">
                     {/* Basic Information */}
@@ -172,7 +171,6 @@ export default function OpportunityEdit() {
                                         handleInputChange('name', e.target.value);
                                     }}
                                     className={errors.name ? 'border-red-500' : ''}
-                                    placeholder={translate('eg. Enterprise Software Deal')}
                                 />
                                 {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                             </div>
@@ -189,7 +187,6 @@ export default function OpportunityEdit() {
                                     }}
                                     className={errors.description ? 'border-red-500' : ''}
                                     rows={3}
-                                    placeholder={translate('Enter opportunity description...')}
                                 />
                                 {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
@@ -255,7 +252,6 @@ export default function OpportunityEdit() {
                                     }}
                                     className={errors.notes ? 'border-red-500' : ''}
                                     rows={3}
-                                    placeholder={translate('Enter any additional notes...')}
                                 />
                                 {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
@@ -279,7 +275,7 @@ export default function OpportunityEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select account')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -311,7 +307,7 @@ export default function OpportunityEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select contact')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -343,7 +339,7 @@ export default function OpportunityEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.opportunity_stage_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select stage')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunityStages.map((s: any) => (
@@ -375,7 +371,7 @@ export default function OpportunityEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.opportunity_source_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select source')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunitySources.map((s: any) => (
@@ -458,7 +454,7 @@ export default function OpportunityEdit() {
                                                                 }}
                                                             >
                                                                 <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
-                                                                    <SelectValue placeholder={translate('Select product')} />
+                                                                    <SelectValue placeholder={translate('Select...')} />
                                                                 </SelectTrigger>
                                                                 <SelectContent searchable>
                                                                     {productOptions
@@ -496,7 +492,6 @@ export default function OpportunityEdit() {
                                                                     updateProductRow(i, 'quantity', e.target.value);
                                                                 }}
                                                                 className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
-                                                                placeholder="1"
                                                             />
                                                             {errors[`products.${i}.quantity`] && (
                                                                 <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
@@ -512,7 +507,6 @@ export default function OpportunityEdit() {
                                                                     updateProductRow(i, 'unit_price', e.target.value);
                                                                 }}
                                                                 className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
-                                                                placeholder="0.00"
                                                             />
                                                             {errors[`products.${i}.unit_price`] && (
                                                                 <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
@@ -587,7 +581,7 @@ export default function OpportunityEdit() {
                                                             <SelectTrigger
                                                                 className={errors[`products.${i}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                             >
-                                                                <SelectValue placeholder={translate('Select product')} />
+                                                                <SelectValue placeholder={translate('Select...')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>
                                                                 {productOptions
@@ -629,7 +623,6 @@ export default function OpportunityEdit() {
                                                                     updateProductRow(i, 'quantity', e.target.value);
                                                                 }}
                                                                 className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
-                                                                placeholder="1"
                                                             />
                                                             {errors[`products.${i}.quantity`] && (
                                                                 <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
@@ -648,7 +641,6 @@ export default function OpportunityEdit() {
                                                                     updateProductRow(i, 'unit_price', e.target.value);
                                                                 }}
                                                                 className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
-                                                                placeholder="0.00"
                                                             />
                                                             {errors[`products.${i}.unit_price`] && (
                                                                 <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
@@ -712,7 +704,7 @@ export default function OpportunityEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select user')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (

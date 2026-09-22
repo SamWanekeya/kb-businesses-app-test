@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
         }
 
         // Get default plan
-        $defaultPlan = Plan::where('is_default', true)->first();
+        $defaultPlan = Plan::where('is_default', true)?->first();
 
         // Create Organization User
         $organization = User::firstOrCreate(

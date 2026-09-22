@@ -362,7 +362,7 @@ class DeliveryOrderController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-delivery-orders')) {
+        if (!auth()?->user()?->can('export-delivery-orders')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

@@ -69,7 +69,7 @@ export default function NotificationTemplateShow({ template, languages, variable
     }, [flash]);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Notification Templates'), href: route('notification-templates.index') },
         { title: template.name },
     ];

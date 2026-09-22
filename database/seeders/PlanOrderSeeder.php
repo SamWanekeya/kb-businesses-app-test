@@ -22,7 +22,7 @@ class PlanOrderSeeder extends Seeder
         $organizationUsers = User::where('type', 'organization')->get();
         $plans = Plan::all();
         $activeCoupons = Coupon::where('status', true)->get();
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
 
         if ($organizationUsers->isEmpty() || $plans->isEmpty()) {
             $this->command->warn('No organization users or plans found. Please run UserSeeder and PlanSeeder first.');

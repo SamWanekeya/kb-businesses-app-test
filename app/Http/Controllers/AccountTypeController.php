@@ -60,7 +60,7 @@ class AccountTypeController extends Controller
 
     public function destroy(AccountType $accountType)
     {
-        if ($accountType->accounts()->count() > 0) {
+        if ($accountType->accounts()?->count() > 0) {
             return redirect()->back()->with('error', __('Cannot delete account type that has associated accounts.'));
         }
 

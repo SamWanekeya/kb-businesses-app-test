@@ -221,7 +221,7 @@ export default function Taxes() {
     const canToggleStatus = useHasPermission('toggle-status-taxes');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Product Setup') },
         { title: translate('Taxes') },
     ];
@@ -232,7 +232,6 @@ export default function Taxes() {
             description={translate('Manage tax rates applied to your products and orders.')}
             url="/taxes"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -248,7 +247,7 @@ export default function Taxes() {
                                     : translate('Update the tax details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Tax Name')}
@@ -260,7 +259,6 @@ export default function Taxes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. VAT, GST, Sales Tax')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -299,7 +297,6 @@ export default function Taxes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, rate: parseFloat(e.target.value) || 0 });
                                     }}
-                                    placeholder={translate('e.g. 10, 7.5, 20')}
                                     className={formErrors.rate ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                 />
@@ -313,7 +310,6 @@ export default function Taxes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter tax description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -363,7 +359,6 @@ export default function Taxes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search taxes...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -391,7 +386,7 @@ export default function Taxes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

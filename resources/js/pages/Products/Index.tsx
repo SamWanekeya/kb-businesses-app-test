@@ -234,7 +234,7 @@ export default function Products() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Products') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Products') }];
 
     // Define table columns
     const columns = [
@@ -421,7 +421,6 @@ export default function Products() {
             url="/products"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">

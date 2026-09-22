@@ -225,7 +225,7 @@ export default function SlackNotificationSettings() {
                             <Send className="h-4 w-4 text-emerald-500" />
                             <h3 className="font-medium text-gray-900">{translate('Test Slack Configuration')}</h3>
                         </div>
-                        <form onSubmit={handleTestMessage} className="space-y-4">
+                        <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
                             <p className="text-xs text-gray-600">{translate('Send a test message to verify your slack webhook.')}</p>
 
                             <Button

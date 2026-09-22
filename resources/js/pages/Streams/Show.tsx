@@ -104,7 +104,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Streams'), href: route('stream.index') },
         { title: t(moduleTitle) },
     ];
@@ -124,7 +124,6 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                 },
             ]}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <Head title={`${translate(moduleTitle)} - ${translate('Streams')}`} />
 

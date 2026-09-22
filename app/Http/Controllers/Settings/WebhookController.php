@@ -11,7 +11,7 @@ class WebhookController extends Controller
 {
     public function index(): JsonResponse
     {
-        $webhooks = Webhook::where('user_id', auth()->id())->get();
+        $webhooks = Webhook::where('user_id', auth()?->id())->get();
 
         return response()->json($webhooks);
     }
@@ -25,7 +25,7 @@ class WebhookController extends Controller
         ]);
 
         $webhook = Webhook::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'module' => $request->module,
             'method' => $request->method,
             'url' => $request->url,
@@ -39,7 +39,7 @@ class WebhookController extends Controller
 
     public function update(Request $request, Webhook $webhook): JsonResponse
     {
-        if ($webhook->user_id !== auth()->id()) {
+        if ($webhook->user_id !== auth()?->id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -63,7 +63,7 @@ class WebhookController extends Controller
 
     public function destroy(Webhook $webhook): JsonResponse
     {
-        if ($webhook->user_id !== auth()->id()) {
+        if ($webhook->user_id !== auth()?->id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 

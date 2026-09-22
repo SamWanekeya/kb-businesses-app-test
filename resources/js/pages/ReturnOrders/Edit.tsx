@@ -108,7 +108,7 @@ export default function ReturnOrderEdit() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Return Orders'), href: route('return-orders.index') },
         { title: translate('Edit') },
     ];
@@ -275,7 +275,7 @@ export default function ReturnOrderEdit() {
             breadcrumbs={breadcrumbs}
             url="/return-orders"
             fullWidth
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),

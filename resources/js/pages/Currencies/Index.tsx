@@ -215,7 +215,7 @@ export default function Currencies() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Currency') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Currency') }];
 
     // Define table columns
     const columns = [
@@ -284,7 +284,6 @@ export default function Currencies() {
             url="/currencies"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -357,6 +356,7 @@ export default function Currencies() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -365,27 +365,23 @@ export default function Currencies() {
                             label: translate('Currency Name'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. US Dollar, Euro, British Pound'),
                         },
                         {
                             name: 'code',
                             label: translate('Currency Code'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. USD, EUR, GBP'),
                         },
                         {
                             name: 'symbol',
                             label: translate('Currency Symbol'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. $, €, £'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Enter currency description...'),
                         },
                         {
                             name: 'is_default',

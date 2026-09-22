@@ -28,9 +28,7 @@ class UserNotificationTemplate extends Model
     {
         return self::where('user_id', $userId)
             ->with('notificationTemplate')
-            ->get()
-            ->pluck('is_active', 'notificationTemplate.name')
-            ->toArray();
+            ->get()?->pluck('is_active', 'notificationTemplate.name')?->toArray();
     }
 
     public function notificationTemplate(): BelongsTo

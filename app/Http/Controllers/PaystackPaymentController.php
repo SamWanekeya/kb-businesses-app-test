@@ -40,7 +40,7 @@ class PaystackPaymentController extends Controller
 
             if ($result['status'] && $result['data']['status'] === 'success') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'paystack',

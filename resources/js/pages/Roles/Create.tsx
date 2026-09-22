@@ -23,7 +23,7 @@ export default function RolesCreate() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: translate('Add Role') },
@@ -82,7 +82,7 @@ export default function RolesCreate() {
             actions={pageActions}
             breadcrumbs={breadcrumbs}
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
@@ -102,7 +102,6 @@ export default function RolesCreate() {
                                     onChange={(e) => {
                                         setLabel(e.target.value);
                                     }}
-                                    placeholder={translate('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
                                     className={errors.label ? 'border-red-500' : ''}
                                 />
                                 {errors.label && <p className="text-xs text-red-500">{errors.label}</p>}
@@ -115,7 +114,6 @@ export default function RolesCreate() {
                                     onChange={(e) => {
                                         setDescription(e.target.value);
                                     }}
-                                    placeholder={translate('Enter role description...')}
                                     rows={3}
                                 />
                             </div>

@@ -28,9 +28,7 @@ class UserEmailTemplate extends Model
     {
         return self::where('user_id', $userId)
             ->with('emailTemplate')
-            ->get()
-            ->pluck('is_active', 'emailTemplate.name')
-            ->toArray();
+            ->get()?->pluck('is_active', 'emailTemplate.name')?->toArray();
     }
 
     public function emailTemplate(): BelongsTo

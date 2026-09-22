@@ -11,13 +11,13 @@ class SignInHistoryController extends Controller
 {
     public function index(Request $request)
     {
-        if (Auth::user()->can('manage-sign-in-history')) {
+        if (Auth::user()?->can('manage-sign-in-history')) {
             $query = SignInHistory::with('user:id,name,email,type')->where(function ($q) {
-                if (Auth::user()->hasRole('super_admin')) {
+                if (Auth::user()?->hasRole('super_admin')) {
                     $q->where('created_by', Auth::id())->orWhereHas('user', function ($u) {
                         $u->where('created_by', Auth::id());
                     });
-                } elseif (Auth::user()->hasRole('organization')) {
+                } elseif (Auth::user()?->hasRole('organization')) {
                     $q->where('created_by', Auth::id());
                 } else {
                     $q->whereRaw('1 = 0');
@@ -60,7 +60,7 @@ class SignInHistoryController extends Controller
 
     public function destroy(SignInHistory $ipAddressDetail)
     {
-        if (Auth::user()->can('delete-sign-in-history')) {
+        if (Auth::user()?->can('delete-sign-in-history')) {
             $ipAddressDetail->delete();
 
             return redirect()->back()->with('success', 'Sign in history deleted successfully.');

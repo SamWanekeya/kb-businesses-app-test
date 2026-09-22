@@ -92,7 +92,7 @@ class ProjectTaskController extends Controller
         foreach ($taskStatuses as $status) {
             $kanbanData[$status->id] = [
                 'status' => $status,
-                'tasks' => $groupedTasks->get($status->id, collect())->values()->toArray(),
+                'tasks' => $groupedTasks->get($status->id, collect())?->values()?->toArray(),
             ];
         }
 
@@ -288,8 +288,7 @@ class ProjectTaskController extends Controller
             ->where('status', 'active')
             ->select('id', 'name', 'color')
             ->get()
-            ->map(fn ($s) => ['id' => $s->id, 'name' => $s->name, 'color' => $s->color])
-            ->toArray();
+            ->map(fn ($s) => ['id' => $s->id, 'name' => $s->name, 'color' => $s->color])?->toArray();
 
         $taskQuery = ProjectTask::with(['assignedUser', 'taskStatus'])
             ->where('project_id', $projectId)
@@ -327,7 +326,7 @@ class ProjectTaskController extends Controller
         foreach ($statuses as $status) {
             $kanbanData[$status['id']] = [
                 'status' => $status,
-                'tasks' => $tasks->get($status['id'], collect())->values()->toArray(),
+                'tasks' => $tasks->get($status['id'], collect())?->values()?->toArray(),
             ];
         }
 
@@ -421,7 +420,7 @@ class ProjectTaskController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-project-tasks')) {
+        if (!auth()?->user()?->can('export-project-tasks')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

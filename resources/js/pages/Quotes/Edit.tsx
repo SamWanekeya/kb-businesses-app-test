@@ -67,7 +67,7 @@ export default function QuoteEdit() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Quotes'), href: route('quotes.index') },
         { title: translate('Edit') },
     ];
@@ -236,9 +236,8 @@ export default function QuoteEdit() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Quote Details */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
@@ -249,12 +248,7 @@ export default function QuoteEdit() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Quote Name')}
                             </Label>
-                            <Input
-                                value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                className={errors.name ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. Annual Software License Quote')}
-                            />
+                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
@@ -264,7 +258,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.opportunity_id} onValueChange={handleOpportunityChange}>
                                 <SelectTrigger className={errors.opportunity_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select opportunity')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {opportunities.map((o: any) => (
@@ -283,7 +277,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select account')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -302,7 +296,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select billing contact')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -321,7 +315,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select shipping contact')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -340,7 +334,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select shipping provider')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {shippingProviderTypes.map((s: any) => (
@@ -398,7 +392,7 @@ export default function QuoteEdit() {
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -413,12 +407,7 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
-                            <Textarea
-                                value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
-                                rows={2}
-                                placeholder={translate('Brief description of this quote...')}
-                            />
+                            <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
                     </CardContent>
                 </Card>
@@ -482,7 +471,7 @@ export default function QuoteEdit() {
                                                         }}
                                                     >
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
-                                                            <SelectValue placeholder={translate('Select product')} />
+                                                            <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((p: any) => (
@@ -533,7 +522,6 @@ export default function QuoteEdit() {
                                                         onChange={(e) => {
                                                             updateProductRow(row.id, 'unit_price', e.target.value);
                                                         }}
-                                                        placeholder="0.00"
                                                         className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
                                                     />
                                                     {errors[`products.${i}.unit_price`] && (
@@ -574,7 +562,6 @@ export default function QuoteEdit() {
                                                         }}
                                                         disabled={row.discount_type === 'none'}
                                                         className="disabled:opacity-40"
-                                                        placeholder="0"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
@@ -668,7 +655,6 @@ export default function QuoteEdit() {
                                         }}
                                         className={errors.billing_address ? 'border-red-500' : ''}
                                         rows={2}
-                                        placeholder={translate('e.g. 123 Main Street, Suite 100')}
                                     />
                                     {errors.billing_address && <p className="text-xs text-red-500">{errors.billing_address}</p>}
                                 </div>
@@ -684,7 +670,6 @@ export default function QuoteEdit() {
                                                 if (sameAsBilling) setData('shipping_city' as any, e.target.value);
                                             }}
                                             className={errors.billing_city ? 'border-red-500' : ''}
-                                            placeholder="New York"
                                         />
                                         {errors.billing_city && <p className="text-xs text-red-500">{errors.billing_city}</p>}
                                     </div>
@@ -699,7 +684,6 @@ export default function QuoteEdit() {
                                                 if (sameAsBilling) setData('shipping_state' as any, e.target.value);
                                             }}
                                             className={errors.billing_state ? 'border-red-500' : ''}
-                                            placeholder="NY"
                                         />
                                         {errors.billing_state && <p className="text-xs text-red-500">{errors.billing_state}</p>}
                                     </div>
@@ -714,7 +698,6 @@ export default function QuoteEdit() {
                                                 if (sameAsBilling) setData('shipping_country' as any, e.target.value);
                                             }}
                                             className={errors.billing_country ? 'border-red-500' : ''}
-                                            placeholder="United States"
                                         />
                                         {errors.billing_country && <p className="text-xs text-red-500">{errors.billing_country}</p>}
                                     </div>
@@ -729,7 +712,6 @@ export default function QuoteEdit() {
                                                 if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value);
                                             }}
                                             className={errors.billing_postal_code ? 'border-red-500' : ''}
-                                            placeholder="10001"
                                         />
                                         {errors.billing_postal_code && <p className="text-xs text-red-500">{errors.billing_postal_code}</p>}
                                     </div>
@@ -741,41 +723,24 @@ export default function QuoteEdit() {
                                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{translate('Shipping Address')}</h3>
                                 <div className="space-y-1">
                                     <Label className="text-sm font-medium">{translate('Address')}</Label>
-                                    <Textarea
-                                        value={data.shipping_address}
-                                        onChange={(e) => set('shipping_address', e.target.value)}
-                                        rows={2}
-                                        placeholder={translate('e.g. 456 Elm Street')}
-                                    />
+                                    <Textarea value={data.shipping_address} onChange={(e) => set('shipping_address', e.target.value)} rows={2} />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('City')}</Label>
-                                        <Input
-                                            value={data.shipping_city}
-                                            onChange={(e) => set('shipping_city', e.target.value)}
-                                            placeholder="Los Angeles"
-                                        />
+                                        <Input value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('State')}</Label>
-                                        <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} placeholder="CA" />
+                                        <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('Country')}</Label>
-                                        <Input
-                                            value={data.shipping_country}
-                                            onChange={(e) => set('shipping_country', e.target.value)}
-                                            placeholder="United States"
-                                        />
+                                        <Input value={data.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{translate('Postal Code')}</Label>
-                                        <Input
-                                            value={data.shipping_postal_code}
-                                            onChange={(e) => set('shipping_postal_code', e.target.value)}
-                                            placeholder="90001"
-                                        />
+                                        <Input value={data.shipping_postal_code} onChange={(e) => set('shipping_postal_code', e.target.value)} />
                                     </div>
                                 </div>
                             </div>

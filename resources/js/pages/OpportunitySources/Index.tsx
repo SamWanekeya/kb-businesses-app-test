@@ -211,7 +211,7 @@ export default function OpportunitySources() {
     const canToggleStatus = useHasPermission('toggle-status-opportunity-sources');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Opportunity Management') },
         { title: translate('Opportunity Sources') },
     ];
@@ -222,7 +222,6 @@ export default function OpportunitySources() {
             description={translate('Manage opportunity sources for your pipeline.')}
             url="/opportunity-sources"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -239,7 +238,7 @@ export default function OpportunitySources() {
                             </p>
                         </div>
 
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Source Name')}
@@ -285,7 +284,7 @@ export default function OpportunitySources() {
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select status')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
@@ -349,7 +348,7 @@ export default function OpportunitySources() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

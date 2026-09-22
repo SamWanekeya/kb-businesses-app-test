@@ -21,7 +21,7 @@ export default function ShowDocumentType() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Types'), href: route('document-types.index') },
         { title: documentType.type_name },
     ];

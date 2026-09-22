@@ -202,7 +202,7 @@ export default function ProjectKanban() {
     ];
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management') },
         { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
@@ -216,7 +216,7 @@ export default function ProjectKanban() {
             url={`/projects/${project.id}/kanban`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             className="overflow-hidden"
         >
             {/* Search and filters section */}
@@ -547,6 +547,7 @@ export default function ProjectKanban() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [

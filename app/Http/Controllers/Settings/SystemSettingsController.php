@@ -84,7 +84,7 @@ class SystemSettingsController extends Controller
                 'settings.footerText.required' => 'Footer Text is required',
             ]);
 
-            $userId = auth()->id();
+            $userId = auth()?->id();
             foreach ($validated['settings'] as $key => $value) {
                 updateSetting($key, $value, $userId);
             }
@@ -361,7 +361,7 @@ class SystemSettingsController extends Controller
                 }
             }
 
-            $userId = auth()->id();
+            $userId = auth()?->id();
 
             // Clear storage config cache
             StorageConfigService::clearCache();
@@ -462,7 +462,7 @@ class SystemSettingsController extends Controller
     {
         try {
             $userId = createdBy();
-            $availableTemplates = EmailTemplate::pluck('name', 'id')->toArray();
+            $availableTemplates = EmailTemplate::pluck('name', 'id')?->toArray();
 
             $rules = [];
             foreach ($availableTemplates as $templateId => $templateName) {
@@ -539,7 +539,7 @@ class SystemSettingsController extends Controller
     {
         try {
             $userId = createdBy();
-            $availableTemplates = NotificationTemplate::where('type', 'twilio')->pluck('name', 'id')->toArray();
+            $availableTemplates = NotificationTemplate::where('type', 'twilio')?->pluck('name', 'id')?->toArray();
 
             $rules = [
                 'twilio_sid' => 'nullable|string',
@@ -689,7 +689,7 @@ class SystemSettingsController extends Controller
     {
         try {
             $userId = createdBy();
-            $availableTemplates = NotificationTemplate::where('type', 'slack')->pluck('name', 'id')->toArray();
+            $availableTemplates = NotificationTemplate::where('type', 'slack')?->pluck('name', 'id')?->toArray();
 
             $rules = [
                 'slack_webhook_url' => 'nullable|string|url',
@@ -757,7 +757,7 @@ class SystemSettingsController extends Controller
      */
     public function updateInvoiceTemplate(Request $request)
     {
-        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-invoices-settings')) {
+        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-invoices-settings')) {
             return response()->json(['error' => __('Permission denied')], 403);
         }
 
@@ -768,7 +768,7 @@ class SystemSettingsController extends Controller
             'invoiceLogoId' => 'nullable|exists:media,id',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $invoiceQrEnabled = ($validated['invoiceQrEnabled'] ?? false) ? 'on' : 'off';
 
         $settingsToSave = [
@@ -795,7 +795,7 @@ class SystemSettingsController extends Controller
      */
     public function updateQuoteTemplate(Request $request)
     {
-        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-quotes-settings')) {
+        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-quotes-settings')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 
@@ -806,7 +806,7 @@ class SystemSettingsController extends Controller
             'quoteLogoId' => 'nullable|exists:media,id',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $quoteQrEnabled = ($validated['quoteQrEnabled'] ?? false) ? 'on' : 'off';
 
         $settingsToSave = [
@@ -833,7 +833,7 @@ class SystemSettingsController extends Controller
      */
     public function updateSalesOrderTemplate(Request $request)
     {
-        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-sales-orders-settings')) {
+        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-sales-orders-settings')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 
@@ -844,7 +844,7 @@ class SystemSettingsController extends Controller
             'salesOrderLogoId' => 'nullable|exists:media,id',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $salesOrderQrEnabled = ($validated['salesOrderQrEnabled'] ?? false) ? 'on' : 'off';
 
         $settingsToSave = [

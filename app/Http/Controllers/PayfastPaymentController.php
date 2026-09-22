@@ -23,7 +23,7 @@ class PayfastPaymentController extends Controller
         ]);
 
         try {
-            $userID = User::where('type', 'super_admin')->first()?->id;
+            $userID = User::where('type', 'super_admin')?->first()?->id;
             $settings = getPaymentMethodConfig('payfast', $userID);
             $isLive = ($settings['mode'] ?? 'sandbox') === 'live';
 
@@ -41,7 +41,7 @@ class PayfastPaymentController extends Controller
             $paymentId = 'pf_' . $plan->id . '_' . time() . '_' . uniqid();
 
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'payfast',
@@ -121,7 +121,7 @@ class PayfastPaymentController extends Controller
             }
 
             // Find the plan order
-            $planOrder = PlanOrder::where('payment_id', $paymentId)->first();
+            $planOrder = PlanOrder::where('payment_id', $paymentId)?->first();
 
             if (!$planOrder) {
                 return response(__('Order not found'), 404);
@@ -192,15 +192,15 @@ class PayfastPaymentController extends Controller
         // Try different parameter names PayFast might use
         $paymentId = $request->input('m_payment_id') ?? $request->input('pf_payment_id') ?? $request->input('payment_id');
 
-        if (!$paymentId && auth()->check()) {
+        if (!$paymentId && auth()?->check()) {
             // If no payment ID, find the most recent pending order for this user
-            $planOrder = PlanOrder::where('user_id', auth()->id())
+            $planOrder = PlanOrder::where('user_id', auth()?->id())
                 ->where('payment_method', 'payfast')
                 ->where('status', 'pending')
                 ->orderBy('created_at', 'desc')
                 ->first();
         } else {
-            $planOrder = PlanOrder::where('payment_id', $paymentId)->first();
+            $planOrder = PlanOrder::where('payment_id', $paymentId)?->first();
         }
 
         if ($planOrder) {

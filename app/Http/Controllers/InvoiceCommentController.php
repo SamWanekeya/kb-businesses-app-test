@@ -25,7 +25,7 @@ class InvoiceCommentController extends Controller
 
         $comment = InvoiceComment::create([
             'invoice_id' => $invoice->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'comment' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -33,9 +33,9 @@ class InvoiceCommentController extends Controller
         // Create activity record
         InvoiceActivity::create([
             'invoice_id' => $invoice->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -56,7 +56,7 @@ class InvoiceCommentController extends Controller
         $activity = InvoiceActivity::where('id', $activityId)
             ->where('invoice_id', $invoice->id)
             ->where('activity_type', 'comment')
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$activity) {

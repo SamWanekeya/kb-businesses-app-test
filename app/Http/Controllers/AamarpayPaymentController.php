@@ -26,7 +26,7 @@ class AamarpayPaymentController extends Controller
 
             if ($validated['pay_status'] === 'Successful') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'aamarpay',
@@ -57,7 +57,7 @@ class AamarpayPaymentController extends Controller
                 return response()->json(['error' => __('Aamarpay not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
             $currency = $settings['payment_settings']['currency'] ?? 'BDT';
             $url = 'https://sandbox.aamarpay.com/request.php';
@@ -160,8 +160,8 @@ class AamarpayPaymentController extends Controller
                     ]);
 
                     // Log the user in if not already authenticated
-                    if (!auth()->check()) {
-                        auth()->login($user);
+                    if (!auth()?->check()) {
+                        auth()?->login($user);
                     }
 
                     return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));

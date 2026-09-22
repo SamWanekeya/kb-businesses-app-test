@@ -962,7 +962,7 @@ class StaffRoleSeeder extends Seeder
             }
         }
 
-        $totalUsers = User::where('type', 'staff')->count();
+        $totalUsers = User::where('type', 'staff')?->count();
         $this->command->info("Created staff roles and {$totalUsers} users successfully!");
     }
 

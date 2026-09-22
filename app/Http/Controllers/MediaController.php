@@ -18,7 +18,7 @@ class MediaController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         if (!$user->hasPermissionTo('manage-media')) {
             return response()->json([]);
         }
@@ -34,7 +34,7 @@ class MediaController extends Controller
             } // Users with manage-any-media can see all media
             elseif ($user->hasPermissionTo('manage-any-media')) {
                 // Filter for manage-any-media
-                $organizationUsersIds = User::where('created_by', createdBy())->orWhere('id', createdBy())->pluck('id');
+                $organizationUsersIds = User::where('created_by', createdBy())->orWhere('id', createdBy())?->pluck('id');
                 $mediaQuery = $mediaQuery->whereIn('user_id', $organizationUsersIds);
             } elseif ($user->hasPermissionTo('manage-own-media')) {
                 // Can only see their own media
@@ -74,7 +74,7 @@ class MediaController extends Controller
                     // Skip media files with unavailable storage disks
                     return null;
                 }
-            })->filter(); // Remove null entries
+            })?->filter(); // Remove null entries
         });
 
         return response()->json($media);
@@ -150,7 +150,7 @@ class MediaController extends Controller
                 $media = $mediaItem->addMedia($file)
                     ->toMediaCollection('images');
 
-                $media->user_id = auth()->id();
+                $media->user_id = auth()?->id();
                 $media->save();
 
                 // Update user storage usage
@@ -245,7 +245,7 @@ class MediaController extends Controller
 
     private function checkStorageLimit($files)
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         if ($user->type === 'super_admin') {
             return null;
         }
@@ -275,7 +275,8 @@ class MediaController extends Controller
         }
 
         if ($user->created_by) {
-            $organization = User::find($user->created_by);
+            $organization = $user->created_by ? $user->organization : null;
+            ;
             if ($organization && $organization->plan) {
                 return $organization->plan->storage_limit * 1024 * 1024 * 1024;
             }
@@ -288,16 +289,17 @@ class MediaController extends Controller
     {
         if ($user->type === 'organization') {
             // Get storage usage for organization and all its staff
-            $organizationUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
+            $organizationUsers = User::where('created_by', $user->id)?->pluck('id')->push($user->id);
 
             return Media::whereIn('user_id', $organizationUsers)->sum('size');
         }
 
         if ($user->created_by) {
             // Get storage usage for entire organization
-            $organization = User::find($user->created_by);
+            $organization = $user->created_by ? $user->organization : null;
+            ;
             if ($organization) {
-                $organizationUsers = User::where('created_by', $organization->id)->pluck('id')->push($organization->id);
+                $organizationUsers = User::where('created_by', $organization->id)?->pluck('id')->push($organization->id);
 
                 return Media::whereIn('user_id', $organizationUsers)->sum('size');
             }
@@ -365,7 +367,7 @@ class MediaController extends Controller
 
     public function download($id)
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         $query = Media::where('id', $id);
 
         // SuperAdmin and users with manage-any-media can download any media
@@ -392,7 +394,7 @@ class MediaController extends Controller
 
     public function destroy($id)
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         $query = Media::where('id', $id);
 
         // SuperAdmin and users with manage-any-media can delete any media
@@ -419,7 +421,7 @@ class MediaController extends Controller
         $this->updateStorageUsage($organization, -$fileSize);
 
         // Delete the MediaItem if it has no more media files
-        if ($mediaItem && $mediaItem->getMedia()->count() === 0) {
+        if ($mediaItem && $mediaItem->getMedia()?->count() === 0) {
             $mediaItem->delete();
         }
 
@@ -438,16 +440,15 @@ class MediaController extends Controller
             $plan = $user->getCurrentPlan();
 
             if ($plan && $plan->storage_limit > 0) {
-                // Pata watumiaji wote waliofunguliwa na shirika hili, pamoja na shirika lenyewe
-                $organizationUsers = User::where('created_by', $user->id)
-                    ->pluck('id')
+                // Get all users created by this organization, as well as the organization itself.
+                $organizationUsers = User::where('created_by', $user->id)?->pluck('id')
                     ->push($user->id);
 
-                // Hesabu jumla ya nafasi iliyotumika sasa hivi
+                // Calculate the total space currently in use.
                 $currentStorageUsage = Media::whereIn('user_id', $organizationUsers)
                     ->sum('size');
 
-                // Badilisha kikomo cha GB kwenda kwenye Bytes
+                // Change the GB limit to bytes.
                 $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
 
                 $planLimits = [

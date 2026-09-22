@@ -19,7 +19,7 @@ export default function Referral() {
     const { userType, settings, stats, payoutRequests, referralLink, usersWithPlans, currency_symbol, globalSettings } = props as any;
     const [activeSection, setActiveSection] = useState('dashboard');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Referral Program') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Referral Program') }];
     const sidebarNavItems: NavItem[] = [
         {
             title: translate('Dashboard'),
@@ -92,7 +92,7 @@ export default function Referral() {
     // from another module leaves responsive components (like tables) stuck at the previous size.
     useEffect(() => {
         const triggerResize = () => {
-            window.dispatchEvent(new Eventranslate('resize'));
+            window.dispatchEvent(new Event('resize'));
         };
 
         const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];

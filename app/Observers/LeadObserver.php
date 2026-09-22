@@ -15,7 +15,7 @@ class LeadObserver
 {
     public function created(Lead $lead): void
     {
-        $creator = User::find(auth()->id() ?? $lead->created_by);
+        $creator = User::find(auth()?->id() ?? $lead->created_by);
         $assignedName = $lead->assignedUser ? $lead->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $lead->assignedUser && $creator->id === $lead->assignedUser->id;
 
@@ -61,7 +61,7 @@ class LeadObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -96,7 +96,7 @@ class LeadObserver
 
             LeadActivity::create([
                 'lead_id' => $lead->id,
-                'user_id' => auth()->id() ?? $lead->created_by,
+                'user_id' => auth()?->id() ?? $lead->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

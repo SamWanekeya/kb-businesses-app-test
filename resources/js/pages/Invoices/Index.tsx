@@ -370,7 +370,7 @@ export default function Invoices() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Invoices') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Invoices') }];
 
     const columns = [
         {
@@ -565,7 +565,6 @@ export default function Invoices() {
             url="/invoices"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -733,6 +732,7 @@ export default function Invoices() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -789,7 +789,6 @@ export default function Invoices() {
                                 onChange={(e) => {
                                     setRejectNotes(e.target.value);
                                 }}
-                                placeholder={translate('Enter reason for rejection...')}
                                 className="mt-1"
                             />
                         </div>

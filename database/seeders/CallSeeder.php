@@ -30,12 +30,12 @@ class CallSeeder extends Seeder
         $modules = ['lead', 'account', 'contact', 'opportunity', 'case'];
 
         // Fetch all data once to avoid N+1 queries
-        $allStaffUsers = User::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allLeads = Lead::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allAccounts = Account::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allContacts = Contact::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allOpportunities = Opportunity::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allCases = CaseModel::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allStaffUsers = User::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allLeads = Lead::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allAccounts = Account::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allContacts = Contact::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allOpportunities = Opportunity::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allCases = CaseModel::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
 
         foreach ($organizationUsers as $organization) {
             $staffUsers = $allStaffUsers->get($organization->id, collect());
@@ -119,7 +119,7 @@ class CallSeeder extends Seeder
                     CallAttendee::create([
                         'call_id' => $call->id,
                         'attendee_type' => 'user',
-                        'attendee_id' => $staffUsers->random()->id,
+                        'attendee_id' => $staffUsers->random()?->id,
                     ]);
                 }
 
@@ -128,7 +128,7 @@ class CallSeeder extends Seeder
                     CallAttendee::create([
                         'call_id' => $call->id,
                         'attendee_type' => 'contact',
-                        'attendee_id' => $contacts->random()->id,
+                        'attendee_id' => $contacts->random()?->id,
                     ]);
                 }
 
@@ -137,7 +137,7 @@ class CallSeeder extends Seeder
                     CallAttendee::create([
                         'call_id' => $call->id,
                         'attendee_type' => 'lead',
-                        'attendee_id' => $leads->random()->id,
+                        'attendee_id' => $leads->random()?->id,
                     ]);
                 }
             }

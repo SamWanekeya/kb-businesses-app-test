@@ -153,7 +153,7 @@ class ProjectTaskSeeder extends Seeder
         foreach ($organizationUsers as $organization) {
             $projects = Project::where('created_by', $organization->id)->get();
             $staffUsers = User::where('created_by', $organization->id)->get();
-            $taskStatuses = TaskStatus::where('created_by', $organization->id)->pluck('id', 'name')->toArray();
+            $taskStatuses = TaskStatus::where('created_by', $organization->id)?->pluck('id', 'name')?->toArray();
 
             if ($projects->isEmpty() || empty($taskStatuses)) {
                 continue;

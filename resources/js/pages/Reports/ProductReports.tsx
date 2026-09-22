@@ -20,7 +20,7 @@ export default function ProductReports() {
     }, []);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
         { title: translate('Product Reports') },
     ];
@@ -64,7 +64,6 @@ export default function ProductReports() {
             description={translate('View and analyze product reports to track performance and sales.')}
             url={route('reports.product-reports')}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <SummaryCards cards={summaryCards} />
             <ReportFilters filters={filters} />

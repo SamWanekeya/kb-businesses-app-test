@@ -28,7 +28,7 @@ class PayHerePaymentController extends Controller
 
             if ($validated['status_code'] === '2') { // Success status
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'payhere',
@@ -59,7 +59,7 @@ class PayHerePaymentController extends Controller
                 return response()->json(['error' => __('PayHere not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $orderId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             $paymentData = [
@@ -137,8 +137,8 @@ class PayHerePaymentController extends Controller
                     ]);
 
                     // Log the user in if not already authenticated
-                    if (!auth()->check()) {
-                        auth()->login($user);
+                    if (!auth()?->check()) {
+                        auth()?->login($user);
                     }
 
                     return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));

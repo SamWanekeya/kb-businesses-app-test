@@ -97,7 +97,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
                 <Label htmlFor="cardholder-name">{translate('Name on card')}</Label>
                 <Input
@@ -107,7 +107,6 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                     onChange={(e) => {
                         setCardholderName(e.target.value);
                     }}
-                    placeholder={translate('Enter cardholder name')}
                     required
                 />
             </div>

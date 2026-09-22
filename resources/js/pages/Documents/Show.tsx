@@ -150,7 +150,7 @@ export default function DocumentShow() {
     ];
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Documents'), href: route('documents.index') },
         ...(document.folder ? [{ title: document.folder.name, href: route('documents.folder', document.folder.id) }] : []),
@@ -185,7 +185,7 @@ export default function DocumentShow() {
         },
         { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
         { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },
-        { name: 'attachment', label: translate('Attachment'), type: 'media-picker', returnType: 'id', placeholder: translate('Select file...') },
+        { name: 'attachment', label: translate('Attachment'), type: 'media-picker', returnType: 'id' },
         {
             name: 'assigned_to',
             label: translate('Assign To'),
@@ -240,7 +240,6 @@ export default function DocumentShow() {
             url={`/documents/${document.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Outer container */}
             <div className="-mt-2 space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
@@ -538,6 +537,7 @@ export default function DocumentShow() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{ fields: formFields, modalSize: 'xl' }}
                 initialData={{

@@ -98,7 +98,7 @@ class RoleController extends BaseController
      */
     public function create()
     {
-        if (Auth::user()->can('create-roles')) {
+        if (Auth::user()?->can('create-roles')) {
             $permissions = $this->getFilteredPermissions();
 
             return Inertia::render('Roles/Create', [
@@ -168,7 +168,7 @@ class RoleController extends BaseController
             });
         }
 
-        $validPermissions = $query->pluck('name')->toArray();
+        $validPermissions = $query?->pluck('name')?->toArray();
 
         return $validPermissions;
     }
@@ -178,7 +178,7 @@ class RoleController extends BaseController
      */
     public function show(Role $role)
     {
-        if (Auth::user()->can('view-roles')) {
+        if (Auth::user()?->can('view-roles')) {
             $role->load(['permissions', 'creator']);
             $role->is_editable = !in_array($role->name, isNotEditableRoles());
 
@@ -198,7 +198,7 @@ class RoleController extends BaseController
      */
     public function edit(Role $role)
     {
-        if (Auth::user()->can('edit-roles')) {
+        if (Auth::user()?->can('edit-roles')) {
             $role->load(['permissions', 'creator']);
             $role->is_editable = !in_array($role->name, isNotEditableRoles());
 
@@ -259,7 +259,7 @@ class RoleController extends BaseController
             }
 
             // if the role has users assigned, prevent deletion
-            if ($role->users()->count() > 0) {
+            if ($role->users()?->count() > 0) {
                 return redirect()->back()->with('error', __('Role cannot be deleted as it is assigned to users!'));
             }
 

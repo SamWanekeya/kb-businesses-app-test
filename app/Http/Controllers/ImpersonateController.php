@@ -14,16 +14,16 @@ class ImpersonateController extends Controller
 
         // Log impersonation event
         Log::info('Impersonation started', [
-            'acting_user_id' => auth()->id(),
+            'acting_user_id' => auth()?->id(),
             'impersonated_user_id' => $userId,
             'ip_address' => $request->ip(),
             'timestamp' => now(),
         ]);
 
-        $originalUserId = auth()->id();
+        $originalUserId = auth()?->id();
 
         // Sign in as the target user first
-        auth()->loginUsingId($userId);
+        auth()?->loginUsingId($userId);
         // Then store original user ID in session
         session()->put('impersonated_user_id', $userId);
         session()->put('on_behalf_of_by', $originalUserId);
@@ -40,7 +40,7 @@ class ImpersonateController extends Controller
 
         $originalUserId = session('on_behalf_of_by');
         if ($originalUserId) {
-            auth()->loginUsingId($originalUserId);
+            auth()?->loginUsingId($originalUserId);
             session()->forget('on_behalf_of_by');
             session()->forget('impersonated_user_id');
             session()->save();

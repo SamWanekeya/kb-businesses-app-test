@@ -189,7 +189,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                 <DialogHeader>
                                     <DialogTitle>{translate('Create Payout Request')}</DialogTitle>
                                 </DialogHeader>
-                                <form onSubmit={handleCreatePayout} className="space-y-4">
+                                <form autoComplete="off" onSubmit={handleCreatePayout} className="space-y-4">
                                     <div>
                                         <Label htmlFor="amount">{translate('Amount')}</Label>
                                         <Input
@@ -279,6 +279,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         <DialogTitle>{translate('Reject Payout Request')}</DialogTitle>
                     </DialogHeader>
                     <form
+                        autoComplete="off"
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);

@@ -29,11 +29,11 @@ class MeetingSeeder extends Seeder
         $modules = ['lead', 'account', 'contact', 'opportunity'];
 
         // Fetch all data once to avoid N+1 queries
-        $allStaffUsers = User::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allLeads = Lead::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allAccounts = Account::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allContacts = Contact::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
-        $allOpportunities = Opportunity::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allStaffUsers = User::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allLeads = Lead::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allAccounts = Account::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allContacts = Contact::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
+        $allOpportunities = Opportunity::whereIn('created_by', $organizationUsers)?->pluck('id'))->get()->groupBy('created_by');
 
         foreach ($organizationUsers as $organization) {
             $staffUsers = $allStaffUsers->get($organization->id, collect());
@@ -133,7 +133,7 @@ class MeetingSeeder extends Seeder
                     MeetingAttendee::create([
                         'meeting_id' => $meeting->id,
                         'attendee_type' => 'user',
-                        'attendee_id' => $staffUsers->random()->id,
+                        'attendee_id' => $staffUsers->random()?->id,
                     ]);
                 }
 
@@ -142,7 +142,7 @@ class MeetingSeeder extends Seeder
                     MeetingAttendee::create([
                         'meeting_id' => $meeting->id,
                         'attendee_type' => 'lead',
-                        'attendee_id' => $leads->random()->id,
+                        'attendee_id' => $leads->random()?->id,
                     ]);
                 }
             }

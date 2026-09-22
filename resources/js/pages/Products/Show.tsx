@@ -23,7 +23,7 @@ export default function ProductShow() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Items'), href: route('products.index') },
         { title: translate('View Product') },
     ];
@@ -45,7 +45,7 @@ export default function ProductShow() {
         <PageTemplate
             title={product.name}
             description={translate('Product details and related information')}
-            noPadding
+
             breadcrumbs={breadcrumbs}
             actions={pageActions}
         >

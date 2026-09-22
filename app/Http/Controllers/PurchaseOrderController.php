@@ -570,7 +570,7 @@ class PurchaseOrderController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-purchase-orders')) {
+        if (!auth()?->user()?->can('export-purchase-orders')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

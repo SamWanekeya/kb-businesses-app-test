@@ -127,7 +127,7 @@ export function InvoicePayfastPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="firstName">{translate('First Name')}</Label>
@@ -140,7 +140,6 @@ export function InvoicePayfastPaymentForm({
                                         setErrors((prev) => ({ ...prev, firstName: '' }));
                                     }
                                 }}
-                                placeholder={translate('Enter first name')}
                                 className={errors.firstName ? 'border-red-500' : ''}
                                 required
                             />
@@ -157,7 +156,6 @@ export function InvoicePayfastPaymentForm({
                                         setErrors((prev) => ({ ...prev, lastName: '' }));
                                     }
                                 }}
-                                placeholder={translate('Enter last name')}
                                 className={errors.lastName ? 'border-red-500' : ''}
                                 required
                             />
@@ -177,7 +175,6 @@ export function InvoicePayfastPaymentForm({
                                     setErrors((prev) => ({ ...prev, email: '' }));
                                 }
                             }}
-                            placeholder={translate('Enter email address')}
                             className={errors.email ? 'border-red-500' : ''}
                             required
                         />

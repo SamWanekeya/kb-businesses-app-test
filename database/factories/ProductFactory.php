@@ -17,7 +17,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->paragraph(),
             'price' => $this->faker->randomFloat(2, 10, 1000),
             'category_id' => function () {
-                return Category::inRandomOrder()->first()->id ?? null;
+                return Category::inRandomOrder()?->first()?->id ?? null;
             },
             'featured_image' => 'products/product-' . $this->faker->numberBetween(1, 10) . '.jpg',
             'featured_image_original_name' => 'product-image.jpg',

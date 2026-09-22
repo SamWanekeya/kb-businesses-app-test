@@ -41,7 +41,7 @@ class IyzipayPaymentController extends Controller
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'iyzipay',
@@ -100,7 +100,7 @@ class IyzipayPaymentController extends Controller
                 return response()->json(['error' => __('Iyzipay not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $conversationId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
             $options = $this->getIyzipayOptions($settings['payment_settings']);
 
@@ -130,7 +130,7 @@ class IyzipayPaymentController extends Controller
             $buyer->setGsmNumber('+1234567890');
             $buyer->setEmail($user->email);
             $buyer->setIdentityNumber('11111111111');
-            $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
+            $buyer->setLastLoginDate(now()?->format('Y-m-d H:i:s'));
             $buyer->setRegistrationDate($user->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress('123 Main Street');
             $buyer->setIp($request->ip());
@@ -252,7 +252,7 @@ class IyzipayPaymentController extends Controller
             }
 
             // Get settings without authentication dependency
-            $superAdmin = User::where('type', 'super_admin')->first();
+            $superAdmin = User::where('type', 'super_admin')?->first();
             $settings = $superAdmin ? getPaymentGatewaySettings($superAdmin->id) : getPaymentGatewaySettings();
 
             // Retrieve payment result from Iyzipay
@@ -269,8 +269,8 @@ class IyzipayPaymentController extends Controller
                 ]);
 
                 // Log the user in if not already authenticated
-                if (!auth()->check()) {
-                    auth()->login($user);
+                if (!auth()?->check()) {
+                    auth()?->login($user);
                 }
 
                 return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));

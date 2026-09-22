@@ -219,7 +219,7 @@ export default function ReceiptOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Receipt Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Receipt Orders') }];
 
     const columns = [
         {
@@ -357,7 +357,6 @@ export default function ReceiptOrders() {
             url="/receipt-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -457,6 +456,7 @@ export default function ReceiptOrders() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

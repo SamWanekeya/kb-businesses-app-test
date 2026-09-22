@@ -52,7 +52,7 @@ export default function PurchaseOrderShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
         { title: translate('View Purchase Order ') },
     ];
@@ -143,7 +143,6 @@ export default function PurchaseOrderShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid w-full max-w-full min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
                 {/* ── Left Column ── */}
@@ -479,6 +478,7 @@ export default function PurchaseOrderShow() {
                                 {useHasPermission('create-purchase-orders') && (
                                     <div className="border-b px-5 pt-4 pb-4">
                                         <form
+                                            autoComplete="off"
                                             onSubmit={(e) => {
                                                 e.preventDefault();
                                                 if (newComment.trim()) {

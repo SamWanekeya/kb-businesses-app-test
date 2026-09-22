@@ -292,7 +292,7 @@ export default function Projects() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management'), href: route('projects.index') },
         { title: translate('Projects') },
     ];
@@ -352,7 +352,6 @@ export default function Projects() {
             url="/projects"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Stats Cards */}
             <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
@@ -666,6 +665,7 @@ export default function Projects() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     ...(useHasPermission('export-projects') && { exportRoute: 'projects.export' }),
@@ -675,13 +675,11 @@ export default function Projects() {
                             label: translate('Project Name'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Website Redesign, Mobile App v2, CRM Integration'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Enter project description...'),
                         },
                         {
                             name: formMode === 'view' ? 'account_name' : 'account_id',
@@ -695,7 +693,7 @@ export default function Projects() {
                         },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' },
                         { name: 'end_date', label: translate('End Date'), type: 'date' },
-                        { name: 'budget', label: translate('Budget'), type: 'number', step: '0.01', placeholder: translate('e.g. 10000.00') },
+                        { name: 'budget', label: translate('Budget'), type: 'number', step: '0.01' },
                         {
                             name: 'priority',
                             label: translate('Priority'),
@@ -752,6 +750,7 @@ export default function Projects() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

@@ -37,7 +37,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
     const { auth } = usePage().props;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         auth?.user?.type === 'super_admin'
             ? { title: translate('Organizations'), href: route('organizations.index') }
             : { title: translate('User'), href: route('users-permissions.users.index') },
@@ -148,7 +148,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
     };
 
     return (
-        <PageTemplate title={translate('User Logs')} url="/users-logs" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('User Logs')} url="/users-logs" breadcrumbs={breadcrumbs}>
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
                 <SearchAndFilterBar

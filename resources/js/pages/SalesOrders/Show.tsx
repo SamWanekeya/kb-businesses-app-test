@@ -35,7 +35,7 @@ export default function SalesOrderShow() {
         };
     }, []);
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Sales Order Management') },
         { title: translate('Sales Orders'), href: route('sales-orders.index') },
         { title: translate('View Sales Order') },
@@ -107,7 +107,6 @@ export default function SalesOrderShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid w-full max-w-full min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
                 {/* Left Column */}
@@ -402,6 +401,7 @@ export default function SalesOrderShow() {
                                 {useHasPermission('create-sales-orders') && (
                                     <div className="border-b px-5 pt-4 pb-4">
                                         <form
+                                            autoComplete="off"
                                             onSubmit={(e) => {
                                                 e.preventDefault();
                                                 if (newComment.trim()) {

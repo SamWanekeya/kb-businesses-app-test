@@ -42,7 +42,7 @@ export default function CaseShow() {
     const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Cases'), href: route('cases.index') },
         { title: translate('View Case') },
     ];
@@ -185,7 +185,6 @@ export default function CaseShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="mx-auto space-y-6">
                 {/* Summary Stat Cards */}

@@ -10,7 +10,7 @@ export default function ShippingProviderTypeShow() {
     const { shippingProviderType } = usePage().props;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Shipping Provider Types'), href: route('shipping-provider-types.index') },
         { title: shippingProviderType.name },
     ];

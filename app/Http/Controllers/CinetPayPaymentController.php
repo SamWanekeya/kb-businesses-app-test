@@ -27,7 +27,7 @@ class CinetPayPaymentController extends Controller
 
             if ($validated['cpm_result'] === '00') { // Success status
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'cinetpay',
@@ -58,7 +58,7 @@ class CinetPayPaymentController extends Controller
                 return response()->json(['error' => __('CinetPay not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $transactionId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             // Prepare API request data according to CinetPay v2 API

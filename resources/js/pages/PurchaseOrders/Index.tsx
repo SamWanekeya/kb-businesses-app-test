@@ -223,7 +223,7 @@ export default function PurchaseOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Purchase Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Purchase Orders') }];
 
     const columns = [
         {
@@ -359,7 +359,6 @@ export default function PurchaseOrders() {
             url="/purchase-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -475,6 +474,7 @@ export default function PurchaseOrders() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

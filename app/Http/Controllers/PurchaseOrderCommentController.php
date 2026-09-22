@@ -25,7 +25,7 @@ class PurchaseOrderCommentController extends Controller
 
         $comment = PurchaseOrderComment::create([
             'purchase_order_id' => $purchaseOrder->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'comment' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -33,9 +33,9 @@ class PurchaseOrderCommentController extends Controller
         // Create activity record
         PurchaseOrderActivity::create([
             'purchase_order_id' => $purchaseOrder->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -56,7 +56,7 @@ class PurchaseOrderCommentController extends Controller
         $activity = PurchaseOrderActivity::where('id', $activityId)
             ->where('purchase_order_id', $purchaseOrder->id)
             ->where('activity_type', 'comment')
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$activity) {

@@ -19,11 +19,11 @@ trait AutoApplyPermissionCheck
     public function applyPermissionScope($query, $module)
     {
         // Skip permission check if no authenticated user (e.g., in console commands)
-        if (!auth()->check()) {
+        if (!auth()?->check()) {
             return $query;
         }
 
-        $user = auth()->user();
+        $user = auth()?->user();
 
         // Check if user is super_admin - they can see everything
         if ($user->hasRole(['super_admin'])) {

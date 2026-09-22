@@ -46,7 +46,7 @@ export default function OpportunityShow() {
     const [editCommentText, setEditCommentText] = useState('');
     const permissions = auth?.permissions || [];
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Opportunity Management') },
         { title: translate('Opportunities'), href: route('opportunities.index') },
         { title: translate('View Opportunity') },
@@ -107,7 +107,6 @@ export default function OpportunityShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="mx-auto space-y-6">
                 {/* Summary Stat Cards */}
@@ -693,6 +692,7 @@ export default function OpportunityShow() {
                             {useHasPermission('create-opportunities') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
+                                        autoComplete="off"
                                         onSubmit={(e) => {
                                             e.preventDefault();
                                             if (newComment.trim()) {
@@ -722,7 +722,6 @@ export default function OpportunityShow() {
                                             </TooltipProvider>
                                             <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                 <Textarea
-                                                    placeholder={translate('Write a comment...')}
                                                     value={newComment}
                                                     onChange={(e) => {
                                                         setNewComment(e.target.value);

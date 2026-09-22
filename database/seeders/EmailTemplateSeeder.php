@@ -12,7 +12,7 @@ class EmailTemplateSeeder extends Seeder
     public function run(): void
     {
         $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
-        $langCodes = collect($languages)->pluck('code')->toArray();
+        $langCodes = collect($languages)?->pluck('code')?->toArray();
 
         $templates = [
             // User Created
@@ -1225,7 +1225,7 @@ class EmailTemplateSeeder extends Seeder
         ];
 
         foreach ($templates as $templateData) {
-            $existingTemplate = EmailTemplate::where('name', $templateData['name'])->first();
+            $existingTemplate = EmailTemplate::where('name', $templateData['name'])?->first();
 
             if ($existingTemplate) {
                 continue;

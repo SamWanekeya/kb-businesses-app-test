@@ -54,7 +54,7 @@ export default function LeadReports() {
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
         { title: translate('Lead Reports') },
     ];
@@ -102,7 +102,6 @@ export default function LeadReports() {
             description={translate('View and analyze lead reports to track performance and conversion rates.')}
             url="/reports/leads"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <SummaryCards cards={summaryCards} />
 

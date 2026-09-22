@@ -108,7 +108,7 @@ class Product extends BaseModel implements HasMedia
                     'url' => $media->getUrl(),
                     'thumb_url' => $media->getUrl('thumb'),
                 ] : null;
-            })->filter();
+            })?->filter();
         }
 
         return $this->getMedia('additional')->map(function ($media) {
@@ -171,6 +171,6 @@ class Product extends BaseModel implements HasMedia
 
     public function getDefaultImageUrl()
     {
-        return $this->image ?: get_file('product/default.svg');
+        return $this->image ?: getFile('product/default.svg');
     }
 }

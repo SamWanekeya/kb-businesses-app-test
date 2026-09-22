@@ -183,7 +183,7 @@ export default function AppSidebar() {
             children: [
                 {
                     title: translate('Plans'),
-                    href: route('subscriptions.subscriptions.plans.index'),
+                    href: route('subscriptions.plans.index'),
                 },
                 {
                     title: translate('Requests'),
@@ -217,7 +217,7 @@ export default function AppSidebar() {
         // },
         {
             title: translate('Media'),
-            href: route('media-library.index'),
+            href: route('media-library.media.index'),
             icon: Image,
         },
         {
@@ -924,7 +924,7 @@ export default function AppSidebar() {
         // 14. Subscriptions (Plans)
         const planChildren: NavItem[] = [];
         if (canManagePlans) {
-            planChildren.push({ title: translate('Plans'), href: route('subscriptions.subscriptions.plans.index') });
+            planChildren.push({ title: translate('Plans'), href: route('subscriptions.plans.index') });
         }
         if (canViewPlanRequests) {
             planChildren.push({ title: translate('Plan requests'), href: route('subscriptions.plan-requests.index') });

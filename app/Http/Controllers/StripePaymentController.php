@@ -33,7 +33,7 @@ class StripePaymentController extends Controller
 
             Stripe::setApiKey($stripeSecret);
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $paymentIntent = PaymentIntent::create([
                 'amount' => $pricing['final_price'] * 100,
                 'currency' => $currency,
@@ -56,7 +56,7 @@ class StripePaymentController extends Controller
 
             if ($paymentIntent->status === 'succeeded') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'stripe',

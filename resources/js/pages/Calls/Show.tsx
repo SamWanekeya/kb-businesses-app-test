@@ -18,7 +18,7 @@ export default function CallShow() {
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Calls'), href: route('calls.index') },
         { title: translate('View Call') },
     ];
@@ -44,7 +44,6 @@ export default function CallShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Main Content */}

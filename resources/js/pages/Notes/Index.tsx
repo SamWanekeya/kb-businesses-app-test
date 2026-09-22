@@ -185,8 +185,8 @@ export default function Notes() {
                       ]
                     : []
             }
-            noPadding
-            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Notes') }]}
+
+            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Notes') }]}
         >
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                 <Card className="p-4">
@@ -643,6 +643,7 @@ export default function Notes() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -651,7 +652,6 @@ export default function Notes() {
                             label: translate('Title'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Meeting Notes, Project Ideas, Follow-up Tasks'),
                         },
                         {
                             name: 'content',

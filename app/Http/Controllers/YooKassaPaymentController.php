@@ -28,7 +28,7 @@ class YooKassaPaymentController extends Controller
             $client->setAuth((int)$settings['payment_settings']['yookassa_shop_id'], $settings['payment_settings']['yookassa_secret_key']);
 
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
-            $user = auth()->user();
+            $user = auth()?->user();
 
             $payment = $client->createPayment([
                 'amount' => [
@@ -83,8 +83,8 @@ class YooKassaPaymentController extends Controller
 
                 // Find user by session or create temporary assignment
                 $user = null;
-                if (auth()->check()) {
-                    $user = auth()->user();
+                if (auth()?->check()) {
+                    $user = auth()?->user();
                 } else {
                     // Try to find user from recent plan orders
                     $recentOrder = PlanOrder::where('payment_id', 'like', '%' . substr($orderId, -8))

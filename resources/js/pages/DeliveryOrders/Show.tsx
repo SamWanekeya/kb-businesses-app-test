@@ -43,7 +43,7 @@ export default function DeliveryOrderShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Delivery Orders'), href: route('delivery-orders.index') },
         { title: translate('View Delivery Order') },
     ];
@@ -106,7 +106,6 @@ export default function DeliveryOrderShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid w-full max-w-full min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
                 {/* ── Left Column ── */}

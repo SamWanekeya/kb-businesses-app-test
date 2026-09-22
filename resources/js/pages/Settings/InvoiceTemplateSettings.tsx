@@ -279,7 +279,7 @@ export default function InvoiceTemplateSettings() {
         >
             <Card>
                 <CardContent className="pt-6">
-                    <form onSubmit={handleSubmit} id="invoice-template-settings-form" className="space-y-6">
+                    <form autoComplete="off" onSubmit={handleSubmit} id="invoice-template-settings-form" className="space-y-6">
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">

@@ -97,7 +97,7 @@ use Illuminate\Support\Facades\Route;
 
 // Temporary solution to clear and rebuild the cache for permissions and roles
 //Route::get('/reset-permission-cache', function () {
-//    app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+//    app()->make(PermissionRegistrar::class)?->forgetCachedPermissions();
 //
 //    return 'Permission cache reset!';
 //});

@@ -145,7 +145,7 @@ export default function InvoiceShow() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Invoices'), href: route('invoices.index') },
         { title: translate('View Invoice') },
     ];
@@ -235,7 +235,7 @@ export default function InvoiceShow() {
             title={invoice.invoice_number}
             description={translate('Invoice details and related information')}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),
@@ -826,6 +826,7 @@ export default function InvoiceShow() {
                                 {useHasPermission('create-invoices') && (
                                     <div className="border-b px-5 pt-4 pb-4">
                                         <form
+                                            autoComplete="off"
                                             onSubmit={(e) => {
                                                 e.preventDefault();
                                                 if (newComment.trim()) {
@@ -855,7 +856,6 @@ export default function InvoiceShow() {
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => {
                                                             setNewComment(e.target.value);
@@ -1352,6 +1352,7 @@ export default function InvoiceShow() {
                     setIsAssignSalesOrderModalOpen(false);
                     setSelectedSalesOrderId('empty');
                 }}
+                autoComplete="off"
                 onSubmit={handleAssignSalesOrder}
                 formConfig={{
                     modalSize: 'md',
@@ -1421,6 +1422,7 @@ export default function InvoiceShow() {
                         <DialogTitle>{translate('Reject Payment')}</DialogTitle>
                     </DialogHeader>
                     <form
+                        autoComplete="off"
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
@@ -1430,7 +1432,7 @@ export default function InvoiceShow() {
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="reason">{translate('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="reason" name="reason" placeholder={translate('Enter rejection reason...')} className="mt-1" />
+                                <Textarea id="reason" name="reason" className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">

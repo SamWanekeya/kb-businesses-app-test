@@ -30,7 +30,7 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
 
         // Check for duplicate email
         if (!empty($row['email'])) {
-            $leadByEmail = Lead::where('email', $row['email'])->where('created_by', createdBy())->first();
+            $leadByEmail = Lead::where('email', $row['email'])->where('created_by', createdBy())?->first();
             if ($leadByEmail) {
                 $this->skippedCount++;
 
@@ -57,29 +57,29 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
         // Lead Status
         $leadStatusValue = trim($row['lead_status'] ?? '');
         $leadStatus = !empty($leadStatusValue)
-            ? LeadStatus::where('name', $leadStatusValue)->where('created_by', createdBy())->first()
+            ? LeadStatus::where('name', $leadStatusValue)->where('created_by', createdBy())?->first()
             : null;
-        $leadData['lead_status_id'] = $leadStatus?->id ?? LeadStatus::where('created_by', createdBy())->value('id');
+        $leadData['lead_status_id'] = $leadStatus?->id ?? LeadStatus::where('created_by', createdBy())?->value('id');
 
         // Lead Source
         $leadSourceValue = trim($row['lead_source'] ?? '');
         $leadSource = !empty($leadSourceValue)
-            ? LeadSource::where('name', $leadSourceValue)->where('created_by', createdBy())->first()
+            ? LeadSource::where('name', $leadSourceValue)->where('created_by', createdBy())?->first()
             : null;
-        $leadData['lead_source_id'] = $leadSource?->id ?? LeadSource::where('created_by', createdBy())->value('id');
+        $leadData['lead_source_id'] = $leadSource?->id ?? LeadSource::where('created_by', createdBy())?->value('id');
 
         // Account Industry
         $accountIndustryValue = trim($row['account_industry'] ?? '');
         $accountIndustry = !empty($accountIndustryValue)
-            ? AccountIndustry::where('name', $accountIndustryValue)->where('created_by', createdBy())->first()
+            ? AccountIndustry::where('name', $accountIndustryValue)->where('created_by', createdBy())?->first()
             : null;
-        $leadData['account_industry_id'] = $accountIndustry?->id ?? AccountIndustry::where('created_by', createdBy())->value('id');
+        $leadData['account_industry_id'] = $accountIndustry?->id ?? AccountIndustry::where('created_by', createdBy())?->value('id');
 
         // Campaign
         $campaignValue = trim($row['campaign'] ?? '');
         if (!empty($campaignValue)) {
-            $campaign = Campaign::where('name', $campaignValue)->where('created_by', createdBy())->first();
-            $leadData['campaign_id'] = $campaign?->id ?? Campaign::where('created_by', createdBy())->value('id');
+            $campaign = Campaign::where('name', $campaignValue)->where('created_by', createdBy())?->first();
+            $leadData['campaign_id'] = $campaign?->id ?? Campaign::where('created_by', createdBy())?->value('id');
         } else {
             $leadData['campaign_id'] = null;
         }

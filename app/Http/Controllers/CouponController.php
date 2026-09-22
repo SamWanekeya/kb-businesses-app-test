@@ -93,7 +93,7 @@ class CouponController extends BaseController
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
         $total = $usageHistory->count();
-        $items = $usageHistory->forPage($page, $perPage)->values();
+        $items = $usageHistory->forPage($page, $perPage)?->values();
 
         $paginatedUsage = new LengthAwarePaginator(
             $items,

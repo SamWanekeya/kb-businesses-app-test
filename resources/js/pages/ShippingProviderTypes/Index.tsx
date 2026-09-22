@@ -208,7 +208,7 @@ export default function ShippingProviderTypes() {
     const canDelete = useHasPermission('delete-shipping-provider-types');
     const canToggleStatus = useHasPermission('toggle-status-shipping-provider-types');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Shipping Provider Types') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Shipping Provider Types') }];
 
     return (
         <PageTemplate
@@ -216,7 +216,6 @@ export default function ShippingProviderTypes() {
             description={translate('Manage shipping provider types for your delivery orders.')}
             url="/shipping-provider-types"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -232,7 +231,7 @@ export default function ShippingProviderTypes() {
                                     : translate('Update the shipping provider type details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Name')}
@@ -364,7 +363,7 @@ export default function ShippingProviderTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

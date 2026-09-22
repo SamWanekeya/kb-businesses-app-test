@@ -80,7 +80,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $buyer->setGsmNumber('+1234567890');
             $buyer->setEmail($organization->email);
             $buyer->setIdentityNumber('11111111111');
-            $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
+            $buyer->setLastLoginDate(now()?->format('Y-m-d H:i:s'));
             $buyer->setRegistrationDate($organization->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress($invoice->billing_address ?? '123 Main Street');
             $buyer->setIp($request->ip());

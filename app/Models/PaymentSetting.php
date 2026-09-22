@@ -27,7 +27,7 @@ class PaymentSetting extends Model
             return [];
         }
 
-        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
+        return self::where('user_id', $userId)?->pluck('value', 'key')?->toArray();
     }
 
     public function user(): BelongsTo

@@ -48,7 +48,7 @@ export default function AccountShow() {
     const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Account Management') },
         { title: translate('Accounts'), href: route('accounts.index') },
         { title: translate('View Account') },
@@ -88,7 +88,6 @@ export default function AccountShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="mx-auto space-y-6">
                 {/* Summary Stat Cards */}
@@ -588,6 +587,7 @@ export default function AccountShow() {
                             {useHasPermission('create-accounts') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
+                                        autoComplete="off"
                                         onSubmit={(e) => {
                                             e.preventDefault();
                                             if (newComment.trim()) {
@@ -617,7 +617,6 @@ export default function AccountShow() {
                                             </TooltipProvider>
                                             <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                 <Textarea
-                                                    placeholder={translate('Write a comment...')}
                                                     value={newComment}
                                                     onChange={(e) => {
                                                         setNewComment(e.target.value);

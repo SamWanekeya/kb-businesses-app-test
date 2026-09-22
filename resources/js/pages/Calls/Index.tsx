@@ -264,7 +264,7 @@ export default function Calls() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Calls') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Calls') }];
 
     const columns = [
         {
@@ -464,7 +464,6 @@ export default function Calls() {
             url="/calls"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -562,6 +561,7 @@ export default function Calls() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -570,13 +570,11 @@ export default function Calls() {
                             label: translate('Call Title'),
                             type: 'text' as const,
                             required: true,
-                            placeholder: translate('e.g. Follow-up Call, Sales Discovery, Support Call'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea' as const,
-                            placeholder: translate('Enter call description or agenda...'),
                         },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' as const, required: true },
                         { name: 'end_date', label: translate('End Date'), type: 'date' as const, required: true },
@@ -603,7 +601,6 @@ export default function Calls() {
                             required: true,
                             searchable: true,
                             options: [],
-                            placeholder: translate('Select Record'),
                             emptyNote: (formData: any) => {
                                 const parentModule = formData.parent_module;
                                 if (!parentModule || parentModule === 'none') return null;
@@ -730,6 +727,7 @@ export default function Calls() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

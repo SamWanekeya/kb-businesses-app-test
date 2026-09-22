@@ -375,7 +375,7 @@ export default function Leads() {
         });
     }
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Lead Management') },
         { title: translate('Leads') },
     ];
@@ -536,7 +536,7 @@ export default function Leads() {
             url="/leads"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             className={activeView === 'kanban' ? 'overflow-hidden' : ''}
         >
             {/* Search and filters section */}
@@ -1228,6 +1228,7 @@ export default function Leads() {
                 <CrudFormModal
                     isOpen={false}
                     onClose={() => {}}
+                    autoComplete="off"
                     onSubmit={() => {}}
                     formConfig={{
                         exportRoute: 'leads.export',
@@ -1256,6 +1257,7 @@ export default function Leads() {
                 onClose={() => {
                     setIsConvertModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleConvertSubmit}
                 formConfig={{
                     fields:
@@ -1297,42 +1299,37 @@ export default function Leads() {
                                                 }
                                               : undefined,
                                   },
-                                  { name: 'website', label: translate('Website'), type: 'text', colSpan: 2, placeholder: 'eg. https://kakbima.dev' },
+                                  { name: 'website', label: translate('Website'), type: 'text', colSpan: 2 },
                                   {
                                       name: 'billing_address',
                                       label: translate('Billing Address'),
                                       type: 'textarea',
                                       required: true,
                                       colSpan: 2,
-                                      placeholder: translate('eg. 123 Main St'),
                                   },
                                   {
                                       name: 'billing_city',
                                       label: translate('Billing City'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: translate('eg. New York'),
                                   },
                                   {
                                       name: 'billing_state',
                                       label: translate('Billing State'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: translate('eg. NY'),
                                   },
                                   {
                                       name: 'billing_postal_code',
                                       label: translate('Billing Postal Code'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: translate('eg. 10001'),
                                   },
                                   {
                                       name: 'billing_country',
                                       label: translate('Billing Country'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: translate('eg. United States'),
                                   },
                                   {
                                       name: 'billing_shipping_section',
@@ -1353,8 +1350,8 @@ export default function Leads() {
                                                                   'value',
                                                               ).set;
                                                               nativeTextareaSetter.call(shippingTextarea, formData.billing_address);
-                                                              shippingTextarea.dispatchEvent(new Eventranslate('input', { bubbles: true }));
-                                                              shippingTextarea.dispatchEvent(new Eventranslate('change', { bubbles: true }));
+                                                              shippingTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+                                                              shippingTextarea.dispatchEvent(new Event('change', { bubbles: true }));
                                                           }
                                                       }, 10);
 
@@ -1379,8 +1376,8 @@ export default function Leads() {
                                                                           'value',
                                                                       ).set;
                                                                       nativeInputValueSetter.call(input, billingValues[index]);
-                                                                      input.dispatchEvent(new Eventranslate('input', { bubbles: true }));
-                                                                      input.dispatchEvent(new Eventranslate('change', { bubbles: true }));
+                                                                      input.dispatchEvent(new Event('input', { bubbles: true }));
+                                                                      input.dispatchEvent(new Event('change', { bubbles: true }));
                                                                   }
                                                               }, index * 20);
                                                           });
@@ -1398,26 +1395,22 @@ export default function Leads() {
                                       label: translate('Shipping Address'),
                                       type: 'textarea',
                                       colSpan: 2,
-                                      placeholder: translate('eg. 456 Elm St'),
                                   },
                                   {
                                       name: 'shipping_city',
                                       label: translate('Shipping City'),
                                       type: 'text',
-                                      placeholder: translate('eg. Los Angeles'),
                                   },
-                                  { name: 'shipping_state', label: translate('Shipping State'), type: 'text', placeholder: translate('eg. CA') },
+                                  { name: 'shipping_state', label: translate('Shipping State'), type: 'text' },
                                   {
                                       name: 'shipping_postal_code',
                                       label: translate('Shipping Postal Code'),
                                       type: 'text',
-                                      placeholder: translate('eg. 90001'),
                                   },
                                   {
                                       name: 'shipping_country',
                                       label: translate('Shipping Country'),
                                       type: 'text',
-                                      placeholder: translate('eg. United States'),
                                   },
                               ]
                             : [
@@ -1445,7 +1438,6 @@ export default function Leads() {
                                       label: translate('Position'),
                                       type: 'text',
                                       colSpan: 2,
-                                      placeholder: translate('eg. CEO, Manager, Developer'),
                                   },
                                   {
                                       name: 'address',
@@ -1453,7 +1445,6 @@ export default function Leads() {
                                       type: 'textarea',
                                       required: true,
                                       colSpan: 2,
-                                      placeholder: translate('eg. 123 Main St, City, Country'),
                                   },
                               ],
                     modalSize: 'xl',

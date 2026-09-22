@@ -356,7 +356,7 @@ export default function InvoiceCreate() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Invoices'), href: route('invoices.index') },
         { title: translate('Create') },
     ];
@@ -376,7 +376,7 @@ export default function InvoiceCreate() {
             url="/invoices"
             breadcrumbs={breadcrumbs}
             fullWidth
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),
@@ -388,7 +388,7 @@ export default function InvoiceCreate() {
                 },
             ]}
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Invoice Details */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
@@ -403,7 +403,6 @@ export default function InvoiceCreate() {
                                 <Input
                                     value={form.name}
                                     onChange={(e) => set('name', e.target.value)}
-                                    placeholder={translate('e.g. Annual Software License Invoice')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -412,7 +411,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Sales Order')} required error={errors.sales_order_id}>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select Sales Order')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrderOptions.map((s: any) => (
@@ -441,7 +440,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Quote')} error={errors.quote_id}>
                                 <Select value={form.quote_id} onValueChange={handleQuoteChange}>
                                     <SelectTrigger className={errors.quote_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select Quote')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {quoteOptions.map((q: any) => (
@@ -468,7 +467,7 @@ export default function InvoiceCreate() {
                             <Field label={translate('Opportunity')} error={errors.opportunity_id}>
                                 <Select value={form.opportunity_id} onValueChange={handleOpportunityChange}>
                                     <SelectTrigger className={errors.opportunity_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select Opportunity')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunityOptions.map((o: any) => (
@@ -494,7 +493,7 @@ export default function InvoiceCreate() {
                         <Field label={translate('Account')} required error={errors.account_id}>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select Account')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountOptions.map((a: any) => (
@@ -516,7 +515,7 @@ export default function InvoiceCreate() {
                         <Field label={translate('Contact')} required error={errors.contact_id}>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select Contact')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((c: any) => (
@@ -598,7 +597,7 @@ export default function InvoiceCreate() {
                         <Field label={translate('Assign To')} required error={errors.assigned_to}>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select User')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {userOptions.map((u: any) => (
@@ -621,22 +620,12 @@ export default function InvoiceCreate() {
                         {/* Row 4 & 5: Notes + Description in one row */}
                         <div className="md:col-span-1 lg:col-span-2">
                             <Field label={translate('Description')} error={errors.description}>
-                                <Textarea
-                                    value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    placeholder={translate('Enter invoice description...')}
-                                    rows={2}
-                                />
+                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </Field>
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
                             <Field label={translate('Notes')} error={errors.notes}>
-                                <Textarea
-                                    value={form.notes}
-                                    onChange={(e) => set('notes', e.target.value)}
-                                    placeholder={translate('Additional notes...')}
-                                    rows={2}
-                                />
+                                <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={2} />
                             </Field>
                         </div>
                     </CardContent>
@@ -652,7 +641,6 @@ export default function InvoiceCreate() {
                             <Textarea
                                 value={form.billing_address}
                                 onChange={(e) => set('billing_address', e.target.value)}
-                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 rows={2}
                                 className={errors.billing_address ? 'border-red-500' : ''}
                             />
@@ -662,7 +650,6 @@ export default function InvoiceCreate() {
                                 <Input
                                     value={form.billing_city}
                                     onChange={(e) => set('billing_city', e.target.value)}
-                                    placeholder="New York"
                                     className={errors.billing_city ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -670,7 +657,6 @@ export default function InvoiceCreate() {
                                 <Input
                                     value={form.billing_state}
                                     onChange={(e) => set('billing_state', e.target.value)}
-                                    placeholder="NY"
                                     className={errors.billing_state ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -678,7 +664,6 @@ export default function InvoiceCreate() {
                                 <Input
                                     value={form.billing_country}
                                     onChange={(e) => set('billing_country', e.target.value)}
-                                    placeholder="United States"
                                     className={errors.billing_country ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -686,18 +671,12 @@ export default function InvoiceCreate() {
                                 <Input
                                     value={form.billing_postal_code}
                                     onChange={(e) => set('billing_postal_code', e.target.value)}
-                                    placeholder="10001"
                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                 />
                             </Field>
                         </div>
                         <Field label={translate('Terms')} error={errors.terms}>
-                            <Textarea
-                                value={form.terms}
-                                onChange={(e) => set('terms', e.target.value)}
-                                placeholder={translate('Payment terms and conditions...')}
-                                rows={2}
-                            />
+                            <Textarea value={form.terms} onChange={(e) => set('terms', e.target.value)} rows={2} />
                         </Field>
                     </CardContent>
                 </Card>
@@ -760,7 +739,7 @@ export default function InvoiceCreate() {
                                                         }}
                                                     >
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder={translate('Select product')} />
+                                                            <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((o: any) => (
@@ -804,7 +783,6 @@ export default function InvoiceCreate() {
                                                         onChange={(e) => {
                                                             setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
                                                         }}
-                                                        placeholder="0.00"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -840,7 +818,6 @@ export default function InvoiceCreate() {
                                                             setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
                                                         }}
                                                         className="disabled:opacity-40"
-                                                        placeholder="0"
                                                         disabled={!line.discount_type || line.discount_type === 'none'}
                                                     />
                                                 </td>

@@ -112,7 +112,7 @@ class MercadoPagoController extends Controller
             // $preference->auto_return = "approved";
 
             // Set external reference
-            $externalReference = 'plan_' . $plan->id . '_' . auth()->id() . '_' . $billingCycle;
+            $externalReference = 'plan_' . $plan->id . '_' . auth()?->id() . '_' . $billingCycle;
             if ($couponCode) {
                 $externalReference .= '_coupon_' . $couponCode;
             }
@@ -125,10 +125,10 @@ class MercadoPagoController extends Controller
             $preference->binary_mode = true; // No pending status, only success or failure
 
             // Set payer information if available
-            if (auth()->check()) {
+            if (auth()?->check()) {
                 $payer = new Payer();
-                $payer->name = auth()->user()->name;
-                $payer->email = auth()->user()->email;
+                $payer->name = auth()?->user()?->name;
+                $payer->email = auth()?->user()?->email;
                 $preference->payer = $payer;
             }
 
@@ -235,11 +235,11 @@ class MercadoPagoController extends Controller
             }
 
             // Set default values if not set
-            $userId = $userId ?? auth()->id();
+            $userId = $userId ?? auth()?->id();
             $billingCycle = $billingCycle ?? 'monthly';
 
             // Verify user - skip for plan.mercado.callback route which might have a different user ID
-            if ($userId !== auth()->id() && !request()->routeIs('plan.mercado.callback')) {
+            if ($userId !== auth()?->id() && !request()->routeIs('plan.mercado.callback')) {
                 return redirect()->route('subscriptions.plans.index')->with('error', __('Unauthorized payment reference'));
             }
 
@@ -371,13 +371,13 @@ class MercadoPagoController extends Controller
             $payment->description = "Plan: " . $plan->name;
             $payment->installments = 1;
             $payment->payment_method_id = $validated['payment_method_id'];
-            $payment->payer = ["email" => auth()->user()->email];
+            $payment->payer = ["email" => auth()?->user()?->email];
 
             $payment->save();
 
             if ($payment->status == 'approved') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'] ?? 'monthly',
                     'payment_method' => 'mercadopago',

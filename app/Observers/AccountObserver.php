@@ -12,7 +12,7 @@ class AccountObserver
 {
     public function created(Account $account): void
     {
-        $creator = User::find(auth()->id() ?? $account->created_by);
+        $creator = User::find(auth()?->id() ?? $account->created_by);
         $assignedName = $account->assignedUser ? $account->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator->id === $account->assignedUser->id;
 
@@ -58,7 +58,7 @@ class AccountObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -106,7 +106,7 @@ class AccountObserver
 
             AccountActivity::create([
                 'account_id' => $account->id,
-                'user_id' => auth()->id() ?? $account->created_by,
+                'user_id' => auth()?->id() ?? $account->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

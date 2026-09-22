@@ -152,8 +152,8 @@ class CallController extends Controller
         ]);
 
         // Validate end datetime is after start datetime
-        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDate = Carbon::parse($validated['start_date'])?->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])?->format('Y-m-d');
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
 
@@ -172,7 +172,7 @@ class CallController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 $meetingConflict = MeetingAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
@@ -182,7 +182,7 @@ class CallController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 if ($callConflict || $meetingConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
@@ -231,9 +231,9 @@ class CallController extends Controller
                 case 'account':
                     AccountActivity::create([
                         'account_id' => $call->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Call Created',
-                        'title' => auth()->user()->name . ' created a call: ' . $call->title,
+                        'title' => auth()?->user()?->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -241,9 +241,9 @@ class CallController extends Controller
                 case 'lead':
                     LeadActivity::create([
                         'lead_id' => $call->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Call Created',
-                        'title' => auth()->user()->name . ' created a call: ' . $call->title,
+                        'title' => auth()?->user()?->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -251,9 +251,9 @@ class CallController extends Controller
                 case 'opportunity':
                     OpportunityActivity::create([
                         'opportunity_id' => $call->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Call Created',
-                        'title' => auth()->user()->name . ' created a call: ' . $call->title,
+                        'title' => auth()?->user()?->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -270,9 +270,9 @@ class CallController extends Controller
                         if ($contact && $contact->account_id) {
                             AccountActivity::create([
                                 'account_id' => $contact->account_id,
-                                'user_id' => auth()->id(),
+                                'user_id' => auth()?->id(),
                                 'activity_type' => 'Call Attendee',
-                                'title' => auth()->user()->name . ' added ' . $contact->name . ' to call: ' . $call->title,
+                                'title' => auth()?->user()?->name . ' added ' . $contact->name . ' to call: ' . $call->title,
                                 'description' => 'Contact added as attendee to call scheduled for ' . date('M j, Y', strtotime($call->start_date)),
                                 'created_by' => createdBy(),
                             ]);
@@ -283,9 +283,9 @@ class CallController extends Controller
                         if ($lead) {
                             LeadActivity::create([
                                 'lead_id' => $lead->id,
-                                'user_id' => auth()->id(),
+                                'user_id' => auth()?->id(),
                                 'activity_type' => 'Call Attendee',
-                                'title' => auth()->user()->name . ' added ' . $lead->name . ' to call: ' . $call->title,
+                                'title' => auth()?->user()?->name . ' added ' . $lead->name . ' to call: ' . $call->title,
                                 'description' => 'Lead added as attendee to call scheduled for ' . date('M j, Y', strtotime($call->start_date)),
                                 'created_by' => createdBy(),
                             ]);
@@ -379,8 +379,8 @@ class CallController extends Controller
         ]);
 
         // Validate end datetime is after start datetime
-        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDate = Carbon::parse($validated['start_date'])?->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])?->format('Y-m-d');
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
 
@@ -400,7 +400,7 @@ class CallController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 $meetingConflict = MeetingAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
@@ -410,7 +410,7 @@ class CallController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 if ($callConflict || $meetingConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);

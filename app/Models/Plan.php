@@ -41,7 +41,7 @@ class Plan extends Model
      */
     public static function getDefaultPlan()
     {
-        return self::where('is_default', true)->first();
+        return self::where('is_default', true)?->first();
     }
 
     /**

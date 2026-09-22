@@ -144,7 +144,7 @@ export default function PlanRequestsPage() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Plans'), href: route('subscriptions.plans.index') },
         { title: translate('Plan Requests') },
     ];
@@ -266,7 +266,6 @@ export default function PlanRequestsPage() {
             breadcrumbs={breadcrumbs}
             // description={translate('View and manage all plan requests from organizations.')}
             description={isSuperAdmin ? translate('View and manage all plan requests from organizations.') : translate('View your plan requests.')}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">

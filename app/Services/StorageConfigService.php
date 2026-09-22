@@ -60,12 +60,10 @@ class StorageConfigService
                     'wasabi_bucket',
                     'wasabi_url',
                     'wasabi_root',
-                ])
-                ->pluck('value', 'key')
-                ->toArray();
+                ])?->pluck('value', 'key')?->toArray();
 
             // Map storage_type to correct disk name
-            $superAdmin = User::where('type', 'super_admin')->first();
+            $superAdmin = User::where('type', 'super_admin')?->first();
             if ($superAdmin) {
                 $superAdminSettings = DB::table('settings')->where('user_id', $superAdmin->id)->whereIn('key', [
                     'storage_type',
@@ -83,9 +81,7 @@ class StorageConfigService
                     'wasabi_bucket',
                     'wasabi_url',
                     'wasabi_root',
-                ])
-                    ->pluck('value', 'key')
-                    ->toArray();
+                ])?->pluck('value', 'key')?->toArray();
             }
 
             $storageType = $superAdminSettings['storage_type'] ?? 'local';

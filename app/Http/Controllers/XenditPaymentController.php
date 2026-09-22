@@ -24,7 +24,7 @@ class XenditPaymentController extends Controller
                 return response()->json(['error' => __('Xendit not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $externalId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             $invoiceData = [
@@ -91,8 +91,8 @@ class XenditPaymentController extends Controller
                         'payment_id' => $request->input('external_id', 'xendit_' . time()),
                     ]);
 
-                    if (!auth()->check()) {
-                        auth()->login($user);
+                    if (!auth()?->check()) {
+                        auth()?->login($user);
                     }
 
                     return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
@@ -120,7 +120,7 @@ class XenditPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
 
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'xendit',
@@ -161,7 +161,7 @@ class XenditPaymentController extends Controller
             }
 
             processPaymentSuccess([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'xendit',
@@ -181,7 +181,7 @@ class XenditPaymentController extends Controller
         $status = $request->input('status');
 
         if ($status === 'PAID') {
-            $planOrder = PlanOrder::where('payment_id', $externalId)->first();
+            $planOrder = PlanOrder::where('payment_id', $externalId)?->first();
 
             if ($planOrder && $planOrder->status === 'pending') {
                 $planOrder->update(['status' => 'approved']);

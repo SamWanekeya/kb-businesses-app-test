@@ -422,7 +422,7 @@ export default function SalesOrderEdit() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Sales Orders'), href: route('sales-orders.index') },
         { title: translate('Edit') },
     ];
@@ -444,7 +444,7 @@ export default function SalesOrderEdit() {
             url="/sales-orders"
             breadcrumbs={breadcrumbs}
             fullWidth
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),
@@ -456,7 +456,7 @@ export default function SalesOrderEdit() {
                 },
             ]}
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Basic Info */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">

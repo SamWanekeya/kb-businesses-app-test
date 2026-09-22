@@ -53,7 +53,7 @@ class DashboardController extends Controller
 
     private function renderDashboard()
     {
-        $user = auth()->user();
+        $user = auth()?->user();
 
         if ($user->type === 'super_admin') {
             return $this->renderSuperAdminDashboard();
@@ -67,13 +67,13 @@ class DashboardController extends Controller
         $revenueYear = (int)request('revenueYear', now()->year);
         $organizationsYear = (int)request('organizationsYear', now()->year);
 
-        $totalOrganizations = User::where('type', 'organization')->count();
-        $totalActivePlanOrganizations = User::where('type', 'organization')->where('is_plan_active', '1')->count();
-        $totalUsers = User::where('type', '!=', 'super_admin')->count();
+        $totalOrganizations = User::where('type', 'organization')?->count();
+        $totalActivePlanOrganizations = User::where('type', 'organization')->where('is_plan_active', '1')?->count();
+        $totalUsers = User::where('type', '!=', 'super_admin')?->count();
         $totalRevenue = PlanOrder::where('status', 'approved')->sum('final_price') ?? 0;
-        $activePlans = Plan::where('is_plan_enabled', 'on')->count();
-        $pendingRequests = PlanRequest::where('status', 'pending')->count();
-        $activeCoupons = Coupon::where('status', true)->count();
+        $activePlans = Plan::where('is_plan_enabled', 'on')?->count();
+        $pendingRequests = PlanRequest::where('status', 'pending')?->count();
+        $activeCoupons = Coupon::where('status', true)?->count();
 
         $monthlyRevenue = [];
         for ($i = 1; $i <= 12; $i++) {
@@ -140,7 +140,7 @@ class DashboardController extends Controller
                         'id' => $organization->id,
                         'name' => $organization->name,
                         'email' => $organization->email,
-                        'avatar' => checkFile($organization->getRawOriginal('avatar')) ? get_file($organization->getRawOriginal('avatar')) : null,
+                        'avatar' => checkFile($organization->getRawOriginal('avatar')) ? getFile($organization->getRawOriginal('avatar')) : null,
                         'registered_at' => $organization->created_at->diffForHumans(),
                         'status' => 'active',
                     ];
@@ -170,10 +170,10 @@ class DashboardController extends Controller
 
     private function renderOrganizationDashboard()
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         $organizationId = $user->type === 'organization' ? $user->id : $user->creatorId();
 
-        $totalEmployees = User::where('created_by', $organizationId)->count();
+        $totalEmployees = User::where('created_by', $organizationId)?->count();
         $totalLeads = 0;
         $totalOpportunities = 0;
         $totalSales = 0;
@@ -183,35 +183,35 @@ class DashboardController extends Controller
 
         try {
             if (class_exists('\App\Models\Lead')) {
-                $totalLeads = Lead::where('created_by', $organizationId)->count();
+                $totalLeads = Lead::where('created_by', $organizationId)?->count();
             }
         } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Opportunity')) {
-                $totalOpportunities = Opportunity::where('created_by', $organizationId)->count();
+                $totalOpportunities = Opportunity::where('created_by', $organizationId)?->count();
             }
         } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\SalesOrder')) {
-                $totalSales = SalesOrder::where('created_by', $organizationId)->count();
+                $totalSales = SalesOrder::where('created_by', $organizationId)?->count();
             }
         } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Account')) {
-                $totalCustomers = Account::where('created_by', $organizationId)->count();
+                $totalCustomers = Account::where('created_by', $organizationId)?->count();
             }
         } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Project')) {
-                $totalProjects = Project::where('created_by', $organizationId)->count();
+                $totalProjects = Project::where('created_by', $organizationId)?->count();
             }
         } catch (Exception $e) {
         }
@@ -423,7 +423,7 @@ class DashboardController extends Controller
 
         // Calculate actual storage usage from media files
         try {
-            $organizationUsers = User::where('created_by', $organizationId)->pluck('id')->push($organizationId);
+            $organizationUsers = User::where('created_by', $organizationId)?->pluck('id')->push($organizationId);
             $storageUsed = Media::whereIn('user_id', $organizationUsers)->sum('size');
         } catch (Exception $e) {
         }
@@ -509,7 +509,7 @@ class DashboardController extends Controller
 
     public function redirectToFirstAvailablePage()
     {
-        $user = auth()->user();
+        $user = auth()?->user();
 
         // Define available routes with their permissions
         $routes = [
@@ -534,7 +534,7 @@ class DashboardController extends Controller
         }
 
         // If no permissions found, logout user
-        auth()->logout();
+        auth()?->logout();
 
         return redirect()->route('login')->with('error', __('No access permissions found.'));
     }

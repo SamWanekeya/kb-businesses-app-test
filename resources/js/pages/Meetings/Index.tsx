@@ -209,7 +209,7 @@ export default function Meetings() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Meetings') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Meetings') }];
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -409,7 +409,6 @@ export default function Meetings() {
             url="/meetings"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="flex flex-col gap-4 lg:flex-row">
                 {/* Right: Sidebar — shown first on mobile */}
@@ -671,6 +670,7 @@ export default function Meetings() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -679,20 +679,17 @@ export default function Meetings() {
                             label: translate('Meeting Title'),
                             type: 'text' as const,
                             required: true,
-                            placeholder: translate('e.g. Q1 Sales Review, Product Demo, Kickoff Meeting'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea' as const,
-                            placeholder: translate('Enter meeting description or agenda...'),
                         },
                         {
                             name: 'location',
                             label: translate('Location'),
                             type: 'text' as const,
                             required: true,
-                            placeholder: translate('e.g. Conference Room A, Zoom, Google Meet'),
                         },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' as const, required: true },
                         { name: 'end_date', label: translate('End Date'), type: 'date' as const, required: true },
@@ -719,7 +716,6 @@ export default function Meetings() {
                             required: true,
                             searchable: true,
                             options: [],
-                            placeholder: translate('Select Record'),
                             emptyNote: (formData: any) => {
                                 const parentModule = formData.parent_module;
                                 if (!parentModule || parentModule === 'none') return null;
@@ -846,6 +842,7 @@ export default function Meetings() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

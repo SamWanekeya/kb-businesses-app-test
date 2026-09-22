@@ -310,7 +310,7 @@ export default function Cases() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Cases') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Cases') }];
 
     // Define table columns
     const columns = [
@@ -486,7 +486,6 @@ export default function Cases() {
             url="/cases"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -850,6 +849,7 @@ export default function Cases() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -858,13 +858,11 @@ export default function Cases() {
                             label: translate('Subject'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Sign in page not loading, Billing issue'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Describe the issue in detail...'),
                         },
                         {
                             name: 'account_id',
@@ -960,6 +958,7 @@ export default function Cases() {
 
             {/* Status Modal */}
             <CrudFormModal
+                autoComplete="off"
                 isOpen={isStatusModalOpen}
                 onClose={() => {
                     setIsStatusModalOpen(false);

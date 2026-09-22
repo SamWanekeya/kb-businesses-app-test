@@ -89,11 +89,10 @@ export default function AnnouncementDashboard() {
                     : []),
             ]}
             breadcrumbs={[
-                { title: translate('Dashboard'), href: route('dashboard') },
+                { title: translate('Dashboard'), href: route('dashboard.index') },
                 { title: translate('Announcements'), href: route('announcements.index') },
                 { title: translate('Dashboard') },
             ]}
-            noPadding
         >
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
                 {/* ── Left: Feed ─────────────────────────────────────────── */}

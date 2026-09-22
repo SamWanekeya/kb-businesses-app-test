@@ -289,7 +289,7 @@ export default function ProjectTasks() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management'), href: route('project-tasks.index') },
         { title: translate('Project Tasks') },
     ];
@@ -308,7 +308,7 @@ export default function ProjectTasks() {
             url="/project-tasks"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             className={`overflow-hidden`}
         >
             <style>{`
@@ -651,6 +651,7 @@ export default function ProjectTasks() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     ...(useHasPermission('export-project-tasks') && { exportRoute: 'project-tasks.export' }),
@@ -660,13 +661,11 @@ export default function ProjectTasks() {
                             label: translate('Task Title'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Enter task description...'),
                         },
                         {
                             name: formMode === 'view' ? 'project_name' : 'project_id',
@@ -738,16 +737,14 @@ export default function ProjectTasks() {
                             label: translate('Estimated Hours'),
                             type: 'number',
                             step: '0.5',
-                            placeholder: translate('e.g. 8'),
                         },
-                        { name: 'actual_hours', label: translate('Actual Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 6.5') },
+                        { name: 'actual_hours', label: translate('Actual Hours'), type: 'number', step: '0.5' },
                         {
                             name: 'progress',
                             label: translate('Progress (%)'),
                             type: 'number',
                             min: '0',
                             max: '100',
-                            placeholder: translate('e.g. 50'),
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',

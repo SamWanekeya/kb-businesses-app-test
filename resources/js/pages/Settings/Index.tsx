@@ -340,7 +340,7 @@ export default function Settings() {
     // Force layout recalculation on mount to fix issues where layout is stuck
     useEffect(() => {
         const triggerResize = () => {
-            window.dispatchEvent(new Eventranslate('resize'));
+            window.dispatchEvent(new Event('resize'));
         };
 
         const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];
@@ -361,7 +361,7 @@ export default function Settings() {
         }
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Settings') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Settings') }];
 
     return (
         <PageTemplate title={translate('Settings')} description={translate('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>

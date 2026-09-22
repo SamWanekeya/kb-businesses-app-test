@@ -65,7 +65,7 @@ export default function EmailTemplatesIndex() {
         router.get(route('email-templates.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Email Templates') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Email Templates') }];
 
     const columns = [
         {
@@ -90,7 +90,6 @@ export default function EmailTemplatesIndex() {
             description={translate('Manage your email templates.')}
             url={route('email-templates.index')}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <Head title="Email Templates" />
 

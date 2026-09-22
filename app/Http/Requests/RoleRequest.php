@@ -108,7 +108,7 @@ class RoleRequest extends FormRequest
         $allowedModules = config('role-permissions.' . $userType, config('role-permissions.organization'));
 
         // Check if permission belongs to allowed module
-        $permission = Permission::where('name', $permissionName)->first();
+        $permission = Permission::where('name', $permissionName)?->first();
 
         if ($permission && !in_array($permission->module, $allowedModules)) {
             $fail('You are not authorized to assign this permission.');

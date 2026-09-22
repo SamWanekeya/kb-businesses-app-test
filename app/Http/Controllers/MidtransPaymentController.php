@@ -26,7 +26,7 @@ class MidtransPaymentController extends Controller
 
             if (in_array($validated['transaction_status'], ['capture', 'settlement'])) {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'midtrans',
@@ -57,7 +57,7 @@ class MidtransPaymentController extends Controller
                 return response()->json(['error' => __('Midtrans not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $orderId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             // Convert to IDR (whole numbers only, no cents)

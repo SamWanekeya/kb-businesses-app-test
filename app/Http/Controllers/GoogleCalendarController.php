@@ -38,14 +38,14 @@ class GoogleCalendarController extends Controller
                 ]);
             }
 
-            $events = $this->calendarService->getEvents(auth()->id(), 100);
+            $events = $this->calendarService->getEvents(auth()?->id(), 100);
 
-            $events = collect($events)->filter(function ($event) {
+            $events = collect($events)?->filter(function ($event) {
                 $cleanedId = str_replace('google_', '', $event['id']);
 
                 return Meeting::where('google_calendar_event_id', $cleanedId)->exists() ||
                     Call::where('google_calendar_event_id', $cleanedId)->exists();
-            })->values()->all();
+            })?->values()->all();
 
             return response()->json([
                 'success' => true,
@@ -64,7 +64,7 @@ class GoogleCalendarController extends Controller
     {
         try {
             $events = $this->calendarService->getEvents(
-                auth()->id(),
+                auth()?->id(),
                 $request->input('maxResults', 50)
             );
 

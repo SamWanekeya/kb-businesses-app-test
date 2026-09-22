@@ -18,12 +18,12 @@ class SkrillPaymentController extends Controller
         ]);
 
         try {
-            $userID = User::where('type', 'super_admin')->first()?->id;
+            $userID = User::where('type', 'super_admin')?->first()?->id;
             $settings = getPaymentMethodConfig('skrill', $userID);
             // $settings = getPaymentMethodConfig('skrill');
 
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'skrill',
@@ -68,7 +68,7 @@ class SkrillPaymentController extends Controller
         $status = $request->input('status');
 
         if ($status == '2') { // Payment processed
-            $planOrder = PlanOrder::where('payment_id', $transactionId)->first();
+            $planOrder = PlanOrder::where('payment_id', $transactionId)?->first();
 
             if ($planOrder && $planOrder->status === 'pending') {
                 $planOrder->update(['status' => 'approved']);

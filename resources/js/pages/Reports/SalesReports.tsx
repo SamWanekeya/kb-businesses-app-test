@@ -24,7 +24,7 @@ export default function SalesReports() {
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
         { title: translate('Sales Reports') },
     ];
@@ -70,7 +70,6 @@ export default function SalesReports() {
             description={translate('View and analyze sales reports to track revenue and performance.')}
             url="/reports/sales"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <SummaryCards cards={summaryCards} />
             <ReportFilters filters={filters} />

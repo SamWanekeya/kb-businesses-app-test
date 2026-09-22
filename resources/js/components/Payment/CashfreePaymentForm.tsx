@@ -113,7 +113,7 @@ export function CashfreePaymentForm({
 
             const checkoutOptions = {
                 paymentSessionId: payment_session_id,
-                returnUrl: window.location.origin + route('dashboard'),
+                returnUrl: window.location.origin + route('dashboard.index'),
                 redirectTarget: '_modal',
                 mode: cashfreeMode,
                 style: {

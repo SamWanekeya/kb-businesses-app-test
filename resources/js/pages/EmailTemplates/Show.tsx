@@ -83,7 +83,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
     }, [flash]);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Email Templates'), href: route('email-templates.index') },
         { title: template.name },
     ];
@@ -144,7 +144,6 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     onChange={(e) => {
                                         setFromName(e.target.value);
                                     }}
-                                    placeholder={translate('Enter from name (e.g., {app_name}, Support Team)')}
                                     className="focus:ring-primary focus:ring-2"
                                 />
                             </div>
@@ -220,7 +219,6 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                     onChange={(e) => {
                                                         handleSubjectChange(language.code, e.target.value);
                                                     }}
-                                                    placeholder={translate('Enter email subject (you can use variables like {app_name})')}
                                                     className="focus:ring-primary focus:ring-2"
                                                 />
                                             </div>

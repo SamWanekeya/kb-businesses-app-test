@@ -267,7 +267,7 @@ export default function TwilioNotificationSettings() {
                             <Send className="h-4 w-4 text-emerald-500" />
                             <h3 className="font-medium text-gray-900">{translate('Test Twilio Configuration')}</h3>
                         </div>
-                        <form onSubmit={handleTestSMS} className="space-y-4">
+                        <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
                             <div>
                                 <Label className="block text-sm font-medium text-gray-700">{translate('Send Test To')}</Label>
                                 <Input

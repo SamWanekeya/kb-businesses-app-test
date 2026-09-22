@@ -20,43 +20,43 @@ class WebhookSeeder extends Seeder
 
         $webhooks = [
             [
-                'user_id' => $users->first()->id,
+                'user_id' => $users->first()?->id,
                 'module' => 'New User',
                 'method' => 'POST',
                 'url' => 'https://accounts.kakbima.dev/webhooks/new-user',
             ],
             [
-                'user_id' => $users->first()->id,
+                'user_id' => $users->first()?->id,
                 'module' => 'Lead Assigned',
                 'method' => 'POST',
                 'url' => 'https://accounts.kakbima.dev/webhooks/lead-assigned',
             ],
             [
-                'user_id' => $users->first()->id,
+                'user_id' => $users->first()?->id,
                 'module' => 'Case Created',
                 'method' => 'POST',
                 'url' => 'https://accounts.kakbima.dev/webhooks/case-created',
             ],
             [
-                'user_id' => $users->skip(1)->first()->id,
+                'user_id' => $users->skip(1)?->first()?->id,
                 'module' => 'Meeting Invitation',
                 'method' => 'GET',
                 'url' => 'https://organization2.com/api/meeting-invitation',
             ],
             [
-                'user_id' => $users->skip(1)->first()->id,
+                'user_id' => $users->skip(1)?->first()?->id,
                 'module' => 'Opportunity Created',
                 'method' => 'POST',
                 'url' => 'https://organization2.com/webhooks/opportunity-created',
             ],
             [
-                'user_id' => $users->last()->id,
+                'user_id' => $users->last()?->id,
                 'module' => 'Quote Created',
                 'method' => 'POST',
                 'url' => 'https://organization3.com/webhooks/quote-created',
             ],
             [
-                'user_id' => $users->last()->id,
+                'user_id' => $users->last()?->id,
                 'module' => 'Task Assigned',
                 'method' => 'POST',
                 'url' => 'https://organization3.com/webhooks/task-assigned',

@@ -375,7 +375,7 @@ export default function Organizations() {
         tooltipClassName: 'min-[480px]:hidden',
     });
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Organizations') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Organizations') }];
 
     // Define table columns
     const columns = [
@@ -474,7 +474,6 @@ export default function Organizations() {
             url="/organizations"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -861,6 +860,7 @@ export default function Organizations() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={(data) => {
                     // If sign_in_enabled is false, remove password field
                     if (data.sign_in_enabled === false) {
@@ -879,14 +879,12 @@ export default function Organizations() {
                             name: 'name',
                             label: translate('Organization Name'),
                             type: 'text',
-                            placeholder: translate('eg. Acme Corp'),
                             required: true,
                         },
-                        { name: 'email', label: translate('Email'), type: 'email', placeholder: translate('eg. admin@acmecorp.com'), required: true },
+                        { name: 'email', label: translate('Email'), type: 'email', required: true },
                         {
                             name: 'sign_in_enabled',
                             label: translate('Enable Sign in'),
-                            placeholder: '', // Empty placeholder to prevent duplicate label
                             type: 'switch',
                             defaultValue: true,
                             conditional: (mode) => mode !== 'edit',
@@ -895,7 +893,6 @@ export default function Organizations() {
                             name: 'password',
                             label: translate('Password'),
                             type: 'password',
-                            placeholder: translate('Enter Password'),
                             required: (mode) => mode === 'create',
                             conditional: (mode, data) => {
                                 return mode !== 'edit' && data?.sign_in_enabled === true;
@@ -929,6 +926,7 @@ export default function Organizations() {
                 onClose={() => {
                     setIsResetPasswordModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [
@@ -936,7 +934,6 @@ export default function Organizations() {
                             name: 'password',
                             label: translate('New Password'),
                             type: 'password',
-                            placeholder: translate('Enter New Password'),
                             required: true,
                         },
                     ],

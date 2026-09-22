@@ -521,7 +521,6 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                     onChange={(e) => {
                                         setCouponCode(e.target.value);
                                     }}
-                                    placeholder={translate('Enter coupon code')}
                                     className="pr-10"
                                     disabled={!!appliedCoupon}
                                 />

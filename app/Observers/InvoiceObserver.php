@@ -12,7 +12,7 @@ class InvoiceObserver
 {
     public function created(Invoice $invoice): void
     {
-        $creator = User::find(auth()->id() ?? $invoice->created_by);
+        $creator = User::find(auth()?->id() ?? $invoice->created_by);
         $assignedName = $invoice->assignedUser ? $invoice->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $invoice->assignedUser && $creator->id === $invoice->assignedUser->id;
 
@@ -58,7 +58,7 @@ class InvoiceObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -72,7 +72,7 @@ class InvoiceObserver
 
             InvoiceActivity::create([
                 'invoice_id' => $invoice->id,
-                'user_id' => auth()->id() ?? $invoice->created_by,
+                'user_id' => auth()?->id() ?? $invoice->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

@@ -265,7 +265,7 @@ export default function InvoiceEdit() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Invoice'), href: route('invoices.index') },
         { title: translate('Edit') },
     ];
@@ -285,7 +285,7 @@ export default function InvoiceEdit() {
             url="/invoices"
             breadcrumbs={breadcrumbs}
             fullWidth
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),
@@ -302,7 +302,7 @@ export default function InvoiceEdit() {
                     {translate('You cannot modify products when the order status is Cancelled or Paid.')}
                 </div>
             )}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Invoice Details */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
@@ -317,7 +317,6 @@ export default function InvoiceEdit() {
                                 <Input
                                     value={form.name}
                                     onChange={(e) => set('name', e.target.value)}
-                                    placeholder={translate('e.g. Annual Software License Invoice')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                             </Field>
@@ -327,7 +326,7 @@ export default function InvoiceEdit() {
                                 <div className="relative">
                                     <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                         <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                            <SelectValue placeholder={translate('Select Sales Order')} />
+                                            <SelectValue placeholder={translate('Select...')} />
                                         </SelectTrigger>
                                         <SelectContent searchable>
                                             {salesOrderOptions.map((s: any) => (
@@ -350,7 +349,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Quote')} error={errors.quote_id}>
                             <Select value={form.quote_id} onValueChange={(v) => set('quote_id', v)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={translate('Select Quote')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {quoteOptions.map((q: any) => (
@@ -364,7 +363,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Opportunity')} error={errors.opportunity_id}>
                             <Select value={form.opportunity_id} onValueChange={(v) => set('opportunity_id', v)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={translate('Select Opportunity')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {opportunityOptions.map((o: any) => (
@@ -378,7 +377,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Account')} required error={errors.account_id}>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select Account')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountOptions.map((a: any) => (
@@ -392,7 +391,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Contact')} required error={errors.contact_id}>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select Contact')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((c: any) => (
@@ -470,7 +469,7 @@ export default function InvoiceEdit() {
                         <Field label={translate('Assign To')} required error={errors.assigned_to}>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select User')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {userOptions.map((u: any) => (
@@ -485,22 +484,12 @@ export default function InvoiceEdit() {
                         {/* Row 4: Notes + Description */}
                         <div className="md:col-span-1 lg:col-span-2">
                             <Field label={translate('Description')} error={errors.description}>
-                                <Textarea
-                                    value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    placeholder={translate('Enter invoice description...')}
-                                    rows={2}
-                                />
+                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </Field>
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
                             <Field label={translate('Notes')} error={errors.notes}>
-                                <Textarea
-                                    value={form.notes}
-                                    onChange={(e) => set('notes', e.target.value)}
-                                    placeholder={translate('Additional notes...')}
-                                    rows={2}
-                                />
+                                <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={2} />
                             </Field>
                         </div>
                     </CardContent>
@@ -516,7 +505,6 @@ export default function InvoiceEdit() {
                             <Textarea
                                 value={form.billing_address}
                                 onChange={(e) => set('billing_address', e.target.value)}
-                                placeholder={translate('e.g. 123 Main St')}
                                 rows={2}
                                 className={errors.billing_address ? 'border-red-500' : ''}
                             />
@@ -552,12 +540,7 @@ export default function InvoiceEdit() {
                             </Field>
                         </div>
                         <Field label={translate('Terms')} error={errors.terms}>
-                            <Textarea
-                                value={form.terms}
-                                onChange={(e) => set('terms', e.target.value)}
-                                placeholder={translate('Payment terms and conditions...')}
-                                rows={2}
-                            />
+                            <Textarea value={form.terms} onChange={(e) => set('terms', e.target.value)} rows={2} />
                         </Field>
                     </CardContent>
                 </Card>
@@ -625,7 +608,7 @@ export default function InvoiceEdit() {
                                                         disabled={isPaidOrCancelled}
                                                     >
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder={translate('Select product')} />
+                                                            <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((o: any) => (
@@ -671,7 +654,6 @@ export default function InvoiceEdit() {
                                                         onChange={(e) => {
                                                             setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
                                                         }}
-                                                        placeholder="0.00"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -709,7 +691,6 @@ export default function InvoiceEdit() {
                                                             setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
                                                         }}
                                                         className="disabled:opacity-40"
-                                                        placeholder="0"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">

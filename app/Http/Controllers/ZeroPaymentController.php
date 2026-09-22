@@ -18,7 +18,7 @@ class ZeroPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
 
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => '-',

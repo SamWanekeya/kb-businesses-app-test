@@ -34,7 +34,7 @@ export default function LeadEdit() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Lead Management') },
         { title: translate('Leads'), href: route('leads.index') },
         { title: translate('Edit') },
@@ -101,9 +101,8 @@ export default function LeadEdit() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* ROW 1 */}
                 <div className="grid grid-cols-1 items-stretch gap-6 xl:grid-cols-2">
                     {/* Basic Information */}
@@ -124,7 +123,6 @@ export default function LeadEdit() {
                                             handleInputChange('name', e.target.value);
                                         }}
                                         className={errors.name ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. John Smith')}
                                     />
                                     {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                 </div>
@@ -141,7 +139,6 @@ export default function LeadEdit() {
                                             handleInputChange('email', e.target.value);
                                         }}
                                         className={errors.email ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. john@kakbima.dev')}
                                     />
                                     {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
                                 </div>
@@ -157,7 +154,6 @@ export default function LeadEdit() {
                                             handleInputChange('phone', e.target.value);
                                         }}
                                         className={errors.phone ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. +1 234 567 8900')}
                                     />
                                     {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
                                 </div>
@@ -173,7 +169,6 @@ export default function LeadEdit() {
                                             handleInputChange('position', e.target.value);
                                         }}
                                         className={errors.position ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. CEO, Manager, Developer')}
                                     />
                                     {errors.position && <p className="text-xs text-red-500">{errors.position}</p>}
                                 </div>
@@ -189,7 +184,6 @@ export default function LeadEdit() {
                                             handleInputChange('organization', e.target.value);
                                         }}
                                         className={errors.organization ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. Acme Corp')}
                                     />
                                     {errors.organization && <p className="text-xs text-red-500">{errors.organization}</p>}
                                 </div>
@@ -205,7 +199,6 @@ export default function LeadEdit() {
                                             handleInputChange('account_name', e.target.value);
                                         }}
                                         className={errors.account_name ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. Acme Corp')}
                                     />
                                     {errors.account_name && <p className="text-xs text-red-500">{errors.account_name}</p>}
                                 </div>
@@ -221,7 +214,6 @@ export default function LeadEdit() {
                                             handleInputChange('website', e.target.value);
                                         }}
                                         className={errors.website ? 'border-red-500' : ''}
-                                        placeholder="eg. https://kakbima.dev"
                                     />
                                     {errors.website && <p className="text-xs text-red-500">{errors.website}</p>}
                                 </div>
@@ -240,7 +232,6 @@ export default function LeadEdit() {
                                             handleInputChange('value', e.target.value);
                                         }}
                                         className={errors.value ? 'border-red-500' : ''}
-                                        placeholder={translate('eg. 5000')}
                                     />
                                     {errors.value && <p className="text-xs text-red-500">{errors.value}</p>}
                                 </div>
@@ -265,7 +256,7 @@ export default function LeadEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select industry')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accountIndustries.map((i: any) => (
@@ -297,7 +288,7 @@ export default function LeadEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.lead_status_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select status')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {leadStatuses.map((s: any) => (
@@ -329,7 +320,7 @@ export default function LeadEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.lead_source_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select source')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {leadSources.map((s: any) => (
@@ -361,7 +352,7 @@ export default function LeadEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.campaign_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select campaign')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {campaigns.map((c: any) => (
@@ -405,7 +396,6 @@ export default function LeadEdit() {
                                     }}
                                     className={errors.address ? 'border-red-500' : ''}
                                     rows={2}
-                                    placeholder={translate('eg. 123 Main St, City, Country')}
                                 />
                                 {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                             </div>
@@ -422,7 +412,6 @@ export default function LeadEdit() {
                                     }}
                                     className={errors.notes ? 'border-red-500' : ''}
                                     rows={2}
-                                    placeholder={translate('Enter any additional notes...')}
                                 />
                                 {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
@@ -446,7 +435,7 @@ export default function LeadEdit() {
                                     }}
                                 >
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select user')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (

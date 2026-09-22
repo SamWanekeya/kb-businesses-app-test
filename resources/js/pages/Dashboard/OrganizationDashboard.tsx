@@ -155,7 +155,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
         <PageTemplate
             title={translate('Dashboard')}
             description={translate('Overview of organization performance, metrics, and recent activities.')}
-            url={route('dashboard')}
+            url={route('dashboard.index')}
             actions={[
                 {
                     label: translate('Refresh'),

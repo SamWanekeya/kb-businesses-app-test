@@ -82,7 +82,7 @@ class UserController extends BaseController
         $planLimits = null;
         $organizationUser = User::find(createdBy());
         if ($organizationUser && $organizationUser->plan) {
-            $currentUserCount = User::where('created_by', $organizationUser->id)->count();
+            $currentUserCount = User::where('created_by', $organizationUser->id)?->count();
             $planLimits = [
                 'current_users' => $currentUserCount,
                 'maximum_users' => $organizationUser->plan->maximum_users,
@@ -107,7 +107,7 @@ class UserController extends BaseController
         $authUser = Auth::user();
         // Check plan limits for organization users
         if ($authUser->type === 'organization' && $authUser->plan) {
-            $currentUserCount = User::where('created_by', $authUser->id)->count();
+            $currentUserCount = User::where('created_by', $authUser->id)?->count();
             $maxUsers = $authUser->plan->maximum_users;
 
             if ($currentUserCount >= $maxUsers) {
@@ -117,7 +117,7 @@ class UserController extends BaseController
         elseif ($authUser->type !== 'super_admin' && $authUser->created_by) {
             $organizationUser = User::find($authUser->created_by);
             if ($organizationUser && $organizationUser->type === 'organization' && $organizationUser->plan) {
-                $currentUserCount = User::where('created_by', $organizationUser->id)->count();
+                $currentUserCount = User::where('created_by', $organizationUser->id)?->count();
                 $maxUsers = $organizationUser->plan->maximum_users;
 
                 if ($currentUserCount >= $maxUsers) {
@@ -126,10 +126,10 @@ class UserController extends BaseController
             }
         }
 
-        if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
-            $created_by = auth()->user()->created_by;
+        if (!in_array(auth()?->user()?->type, ['super_admin', 'organization'])) {
+            $created_by = auth()?->user()?->created_by;
         } else {
-            $created_by = auth()->id();
+            $created_by = auth()?->id();
         }
 
         $user = User::create([
@@ -142,7 +142,7 @@ class UserController extends BaseController
         if ($user && $request->roles) {
             // Convert role names to IDs for syncing
             $role = Role::where('id', $request->roles)
-                ->where('created_by', $created_by)->first();
+                ->where('created_by', $created_by)?->first();
 
             $user->roles()->sync([$role->id]);
             $user->type = $role->name;
@@ -175,13 +175,13 @@ class UserController extends BaseController
 
             // find and syncing role
             if ($request->roles) {
-                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
-                    $created_by = auth()->user()->created_by;
+                if (!in_array(auth()?->user()?->type, ['super_admin', 'organization'])) {
+                    $created_by = auth()?->user()?->created_by;
                 } else {
-                    $created_by = auth()->id();
+                    $created_by = auth()?->id();
                 }
                 $role = Role::where('id', $request->roles)
-                    ->where('created_by', $created_by)->first();
+                    ->where('created_by', $created_by)?->first();
 
                 $user->roles()->sync([$role->id]);
                 $user->type = $role->name;

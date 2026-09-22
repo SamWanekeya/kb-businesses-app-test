@@ -15,7 +15,7 @@ export default function RolesShow() {
     const assignedPermissionNames: string[] = role.permissions?.map((p: any) => p.name) || [];
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: role.label || translate('View Role') },

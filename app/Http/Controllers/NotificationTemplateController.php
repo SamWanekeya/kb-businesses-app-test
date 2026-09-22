@@ -57,7 +57,7 @@ class NotificationTemplateController extends Controller
     {
         // Load organization-specific content
         $template = $notificationTemplate->load(['notificationTemplateLangs' => function ($query) {
-            if (auth()->user()->type === 'organization') {
+            if (auth()?->user()?->type === 'organization') {
                 $query->where('created_by', createdBy());
             }
         }]);

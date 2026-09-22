@@ -25,7 +25,7 @@ class QuoteCommentController extends Controller
 
         $comment = QuoteComment::create([
             'quote_id' => $quote->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'comment' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -33,9 +33,9 @@ class QuoteCommentController extends Controller
         // Create activity record
         QuoteActivity::create([
             'quote_id' => $quote->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
@@ -56,7 +56,7 @@ class QuoteCommentController extends Controller
         $activity = QuoteActivity::where('id', $activityId)
             ->where('quote_id', $quote->id)
             ->where('activity_type', 'comment')
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$activity) {

@@ -91,7 +91,7 @@ export function InvoiceSkrillPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
@@ -115,7 +115,6 @@ export function InvoiceSkrillPaymentForm({
                             onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
-                            placeholder={translate('Enter your email address')}
                             required
                             disabled={isProcessing}
                         />

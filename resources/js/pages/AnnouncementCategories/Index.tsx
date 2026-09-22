@@ -209,7 +209,7 @@ export default function AnnouncementCategories() {
     const canToggleStatus = useHasPermission('toggle-status-announcement-categories');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Announcements'), href: route('announcements.index') },
         { title: translate('Categories') },
     ];
@@ -219,7 +219,6 @@ export default function AnnouncementCategories() {
             title={translate('Announcement Categories')}
             description={translate('Manage announcement categories for your announcements.')}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -235,7 +234,7 @@ export default function AnnouncementCategories() {
                                     : translate('Update the announcement category details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Name')}
@@ -247,7 +246,6 @@ export default function AnnouncementCategories() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Product Updates, Organization News, Events')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -262,7 +260,6 @@ export default function AnnouncementCategories() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter category description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -312,7 +309,6 @@ export default function AnnouncementCategories() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search announcement categories...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -340,7 +336,7 @@ export default function AnnouncementCategories() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

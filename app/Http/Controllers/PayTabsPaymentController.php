@@ -19,7 +19,7 @@ class PayTabsPaymentController extends Controller
         ]);
 
         try {
-            $superAdmin = User::where('type', 'super_admin')->first();
+            $superAdmin = User::where('type', 'super_admin')?->first();
             $settings = getPaymentMethodConfig('paytabs', $superAdmin->id);
 
             if (empty($settings['profile_id']) || empty($settings['server_key'])) {
@@ -30,7 +30,7 @@ class PayTabsPaymentController extends Controller
             }
 
             $plan = Plan::findOrFail($validated['plan_id']);
-            $user = auth()->user();
+            $user = auth()?->user();
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $cartId = 'PT_' . time() . '_' . $user->id;
 
@@ -108,7 +108,7 @@ class PayTabsPaymentController extends Controller
                 return response(__('Missing cart ID'), 400);
             }
 
-            $planOrder = PlanOrder::where('payment_id', $cartId)->first();
+            $planOrder = PlanOrder::where('payment_id', $cartId)?->first();
 
             if (!$planOrder) {
                 return response(__('Order not found'), 404);
@@ -150,13 +150,13 @@ class PayTabsPaymentController extends Controller
             ?? $request->input('reference')
             ?? $request->input('order_id');
         if ($cartId) {
-            $planOrder = PlanOrder::where('payment_id', $cartId)->first();
+            $planOrder = PlanOrder::where('payment_id', $cartId)?->first();
 
             if ($planOrder) {
                 // Verify payment status with PayTabs before assigning plan
                 if ($planOrder->status === 'pending') {
                     try {
-                        $superAdmin = User::where('type', 'super_admin')->first();
+                        $superAdmin = User::where('type', 'super_admin')?->first();
                         $settings = getPaymentMethodConfig('paytabs', $superAdmin->id);
 
                         config([

@@ -19,7 +19,7 @@ class DocumentFolderController extends Controller
         $query = DocumentFolder::query()
             ->with(['parentFolder', 'creator'])
             ->where(function ($q) {
-                if (auth()->user()->type === 'organization') {
+                if (auth()?->user()?->type === 'organization') {
                     $q->where('created_by', createdBy());
                 } else {
                     // Staff users can see folders created by their organization

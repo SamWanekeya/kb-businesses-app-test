@@ -52,7 +52,7 @@ export default function AccountCreate() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Account Management') },
         { title: translate('Accounts'), href: route('accounts.index') },
         { title: translate('Create') },
@@ -129,7 +129,6 @@ export default function AccountCreate() {
                     },
                 },
             ]}
-            noPadding
         >
             <form
                 onSubmit={handleSubmit}
@@ -148,7 +147,6 @@ export default function AccountCreate() {
                                 value={data.name}
                                 onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. Acme Corporation')}
                             />
                             <FieldError message={errors.name} />
                         </div>
@@ -163,7 +161,6 @@ export default function AccountCreate() {
                                 value={data.email}
                                 onChange={(e) => set('email', e.target.value)}
                                 className={errors.email ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. contact@acmecorp.com')}
                             />
                             <FieldError message={errors.email} />
                         </div>
@@ -177,7 +174,6 @@ export default function AccountCreate() {
                                 value={data.phone}
                                 onChange={(e) => set('phone', e.target.value)}
                                 className={errors.phone ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. +1 234 567 8900')}
                             />
                             <FieldError message={errors.phone} />
                         </div>
@@ -189,7 +185,6 @@ export default function AccountCreate() {
                                 value={data.website}
                                 onChange={(e) => set('website', e.target.value)}
                                 className={errors.website ? 'border-red-500' : ''}
-                                placeholder="e.g. https://acmecorp.com"
                             />
                             <FieldError message={errors.website} />
                         </div>
@@ -206,7 +201,7 @@ export default function AccountCreate() {
                             <Label required>{translate('Account Type')}</Label>
                             <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
                                 <SelectTrigger className={errors.account_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select account type')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountTypes.map((item: any) => (
@@ -231,7 +226,7 @@ export default function AccountCreate() {
                             <Label required>{translate('Assign To')}</Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -256,7 +251,7 @@ export default function AccountCreate() {
                             <Label required>{translate('Industry')}</Label>
                             <Select value={data.account_industry_id} onValueChange={(v) => set('account_industry_id', v)}>
                                 <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select industry')} />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountIndustries.map((item: any) => (
@@ -310,7 +305,6 @@ export default function AccountCreate() {
                                     onChange={(e) => set('billing_address', e.target.value)}
                                     className={errors.billing_address ? 'border-red-500' : ''}
                                     rows={2}
-                                    placeholder={translate('e.g. 123 Main Street, Suite 100')}
                                 />
                                 <FieldError message={errors.billing_address} />
                             </div>
@@ -324,7 +318,6 @@ export default function AccountCreate() {
                                         value={data.billing_city}
                                         onChange={(e) => set('billing_city', e.target.value)}
                                         className={errors.billing_city ? 'border-red-500' : ''}
-                                        placeholder={translate('e.g. New York')}
                                     />
                                     <FieldError message={errors.billing_city} />
                                 </div>
@@ -337,7 +330,6 @@ export default function AccountCreate() {
                                         value={data.billing_state}
                                         onChange={(e) => set('billing_state', e.target.value)}
                                         className={errors.billing_state ? 'border-red-500' : ''}
-                                        placeholder={translate('e.g. NY')}
                                     />
                                     <FieldError message={errors.billing_state} />
                                 </div>
@@ -350,7 +342,6 @@ export default function AccountCreate() {
                                         value={data.billing_country}
                                         onChange={(e) => set('billing_country', e.target.value)}
                                         className={errors.billing_country ? 'border-red-500' : ''}
-                                        placeholder={translate('e.g. United States')}
                                     />
                                     <FieldError message={errors.billing_country} />
                                 </div>
@@ -363,7 +354,6 @@ export default function AccountCreate() {
                                         value={data.billing_postal_code}
                                         onChange={(e) => set('billing_postal_code', e.target.value)}
                                         className={errors.billing_postal_code ? 'border-red-500' : ''}
-                                        placeholder={translate('e.g. 10001')}
                                     />
                                     <FieldError message={errors.billing_postal_code} />
                                 </div>
@@ -412,27 +402,16 @@ export default function AccountCreate() {
                                     value={data.shipping_address}
                                     onChange={(e) => set('shipping_address', e.target.value)}
                                     rows={2}
-                                    placeholder={translate('e.g. 456 Elm Street')}
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_city">{translate('Shipping City')}</Label>
-                                    <Input
-                                        id="shipping_city"
-                                        value={data.shipping_city}
-                                        onChange={(e) => set('shipping_city', e.target.value)}
-                                        placeholder={translate('e.g. Los Angeles')}
-                                    />
+                                    <Input id="shipping_city" value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_state">{translate('Shipping State')}</Label>
-                                    <Input
-                                        id="shipping_state"
-                                        value={data.shipping_state}
-                                        onChange={(e) => set('shipping_state', e.target.value)}
-                                        placeholder={translate('e.g. CA')}
-                                    />
+                                    <Input id="shipping_state" value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_country">{translate('Shipping Country')}</Label>
@@ -440,7 +419,6 @@ export default function AccountCreate() {
                                         id="shipping_country"
                                         value={data.shipping_country}
                                         onChange={(e) => set('shipping_country', e.target.value)}
-                                        placeholder={translate('e.g. United States')}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
@@ -449,7 +427,6 @@ export default function AccountCreate() {
                                         id="shipping_postal_code"
                                         value={data.shipping_postal_code}
                                         onChange={(e) => set('shipping_postal_code', e.target.value)}
-                                        placeholder={translate('e.g. 90001')}
                                     />
                                 </div>
                             </div>

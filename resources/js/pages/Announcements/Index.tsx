@@ -303,8 +303,7 @@ export default function Announcements() {
                       ]
                     : []),
             ]}
-            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Announcements') }]}
-            noPadding
+            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Announcements') }]}
         >
             <div className="rounded-t-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -421,6 +420,7 @@ export default function Announcements() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -429,7 +429,6 @@ export default function Announcements() {
                             label: translate('Title'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('eg. New Feature Release, System Maintenance'),
                         },
                         {
                             name: 'content',
@@ -437,7 +436,6 @@ export default function Announcements() {
                             type: 'rich-textbox',
                             required: true,
                             colSpan: 12,
-                            placeholder: translate('Enter announcement details...'),
                         },
                         {
                             name: 'announcement_category_id',
@@ -459,9 +457,8 @@ export default function Announcements() {
                             label: translate('Start Date'),
                             type: 'date',
                             required: true,
-                            placeholder: translate('Select start date'),
                         },
-                        { name: 'end_date', label: translate('End Date'), type: 'date', placeholder: translate('Select end date') },
+                        { name: 'end_date', label: translate('End Date'), type: 'date' },
                         {
                             name: 'status',
                             label: translate('Status'),
@@ -494,6 +491,7 @@ export default function Announcements() {
                 onClose={() => {
                     setIsStatusModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [

@@ -89,7 +89,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
             description={translate(isEdit ? 'Update subscription plan details' : 'Add a new subscription plan')}
             url={isEdit ? route('subscriptions.plans.update', plan.id) : '/plans/Create'}
             breadcrumbs={[
-                { title: translate('Dashboard'), href: route('dashboard') },
+                { title: translate('Dashboard'), href: route('dashboard.index') },
                 { title: translate('Plans'), href: route('subscriptions.plans.index') },
                 { title: t(isEdit ? 'Edit Plan' : 'Create Plan') },
             ]}
@@ -105,7 +105,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
             ]}
         >
             <div className="rounded-lg bg-white p-6 shadow">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
@@ -117,7 +117,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     name="name"
                                     value={data.name}
                                     onChange={handleChange}
-                                    placeholder="eg. Pro"
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.name} />
@@ -134,7 +133,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     step="0.01"
                                     value={data.price}
                                     onChange={handleChange}
-                                    placeholder="eg. 29.99"
                                     className={errors.price ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.price} />
@@ -151,7 +149,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     step="0.01"
                                     value={data.yearly_price}
                                     onChange={handleChange}
-                                    placeholder={translate('Leave empty for 20% discount')}
                                     className={errors.yearly_price ? 'border-red-500' : ''}
                                 />
                                 <p className="text-muted-foreground mt-1 text-xs">
@@ -167,7 +164,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     name="description"
                                     value={data.description}
                                     onChange={handleChange}
-                                    placeholder={translate('Enter plan description...')}
                                     rows={3}
                                     className={errors.description ? 'border-red-500' : ''}
                                 />
@@ -186,7 +182,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     type="number"
                                     value={data.maximum_users}
                                     onChange={handleChange}
-                                    placeholder="eg. 10"
                                     className={errors.maximum_users ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.maximum_users} />
@@ -202,7 +197,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     type="number"
                                     value={data.maximum_projects}
                                     onChange={handleChange}
-                                    placeholder="eg. 20"
                                     className={errors.maximum_projects ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.maximum_projects} />
@@ -218,7 +212,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     type="number"
                                     value={data.maximum_contacts}
                                     onChange={handleChange}
-                                    placeholder="eg. 500"
                                     className={errors.maximum_contacts ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.maximum_contacts} />
@@ -234,7 +227,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     type="number"
                                     value={data.maximum_accounts}
                                     onChange={handleChange}
-                                    placeholder="eg. 100"
                                     className={errors.maximum_accounts ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.maximum_accounts} />
@@ -251,7 +243,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     step="0.01"
                                     value={data.storage_limit}
                                     onChange={handleChange}
-                                    placeholder="eg. 5"
                                     className={errors.storage_limit ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.storage_limit} />
@@ -265,7 +256,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     type="number"
                                     value={data.trial_days}
                                     onChange={handleChange}
-                                    placeholder="eg. 14"
                                     className={errors.trial_days ? 'border-red-500' : ''}
                                 />
                                 <InputError message={errors.trial_days} />

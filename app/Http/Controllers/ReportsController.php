@@ -19,16 +19,16 @@ class ReportsController extends Controller
 {
     public function leads(Request $request)
     {
-        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()?->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()?->format('Y-m-d'));
         $dateFrom = Carbon::parse($dateFrom)->startOfDay();
         $dateTo = Carbon::parse($dateTo)->endOfDay();
 
-        $organizationId = Auth::user()->creatorId();
+        $organizationId = Auth::user()?->creatorId();
 
         $summary = [
-            'total_leads' => Lead::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->count(),
-            'converted_leads' => Lead::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->where('is_converted', true)->count(),
+            'total_leads' => Lead::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])?->count(),
+            'converted_leads' => Lead::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->where('is_converted', true)?->count(),
             'conversion_rate' => 0,
             'avg_conversion_time' => 0,
         ];
@@ -88,16 +88,16 @@ class ReportsController extends Controller
 
     public function sales(Request $request)
     {
-        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()?->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()?->format('Y-m-d'));
 
         $dateTo = Carbon::parse($dateTo)->endOfDay();
 
-        $organizationId = Auth::user()->creatorId();
+        $organizationId = Auth::user()?->creatorId();
 
         $summary = [
             'total_sales' => SalesOrder::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->sum('total_amount'),
-            'total_orders' => SalesOrder::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->count(),
+            'total_orders' => SalesOrder::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])?->count(),
             'avg_order_value' => 0,
             'growth_rate' => 0,
         ];
@@ -107,8 +107,8 @@ class ReportsController extends Controller
         }
 
         // Calculate growth rate compared to previous period
-        $previousPeriodStart = Carbon::parse($dateFrom)->subDays(Carbon::parse($dateTo)->diffInDays(Carbon::parse($dateFrom)))->format('Y-m-d');
-        $previousPeriodEnd = Carbon::parse($dateFrom)->subDay()->format('Y-m-d');
+        $previousPeriodStart = Carbon::parse($dateFrom)->subDays(Carbon::parse($dateTo)->diffInDays(Carbon::parse($dateFrom)))?->format('Y-m-d');
+        $previousPeriodEnd = Carbon::parse($dateFrom)->subDay()?->format('Y-m-d');
 
         $previousSales = SalesOrder::where('created_by', $organizationId)->whereBetween('created_at', [$previousPeriodStart, $previousPeriodEnd])->sum('total_amount');
 
@@ -175,14 +175,14 @@ class ReportsController extends Controller
 
     public function products(Request $request)
     {
-        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()?->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()?->format('Y-m-d'));
 
-        $organizationId = Auth::user()->creatorId();
+        $organizationId = Auth::user()?->creatorId();
 
         $summary = [
-            'total_products' => Product::where('created_by', $organizationId)->count(),
-            'active_products' => Product::where('created_by', $organizationId)->where('status', 'active')->count(),
+            'total_products' => Product::where('created_by', $organizationId)?->count(),
+            'active_products' => Product::where('created_by', $organizationId)->where('status', 'active')?->count(),
             'total_revenue' => 0,
             'best_seller' => null,
         ];
@@ -253,15 +253,15 @@ class ReportsController extends Controller
 
     public function customers(Request $request)
     {
-        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()?->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()?->format('Y-m-d'));
 
-        $organizationId = Auth::user()->creatorId();
+        $organizationId = Auth::user()?->creatorId();
 
         $summary = [
-            'total_contacts' => Contact::where('created_by', $organizationId)->count(),
-            'new_contacts' => Contact::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])->count(),
-            'active_contacts' => Contact::where('created_by', $organizationId)->where('status', 'active')->count(),
+            'total_contacts' => Contact::where('created_by', $organizationId)?->count(),
+            'new_contacts' => Contact::where('created_by', $organizationId)->whereBetween('created_at', [$dateFrom, $dateTo])?->count(),
+            'active_contacts' => Contact::where('created_by', $organizationId)->where('status', 'active')?->count(),
             'contact_lifetime_value' => 0,
         ];
 
@@ -353,15 +353,15 @@ class ReportsController extends Controller
 
     public function projects(Request $request)
     {
-        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()?->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()?->format('Y-m-d'));
 
-        $organizationId = Auth::user()->creatorId();
+        $organizationId = Auth::user()?->creatorId();
 
         $summary = [
-            'total_projects' => Project::where('created_by', $organizationId)->count(),
-            'active_projects' => Project::where('created_by', $organizationId)->where('status', 'active')->count(),
-            'completed_projects' => Project::where('created_by', $organizationId)->where('status', 'completed')->count(),
+            'total_projects' => Project::where('created_by', $organizationId)?->count(),
+            'active_projects' => Project::where('created_by', $organizationId)->where('status', 'active')?->count(),
+            'completed_projects' => Project::where('created_by', $organizationId)->where('status', 'completed')?->count(),
             'completion_rate' => 0,
         ];
 
@@ -391,7 +391,7 @@ class ReportsController extends Controller
         $overdueProjects = Project::with('assignedUser')
             ->where('created_by', $organizationId)
             ->where('status', '!=', 'completed')
-            ->where('end_date', '<', Carbon::now()->format('Y-m-d'))
+            ->where('end_date', '<', Carbon::now()?->format('Y-m-d'))
             ->get();
 
         return Inertia::render('Reports/ProjectReports', [

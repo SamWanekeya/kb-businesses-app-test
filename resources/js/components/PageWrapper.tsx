@@ -31,7 +31,7 @@ export function PageWrapper({ title, url, description, buttons = [], children, b
     const permissions = auth?.permissions || [];
 
     // Generate default breadcrumbs if not provided
-    const defaultBreadcrumbs: BreadcrumbItem[] = [{ title: translate('Dashboard'), href: route('dashboard') }, { title }];
+    const defaultBreadcrumbs: BreadcrumbItem[] = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title }];
 
     const pageBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
 

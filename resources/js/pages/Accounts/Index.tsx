@@ -233,7 +233,7 @@ export default function Accounts() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Account Management'), href: route('accounts.index') },
         { title: translate('Accounts') },
     ];
@@ -375,7 +375,6 @@ export default function Accounts() {
             url="/accounts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">

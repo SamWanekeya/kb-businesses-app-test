@@ -47,7 +47,7 @@ export default function ProductEdit() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Products'), href: route('products.index') },
         { title: translate('Edit') },
     ];
@@ -157,9 +157,8 @@ export default function ProductEdit() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit}>
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="flex flex-col items-start gap-6 xl:flex-row">
                     {/* ── Main Form ── */}
                     <div className="w-full min-w-0 flex-1">
@@ -219,7 +218,6 @@ export default function ProductEdit() {
                                                 value={data.name}
                                                 onChange={(e) => set('name', e.target.value)}
                                                 className={errors.name ? 'border-red-500' : ''}
-                                                placeholder={translate('Enter Name')}
                                             />
                                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                         </div>
@@ -229,7 +227,6 @@ export default function ProductEdit() {
                                                 value={data.sku}
                                                 onChange={(e) => set('sku', e.target.value)}
                                                 className={errors.sku ? 'border-red-500' : ''}
-                                                placeholder={translate('Enter SKU')}
                                             />
                                             {errors.sku && <p className="text-xs text-red-500">{errors.sku}</p>}
                                         </div>
@@ -240,7 +237,7 @@ export default function ProductEdit() {
                                             <Label required>{translate('Category')}</Label>
                                             <Select value={data.category_id} onValueChange={(v) => set('category_id', v)}>
                                                 <SelectTrigger className={errors.category_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={translate('Select Category')} />
+                                                    <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {categories?.map((c: any) => (
@@ -256,7 +253,7 @@ export default function ProductEdit() {
                                             <Label required>{translate('Brand')}</Label>
                                             <Select value={data.brand_id} onValueChange={(v) => set('brand_id', v)}>
                                                 <SelectTrigger className={errors.brand_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={translate('Select Brand')} />
+                                                    <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {brands?.map((b: any) => (
@@ -275,7 +272,7 @@ export default function ProductEdit() {
                                             <Label required>{translate('Tax')}</Label>
                                             <Select value={data.tax_id} onValueChange={(v) => set('tax_id', v)}>
                                                 <SelectTrigger className={errors.tax_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={translate('Select Taxes')} />
+                                                    <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {taxes?.map((tax: any) => (
@@ -291,12 +288,7 @@ export default function ProductEdit() {
 
                                     <div className="space-y-1.5">
                                         <Label>{translate('Description')}</Label>
-                                        <Textarea
-                                            value={data.description}
-                                            onChange={(e) => set('description', e.target.value)}
-                                            rows={5}
-                                            placeholder={translate('Enter description...')}
-                                        />
+                                        <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={5} />
                                     </div>
                                 </div>
                             )}
@@ -313,7 +305,6 @@ export default function ProductEdit() {
                                                 value={data.price}
                                                 onChange={(e) => set('price', e.target.value)}
                                                 className={errors.price ? 'border-red-500' : ''}
-                                                placeholder={translate('e.g. 29.99')}
                                             />
                                             {errors.price && <p className="text-xs text-red-500">{errors.price}</p>}
                                         </div>
@@ -324,7 +315,6 @@ export default function ProductEdit() {
                                                 value={data.stock_quantity}
                                                 onChange={(e) => set('stock_quantity', e.target.value)}
                                                 className={errors.stock_quantity ? 'border-red-500' : ''}
-                                                placeholder={translate('e.g. 100')}
                                             />
                                             {errors.stock_quantity && <p className="text-xs text-red-500">{errors.stock_quantity}</p>}
                                         </div>
@@ -360,7 +350,6 @@ export default function ProductEdit() {
                                                     setMainImageUrl(null);
                                                 }
                                             }}
-                                            placeholder={translate('Select main image...')}
                                             showPreview={true}
                                             returnType="id"
                                         />
@@ -373,7 +362,6 @@ export default function ProductEdit() {
                                         <MediaPicker
                                             value={data.additional_image_ids || []}
                                             onChange={(v) => set('additional_image_ids', v)}
-                                            placeholder={translate('Select additional images...')}
                                             multiple={true}
                                             showPreview={true}
                                             returnType="id"
@@ -391,7 +379,7 @@ export default function ProductEdit() {
                                             <Label required>{translate('Assign To')}</Label>
                                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={translate('Select user')} />
+                                                    <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {users?.map((u: any) => (

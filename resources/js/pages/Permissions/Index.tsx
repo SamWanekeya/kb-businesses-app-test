@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 export default function PermissionsPage() {
     const { t: translate } = useTranslation();
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('User Management'), href: route('users-permissions.roles.index') },
         { title: translate('Permissions') },
     ];

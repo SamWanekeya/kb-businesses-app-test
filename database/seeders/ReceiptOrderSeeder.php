@@ -41,7 +41,7 @@ class ReceiptOrderSeeder extends Seeder
 
             for ($i = 1; $i <= 15; $i++) {
                 $account = $accounts->random();
-                $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
+                $contact = $contacts->where('account_id', $account->id)?->first() ?? $contacts->random();
 
                 $receiptOrder = ReceiptOrder::create([
                     'name' => 'Receipt Order ' . $i,

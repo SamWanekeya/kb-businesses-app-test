@@ -236,7 +236,7 @@ class OpportunityController extends Controller
                 return $call;
             });
 
-        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
+        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')?->values();
 
         return Inertia::render('Opportunities/Show', [
             'opportunity' => $opportunity,
@@ -406,7 +406,7 @@ class OpportunityController extends Controller
                 unset($validated['products']);
 
                 // Remove amount from validated data if products exist to prevent auto-calculation override
-                if ($opportunity->products()->count() > 0) {
+                if ($opportunity->products()?->count() > 0) {
                     unset($validated['amount']);
                 }
 
@@ -455,7 +455,7 @@ class OpportunityController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-opportunities')) {
+        if (!auth()?->user()?->can('export-opportunities')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

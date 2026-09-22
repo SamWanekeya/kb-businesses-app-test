@@ -260,7 +260,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                 <DialogHeader>
                                     <DialogTitle>{editingWebhook ? translate('Edit Webhook') : translate('Add Webhook')}</DialogTitle>
                                 </DialogHeader>
-                                <form onSubmit={handleSubmit} className="space-y-4">
+                                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="module" required>
                                             {translate('Module')}

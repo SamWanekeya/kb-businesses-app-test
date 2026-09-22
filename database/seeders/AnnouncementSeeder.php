@@ -61,7 +61,7 @@ class AnnouncementSeeder extends Seeder
 
             foreach ($announcementTemplates as $template) {
 
-                $category = AnnouncementCategory::where('name', $template['category'])->where('created_by', $user->id)->first();
+                $category = AnnouncementCategory::where('name', $template['category'])->where('created_by', $user->id)?->first();
 
                 $announcementsExists = Announcement::where('created_by', $user->id)->exists();
                 if ($announcementsExists) {

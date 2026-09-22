@@ -42,7 +42,7 @@ export default function CouponDetailsPage() {
     const { coupon, usage_history } = usePage().props as { coupon: CouponData; usage_history: any };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Coupons'), href: route('coupons.index') },
         { title: translate('Coupon Details') },
     ];

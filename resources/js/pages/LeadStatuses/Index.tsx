@@ -222,7 +222,7 @@ export default function LeadStatuses() {
     const canToggleStatus = useHasPermission('toggle-status-lead-statuses');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Lead Management') },
         { title: translate('Lead Status') },
     ];
@@ -233,7 +233,6 @@ export default function LeadStatuses() {
             description={translate('Manage lead status categories for your leads.')}
             url="/lead-statuses"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -250,7 +249,7 @@ export default function LeadStatuses() {
                             </p>
                         </div>
 
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Status Name')}
@@ -262,7 +261,6 @@ export default function LeadStatuses() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('eg. New, Contacted, Qualified')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -308,7 +306,6 @@ export default function LeadStatuses() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter status description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -326,7 +323,7 @@ export default function LeadStatuses() {
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select status')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
@@ -390,7 +387,7 @@ export default function LeadStatuses() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

@@ -168,7 +168,7 @@ class InvoiceToyyibPayPaymentController extends Controller
             $invoice = Invoice::findOrFail($invoiceId);
 
             if ($statusId == '1') {
-                $existingPayment = InvoicePayment::where('payment_id', $paymentId)->first();
+                $existingPayment = InvoicePayment::where('payment_id', $paymentId)?->first();
 
                 if (!$existingPayment) {
                     InvoicePayment::storePayment([
@@ -216,7 +216,7 @@ class InvoiceToyyibPayPaymentController extends Controller
                     $invoice = Invoice::find($invoiceId);
 
                     if ($invoice) {
-                        $existingPayment = InvoicePayment::where('payment_id', $orderId)->first();
+                        $existingPayment = InvoicePayment::where('payment_id', $orderId)?->first();
 
                         if (!$existingPayment) {
                             // Get amount from bill details if needed

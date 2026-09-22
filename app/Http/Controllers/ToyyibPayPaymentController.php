@@ -22,7 +22,7 @@ class ToyyibPayPaymentController extends Controller
 
     public function __construct()
     {
-        $userID = User::where('type', 'super_admin')->first()?->id;
+        $userID = User::where('type', 'super_admin')?->first()?->id;
         $settings = getPaymentMethodConfig('toyyibpay', $userID);
         // $settings = getPaymentMethodConfig('toyyibpay');
         $this->secretKey = $settings['secret_key'] ?? '';
@@ -156,7 +156,7 @@ class ToyyibPayPaymentController extends Controller
             $transaction_id = $request->input('transaction_id');
 
             if ($status_id == '1') { // Payment successful
-                $planOrder = PlanOrder::where('payment_id', $order_id)->first();
+                $planOrder = PlanOrder::where('payment_id', $order_id)?->first();
 
                 if ($planOrder && $planOrder->status === 'pending') {
                     processPaymentSuccess([

@@ -83,7 +83,7 @@ export default function ReferredUsers() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Referral Program'), href: route('referral-program.index') },
         { title: translate('Referral Users') },
     ];

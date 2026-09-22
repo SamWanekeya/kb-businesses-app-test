@@ -221,7 +221,7 @@ export default function CampaignTypes() {
     const canToggleStatus = useHasPermission('toggle-status-campaign-types');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaign Management') },
         { title: translate('Campaign Types') },
     ];
@@ -232,7 +232,6 @@ export default function CampaignTypes() {
             description={translate('Manage campaign type categories for your campaigns.')}
             url="/campaign-types"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -248,7 +247,7 @@ export default function CampaignTypes() {
                                     : translate('Update the campaign type details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Name')}
@@ -260,7 +259,6 @@ export default function CampaignTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Email Campaign, Social Media, Webinar')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -288,7 +286,6 @@ export default function CampaignTypes() {
                                         }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
-                                        placeholder="#000000"
                                         disabled={!canCreate && !canEdit}
                                     />
                                 </div>
@@ -302,7 +299,6 @@ export default function CampaignTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter campaign type description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -352,7 +348,6 @@ export default function CampaignTypes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search campaign types...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -380,7 +375,7 @@ export default function CampaignTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

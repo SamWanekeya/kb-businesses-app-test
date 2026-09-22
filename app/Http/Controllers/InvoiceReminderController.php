@@ -13,7 +13,7 @@ class InvoiceReminderController extends Controller
     public function sendReminder(Request $request, $invoiceId)
     {
 
-        if (!auth()->user()->can('send-reminder-invoices')) {
+        if (!auth()?->user()?->can('send-reminder-invoices')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -56,7 +56,7 @@ class InvoiceReminderController extends Controller
 
             InvoiceReminder::create([
                 'invoice_id' => $invoice->id,
-                'sent_by' => auth()->id(),
+                'sent_by' => auth()?->id(),
                 'created_by' => createdBy(),
                 'type' => $validated['type'],
             ]);

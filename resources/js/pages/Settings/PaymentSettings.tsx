@@ -1208,7 +1208,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                     label={translate("Public Key")}
                     value={data.nepalste_public_key}
                     onChange={(value) => setData('nepalste_public_key', value)}
-                    placeholder={translate("Public Key")}
                     error={errors.nepalste_public_key}
                   />
                   <PaymentInputField
@@ -1216,7 +1215,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                     label={translate("Secret Key")}
                     value={data.nepalste_secret_key}
                     onChange={(value) => setData('nepalste_secret_key', value)}
-                    placeholder={translate("Secret Key")}
                     isSecret
                     error={errors.nepalste_secret_key}
                   />

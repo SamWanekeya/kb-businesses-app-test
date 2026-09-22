@@ -28,16 +28,16 @@ class LeadCommentController extends Controller
             $comment = LeadComment::create([
                 'lead_id' => $lead->id,
                 'comment' => $validated['comment'],
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'created_by' => createdBy(),
             ]);
 
             // Create activity entry
             LeadActivity::create([
                 'lead_id' => $lead->id,
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'activity_type' => 'comment',
-                'title' => auth()->user()->name . ' added a comment',
+                'title' => auth()?->user()?->name . ' added a comment',
                 'description' => $validated['comment'],
                 'created_by' => createdBy(),
             ]);
@@ -60,7 +60,7 @@ class LeadCommentController extends Controller
 
         $activity = LeadActivity::where('id', $activityId)
             ->where('lead_id', $lead->id)
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->where('activity_type', 'comment')
             ->first();
 
@@ -91,7 +91,7 @@ class LeadCommentController extends Controller
 
         $comment = LeadComment::where('id', $commentId)
             ->where('lead_id', $lead->id)
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$comment) {
@@ -119,7 +119,7 @@ class LeadCommentController extends Controller
 
         $comment = LeadComment::where('id', $commentId)
             ->where('lead_id', $lead->id)
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()?->id())
             ->first();
 
         if (!$comment) {

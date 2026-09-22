@@ -58,7 +58,7 @@ export function MolliePaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form action={route('subscriptions.mollie.payment')} method="POST" onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" action={route('subscriptions.mollie.payment')} method="POST" onSubmit={handleSubmit} className="space-y-4">
                     <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
@@ -74,7 +74,6 @@ export function MolliePaymentForm({
                                 onChange={(e) => {
                                     setCustomerDetails((prev) => ({ ...prev, firstName: e.target.value }));
                                 }}
-                                placeholder={translate('Enter first name')}
                                 required
                             />
                         </div>
@@ -87,7 +86,6 @@ export function MolliePaymentForm({
                                 onChange={(e) => {
                                     setCustomerDetails((prev) => ({ ...prev, lastName: e.target.value }));
                                 }}
-                                placeholder={translate('Enter last name')}
                                 required
                             />
                         </div>
@@ -103,7 +101,6 @@ export function MolliePaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
                             }}
-                            placeholder={translate('Enter email address')}
                             required
                         />
                     </div>

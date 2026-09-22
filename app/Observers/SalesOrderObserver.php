@@ -14,7 +14,7 @@ class SalesOrderObserver
 {
     public function created(SalesOrder $salesOrder): void
     {
-        $creator = User::find(auth()->id() ?? $salesOrder->created_by);
+        $creator = User::find(auth()?->id() ?? $salesOrder->created_by);
         $assignedName = $salesOrder->assignedUser ? $salesOrder->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $salesOrder->assignedUser && $creator->id === $salesOrder->assignedUser->id;
 
@@ -60,7 +60,7 @@ class SalesOrderObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -74,7 +74,7 @@ class SalesOrderObserver
 
             SalesOrderActivity::create([
                 'sales_order_id' => $salesOrder->id,
-                'user_id' => auth()->id() ?? $salesOrder->created_by,
+                'user_id' => auth()?->id() ?? $salesOrder->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

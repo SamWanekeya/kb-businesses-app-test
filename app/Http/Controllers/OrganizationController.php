@@ -114,7 +114,7 @@ class OrganizationController extends Controller
         $organization->created_by = createdBy() ?? 1;
 
         // Assign default plan
-        $defaultPlan = Plan::where('is_default', true)->first();
+        $defaultPlan = Plan::where('is_default', true)?->first();
         if ($defaultPlan) {
             $organization->plan_id = $defaultPlan->id;
 
@@ -426,7 +426,7 @@ class OrganizationController extends Controller
         $planOrder->status = 'approved';
         $planOrder->ordered_at = now();
         $planOrder->processed_at = now();
-        $planOrder->processed_by = auth()->id();
+        $planOrder->processed_by = auth()?->id();
         $planOrder->notes = 'Plan upgraded by super admin';
         $planOrder->save();
         // Update organization plan

@@ -35,7 +35,7 @@ class MolliePaymentController extends Controller
 
             // Create pending order
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'mollie',
@@ -58,7 +58,7 @@ class MolliePaymentController extends Controller
                 'metadata' => [
                     'payment_id' => $paymentId,
                     'plan_id' => $plan->id,
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'billing_cycle' => $validated['billing_cycle'],
                 ],
             ];
@@ -111,7 +111,7 @@ class MolliePaymentController extends Controller
 
             // Create pending order
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'mollie',
@@ -135,7 +135,7 @@ class MolliePaymentController extends Controller
                 'metadata' => [
                     'payment_id' => $paymentId,
                     'plan_id' => $plan->id,
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'billing_cycle' => $validated['billing_cycle'],
                 ],
             ]);
@@ -190,7 +190,7 @@ class MolliePaymentController extends Controller
             }
 
             // Find the most recent pending order for this user
-            $userId = auth()->id();
+            $userId = auth()?->id();
             if ($userId) {
                 $planOrder = PlanOrder::where('user_id', $userId)
                     ->where('status', 'pending')
@@ -240,7 +240,7 @@ class MolliePaymentController extends Controller
             $payment = $mollie->payments->get($paymentId);
 
             if ($payment->isPaid()) {
-                $planOrder = PlanOrder::where('payment_id', $paymentId)->first();
+                $planOrder = PlanOrder::where('payment_id', $paymentId)?->first();
 
                 if ($planOrder && $planOrder->status === 'pending') {
                     $planOrder->update(['status' => 'approved']);

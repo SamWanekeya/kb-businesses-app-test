@@ -46,7 +46,7 @@ class StreamController extends Controller
 
     public function deleteAccountActivity($id)
     {
-        $stream = AccountActivity::where('created_by', createdBy())->find($id);
+        $stream = AccountActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -73,7 +73,7 @@ class StreamController extends Controller
 
     public function deleteInvoiceActivity($id)
     {
-        $stream = InvoiceActivity::where('created_by', createdBy())->find($id);
+        $stream = InvoiceActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -100,7 +100,7 @@ class StreamController extends Controller
 
     public function deleteLeadActivity($id)
     {
-        $stream = LeadActivity::where('created_by', createdBy())->find($id);
+        $stream = LeadActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -127,7 +127,7 @@ class StreamController extends Controller
 
     public function deleteOpportunityActivity($id)
     {
-        $stream = OpportunityActivity::where('created_by', createdBy())->find($id);
+        $stream = OpportunityActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -154,7 +154,7 @@ class StreamController extends Controller
 
     public function deletePurchaseOrderActivity($id)
     {
-        $stream = PurchaseOrderActivity::where('created_by', createdBy())->find($id);
+        $stream = PurchaseOrderActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -181,7 +181,7 @@ class StreamController extends Controller
 
     public function deleteQuoteActivity($id)
     {
-        $stream = QuoteActivity::where('created_by', createdBy())->find($id);
+        $stream = QuoteActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));
@@ -208,7 +208,7 @@ class StreamController extends Controller
 
     public function deleteSalesOrderActivity($id)
     {
-        $stream = SalesOrderActivity::where('created_by', createdBy())->find($id);
+        $stream = SalesOrderActivity::where('created_by', createdBy())?->find($id);
 
         if (!$stream) {
             return back()->with('error', __('Permission denied.'));

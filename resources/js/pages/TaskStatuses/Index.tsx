@@ -209,7 +209,7 @@ export default function TaskStatuses() {
     const canToggleStatus = useHasPermission('toggle-status-task-statuses');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management') },
         { title: translate('Task Status') },
     ];
@@ -220,7 +220,6 @@ export default function TaskStatuses() {
             description={translate('Manage task status categories for your project tasks.')}
             url="/task-statuses"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -236,7 +235,7 @@ export default function TaskStatuses() {
                                     : translate('Update the task status details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Status Name')}
@@ -370,7 +369,7 @@ export default function TaskStatuses() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

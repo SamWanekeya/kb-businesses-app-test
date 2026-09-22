@@ -159,7 +159,7 @@ class InvoiceMolliePaymentController extends Controller
             }
 
             if ($molliePayment->isPaid()) {
-                $existingPayment = InvoicePayment::where('payment_id', $molliePayment->id)->first();
+                $existingPayment = InvoicePayment::where('payment_id', $molliePayment->id)?->first();
 
                 if (!$existingPayment) {
                     InvoicePayment::storePayment([
@@ -228,7 +228,7 @@ class InvoiceMolliePaymentController extends Controller
                 $paymentType = $payment->metadata->payment_type;
 
                 // Check if payment already stored to avoid duplicates
-                $existingPayment = InvoicePayment::where('payment_id', $paymentId)->first();
+                $existingPayment = InvoicePayment::where('payment_id', $paymentId)?->first();
 
                 if (!$existingPayment) {
                     InvoicePayment::storePayment([

@@ -25,7 +25,7 @@ export default function RolesEdit() {
     const isEditable = role.is_editable !== false;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: translate('Edit Role') },
@@ -84,7 +84,7 @@ export default function RolesEdit() {
             actions={pageActions}
             breadcrumbs={breadcrumbs}
         >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
@@ -104,7 +104,6 @@ export default function RolesEdit() {
                                     onChange={(e) => {
                                         setLabel(e.target.value);
                                     }}
-                                    placeholder={translate('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
                                     disabled={!isEditable}
                                     className={errors.label ? 'border-red-500' : ''}
                                 />
@@ -119,7 +118,6 @@ export default function RolesEdit() {
                                     onChange={(e) => {
                                         setDescription(e.target.value);
                                     }}
-                                    placeholder={translate('Enter role description...')}
                                     rows={3}
                                 />
                             </div>

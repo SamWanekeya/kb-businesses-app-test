@@ -73,7 +73,7 @@ class CaseSeeder extends Seeder
 
             for ($i = 0; $i < 15; $i++) {
                 $account = $accounts->random();
-                $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
+                $contact = $contacts->where('account_id', $account->id)?->first() ?? $contacts->random();
                 $createdDate = $faker->dateTimeBetween('-3 months', 'now');
 
                 CaseModel::create([

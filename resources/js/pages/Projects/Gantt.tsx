@@ -381,7 +381,7 @@ export default function ProjectGantt() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management') },
         { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
@@ -395,7 +395,6 @@ export default function ProjectGantt() {
             url={`/projects/${project.id}/gantt`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <style>{`
         .gantt-container::-webkit-scrollbar {
@@ -498,6 +497,7 @@ export default function ProjectGantt() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -506,13 +506,11 @@ export default function ProjectGantt() {
                             label: translate('Task Title'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
                         {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Enter task description...'),
                         },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' },
                         { name: 'due_date', label: translate('Due Date'), type: 'date' },
@@ -546,7 +544,6 @@ export default function ProjectGantt() {
                             label: translate('Estimated Hours'),
                             type: 'number',
                             step: '0.5',
-                            placeholder: translate('e.g. 8'),
                         },
                         {
                             name: 'progress',
@@ -555,7 +552,6 @@ export default function ProjectGantt() {
                             min: '0',
                             max: '100',
                             defaultValue: '0',
-                            placeholder: translate('e.g. 50'),
                         },
                         ...(isOrganization
                             ? [

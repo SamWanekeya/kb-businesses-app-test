@@ -241,7 +241,7 @@ export default function DocumentFolderView() {
     }
 
     const breadcrumbs: any[] = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Documents'), href: route('documents.index') },
     ];
@@ -251,7 +251,7 @@ export default function DocumentFolderView() {
     breadcrumbs.push({ title: folder.name });
 
     const folderFields = [
-        { name: 'name', label: translate('Folder Name'), type: 'text', required: true, placeholder: translate('e.g. Contracts, HR Documents') },
+        { name: 'name', label: translate('Folder Name'), type: 'text', required: true },
         {
             name: 'parent_folder_id',
             label: translate('Parent Folder'),
@@ -262,7 +262,7 @@ export default function DocumentFolderView() {
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
-        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter folder description...') },
+        { name: 'description', label: translate('Description'), type: 'textarea' },
     ];
 
     const getExt = (url: string) => (url || '').split('?')[0].split('.').pop()?.toLowerCase() || '';
@@ -324,7 +324,6 @@ export default function DocumentFolderView() {
             url={`/documents/folder/${folder.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Outer container */}
             <div className="-mt-2 space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
@@ -639,6 +638,7 @@ export default function DocumentFolderView() {
                 onClose={() => {
                     setIsDocModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleDocFormSubmit}
                 formConfig={{
                     fields: [
@@ -647,7 +647,6 @@ export default function DocumentFolderView() {
                             label: translate('Document Name'),
                             type: 'text',
                             required: true,
-                            placeholder: translate('e.g. Q1 Sales Contract'),
                         },
                         {
                             name: 'account_id',
@@ -693,7 +692,6 @@ export default function DocumentFolderView() {
                             required: true,
                             type: 'media-picker',
                             returnType: 'id',
-                            placeholder: translate('Select file...'),
                         },
                         {
                             name: 'assigned_to',
@@ -708,7 +706,6 @@ export default function DocumentFolderView() {
                             name: 'description',
                             label: translate('Description'),
                             type: 'textarea',
-                            placeholder: translate('Enter document description...'),
                         },
                         {
                             name: 'status',
@@ -749,6 +746,7 @@ export default function DocumentFolderView() {
                 onClose={() => {
                     setIsFolderModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFolderFormSubmit}
                 formConfig={{ fields: folderFields, modalSize: 'md' }}
                 initialData={

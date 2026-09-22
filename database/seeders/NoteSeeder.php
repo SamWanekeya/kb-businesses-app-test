@@ -55,8 +55,7 @@ class NoteSeeder extends Seeder
 
             $organizationUsers = User::where('created_by', $createdBy)
                 ->orWhere('id', $createdBy)
-                ->where('id', '!=', $user->id)
-                ->pluck('id');
+                ->where('id', '!=', $user->id)?->pluck('id');
 
             // Create 2-5 shared notes
             if ($organizationUsers->isNotEmpty()) {

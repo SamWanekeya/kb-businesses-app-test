@@ -40,7 +40,7 @@ export default function ProjectTaskShow() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management') },
         { title: translate('Project Tasks'), href: route('project-tasks.index') },
         { title: translate('View Project Task') },
@@ -76,7 +76,6 @@ export default function ProjectTaskShow() {
             url={`/project-tasks/${task.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="space-y-6">
                 {/* Task Overview */}

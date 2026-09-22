@@ -584,7 +584,7 @@ class QuoteController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-quotes')) {
+        if (!auth()?->user()?->can('export-quotes')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

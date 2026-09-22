@@ -39,7 +39,11 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
 
     return (
         <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
-            <form onSubmit={handleFilterSubmit} className="flex flex-col items-stretch gap-3 p-3 min-[1070px]:flex-row min-[1070px]:items-center">
+            <form
+                autoComplete="off"
+                onSubmit={handleFilterSubmit}
+                className="flex flex-col items-stretch gap-3 p-3 min-[1070px]:flex-row min-[1070px]:items-center"
+            >
                 <div className="flex w-full flex-1 flex-col items-stretch gap-3 min-[1070px]:flex-row min-[1070px]:items-center">
                     <div className="flex flex-1 items-center gap-2">
                         <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{translate('From Date :')}</p>
@@ -50,7 +54,6 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                                 onChange={(e) => {
                                     setDateFrom(e);
                                 }}
-                                placeholder={translate('From Date')}
                                 className="!w-full"
                                 required
                             />
@@ -65,7 +68,6 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                                 onChange={(e) => {
                                     setDateTo(e);
                                 }}
-                                placeholder={translate('To Date')}
                                 className="!w-full"
                                 required
                             />

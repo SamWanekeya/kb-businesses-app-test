@@ -233,7 +233,7 @@ export default function Campaigns() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaign Management'), href: route('campaigns.index') },
         { title: translate('Campaigns') },
     ];
@@ -404,7 +404,6 @@ export default function Campaigns() {
             url="/campaigns"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">

@@ -14,7 +14,7 @@ class PurchaseOrderObserver
 {
     public function created(PurchaseOrder $purchaseOrder): void
     {
-        $creator = User::find(auth()->id() ?? $purchaseOrder->created_by);
+        $creator = User::find(auth()?->id() ?? $purchaseOrder->created_by);
         $assignedName = $purchaseOrder->assignedUser ? $purchaseOrder->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $purchaseOrder->assignedUser && $creator->id === $purchaseOrder->assignedUser->id;
 
@@ -60,7 +60,7 @@ class PurchaseOrderObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -74,7 +74,7 @@ class PurchaseOrderObserver
 
             PurchaseOrderActivity::create([
                 'purchase_order_id' => $purchaseOrder->id,
-                'user_id' => auth()->id() ?? $purchaseOrder->created_by,
+                'user_id' => auth()?->id() ?? $purchaseOrder->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

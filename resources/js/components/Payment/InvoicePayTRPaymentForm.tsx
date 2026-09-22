@@ -134,7 +134,7 @@ export function InvoicePayTRPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted mb-4 rounded-lg p-3">
                         <div className="mb-2 flex items-center justify-between">
                             <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
@@ -156,7 +156,6 @@ export function InvoicePayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));
                             }}
-                            placeholder={translate('Enter full name')}
                             required
                         />
                     </div>
@@ -170,7 +169,6 @@ export function InvoicePayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
                             }}
-                            placeholder={translate('Enter email address')}
                             required
                         />
                     </div>
@@ -183,7 +181,6 @@ export function InvoicePayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }));
                             }}
-                            placeholder="+905xxxxxxxxx"
                             required
                         />
                         <p className="text-muted-foreground text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
@@ -197,7 +194,6 @@ export function InvoicePayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, address: e.target.value }));
                             }}
-                            placeholder={translate('Enter address (optional)')}
                         />
                     </div>
 

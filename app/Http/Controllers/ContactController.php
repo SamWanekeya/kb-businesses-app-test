@@ -80,7 +80,7 @@ class ContactController extends Controller
         $plan = $user->getCurrentPlan();
 
         if ($plan && $plan->maximum_contacts > 0) {
-            $currentContactCount = Contact::where('created_by', $user->id)->count();
+            $currentContactCount = Contact::where('created_by', $user->id)?->count();
             $planLimits = [
                 'current_contacts' => $currentContactCount,
                 'maximum_contacts' => $plan->maximum_contacts,
@@ -113,12 +113,12 @@ class ContactController extends Controller
         ]);
 
         // Check contact limit for organization users
-        if (auth()->user()->type === 'organization') {
-            $user = auth()->user();
+        if (auth()?->user()?->type === 'organization') {
+            $user = auth()?->user();
             $plan = $user->getCurrentPlan();
 
             if ($plan && $plan->maximum_contacts > 0) {
-                $currentContactCount = Contact::where('created_by', $user->id)->count();
+                $currentContactCount = Contact::where('created_by', $user->id)?->count();
 
                 if ($currentContactCount >= $plan->maximum_contacts) {
                     return redirect()->back()->with('error', __('Contact limit exceeded. Your plan allows maximum :limit contacts.', ['limit' => $plan->maximum_contacts]));
@@ -234,7 +234,7 @@ class ContactController extends Controller
                 return $call;
             });
 
-        $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
+        $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')?->values();
 
         return Inertia::render('Contacts/Show', [
             'contact' => $contact,
@@ -264,7 +264,7 @@ class ContactController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-contacts')) {
+        if (!auth()?->user()?->can('export-contacts')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

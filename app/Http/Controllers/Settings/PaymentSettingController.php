@@ -23,7 +23,7 @@ class PaymentSettingController extends Controller
 
     public function getPaymentMethods()
     {
-        $superAdminId = User::where('type', 'super_admin')->first()?->id;
+        $superAdminId = User::where('type', 'super_admin')?->first()?->id;
 
         if (!$superAdminId) {
             return response()->json([]);
@@ -301,7 +301,7 @@ class PaymentSettingController extends Controller
 
     private function savePaymentSettings(array $settings): void
     {
-        $userId = auth()->id();
+        $userId = auth()?->id();
 
         foreach ($settings as $key => $value) {
             PaymentSetting::updateOrCreateSetting($userId, $key, $value);

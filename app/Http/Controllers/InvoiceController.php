@@ -704,11 +704,11 @@ class InvoiceController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-invoices')) {
+        if (!auth()?->user()?->can('export-invoices')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
-        return Excel::download(new InvoiceExport(), 'invoices-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
+        return Excel::download(new InvoiceExport(), 'invoices-' . now()?->format('Y-m-d-H-i-s') . '.xlsx');
     }
 
     public function getSalesOrderDetails($salesOrderId)
@@ -880,8 +880,8 @@ class InvoiceController extends Controller
         // Sample invoice data for preview
         $invoice = (object)[
             'invoice_number' => 'INV-2024-001',
-            'invoice_date' => now()->format('Y-m-d'),
-            'due_date' => now()->addDays(30)->format('Y-m-d'),
+            'invoice_date' => now()?->format('Y-m-d'),
+            'due_date' => now()->addDays(30)?->format('Y-m-d'),
             'status' => 'draft',
             'subtotal' => 1000,
             'tax_amount' => 100,

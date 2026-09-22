@@ -23,7 +23,7 @@ class ReferralSeeder extends Seeder
         }
 
         foreach ($users->take(10) as $index => $user) {
-            $referrer = $users->skip(($index + 1) % $users->count())->first();
+            $referrer = $users->skip(($index + 1) % $users->count())?->first();
             $plan = $plans->random();
             $commissionPercentage = $faker->randomFloat(2, 5, 20);
             $commissionAmount = ($plan->price * $commissionPercentage) / 100;

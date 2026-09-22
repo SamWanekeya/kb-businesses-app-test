@@ -115,13 +115,13 @@ export default function Documents() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Documents') },
     ];
 
     const folderFormFields = [
-        { name: 'name', label: translate('Folder Name'), type: 'text', required: true, placeholder: translate('e.g. Contracts, HR Documents') },
+        { name: 'name', label: translate('Folder Name'), type: 'text', required: true },
         {
             name: 'parent_folder_id',
             label: translate('Parent Folder'),
@@ -132,7 +132,7 @@ export default function Documents() {
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
-        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter folder description...') },
+        { name: 'description', label: translate('Description'), type: 'textarea' },
     ];
 
     const folders = rootFolders?.data || rootFolders || [];
@@ -144,7 +144,6 @@ export default function Documents() {
             url="/documents"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search bar */}
             <div className="mb-4 rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
@@ -298,6 +297,7 @@ export default function Documents() {
                 onClose={() => {
                     setIsFolderModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFolderFormSubmit}
                 formConfig={{ fields: folderFormFields, modalSize: 'md' }}
                 initialData={

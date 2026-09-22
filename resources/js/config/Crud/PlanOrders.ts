@@ -74,7 +74,6 @@ export const usePlanOrdersConfig: CrudConfig = {
     },
     search: {
         enabled: true,
-        placeholder: translate('Search orders...'),
         fields: ['order_number', 'user.name', 'plan.name', 'coupon_code'],
     },
     filters: [

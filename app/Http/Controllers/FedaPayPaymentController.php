@@ -30,7 +30,7 @@ class FedaPayPaymentController extends Controller
 
             if ($transaction->status === 'approved') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'fedapay',
@@ -69,7 +69,7 @@ class FedaPayPaymentController extends Controller
 
             $this->configureFedaPay($settings['payment_settings']);
 
-            $user = auth()->user();
+            $user = auth()?->user();
 
             $transaction = Transaction::create([
                 'description' => 'Plan: ' . $plan->name,

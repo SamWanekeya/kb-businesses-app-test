@@ -342,7 +342,7 @@ export default function EmailSettings() {
                 <div className="min-[1600px]:col-span-1">
                     <Card>
                         <CardContent className="pt-6">
-                            <form onSubmit={sendTestEmail} className="space-y-4">
+                            <form autoComplete="off" onSubmit={sendTestEmail} className="space-y-4">
                                 <div className="mb-4 flex items-center gap-2">
                                     <Send className="text-primary h-4 w-4" />
                                     <h3 className="text-base font-medium">{translate('Test Email Configuration')}</h3>

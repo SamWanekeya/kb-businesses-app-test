@@ -155,7 +155,7 @@ class ProductController extends Controller
             'brands' => $brands,
             'taxes' => $taxes,
             'users' => $users,
-            'existingSkus' => Product::where('created_by', createdBy())->pluck('sku'),
+            'existingSkus' => Product::where('created_by', createdBy())?->pluck('sku'),
         ]);
     }
 
@@ -208,7 +208,7 @@ class ProductController extends Controller
                 'users' => $users,
                 'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
-                'existingSkus' => Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
+                'existingSkus' => Product::where('created_by', createdBy())->where('id', '!=', $id)?->pluck('sku'),
             ]);
         } else {
             return redirect()->route('products.index')->with('error', __('Product not found.'));
@@ -292,7 +292,7 @@ class ProductController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-products')) {
+        if (!auth()?->user()?->can('export-products')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -303,7 +303,7 @@ class ProductController extends Controller
 
     public function downloadTemplate()
     {
-        if (!auth()->user()->can('import-products')) {
+        if (!auth()?->user()?->can('import-products')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 
@@ -318,7 +318,7 @@ class ProductController extends Controller
 
     public function parseFile(Request $request)
     {
-        if (!auth()->user()->can('import-products')) {
+        if (!auth()?->user()?->can('import-products')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -377,7 +377,7 @@ class ProductController extends Controller
 
     public function fileImport(Request $request)
     {
-        if (!auth()->user()->can('import-products')) {
+        if (!auth()?->user()?->can('import-products')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

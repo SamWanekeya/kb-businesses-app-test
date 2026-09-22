@@ -12,7 +12,7 @@ class OpportunityObserver
 {
     public function created(Opportunity $opportunity): void
     {
-        $creator = User::find(auth()->id() ?? $opportunity->created_by);
+        $creator = User::find(auth()?->id() ?? $opportunity->created_by);
         $assignedName = $opportunity->assignedUser ? $opportunity->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $opportunity->assignedUser && $creator->id === $opportunity->assignedUser->id;
 
@@ -58,7 +58,7 @@ class OpportunityObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -90,7 +90,7 @@ class OpportunityObserver
 
             OpportunityActivity::create([
                 'opportunity_id' => $opportunity->id,
-                'user_id' => auth()->id() ?? $opportunity->created_by,
+                'user_id' => auth()?->id() ?? $opportunity->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

@@ -41,7 +41,7 @@ class QuoteSeeder extends Seeder
 
             for ($i = 1; $i <= 20; $i++) {
                 $account = $accounts->random();
-                $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
+                $contact = $contacts->where('account_id', $account->id)?->first() ?? $contacts->random();
                 $createdDate = $faker->dateTimeBetween('-2 months', 'now');
                 $validUntil = $faker->dateTimeBetween($createdDate, '+2 months');
                 $subtotal = $faker->numberBetween(5000, 50000);

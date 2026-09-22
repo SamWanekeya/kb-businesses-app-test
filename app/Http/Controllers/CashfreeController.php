@@ -34,7 +34,7 @@ class CashfreeController extends Controller
             }
 
             $orderId = 'plan_' . $plan->id . '_' . time() . '_' . uniqid();
-            $user = auth()->user();
+            $user = auth()?->user();
 
             // Clean phone number
             $phone = $user->phone ?: '9999999999';
@@ -55,7 +55,7 @@ class CashfreeController extends Controller
                     'customer_phone' => $phone,
                 ],
                 'order_meta' => [
-                    'return_url' => route('dashboard'),
+                    'return_url' => route('dashboard.index'),
                     'notify_url' => route('cashfree.webhook'),
                 ],
                 'order_note' => 'Plan Subscription - ' . $plan->name,
@@ -80,7 +80,7 @@ class CashfreeController extends Controller
             Log::error('Cashfree payment session creation failed', [
                 'error' => $e->getMessage(),
                 'mode' => $credentials['mode'] ?? 'unknown',
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
             ]);
 
             return response()->json([
@@ -193,7 +193,7 @@ class CashfreeController extends Controller
             }
 
             $paymentData = [
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'cashfree',

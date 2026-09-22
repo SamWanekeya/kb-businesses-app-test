@@ -223,7 +223,7 @@ export default function AccountTypes() {
     const canToggleStatus = useHasPermission('toggle-status-account-types');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Account Management') },
         { title: translate('Account Types') },
     ];
@@ -234,7 +234,6 @@ export default function AccountTypes() {
             description={translate('Manage account type categories for your accounts.')}
             url="/account-types"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -251,7 +250,7 @@ export default function AccountTypes() {
                             </p>
                         </div>
 
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Name')}
@@ -263,7 +262,6 @@ export default function AccountTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('eg. Customer, Partner, Vendor')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -292,7 +290,6 @@ export default function AccountTypes() {
                                         }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
-                                        placeholder="#000000"
                                         disabled={!canCreate && !canEdit}
                                     />
                                 </div>
@@ -307,7 +304,6 @@ export default function AccountTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter account type description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -325,7 +321,7 @@ export default function AccountTypes() {
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select status')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
@@ -361,7 +357,6 @@ export default function AccountTypes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search account types...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -389,7 +384,7 @@ export default function AccountTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

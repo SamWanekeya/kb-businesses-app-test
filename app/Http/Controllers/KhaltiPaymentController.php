@@ -28,7 +28,7 @@ class KhaltiPaymentController extends Controller
 
             if ($isValid) {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'khalti',

@@ -209,7 +209,7 @@ export default function TargetLists() {
     const canToggleStatus = useHasPermission('toggle-status-target-lists');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaign Management') },
         { title: translate('Target Lists') },
     ];
@@ -220,7 +220,6 @@ export default function TargetLists() {
             description={translate('Manage target lists for your campaigns.')}
             url="/target-lists"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -236,7 +235,7 @@ export default function TargetLists() {
                                     : translate('Update the target list details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Name')}
@@ -341,7 +340,7 @@ export default function TargetLists() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

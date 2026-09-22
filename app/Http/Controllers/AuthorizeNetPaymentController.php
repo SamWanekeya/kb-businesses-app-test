@@ -83,7 +83,7 @@ class AuthorizeNetPaymentController extends Controller
 
             if ($result['success']) {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'authorizenet',
@@ -131,14 +131,14 @@ class AuthorizeNetPaymentController extends Controller
             // Set up customer information
             $customer = new AnetAPI\CustomerDataType();
             $customer->setType('individual');
-            $customer->setId(auth()->id());
-            $customer->setEmail(auth()->user()->email);
+            $customer->setId(auth()?->id());
+            $customer->setEmail(auth()?->user()?->email);
 
             // Set up billing information
             $billTo = new AnetAPI\CustomerAddressType();
             $billTo->setFirstName(explode(' ', $paymentData['cardholder_name'])[0]);
             $billTo->setLastName(implode(' ', array_slice(explode(' ', $paymentData['cardholder_name']), 1)) ?: 'Customer');
-            $billTo->setOrganization(auth()->user()->name ?? '');
+            $billTo->setOrganization(auth()?->user()?->name ?? '');
             $billTo->setAddress('-');
             $billTo->setCity('-');
             $billTo->setState('-');
@@ -161,7 +161,7 @@ class AuthorizeNetPaymentController extends Controller
 
             $merchantDefinedField2 = new AnetAPI\UserFieldType();
             $merchantDefinedField2->setName('user_id');
-            $merchantDefinedField2->setValue(auth()->id());
+            $merchantDefinedField2->setValue(auth()?->id());
 
             $transactionRequestType->setUserFields([$merchantDefinedField1, $merchantDefinedField2]);
 

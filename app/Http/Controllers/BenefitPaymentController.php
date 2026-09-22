@@ -36,7 +36,7 @@ class BenefitPaymentController extends Controller
 
             if ($isPaymentValid) {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'benefit',
@@ -74,7 +74,7 @@ class BenefitPaymentController extends Controller
                 return response()->json(['error' => __('Benefit payment not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
 
             $userData = [
@@ -214,8 +214,8 @@ class BenefitPaymentController extends Controller
                     ]);
 
                     // Log the user in if not already authenticated
-                    if (!auth()->check()) {
-                        auth()->login($user);
+                    if (!auth()?->check()) {
+                        auth()?->login($user);
                     }
 
                     return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
@@ -257,7 +257,7 @@ class BenefitPaymentController extends Controller
 
                     if ($plan && $user) {
                         // Check if payment already processed
-                        $existingOrder = PlanOrder::where('payment_id', $paymentId)->first();
+                        $existingOrder = PlanOrder::where('payment_id', $paymentId)?->first();
 
                         if (!$existingOrder) {
                             processPaymentSuccess([

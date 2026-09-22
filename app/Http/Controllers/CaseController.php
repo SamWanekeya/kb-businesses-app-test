@@ -124,7 +124,7 @@ class CaseController extends Controller
                 return $call;
             });
 
-        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
+        $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')?->values();
 
         return Inertia::render('Cases/Show', [
             'case' => $case,
@@ -291,7 +291,7 @@ class CaseController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-cases')) {
+        if (!auth()?->user()?->can('export-cases')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

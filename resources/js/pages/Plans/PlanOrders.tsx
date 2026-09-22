@@ -174,7 +174,7 @@ export default function PlanOrdersPage() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Plans'), href: route('subscriptions.plans.index') },
         { title: translate('Plan Orders') },
     ];
@@ -336,7 +336,6 @@ export default function PlanOrdersPage() {
             url="/plan-orders"
             breadcrumbs={breadcrumbs}
             description={isSuperAdmin ? translate('View and manage all plan orders from organizations.') : translate('View your plan orders.')}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -601,6 +600,7 @@ export default function PlanOrdersPage() {
                         <DialogTitle>{translate('Reject Plan Order')}</DialogTitle>
                     </DialogHeader>
                     <form
+                        autoComplete="off"
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);

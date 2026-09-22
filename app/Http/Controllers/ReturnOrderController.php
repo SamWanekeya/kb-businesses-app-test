@@ -316,8 +316,7 @@ class ReturnOrderController extends Controller
             ->where('return_orders.created_by', createdBy())
             ->when($excludeReturnOrderId, fn ($q) => $q->where('return_orders.id', '!=', $excludeReturnOrderId))
             ->select('return_order_product.product_id', DB::raw('SUM(return_order_product.quantity) as returned_quantity'))
-            ->groupBy('return_order_product.product_id')
-            ->pluck('returned_quantity', 'product_id');
+            ->groupBy('return_order_product.product_id')?->pluck('returned_quantity', 'product_id');
 
         return response()->json([
             'account_id' => $salesOrder->account_id,
@@ -337,13 +336,13 @@ class ReturnOrderController extends Controller
                     'discount_type' => $product->pivot->discount_type ?? 'none',
                     'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })->filter(fn ($p) => $p['quantity'] > 0)->values(),
+            })?->filter(fn ($p) => $p['quantity'] > 0)?->values(),
         ]);
     }
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-return-orders')) {
+        if (!auth()?->user()?->can('export-return-orders')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

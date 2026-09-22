@@ -125,7 +125,7 @@ export function PayfastPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
@@ -143,7 +143,6 @@ export function PayfastPaymentForm({
                                         setErrors((prev) => ({ ...prev, firstName: '' }));
                                     }
                                 }}
-                                placeholder={translate('Enter first name')}
                                 className={errors.firstName ? 'border-red-500' : ''}
                                 required
                             />
@@ -161,7 +160,6 @@ export function PayfastPaymentForm({
                                         setErrors((prev) => ({ ...prev, lastName: '' }));
                                     }
                                 }}
-                                placeholder={translate('Enter last name')}
                                 className={errors.lastName ? 'border-red-500' : ''}
                                 required
                             />
@@ -182,7 +180,6 @@ export function PayfastPaymentForm({
                                     setErrors((prev) => ({ ...prev, email: '' }));
                                 }
                             }}
-                            placeholder={translate('Enter email address')}
                             className={errors.email ? 'border-red-500' : ''}
                             required
                         />

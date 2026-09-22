@@ -39,7 +39,7 @@ export default function AnnouncementShow() {
     };
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Announcements'), href: route('announcements.index') },
         { title: announcement.title },
     ];
@@ -86,7 +86,6 @@ export default function AnnouncementShow() {
             description={translate('View announcement details and content')}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <Head title={announcement.title} />
 

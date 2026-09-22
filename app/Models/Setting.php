@@ -16,7 +16,7 @@ class Setting extends BaseModel
 
     public static function getUserSettings($userId)
     {
-        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
+        return self::where('user_id', $userId)?->pluck('value', 'key')?->toArray();
     }
 
     /**

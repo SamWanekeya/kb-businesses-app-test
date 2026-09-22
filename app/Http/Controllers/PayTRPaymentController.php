@@ -38,7 +38,7 @@ class PayTRPaymentController extends Controller
 
             // Create pending order
             createPlanOrder([
-                'user_id' => auth()->id(),
+                'user_id' => auth()?->id(),
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'paytr',
@@ -140,7 +140,7 @@ class PayTRPaymentController extends Controller
             $calculatedHash = base64_encode(hash_hmac('sha256', $hashStr, $credentials['merchant_key'], true));
 
             if ($hash === $calculatedHash && $status === 'success') {
-                $planOrder = PlanOrder::where('payment_id', $merchant_oid)->first();
+                $planOrder = PlanOrder::where('payment_id', $merchant_oid)?->first();
 
                 if ($planOrder && $planOrder->status === 'pending') {
                     processPaymentSuccess([

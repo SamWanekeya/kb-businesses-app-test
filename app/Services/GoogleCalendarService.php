@@ -115,8 +115,7 @@ class GoogleCalendarService
     private function setupClient($userId)
     {
         $settings = Setting::where('user_id', $userId)
-            ->whereIn('key', ['googleCalendarJsonPath', 'googleCalendarId'])
-            ->pluck('value', 'key');
+            ->whereIn('key', ['googleCalendarJsonPath', 'googleCalendarId'])?->pluck('value', 'key');
 
         $jsonPath = $settings['googleCalendarJsonPath'] ?? null;
 

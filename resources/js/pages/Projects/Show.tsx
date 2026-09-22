@@ -68,7 +68,7 @@ export default function ProjectShow() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Project Management') },
         { title: translate('Projects'), href: route('projects.index') },
         { title: translate('View Project') },
@@ -111,7 +111,6 @@ export default function ProjectShow() {
             url={`/projects/${project.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="space-y-6">
                 {/* Project Header */}

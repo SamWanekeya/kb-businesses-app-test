@@ -50,7 +50,7 @@ export default function LeadShow() {
     const getInitials = useInitials();
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Lead Management') },
         { title: translate('Leads'), href: route('leads.index') },
         { title: translate('View Lead') },
@@ -87,7 +87,6 @@ export default function LeadShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="mx-auto space-y-6">
                 {/* Summary Stat Cards */}
@@ -690,6 +689,7 @@ export default function LeadShow() {
                             {useHasPermission('create-leads') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
+                                        autoComplete="off"
                                         onSubmit={(e) => {
                                             e.preventDefault();
                                             if (newComment.trim()) {
@@ -719,7 +719,6 @@ export default function LeadShow() {
                                             </TooltipProvider>
                                             <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                 <Textarea
-                                                    placeholder={translate('Write a comment...')}
                                                     value={newComment}
                                                     onChange={(e) => {
                                                         setNewComment(e.target.value);

@@ -14,7 +14,7 @@ class EmailTemplateService
     {
         try {
             // Get email template
-            $template = EmailTemplate::where('name', $templateName)->first();
+            $template = EmailTemplate::where('name', $templateName)?->first();
 
             if (!$template) {
                 throw new Exception("Email template '{$templateName}' not found");
@@ -111,7 +111,7 @@ class EmailTemplateService
             }
 
             // Get email template
-            $template = EmailTemplate::where('name', $templateName)->first();
+            $template = EmailTemplate::where('name', $templateName)?->first();
 
             if (!$template) {
                 throw new Exception("Email template '{$templateName}' not found");

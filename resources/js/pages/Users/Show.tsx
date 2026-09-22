@@ -10,7 +10,7 @@ export default function UserShow() {
     const { user, meetings } = usePage().props;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Users'), href: route('users-permissions.users.index') },
         { title: user.name },
     ];

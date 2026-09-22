@@ -91,7 +91,7 @@ class AccountController extends Controller
         $planLimits = null;
         $organization = User::find(createdBy());
         if ($organization && $organization->plan) {
-            $currentAccountsCount = Account::where('created_by', createdBy())->count();
+            $currentAccountsCount = Account::where('created_by', createdBy())?->count();
             $planLimits = [
                 'maximum_accounts' => $organization->plan->maximum_accounts,
                 'current_accounts' => $currentAccountsCount,
@@ -115,10 +115,10 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         // Check plan limits for organization users
-        if (auth()->user()->type === 'organization') {
+        if (auth()?->user()?->type === 'organization') {
             $organization = User::find(createdBy());
             if ($organization && $organization->plan) {
-                $currentAccountsCount = Account::where('created_by', createdBy())->count();
+                $currentAccountsCount = Account::where('created_by', createdBy())?->count();
                 if ($currentAccountsCount >= $organization->plan->maximum_accounts) {
                     return redirect()->back()->with('error', __('Account limit reached. Your plan allows maximum :max accounts.', ['maximum' => $organization->plan->maximum_accounts]));
                 }
@@ -218,7 +218,7 @@ class AccountController extends Controller
                     return $call;
                 });
 
-            $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
+            $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')?->values();
 
             return Inertia::render('Accounts/Show', [
                 'account' => $account,
@@ -361,7 +361,7 @@ class AccountController extends Controller
 
     public function fileExport()
     {
-        if (!auth()->user()->can('export-accounts')) {
+        if (!auth()?->user()?->can('export-accounts')) {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 

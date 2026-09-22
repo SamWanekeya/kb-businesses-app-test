@@ -67,7 +67,7 @@ class CampaignSeeder extends Seeder
                     'budget' => $budget,
                     'actual_cost' => $actualCost,
                     'expected_response' => $expectedResponse,
-                    'campaign_type_id' => $campaignTypes->random()->id,
+                    'campaign_type_id' => $campaignTypes->random()?->id,
                     'target_list_id' => $targetLists->isNotEmpty() ? $targetLists->random()->id : null,
                     'status' => $faker->randomElement(['active', 'active', 'inactive']), // 67% active
                     'created_by' => $organization->id,

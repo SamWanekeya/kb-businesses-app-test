@@ -136,7 +136,7 @@ export function PayTRPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">{translate('Full Name')} *</Label>
                         <Input
@@ -145,7 +145,6 @@ export function PayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));
                             }}
-                            placeholder={translate('Enter full name')}
                             required
                         />
                     </div>
@@ -159,7 +158,6 @@ export function PayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
                             }}
-                            placeholder={translate('Enter email address')}
                             required
                         />
                     </div>
@@ -172,7 +170,6 @@ export function PayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }));
                             }}
-                            placeholder="+905xxxxxxxxx"
                             required
                         />
                         <p className="text-muted-foreground text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
@@ -186,7 +183,6 @@ export function PayTRPaymentForm({
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, address: e.target.value }));
                             }}
-                            placeholder={translate('Enter address (optional)')}
                         />
                     </div>
 

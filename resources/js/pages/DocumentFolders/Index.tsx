@@ -209,13 +209,13 @@ export default function DocumentFolders() {
     const canToggleStatus = useHasPermission('toggle-status-document-folders');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Folders') },
     ];
 
     return (
-        <PageTemplate title={translate('Folders')} url="/document-folders" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Folders')} url="/document-folders" breadcrumbs={breadcrumbs}>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
                 <div className="lg:col-span-1">
@@ -230,7 +230,7 @@ export default function DocumentFolders() {
                                     : translate('Update the document folder details below')}
                             </p>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Folder Name')}
@@ -242,7 +242,6 @@ export default function DocumentFolders() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Contracts, HR Documents, Invoices')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -259,7 +258,7 @@ export default function DocumentFolders() {
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.parent_folder_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select parent folder')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
                                         <SelectItem value="null">{translate('Root Folder')}</SelectItem>
@@ -280,7 +279,6 @@ export default function DocumentFolders() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter folder description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -330,7 +328,6 @@ export default function DocumentFolders() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={translate('Search folders...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -352,7 +349,7 @@ export default function DocumentFolders() {
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                                 <Select value={selectedParentFolder} onValueChange={setSelectedParentFolder}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Folders')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
                                         <SelectItem value="all">{translate('All Folders')}</SelectItem>
@@ -366,7 +363,7 @@ export default function DocumentFolders() {
                                 </Select>
                                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

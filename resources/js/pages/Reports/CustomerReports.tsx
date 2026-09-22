@@ -36,7 +36,7 @@ export default function CustomerReports() {
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
         { title: translate('Contact Reports') },
     ];
@@ -80,7 +80,6 @@ export default function CustomerReports() {
             description={translate('View and analyze customer reports to track performance and engagement.')}
             url="/reports/customers"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <SummaryCards cards={summaryCards} />
             <ReportFilters filters={filters} />

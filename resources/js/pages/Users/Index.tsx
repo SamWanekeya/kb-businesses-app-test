@@ -311,7 +311,7 @@ export default function Users() {
     }
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Users') },
     ];
@@ -410,7 +410,6 @@ export default function Users() {
             url="/users"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -731,16 +730,16 @@ export default function Users() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: translate('Name'), type: 'text', required: true, placeholder: translate('eg. John Smith') },
-                        { name: 'email', label: translate('Email'), type: 'email', required: true, placeholder: translate('eg. john@kakbima.dev') },
+                        { name: 'name', label: translate('Name'), type: 'text', required: true },
+                        { name: 'email', label: translate('Email'), type: 'email', required: true },
                         {
                             name: 'password',
                             label: translate('Password'),
                             type: 'password',
-                            placeholder: translate('Enter Password'),
                             required: true,
                             conditional: (mode) => mode === 'create',
                         },
@@ -748,7 +747,6 @@ export default function Users() {
                             name: 'password_confirmation',
                             label: translate('Confirm Password'),
                             type: 'password',
-                            placeholder: translate('Confirm Password'),
                             required: true,
                             conditional: (mode) => mode === 'create',
                         },
@@ -804,6 +802,7 @@ export default function Users() {
                 onClose={() => {
                     setIsResetPasswordModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [
@@ -812,14 +811,12 @@ export default function Users() {
                             label: translate('New Password'),
                             type: 'password',
                             required: true,
-                            placeholder: translate('Enter New Password'),
                         },
                         {
                             name: 'password_confirmation',
                             label: translate('Confirm Password'),
                             type: 'password',
                             required: true,
-                            placeholder: translate('Confirm New Password'),
                         },
                     ],
                     modalSize: 'sm',

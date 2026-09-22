@@ -82,7 +82,7 @@ export function SkrillPaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
@@ -92,7 +92,6 @@ export function SkrillPaymentForm({
                             onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
-                            placeholder={translate('Enter your email address')}
                             required
                         />
                         <p className="text-muted-foreground text-xs">{translate('You will be redirected to Skrill to complete the payment')}</p>

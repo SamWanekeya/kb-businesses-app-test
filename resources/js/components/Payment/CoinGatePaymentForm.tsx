@@ -78,7 +78,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
                     </AlertDescription>
                 </Alert>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted rounded-lg p-4">
                         <div className="mb-2 flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Plan')}</span>

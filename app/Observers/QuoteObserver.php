@@ -22,7 +22,7 @@ class QuoteObserver
         }
         self::$processing[$key] = true;
 
-        $creator = User::find(auth()->id() ?? $quote->created_by);
+        $creator = User::find(auth()?->id() ?? $quote->created_by);
         $assignedName = $quote->assignedUser ? $quote->assignedUser->name : 'Unassigned';
         $selfAssigned = $creator && $quote->assignedUser && $creator->id === $quote->assignedUser->id;
 
@@ -74,7 +74,7 @@ class QuoteObserver
             return;
         }
 
-        $userName = auth()->user()?->name ?? 'System';
+        $userName = auth()?->user()?->name ?? 'Kakbima';
 
         foreach ($changes as $field => $newValue) {
             if (in_array($field, ['updated_at'])) {
@@ -88,7 +88,7 @@ class QuoteObserver
 
             QuoteActivity::create([
                 'quote_id' => $quote->id,
-                'user_id' => auth()->id() ?? $quote->created_by,
+                'user_id' => auth()?->id() ?? $quote->created_by,
                 'activity_type' => 'updated',
                 'title' => $title,
                 'description' => $description,

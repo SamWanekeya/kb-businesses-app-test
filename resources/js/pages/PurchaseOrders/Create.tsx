@@ -48,7 +48,7 @@ export default function PurchaseOrderCreate() {
     });
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
         { title: translate('Create') },
     ];
@@ -209,9 +209,8 @@ export default function PurchaseOrderCreate() {
                     },
                 },
             ]}
-            noPadding
         >
-            <form onSubmit={handleSubmit}>
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     {/* ── PURCHASE ORDER DETAILS ── */}
                     <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">

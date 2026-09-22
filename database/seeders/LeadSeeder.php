@@ -58,8 +58,8 @@ class LeadSeeder extends Seeder
                     'value' => $faker->randomElement($values),
                     'status' => 'active',
                     'is_converted' => $faker->boolean(30), // 30% conversion rate
-                    'lead_status_id' => $leadStatuses->random()->id,
-                    'lead_source_id' => $leadSources->random()->id,
+                    'lead_status_id' => $leadStatuses->random()?->id,
+                    'lead_source_id' => $leadSources->random()?->id,
                     'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'campaign_id' => $campaigns->isNotEmpty() ? $campaigns->random()->id : null,

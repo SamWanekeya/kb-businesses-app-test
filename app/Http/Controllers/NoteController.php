@@ -14,9 +14,9 @@ class NoteController extends Controller
         $query = Note::query()
             ->with(['creator', 'sharedUsers'])
             ->where(function ($q) {
-                $q->where('created_by', auth()->id())
+                $q->where('created_by', auth()?->id())
                     ->orWhereHas('sharedUsers', function ($sq) {
-                        $sq->where('user_id', auth()->id());
+                        $sq->where('user_id', auth()?->id());
                     });
             });
 
@@ -49,24 +49,24 @@ class NoteController extends Controller
         $isKanban = $viewType === 'kanban';
         $items = $isKanban ? $allNotes : $allNotes->items();
 
-        $myNotes = collect($items)->filter(function ($note) {
-            return $note->created_by === auth()->id() && $note->sharedUsers->isEmpty();
-        })->values();
+        $myNotes = collect($items)?->filter(function ($note) {
+            return $note->created_by === auth()?->id() && $note->sharedUsers->isEmpty();
+        })?->values();
 
-        $sharedNotes = collect($items)->filter(function ($note) {
-            return ($note->created_by === auth()->id() && $note->sharedUsers->isNotEmpty()) ||
-                $note->sharedUsers->contains('id', auth()->id());
-        })->values();
+        $sharedNotes = collect($items)?->filter(function ($note) {
+            return ($note->created_by === auth()?->id() && $note->sharedUsers->isNotEmpty()) ||
+                $note->sharedUsers->contains('id', auth()?->id());
+        })?->values();
 
         $userQuery = User::where('created_by', createdBy())->orWhere('id', createdBy())
             ->select('id', 'name', 'email');
         $allUsers = (clone $userQuery)->get();
         $users = (clone $userQuery)->where('status', 'active')->get();
 
-        $totalPersonalNotes = Note::where('created_by', auth()->id())->whereDoesntHave('sharedUsers')->count();
-        $totalSharedNotes = Note::where('created_by', auth()->id())->whereHas('sharedUsers')->count() + Note::whereHas('sharedUsers', function ($q) {
-            $q->where('user_id', auth()->id());
-        })->where('created_by', '!=', auth()->id())->count();
+        $totalPersonalNotes = Note::where('created_by', auth()?->id())->whereDoesntHave('sharedUsers')?->count();
+        $totalSharedNotes = Note::where('created_by', auth()?->id())->whereHas('sharedUsers')?->count() + Note::whereHas('sharedUsers', function ($q) {
+            $q->where('user_id', auth()?->id());
+        })->where('created_by', '!=', auth()?->id())?->count();
 
         return Inertia::render('Notes/Index', [
             'myNotes' => $isKanban ? [
@@ -76,7 +76,7 @@ class NoteController extends Controller
                 'from' => $allNotes->firstItem(),
                 'to' => $allNotes->lastItem(),
                 'total' => $allNotes->total(),
-                'links' => $allNotes->linkCollection()->toArray(),
+                'links' => $allNotes->linkCollection()?->toArray(),
             ],
             'sharedNotes' => [
                 'data' => $sharedNotes,
@@ -98,7 +98,7 @@ class NoteController extends Controller
             'shared_users.*' => 'required|exists:users,id',
         ]);
 
-        $validated['created_by'] = auth()->id();
+        $validated['created_by'] = auth()?->id();
 
         $note = Note::create($validated);
 
@@ -112,7 +112,7 @@ class NoteController extends Controller
     public function update(Request $request, $noteId)
     {
         $note = Note::where('id', $noteId)
-            ->where('created_by', auth()->id())
+            ->where('created_by', auth()?->id())
             ->firstOrFail();
 
         $validated = $request->validate([
@@ -138,7 +138,7 @@ class NoteController extends Controller
     public function destroy($noteId)
     {
         $note = Note::where('id', $noteId)
-            ->where('created_by', auth()->id())
+            ->where('created_by', auth()?->id())
             ->firstOrFail();
 
         $note->delete();

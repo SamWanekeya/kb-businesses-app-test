@@ -280,7 +280,7 @@ export default function Contacts() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Contacts') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Contacts') }];
 
     // Define table columns
     const columns = [
@@ -387,7 +387,6 @@ export default function Contacts() {
             url="/contacts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -700,13 +699,14 @@ export default function Contacts() {
                 onClose={() => {
                     setIsFormModalOpen(false);
                 }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: translate('Contact Name'), type: 'text', required: true, placeholder: translate('eg. John Smith') },
-                        { name: 'email', label: translate('Email'), type: 'email', required: true, placeholder: translate('eg. john@kakbima.dev') },
-                        { name: 'phone', label: translate('Phone'), type: 'text', placeholder: translate('eg. +1 234 567 8900') },
-                        { name: 'position', label: translate('Position'), type: 'text', placeholder: translate('eg. CEO, Manager, Developer') },
+                        { name: 'name', label: translate('Contact Name'), type: 'text', required: true },
+                        { name: 'email', label: translate('Email'), type: 'email', required: true },
+                        { name: 'phone', label: translate('Phone'), type: 'text' },
+                        { name: 'position', label: translate('Position'), type: 'text' },
                         {
                             name: formMode === 'view' ? 'account_name' : 'account_id',
                             label: translate('Account'),
@@ -734,7 +734,6 @@ export default function Contacts() {
                             label: translate('Address'),
                             type: 'textarea',
                             required: true,
-                            placeholder: translate('eg. 123 Main St, City, Country'),
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',

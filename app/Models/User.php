@@ -91,7 +91,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             }
 
             // Set language for new users based on organization owner
-            $authUser = auth()->user();
+            $authUser = auth()?->user();
             $organizationSettings = settings();
             $userLang = isset($organizationSettings['defaultLanguage']) ? $organizationSettings['defaultLanguage'] : ($authUser?->lang ?? 'en');
             $user->lang = $userLang ?? 'en';
@@ -137,11 +137,11 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     }
 
     /**
-     * Check if user is admin
+     * Check if user is super admin
      */
-    public function isAdmin()
+    public function isSuperAdmin(): bool
     {
-        return $this->type === 'admin';
+        return $this->type === 'super_admin';
     }
 
     /**
@@ -492,7 +492,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
 
     public function getAvatarAttribute($value)
     {
-        return checkFile($value) ? get_file($value) : get_file('avatars/avatar.png');
+        return checkFile($value) ? getFile($value) : getFile('avatars/avatar.png');
     }
 
     /**

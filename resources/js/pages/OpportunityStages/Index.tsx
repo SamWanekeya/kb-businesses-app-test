@@ -223,7 +223,7 @@ export default function OpportunityStages() {
     const canToggleStatus = useHasPermission('toggle-status-opportunity-stages');
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Opportunity Management') },
         { title: translate('Opportunity Stages') },
     ];
@@ -234,7 +234,6 @@ export default function OpportunityStages() {
             description={translate('Manage opportunity stages for your sales pipeline.')}
             url="/opportunity-stages"
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
@@ -251,7 +250,7 @@ export default function OpportunityStages() {
                             </p>
                         </div>
 
-                        <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
+                        <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
                                     {translate('Stage Name')}
@@ -347,7 +346,7 @@ export default function OpportunityStages() {
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select status')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
@@ -411,7 +410,7 @@ export default function OpportunityStages() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('All Statuses')} />
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{translate('All Statuses')}</SelectItem>

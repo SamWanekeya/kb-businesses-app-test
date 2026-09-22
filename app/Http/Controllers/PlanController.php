@@ -14,7 +14,7 @@ class PlanController extends Controller
 {
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $user = auth()?->user();
 
         // Organization users see only active plans
         if ($user->type !== 'super_admin') {
@@ -25,16 +25,16 @@ class PlanController extends Controller
         $billingCycle = $request->input('billing_cycle', 'monthly');
 
         $dbPlans = Plan::all();
-        $hasDefaultPlan = $dbPlans->where('is_default', true)->count() > 0;
+        $hasDefaultPlan = $dbPlans->where('is_default', true)?->count() > 0;
         $settings = settings();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
         $currency_symbol = '$';
         if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)->first();
+            $currencyData = Currency::where('code', $currency)?->first();
             $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
@@ -74,15 +74,15 @@ class PlanController extends Controller
                 'is_default' => $plan->is_default,
                 'recommended' => false, // Default to false
             ];
-        })->toArray();
+        })?->toArray();
 
         // Mark the plan with most subscribers as recommended
-        $planSubscriberCounts = Plan::withCount('users')->get()->pluck('users_count', 'id');
-        $mostSubscribedPlanId = $planSubscriberCounts->keys()->first();
+        $planSubscriberCounts = Plan::withCount('users')->get()?->pluck('users_count', 'id');
+        $mostSubscribedPlanId = $planSubscriberCounts->keys()?->first();
         if ($planSubscriberCounts->isNotEmpty()) {
             $mostSubscribedPlanId = $planSubscriberCounts->keys()->sortByDesc(function ($planId) use ($planSubscriberCounts) {
                 return $planSubscriberCounts[$planId];
-            })->first();
+            })?->first();
         }
 
         foreach ($plans as &$plan) {
@@ -104,18 +104,18 @@ class PlanController extends Controller
 
     private function organizationPlansView(Request $request)
     {
-        $user = auth()->user();
+        $user = auth()?->user();
         $billingCycle = $request->input('billing_cycle', 'monthly');
 
         $dbPlans = Plan::where('is_plan_enabled', 'on')->get();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
         $currency_symbol = '$';
         if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)->first();
+            $currencyData = Currency::where('code', $currency)?->first();
             $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
@@ -166,11 +166,11 @@ class PlanController extends Controller
         });
 
         // Mark the plan with most subscribers as recommended
-        $planSubscriberCounts = Plan::withCount('users')->get()->pluck('users_count', 'id');
+        $planSubscriberCounts = Plan::withCount('users')->get()?->pluck('users_count', 'id');
         if ($planSubscriberCounts->isNotEmpty()) {
             $mostSubscribedPlanId = $planSubscriberCounts->keys()->sortByDesc(function ($planId) use ($planSubscriberCounts) {
                 return $planSubscriberCounts[$planId];
-            })->first();
+            })?->first();
 
             $plans = $plans->map(function ($plan) use ($mostSubscribedPlanId) {
                 if ($plan['id'] == $mostSubscribedPlanId) {
@@ -338,7 +338,7 @@ class PlanController extends Controller
         }
 
         // Don't allow deleting plans assigned to users
-        if ($plan->users()->count() > 0) {
+        if ($plan->users()?->count() > 0) {
             return back()->with('error', __('The organization has subscribed to this plan, so it cannot be deleted.'));
         }
 
@@ -354,7 +354,7 @@ class PlanController extends Controller
             'billing_cycle' => 'required|in:monthly,yearly',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
 
         // Check if user already has a pending request
         $existingRequest = PlanRequest::where('user_id', $user->id)
@@ -396,7 +396,7 @@ class PlanController extends Controller
             'plan_id' => 'required|exists:plans,id',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $plan = Plan::findOrFail($request->plan_id);
 
         if ($user->is_trial || $plan->is_trial !== 'on') {
@@ -420,7 +420,7 @@ class PlanController extends Controller
             'billing_cycle' => 'required|in:monthly,yearly',
         ]);
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $plan = Plan::findOrFail($request->plan_id);
         $price = $request->billing_cycle === 'yearly' ? $plan->yearly_price : $plan->price;
 

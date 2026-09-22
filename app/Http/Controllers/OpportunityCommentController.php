@@ -21,16 +21,16 @@ class OpportunityCommentController extends Controller
 
         $comment = OpportunityComment::create([
             'opportunity_id' => $opportunity->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'comment' => $validated['comment'],
             'created_by' => createdBy(),
         ]);
 
         OpportunityActivity::create([
             'opportunity_id' => $opportunity->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()?->id(),
             'activity_type' => 'comment',
-            'title' => auth()->user()->name . ' added a comment',
+            'title' => auth()?->user()?->name . ' added a comment',
             'description' => $validated['comment'],
             'created_by' => createdBy(),
         ]);

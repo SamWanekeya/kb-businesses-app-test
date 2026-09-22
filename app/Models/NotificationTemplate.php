@@ -29,7 +29,7 @@ class NotificationTemplate extends Model
      */
     public static function getAvailableTypes()
     {
-        return self::distinct()->pluck('type')->toArray();
+        return self::distinct()?->pluck('type')?->toArray();
     }
 
     public function userNotificationTemplates(): HasMany

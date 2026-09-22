@@ -56,7 +56,7 @@ class LeadActivitySeeder extends Seeder
                 if ($lead->lead_status) {
                     LeadActivity::create([
                         'lead_id' => $lead->id,
-                        'user_id' => $users->random()->id,
+                        'user_id' => $users->random()?->id,
                         'activity_type' => 'updated',
                         'title' => $users->random()->name . ' updated lead status',
                         'description' => $lead->lead_status->name,
@@ -74,7 +74,7 @@ class LeadActivitySeeder extends Seeder
                 // Comment activity
                 LeadActivity::create([
                     'lead_id' => $lead->id,
-                    'user_id' => $users->random()->id,
+                    'user_id' => $users->random()?->id,
                     'activity_type' => 'comment',
                     'title' => $users->random()->name . ' added a comment',
                     'description' => $faker->randomElement($comments),

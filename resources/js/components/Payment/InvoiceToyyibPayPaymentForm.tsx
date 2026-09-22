@@ -111,7 +111,7 @@ export function InvoiceToyyibPayPaymentForm({
                 </div>
             </div>
 
-            <form onSubmit={handlePayment} className="space-y-4">
+            <form autoComplete="off" onSubmit={handlePayment} className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="billName">{translate('Bill Name')} *</Label>
                     <Input
@@ -120,7 +120,6 @@ export function InvoiceToyyibPayPaymentForm({
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billName: e.target.value }));
                         }}
-                        placeholder={translate('Enter bill name')}
                         required
                     />
                 </div>
@@ -133,7 +132,6 @@ export function InvoiceToyyibPayPaymentForm({
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billTo: e.target.value }));
                         }}
-                        placeholder={translate('Enter customer name')}
                         required
                     />
                 </div>
@@ -147,7 +145,6 @@ export function InvoiceToyyibPayPaymentForm({
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billEmail: e.target.value }));
                         }}
-                        placeholder={translate('Enter email address')}
                         required
                     />
                 </div>
@@ -160,7 +157,6 @@ export function InvoiceToyyibPayPaymentForm({
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billPhone: e.target.value }));
                         }}
-                        placeholder="60123456789"
                         required
                     />
                     <p className="text-muted-foreground text-xs">{translate('Malaysian phone number format: 60123456789')}</p>

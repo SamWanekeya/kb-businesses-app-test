@@ -111,7 +111,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
         );
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Notification Templates') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Notification Templates') }];
 
     const columns = [{ key: 'name', label: translate('Name'), sortable: true }];
 
@@ -123,7 +123,6 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
             description={translate('Manage your notification templates.')}
             url={route('notification-templates.index')}
             breadcrumbs={breadcrumbs}
-            noPadding
         >
             <Head title={translate('Notification Templates')} />
 
@@ -134,7 +133,6 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                             <div className="relative w-64">
                                 <Search className="text-muted-foreground absolute top-2 left-2.5 h-4 w-4" />
                                 <Input
-                                    placeholder={translate('Search...')}
                                     value={searchTerm}
                                     onChange={(e) => {
                                         setSearchTerm(e.target.value);

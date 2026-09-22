@@ -506,7 +506,6 @@ export default function CrudFormModal({
                         onChange={(value) => {
                             handleChange(field.name, value);
                         }}
-                        placeholder={translate('Select...')}
                         showPreview={true}
                     />
                 );

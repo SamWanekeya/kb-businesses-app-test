@@ -27,7 +27,7 @@ class NepalstePaymentController extends Controller
 
             if ($validated['status'] === 'completed') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'nepalste',
@@ -58,7 +58,7 @@ class NepalstePaymentController extends Controller
                 return response()->json(['error' => __('Nepalste not configured')], 400);
             }
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $orderId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             // First get access token
@@ -192,7 +192,7 @@ class NepalstePaymentController extends Controller
 
             if ($orderId && $planId) {
                 $plan = Plan::find($planId);
-                $user = auth()->user();
+                $user = auth()?->user();
 
                 if ($plan && $user) {
                     // Assign plan to user

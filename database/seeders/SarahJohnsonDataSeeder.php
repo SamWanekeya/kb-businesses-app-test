@@ -42,7 +42,7 @@ class SarahJohnsonDataSeeder extends Seeder
         $faker = Faker::create();
 
         // Find Sarah Johnson
-        $sarah = User::where('email', 'sarahjohnson@kakbima.dev')->first();
+        $sarah = User::where('email', 'sarahjohnson@kakbima.dev')?->first();
 
         if (!$sarah) {
             $this->command->error('Sarah Johnson not found. Please run StaffRoleSeeder first.');
@@ -148,7 +148,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'position' => $contact['position'],
                 'address' => $faker->address,
                 'status' => $contact['status'],
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'assigned_to' => $sarah->id,
                 'created_by' => $organizationId,
             ]);
@@ -206,8 +206,8 @@ class SarahJohnsonDataSeeder extends Seeder
                 'close_date' => $faker->dateTimeBetween('now', '+6 months'),
                 'notes' => 'Key decision makers identified. Budget approved. Timeline: ' . $faker->randomElement(['Q1 2025', 'Q2 2025', 'Q3 2025']),
                 'status' => $opp['status'],
-                'account_id' => $accounts->random()->id,
-                'contact_id' => Contact::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
+                'account_id' => $accounts->random()?->id,
+                'contact_id' => Contact::where('created_by', $organizationId)->inRandomOrder()?->first()?->id,
                 'opportunity_stage_id' => $opportunityStages->isNotEmpty() ? $opportunityStages->random()->id : null,
                 'opportunity_source_id' => $opportunitySources->isNotEmpty() ? $opportunitySources->random()->id : null,
                 'assigned_to' => $sarah->id,
@@ -230,7 +230,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $quote = Quote::create([
                 'name' => $quoteInfo['name'],
                 'description' => 'Comprehensive solution package including software licenses, implementation services, and training.',
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'subtotal' => $subtotal,
                 'total_amount' => $totalAmount,
                 'status' => $quoteInfo['status'],
@@ -268,7 +268,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $salesOrder = SalesOrder::create([
                 'name' => $orderInfo['name'],
                 'description' => 'Sales order for enterprise software solutions and services.',
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'order_date' => $faker->dateTimeBetween('-60 days', 'now'),
                 'status' => $orderInfo['status'],
                 'subtotal' => $subtotal,
@@ -308,7 +308,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $invoice = Invoice::create([
                 'name' => $invInfo['name'],
                 'description' => 'Invoice for professional services and software licenses.',
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'invoice_date' => $faker->dateTimeBetween('-90 days', 'now'),
                 'due_date' => $faker->dateTimeBetween('now', '+30 days'),
                 'status' => $invInfo['status'],
@@ -377,7 +377,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'budget' => $proj['budget'],
                 'status' => $proj['status'],
                 'priority' => $proj['priority'],
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'assigned_to' => $sarah->id,
                 'created_by' => $organizationId,
             ]);
@@ -418,8 +418,8 @@ class SarahJohnsonDataSeeder extends Seeder
         foreach ($deliveryOrders as $doInfo) {
             DeliveryOrder::create([
                 'name' => $doInfo['name'],
-                'account_id' => $accounts->random()->id,
-                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
+                'account_id' => $accounts->random()?->id,
+                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()?->first()?->id,
                 'delivery_date' => $faker->dateTimeBetween('now', '+15 days'),
                 'status' => $doInfo['status'],
                 'tracking_number' => 'TRK' . $faker->numerify('########'),
@@ -444,8 +444,8 @@ class SarahJohnsonDataSeeder extends Seeder
         foreach ($returnOrders as $roInfo) {
             ReturnOrder::create([
                 'name' => $roInfo['name'],
-                'account_id' => $accounts->random()->id,
-                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
+                'account_id' => $accounts->random()?->id,
+                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()?->first()?->id,
                 'return_date' => $faker->dateTimeBetween('-30 days', 'now'),
                 'reason' => $faker->randomElement(['defective', 'wrong_item', 'damaged', 'not_needed', 'other']),
                 'status' => $roInfo['status'],
@@ -471,7 +471,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $subtotal = $faker->numberBetween(2000, 8000);
             PurchaseOrder::create([
                 'name' => $poInfo['name'],
-                'account_id' => $accounts->random()->id,
+                'account_id' => $accounts->random()?->id,
                 'order_date' => $faker->dateTimeBetween('-30 days', 'now'),
                 'expected_delivery_date' => $faker->dateTimeBetween('now', '+30 days'),
                 'status' => $poInfo['status'],
@@ -497,8 +497,8 @@ class SarahJohnsonDataSeeder extends Seeder
         foreach ($receiptOrders as $recInfo) {
             ReceiptOrder::create([
                 'name' => $recInfo['name'],
-                'account_id' => $accounts->random()->id,
-                'purchase_order_id' => PurchaseOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
+                'account_id' => $accounts->random()?->id,
+                'purchase_order_id' => PurchaseOrder::where('created_by', $organizationId)->inRandomOrder()?->first()?->id,
                 'receipt_date' => $faker->dateTimeBetween('-15 days', 'now'),
                 'status' => $recInfo['status'],
                 'notes' => 'Items received and verified against purchase order.',
@@ -529,14 +529,14 @@ class SarahJohnsonDataSeeder extends Seeder
             ];
 
             foreach ($documents as $docInfo) {
-                $docType = DocumentType::where('created_by', $organizationId)->where('type_name', $docInfo['type'])->first();
+                $docType = DocumentType::where('created_by', $organizationId)->where('type_name', $docInfo['type'])?->first();
 
                 Document::create([
                     'name' => $docInfo['name'],
                     'description' => 'Important business document for operations.',
                     'folder_id' => $folder->id,
                     'type_id' => $docType?->id,
-                    'account_id' => $accounts->random()->id,
+                    'account_id' => $accounts->random()?->id,
                     'status' => 'active',
                     'assigned_to' => $sarah->id,
                     'created_by' => $organizationId,
@@ -557,7 +557,7 @@ class SarahJohnsonDataSeeder extends Seeder
         ];
 
         foreach ($campaigns as $campInfo) {
-            $campaignType = CampaignType::where('created_by', $organizationId)->inRandomOrder()->first();
+            $campaignType = CampaignType::where('created_by', $organizationId)->inRandomOrder()?->first();
 
             Campaign::create([
                 'name' => $campInfo['name'],

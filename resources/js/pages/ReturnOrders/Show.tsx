@@ -27,7 +27,7 @@ export default function ReturnOrderShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Return Orders'), href: route('return-orders.index') },
         { title: translate('View Return Order') },
     ];
@@ -84,7 +84,6 @@ export default function ReturnOrderShow() {
                     },
                 },
             ]}
-            noPadding
         >
             <div className="grid w-full max-w-full min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
                 {/* ── Left Column ── */}

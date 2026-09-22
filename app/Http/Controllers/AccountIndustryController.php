@@ -60,7 +60,7 @@ class AccountIndustryController extends Controller
 
     public function destroy(AccountIndustry $accountIndustry)
     {
-        if ($accountIndustry->accounts()->count() > 0) {
+        if ($accountIndustry->accounts()?->count() > 0) {
             return redirect()->back()->with('error', __('Cannot delete account industry that has associated accounts'));
         }
 

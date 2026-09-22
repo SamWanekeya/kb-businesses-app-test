@@ -72,7 +72,7 @@ export default function ReturnOrderCreate() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Return Orders'), href: route('return-orders.index') },
         { title: translate('Create') },
     ];
@@ -247,7 +247,7 @@ export default function ReturnOrderCreate() {
             breadcrumbs={breadcrumbs}
             url="/return-orders"
             fullWidth
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),

@@ -26,7 +26,7 @@ export default function ShowReceiptOrder() {
         };
     }, []);
     const breadcrumbs = [
-        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Receipt Orders'), href: route('receipt-orders.index') },
         { title: translate('View Receipt Order') },
     ];
@@ -77,7 +77,7 @@ export default function ShowReceiptOrder() {
             title={receiptOrder.name}
             description={translate('Receipt order details and related information')}
             breadcrumbs={breadcrumbs}
-            noPadding
+
             actions={[
                 {
                     label: translate('Back'),

@@ -27,7 +27,7 @@ class ProductImport implements ToModel, WithHeadingRow
 
         // Check for duplicate SKU
         if (!empty($row['sku'])) {
-            $productBySku = Product::where('sku', $row['sku'])->where('created_by', createdBy())->first();
+            $productBySku = Product::where('sku', $row['sku'])->where('created_by', createdBy())?->first();
             if ($productBySku) {
                 $this->skippedCount++;
 
@@ -68,9 +68,9 @@ class ProductImport implements ToModel, WithHeadingRow
         // Tax
         $taxValue = trim($row['tax'] ?? '');
         $tax = !empty($taxValue)
-            ? Tax::where('name', $taxValue)->where('created_by', createdBy())->first()
+            ? Tax::where('name', $taxValue)->where('created_by', createdBy())?->first()
             : null;
-        $productData['tax_id'] = $tax?->id ?? Tax::where('created_by', createdBy())->value('id');
+        $productData['tax_id'] = $tax?->id ?? Tax::where('created_by', createdBy())?->value('id');
 
         $this->addedCount++;
 

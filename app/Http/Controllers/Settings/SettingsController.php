@@ -22,7 +22,7 @@ class SettingsController extends Controller
     public function index()
     {
 
-        $user = auth()->user();
+        $user = auth()?->user();
         $workspaceId = null;
 
         // For organization users, get the current workspace
@@ -80,8 +80,7 @@ class SettingsController extends Controller
                     'metaKeywords',
                     'metaDescription',
                     'metaImage',
-                ])
-                ->pluck('value', 'key')->toArray();
+                ])?->pluck('value', 'key')?->toArray();
             $systemSettings = array_merge($systemSettings, $recaptchaSettings);
         }
 

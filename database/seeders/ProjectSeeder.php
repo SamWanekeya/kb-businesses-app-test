@@ -56,7 +56,7 @@ class ProjectSeeder extends Seeder
                     'budget' => $faker->randomFloat(2, 15000, 250000),
                     'priority' => $faker->randomElement($priorities),
                     'status' => $status,
-                    'account_id' => $accounts->random()->id,
+                    'account_id' => $accounts->random()?->id,
                     'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $startDate,

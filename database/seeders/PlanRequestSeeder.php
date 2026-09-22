@@ -21,7 +21,7 @@ class PlanRequestSeeder extends Seeder
         $organizationUsers = User::where('type', 'organization')->get();
         $staffUsers = User::where('type', 'staff')->get();
         $plans = Plan::all();
-        $superAdmin = User::where('type', 'super_admin')->first();
+        $superAdmin = User::where('type', 'super_admin')?->first();
 
         $allUsers = $organizationUsers->merge($staffUsers);
 

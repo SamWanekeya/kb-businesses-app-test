@@ -27,7 +27,7 @@ class EasebuzzPaymentController extends Controller
 
             if ($validated['status'] === 'success') {
                 processPaymentSuccess([
-                    'user_id' => auth()->id(),
+                    'user_id' => auth()?->id(),
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'easebuzz',
@@ -61,7 +61,7 @@ class EasebuzzPaymentController extends Controller
             // Include Easebuzz library
             require_once app_path('Libraries/Easebuzz/easebuzz_payment_gateway.php');
 
-            $user = auth()->user();
+            $user = auth()?->user();
             $txnid = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
             $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
@@ -152,8 +152,8 @@ class EasebuzzPaymentController extends Controller
                         ]);
 
                         // Log the user in if not already authenticated
-                        if (!auth()->check()) {
-                            auth()->login($user);
+                        if (!auth()?->check()) {
+                            auth()?->login($user);
                         }
 
                         return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));

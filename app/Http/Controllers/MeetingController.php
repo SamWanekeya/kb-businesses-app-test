@@ -29,11 +29,11 @@ class MeetingController extends Controller
     {
         // Resolve selected date (default today) and selected month/year
         $selectedDate = $request->filled('date')
-            ? Carbon::parse($request->date)->format('Y-m-d')
-            : Carbon::today()->format('Y-m-d');
+            ? Carbon::parse($request->date)?->format('Y-m-d')
+            : Carbon::today()?->format('Y-m-d');
 
-        $selectedYear = $request->filled('year') ? (int)$request->year : (int)Carbon::parse($selectedDate)->format('Y');
-        $selectedMonth = $request->filled('month') ? (int)$request->month : (int)Carbon::parse($selectedDate)->format('n');
+        $selectedYear = $request->filled('year') ? (int)$request->year : (int)Carbon::parse($selectedDate)?->format('Y');
+        $selectedMonth = $request->filled('month') ? (int)$request->month : (int)Carbon::parse($selectedDate)?->format('n');
 
         // Base query scoped to tenant
         $baseQuery = Meeting::query()
@@ -64,13 +64,13 @@ class MeetingController extends Controller
                 $cursor->addDay();
             }
         }
-        $meetingDates = $meetingDates->unique()->values()->toArray();
+        $meetingDates = $meetingDates->unique()?->values()?->toArray();
 
         // Build summary from the already-fetched collection (same as reference)
         $summary = [
-            'planned' => $meetings->where('status', 'planned')->count(),
-            'held' => $meetings->where('status', 'held')->count(),
-            'not_held' => $meetings->where('status', 'not_held')->count(),
+            'planned' => $meetings->where('status', 'planned')?->count(),
+            'held' => $meetings->where('status', 'held')?->count(),
+            'not_held' => $meetings->where('status', 'not_held')?->count(),
         ];
 
         $userQuery = User::where('created_by', createdBy());
@@ -179,8 +179,8 @@ class MeetingController extends Controller
         $validated['created_by'] = createdBy();
         $validated['status'] = $validated['status'] ?? 'planned';
 
-        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDate = Carbon::parse($validated['start_date'])?->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])?->format('Y-m-d');
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
         if ($endDateTime->lte($startDateTime)) {
@@ -197,7 +197,7 @@ class MeetingController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 $callConflict = CallAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
@@ -207,7 +207,7 @@ class MeetingController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 if ($meetingConflict || $callConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
@@ -251,9 +251,9 @@ class MeetingController extends Controller
                 case 'account':
                     AccountActivity::create([
                         'account_id' => $meeting->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Meeting Created',
-                        'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
+                        'title' => auth()?->user()?->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -261,9 +261,9 @@ class MeetingController extends Controller
                 case 'lead':
                     LeadActivity::create([
                         'lead_id' => $meeting->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Meeting Created',
-                        'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
+                        'title' => auth()?->user()?->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -271,9 +271,9 @@ class MeetingController extends Controller
                 case 'opportunity':
                     OpportunityActivity::create([
                         'opportunity_id' => $meeting->parent_id,
-                        'user_id' => auth()->id(),
+                        'user_id' => auth()?->id(),
                         'activity_type' => 'Meeting Created',
-                        'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
+                        'title' => auth()?->user()?->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
                         'created_by' => createdBy(),
                     ]);
@@ -290,9 +290,9 @@ class MeetingController extends Controller
                         if ($contact && $contact->account_id) {
                             AccountActivity::create([
                                 'account_id' => $contact->account_id,
-                                'user_id' => auth()->id(),
+                                'user_id' => auth()?->id(),
                                 'activity_type' => 'Meeting Attendee',
-                                'title' => auth()->user()->name . ' added ' . $contact->name . ' to meeting: ' . $meeting->title,
+                                'title' => auth()?->user()?->name . ' added ' . $contact->name . ' to meeting: ' . $meeting->title,
                                 'description' => 'Contact added as attendee to meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)),
                                 'created_by' => createdBy(),
                             ]);
@@ -303,9 +303,9 @@ class MeetingController extends Controller
                         if ($lead) {
                             LeadActivity::create([
                                 'lead_id' => $lead->id,
-                                'user_id' => auth()->id(),
+                                'user_id' => auth()?->id(),
                                 'activity_type' => 'Meeting Attendee',
-                                'title' => auth()->user()->name . ' added ' . $lead->name . ' to meeting: ' . $meeting->title,
+                                'title' => auth()?->user()?->name . ' added ' . $lead->name . ' to meeting: ' . $meeting->title,
                                 'description' => 'Lead added as attendee to meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)),
                                 'created_by' => createdBy(),
                             ]);
@@ -422,8 +422,8 @@ class MeetingController extends Controller
             'sync_with_google_calendar' => 'nullable|boolean',
         ]);
 
-        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDate = Carbon::parse($validated['start_date'])?->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])?->format('Y-m-d');
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
         if ($endDateTime->lte($startDateTime)) {
@@ -441,7 +441,7 @@ class MeetingController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 $callConflict = CallAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
@@ -451,7 +451,7 @@ class MeetingController extends Controller
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);
                             });
-                    })->first();
+                    })?->first();
 
                 if ($meetingConflict || $callConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
