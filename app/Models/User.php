@@ -492,7 +492,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
 
     public function getAvatarAttribute($value)
     {
-        return checkFile($value) ? getFile($value) : getFile('avatars/avatar.png');
+        return checkFile($value) ?? getFile($value);
     }
 
     /**
