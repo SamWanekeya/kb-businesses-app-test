@@ -218,7 +218,7 @@ class DocumentController extends Controller
         ]);
 
         // Handle attachment update only if changed
-        if ($request->has('attachment')) {
+        if ($request->filled('attachment')) {
             $currentMedia = $document->getFirstMedia('attachments');
             $currentUrl = $currentMedia ? $currentMedia->getUrl() : null;
 

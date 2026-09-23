@@ -22,7 +22,7 @@ class ContactController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
@@ -32,17 +32,17 @@ class ContactController extends Controller
         }
 
         // Handle account filter
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
         // Handle status filter
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Handle assigned to filter
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $query->whereNull('assigned_to');
             } else {

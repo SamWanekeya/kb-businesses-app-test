@@ -20,7 +20,7 @@ class CouponController extends BaseController
         $query = Coupon::with('creator');
 
         // Apply search
-        if ($request->has('search') && $request->search) {
+        if ($request->filled('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -29,18 +29,18 @@ class CouponController extends BaseController
         }
 
         // Apply filters
-        if ($request->has('type') && $request->type !== 'all') {
+        if ($request->filled('type') && $request->type !== 'all') {
             $query->where('type', $request->type);
         }
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Apply date range filter
-        if ($request->has('date_from') && !empty($request->date_from)) {
+        if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
-        if ($request->has('date_to') && !empty($request->date_to)) {
+        if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 

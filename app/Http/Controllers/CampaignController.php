@@ -20,27 +20,27 @@ class CampaignController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         // Handle campaign type filter
-        if ($request->has('campaign_type_id') && !empty($request->campaign_type_id) && $request->campaign_type_id !== 'all') {
+        if ($request->filled('campaign_type_id') && $request->campaign_type_id !== 'all') {
             $query->where('campaign_type_id', $request->campaign_type_id);
         }
 
         // Handle target list filter
-        if ($request->has('target_list_id') && !empty($request->target_list_id) && $request->target_list_id !== 'all') {
+        if ($request->filled('target_list_id') && $request->target_list_id !== 'all') {
             $query->where('target_list_id', $request->target_list_id);
         }
 
         // Handle status filter
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Handle assigned_to filter
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $query->whereNull('assigned_to');
             } else {

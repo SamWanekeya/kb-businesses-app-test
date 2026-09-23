@@ -25,7 +25,7 @@ class AccountController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
@@ -34,27 +34,27 @@ class AccountController extends Controller
         }
 
         // Handle type filter
-        if ($request->has('type') && !empty($request->type) && $request->type !== 'all') {
+        if ($request->filled('type') && $request->type !== 'all') {
             $query->where('type', $request->type);
         }
 
         // Handle account_type_id filter
-        if ($request->has('account_type_id') && !empty($request->account_type_id) && $request->account_type_id !== 'all') {
+        if ($request->filled('account_type_id') && $request->account_type_id !== 'all') {
             $query->where('account_type_id', $request->account_type_id);
         }
 
         // Handle account_industry_id filter
-        if ($request->has('account_industry_id') && !empty($request->account_industry_id) && $request->account_industry_id !== 'all') {
+        if ($request->filled('account_industry_id') && $request->account_industry_id !== 'all') {
             $query->where('account_industry_id', $request->account_industry_id);
         }
 
         // Handle status filter
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Handle assigned_to filter
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             $query->where('assigned_to', $request->assigned_to);
         }
 

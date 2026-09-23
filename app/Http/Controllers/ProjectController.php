@@ -24,7 +24,7 @@ class ProjectController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('code', 'like', '%' . $request->search . '%')
@@ -33,19 +33,19 @@ class ProjectController extends Controller
         }
 
         // Handle filters
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('priority') && !empty($request->priority) && $request->priority !== 'all') {
+        if ($request->filled('priority') && $request->priority !== 'all') {
             $query->where('priority', $request->priority);
         }
 
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $query->whereNull('assigned_to');
             } else {
@@ -99,20 +99,20 @@ class ProjectController extends Controller
 
         // Summary stats — apply search/priority/account/assignee filters but NOT status
         $statsQuery = Project::where('created_by', createdBy());
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $statsQuery->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('code', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
-        if ($request->has('priority') && !empty($request->priority) && $request->priority !== 'all') {
+        if ($request->filled('priority') && $request->priority !== 'all') {
             $statsQuery->where('priority', $request->priority);
         }
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $statsQuery->where('account_id', $request->account_id);
         }
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $statsQuery->whereNull('assigned_to');
             } else {

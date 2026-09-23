@@ -21,26 +21,26 @@ class ProjectTaskController extends Controller
             ->with(['project', 'assignedUser', 'creator', 'parent', 'taskStatus'])
             ->where('created_by', createdBy());
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('task_status_id', $request->status);
         }
 
-        if ($request->has('priority') && !empty($request->priority) && $request->priority !== 'all') {
+        if ($request->filled('priority') && $request->priority !== 'all') {
             $query->where('priority', $request->priority);
         }
 
-        if ($request->has('project_id') && !empty($request->project_id) && $request->project_id !== 'all') {
+        if ($request->filled('project_id') && $request->project_id !== 'all') {
             $query->where('project_id', $request->project_id);
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             $query->where('assigned_to', $request->assigned_to);
         }
 

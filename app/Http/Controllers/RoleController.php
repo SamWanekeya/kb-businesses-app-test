@@ -24,7 +24,7 @@ class RoleController extends BaseController
         $query = Role::withPermissionCheck()->with(['permissions', 'creator']);
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('label', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')

@@ -18,7 +18,7 @@ class PlanRequestController extends BaseController
         }
 
         // Apply search
-        if ($request->has('search') && $request->search) {
+        if ($request->filled('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->whereHas('user', function ($userQuery) use ($search) {
@@ -32,7 +32,7 @@ class PlanRequestController extends BaseController
         }
 
         // Apply filters
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 

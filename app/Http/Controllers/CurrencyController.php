@@ -16,7 +16,7 @@ class CurrencyController extends Controller
         $query = Currency::query();
 
         // Handle search
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', "%{$searchTerm}%")

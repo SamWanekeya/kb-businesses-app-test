@@ -20,7 +20,7 @@ class PlanOrderController extends BaseController
             $query->where('user_id', Auth::user()?->id);
         }
         // Apply search
-        if ($request->has('search') && $request->search) {
+        if ($request->filled('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
@@ -34,15 +34,15 @@ class PlanOrderController extends BaseController
         }
 
         // Apply filters
-        if ($request->has('status') && $request->status !== '' && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Handle date range filter
-        if ($request->has('date_from') && !empty($request->date_from)) {
+        if ($request->filled('date_from')) {
             $query->whereDate('ordered_at', '>=', $request->date_from);
         }
-        if ($request->has('date_to') && !empty($request->date_to)) {
+        if ($request->filled('date_to')) {
             $query->whereDate('ordered_at', '<=', $request->date_to);
         }
 

@@ -37,7 +37,7 @@ class InvoiceController extends Controller
             ->with(['salesOrder', 'quote', 'opportunity', 'account', 'contact', 'creator', 'assignedUser', 'products.tax'])
             ->where('created_by', createdBy());
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('invoice_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
@@ -45,15 +45,15 @@ class InvoiceController extends Controller
             });
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $query->whereNull('assigned_to');
             } else {

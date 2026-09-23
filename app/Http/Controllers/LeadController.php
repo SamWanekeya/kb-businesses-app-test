@@ -34,7 +34,7 @@ class LeadController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
@@ -45,23 +45,23 @@ class LeadController extends Controller
 
 
         // Handle filters
-        if ($request->has('lead_status_id') && !empty($request->lead_status_id) && $request->lead_status_id !== 'all') {
+        if ($request->filled('lead_status_id') && $request->lead_status_id !== 'all') {
             $query->where('lead_status_id', $request->lead_status_id);
         }
 
-        if ($request->has('lead_source_id') && !empty($request->lead_source_id) && $request->lead_source_id !== 'all') {
+        if ($request->filled('lead_source_id') && $request->lead_source_id !== 'all') {
             $query->where('lead_source_id', $request->lead_source_id);
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('is_converted') && $request->is_converted !== 'all') {
+        if ($request->filled('is_converted') && $request->is_converted !== 'all') {
             $query->where('is_converted', $request->is_converted === '1');
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             $query->where('assigned_to', $request->assigned_to);
         }
 
@@ -446,7 +446,7 @@ class LeadController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $leadsQuery->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
@@ -456,15 +456,15 @@ class LeadController extends Controller
         }
 
         // Handle filters
-        if ($request->has('lead_source_id') && !empty($request->lead_source_id) && $request->lead_source_id !== 'all') {
+        if ($request->filled('lead_source_id') && $request->lead_source_id !== 'all') {
             $leadsQuery->where('lead_source_id', $request->lead_source_id);
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $leadsQuery->where('status', $request->status);
         }
 
-        if ($request->has('is_converted') && $request->is_converted !== 'all') {
+        if ($request->filled('is_converted') && $request->is_converted !== 'all') {
             $leadsQuery->where('is_converted', $request->is_converted === '1');
         }
 

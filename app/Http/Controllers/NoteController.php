@@ -20,14 +20,14 @@ class NoteController extends Controller
                     });
             });
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('note_content', 'like', '%' . $request->search . '%');
             });
         }
 
-        if ($request->has('created_by') && $request->created_by !== 'all') {
+        if ($request->filled('created_by') && $request->created_by !== 'all') {
             $query->where('created_by', $request->created_by);
         }
 

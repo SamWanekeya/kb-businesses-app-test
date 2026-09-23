@@ -130,73 +130,73 @@ class InvoicePaymentService
     {
         $settings = PaymentSetting::getUserSettings($organizationId);
         switch ($paymentMethod) {
-            case 'stripe':
-                return isset($settings['stripe_secret']) && isset($settings['stripe_key'])
-                    && !empty($settings['stripe_secret']) && !empty($settings['stripe_key']);
-
-            case 'paypal':
-                return isset($settings['paypal_client_id']) && isset($settings['paypal_client_secret'])
-                    && !empty($settings['paypal_client_id']) && !empty($settings['paypal_client_secret']);
+//            case 'stripe':
+//                return isset($settings['stripe_secret']) && isset($settings['stripe_key'])
+//                    && !empty($settings['stripe_secret']) && !empty($settings['stripe_key']);
+//
+//            case 'paypal':
+//                return isset($settings['paypal_client_id']) && isset($settings['paypal_client_secret'])
+//                    && !empty($settings['paypal_client_id']) && !empty($settings['paypal_client_secret']);
 
             case 'bank':
                 return isset($settings['bank_details']) && !empty($settings['bank_details']);
 
-            case 'skrill':
-                return isset($settings['skrill_merchant_id']) && !empty($settings['skrill_merchant_id']);
-
-            case 'razorpay':
-                return isset($settings['razorpay_key']) && isset($settings['razorpay_secret'])
-                    && !empty($settings['razorpay_key']) && !empty($settings['razorpay_secret']);
-
-            case 'mercadopago':
-                return isset($settings['mercadopago_access_token']) && !empty($settings['mercadopago_access_token']);
+//            case 'skrill':
+//                return isset($settings['skrill_merchant_id']) && !empty($settings['skrill_merchant_id']);
+//
+//            case 'razorpay':
+//                return isset($settings['razorpay_key']) && isset($settings['razorpay_secret'])
+//                    && !empty($settings['razorpay_key']) && !empty($settings['razorpay_secret']);
+//
+//            case 'mercadopago':
+//                return isset($settings['mercadopago_access_token']) && !empty($settings['mercadopago_access_token']);
 
             case 'paystack':
                 return isset($settings['paystack_public_key']) && isset($settings['paystack_secret_key'])
                     && !empty($settings['paystack_public_key']) && !empty($settings['paystack_secret_key']);
 
-            case 'flutterwave':
-                return isset($settings['flutterwave_public_key']) && isset($settings['flutterwave_secret_key'])
-                    && !empty($settings['flutterwave_public_key']) && !empty($settings['flutterwave_secret_key']);
-
-            case 'paytabs':
-                return isset($settings['paytabs_server_key']) && isset($settings['paytabs_profile_id'])
-                    && !empty($settings['paytabs_server_key']) && !empty($settings['paytabs_profile_id']);
-
-            case 'coingate':
-                return isset($settings['coingate_api_token']) && !empty($settings['coingate_api_token']);
-
-            case 'payfast':
-                return isset($settings['payfast_merchant_id']) && isset($settings['payfast_merchant_key'])
-                    && !empty($settings['payfast_merchant_id']) && !empty($settings['payfast_merchant_key']);
-
-            case 'tap':
-                return isset($settings['tap_secret_key']) && !empty($settings['tap_secret_key']);
-
-            case 'xendit':
-                return isset($settings['xendit_api_key']) && !empty($settings['xendit_api_key']);
-
-            case 'paytr':
-                return isset($settings['paytr_merchant_id']) && isset($settings['paytr_merchant_key']) && isset($settings['paytr_merchant_salt'])
-                    && !empty($settings['paytr_merchant_id']) && !empty($settings['paytr_merchant_key']) && !empty($settings['paytr_merchant_salt']);
-
-            case 'mollie':
-                return isset($settings['mollie_api_key']) && !empty($settings['mollie_api_key']);
-
-            case 'toyyibpay':
-                return isset($settings['toyyibpay_secret_key']) && isset($settings['toyyibpay_category_code'])
-                    && !empty($settings['toyyibpay_secret_key']) && !empty($settings['toyyibpay_category_code']);
-
-            case 'iyzipay':
-                return isset($settings['iyzipay_public_key']) && isset($settings['iyzipay_secret_key'])
-                    && !empty($settings['iyzipay_public_key']) && !empty($settings['iyzipay_secret_key']);
-
-            case 'aamarpay':
-                return isset($settings['aamarpay_store_id']) && isset($settings['aamarpay_signature'])
-                    && !empty($settings['aamarpay_store_id']) && !empty($settings['aamarpay_signature']);
-
-            case 'midtrans':
-                return isset($settings['midtrans_secret_key']) && !empty($settings['midtrans_secret_key']);
+//            case 'flutterwave':
+//                return isset($settings['flutterwave_public_key']) && isset($settings['flutterwave_secret_key'])
+//                    && !empty($settings['flutterwave_public_key']) && !empty($settings['flutterwave_secret_key']);
+//
+//            case 'paytabs':
+//                return isset($settings['paytabs_server_key']) && isset($settings['paytabs_profile_id'])
+//                    && !empty($settings['paytabs_server_key']) && !empty($settings['paytabs_profile_id']);
+//
+//            case 'coingate':
+//                return isset($settings['coingate_api_token']) && !empty($settings['coingate_api_token']);
+//
+//            case 'payfast':
+//                return isset($settings['payfast_merchant_id']) && isset($settings['payfast_merchant_key'])
+//                    && !empty($settings['payfast_merchant_id']) && !empty($settings['payfast_merchant_key']);
+//
+//            case 'tap':
+//                return isset($settings['tap_secret_key']) && !empty($settings['tap_secret_key']);
+//
+//            case 'xendit':
+//                return isset($settings['xendit_api_key']) && !empty($settings['xendit_api_key']);
+//
+//            case 'paytr':
+//                return isset($settings['paytr_merchant_id']) && isset($settings['paytr_merchant_key']) && isset($settings['paytr_merchant_salt'])
+//                    && !empty($settings['paytr_merchant_id']) && !empty($settings['paytr_merchant_key']) && !empty($settings['paytr_merchant_salt']);
+//
+//            case 'mollie':
+//                return isset($settings['mollie_api_key']) && !empty($settings['mollie_api_key']);
+//
+//            case 'toyyibpay':
+//                return isset($settings['toyyibpay_secret_key']) && isset($settings['toyyibpay_category_code'])
+//                    && !empty($settings['toyyibpay_secret_key']) && !empty($settings['toyyibpay_category_code']);
+//
+//            case 'iyzipay':
+//                return isset($settings['iyzipay_public_key']) && isset($settings['iyzipay_secret_key'])
+//                    && !empty($settings['iyzipay_public_key']) && !empty($settings['iyzipay_secret_key']);
+//
+//            case 'aamarpay':
+//                return isset($settings['aamarpay_store_id']) && isset($settings['aamarpay_signature'])
+//                    && !empty($settings['aamarpay_store_id']) && !empty($settings['aamarpay_signature']);
+//
+//            case 'midtrans':
+//                return isset($settings['midtrans_secret_key']) && !empty($settings['midtrans_secret_key']);
 
             default:
                 return false;

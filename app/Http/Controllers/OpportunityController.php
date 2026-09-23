@@ -29,7 +29,7 @@ class OpportunityController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%');
@@ -37,23 +37,23 @@ class OpportunityController extends Controller
         }
 
         // Handle filters
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
-        if ($request->has('opportunity_stage_id') && !empty($request->opportunity_stage_id) && $request->opportunity_stage_id !== 'all') {
+        if ($request->filled('opportunity_stage_id') && $request->opportunity_stage_id !== 'all') {
             $query->where('opportunity_stage_id', $request->opportunity_stage_id);
         }
 
-        if ($request->has('opportunity_source_id') && !empty($request->opportunity_source_id) && $request->opportunity_source_id !== 'all') {
+        if ($request->filled('opportunity_source_id') && $request->opportunity_source_id !== 'all') {
             $query->where('opportunity_source_id', $request->opportunity_source_id);
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             $query->where('assigned_to', $request->assigned_to);
         }
 

@@ -56,18 +56,18 @@ class AnnouncementController extends Controller
         $query = Announcement::query()->with(['creator', 'category'])
             ->where('created_by', createdBy());
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('announcement_content', 'like', '%' . $request->search . '%');
             });
         }
 
-        if ($request->has('category') && $request->category !== 'all') {
+        if ($request->filled('category') && $request->category !== 'all') {
             $query->where('announcement_category_id', $request->category);
         }
 
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 

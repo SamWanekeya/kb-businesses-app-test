@@ -24,7 +24,7 @@ class CaseController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('subject', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%');
@@ -32,27 +32,27 @@ class CaseController extends Controller
         }
 
         // Handle account filter
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
         // Handle priority filter
-        if ($request->has('priority') && !empty($request->priority) && $request->priority !== 'all') {
+        if ($request->filled('priority') && $request->priority !== 'all') {
             $query->where('priority', $request->priority);
         }
 
         // Handle status filter
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Handle case type filter
-        if ($request->has('case_type') && !empty($request->case_type) && $request->case_type !== 'all') {
+        if ($request->filled('case_type') && $request->case_type !== 'all') {
             $query->where('case_type', $request->case_type);
         }
 
         // Handle assigned to filter
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             if ($request->assigned_to === 'unassigned') {
                 $query->whereNull('assigned_to');
             } else {

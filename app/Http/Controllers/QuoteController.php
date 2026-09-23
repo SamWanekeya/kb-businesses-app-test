@@ -29,7 +29,7 @@ class QuoteController extends Controller
             ->with(['opportunity', 'account', 'billingContact', 'shippingContact', 'shippingProviderType', 'creator', 'assignedUser', 'products.tax'])
             ->where('created_by', createdBy());
 
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('quote_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
@@ -37,19 +37,19 @@ class QuoteController extends Controller
             });
         }
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        if ($request->has('account_id') && !empty($request->account_id) && $request->account_id !== 'all') {
+        if ($request->filled('account_id') && $request->account_id !== 'all') {
             $query->where('account_id', $request->account_id);
         }
 
-        if ($request->has('opportunity_id') && !empty($request->opportunity_id) && $request->opportunity_id !== 'all') {
+        if ($request->filled('opportunity_id') && $request->opportunity_id !== 'all') {
             $query->where('opportunity_id', $request->opportunity_id);
         }
 
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
+        if ($request->filled('assigned_to') && $request->assigned_to !== 'all') {
             $query->where('assigned_to', $request->assigned_to);
         }
 

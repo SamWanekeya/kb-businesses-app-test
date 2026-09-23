@@ -25,7 +25,7 @@ class ProductController extends Controller
             ->where('created_by', createdBy());
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('sku', 'like', '%' . $request->search . '%')
@@ -34,17 +34,17 @@ class ProductController extends Controller
         }
 
         // Handle category filter
-        if ($request->has('category') && !empty($request->category) && $request->category !== 'all') {
+        if ($request->filled('category') && $request->category !== 'all') {
             $query->where('category_id', $request->category);
         }
 
         // Handle brand filter
-        if ($request->has('brand') && !empty($request->brand) && $request->brand !== 'all') {
+        if ($request->filled('brand') && $request->brand !== 'all') {
             $query->where('brand_id', $request->brand);
         }
 
         // Handle status filter
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 

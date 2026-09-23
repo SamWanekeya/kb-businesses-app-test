@@ -7,7 +7,6 @@ use App\Models\Currency;
 use App\Models\PaymentSetting;
 use App\Models\Setting;
 use App\Models\Webhook;
-use App\Models\Workspace;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -90,12 +89,6 @@ class SettingsController extends Controller
         $webhooks = Webhook::where('user_id', $user->id)
             ->get();
 
-        // Get current workspace for organization users
-        $currentWorkspace = null;
-        if ($user->type === 'organization' && $workspaceId) {
-            $currentWorkspace = Workspace::find($workspaceId);
-        }
-
         return Inertia::render('Settings/Index', [
             'systemSettings' => $systemSettings,
             'settings' => $systemSettings, // For helper functions
@@ -105,7 +98,6 @@ class SettingsController extends Controller
             'dateFormats' => config('date-format'),
             'timeFormats' => config('time-format'),
             'payment_settings' => $paymentSettings,
-            'currentWorkspace' => $currentWorkspace,
             'webhooks' => $webhooks,
         ]);
     }

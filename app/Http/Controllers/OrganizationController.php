@@ -22,7 +22,7 @@ class OrganizationController extends Controller
             ->with('plan');
 
         // Apply search filter
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%")
                     ->orWhere('email', 'like', "%{$request->search}%");
@@ -30,16 +30,16 @@ class OrganizationController extends Controller
         }
 
         // Apply status filter
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Apply date filters
-        if ($request->has('start_date') && !empty($request->start_date)) {
+        if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
 
-        if ($request->has('end_date') && !empty($request->end_date)) {
+        if ($request->filled('end_date')) {
             $query->whereDate('created_at', '<=', $request->end_date);
         }
 

@@ -36,7 +36,7 @@ class UserController extends BaseController
         }
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $userQuery->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -45,7 +45,7 @@ class UserController extends BaseController
         }
 
         // Handle role filter
-        if ($request->has('role') && $request->role !== 'all') {
+        if ($request->filled('role') && $request->role !== 'all') {
             $userQuery->whereHas('roles', function ($q) use ($request) {
                 $q->where('roles.id', $request->role);
             });
@@ -281,7 +281,7 @@ class UserController extends BaseController
         }
 
         // Handle search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $ipAddressHistoriesQuery->where(function ($q) use ($search) {
                 $q->where('ip_address', 'like', "%{$search}%")
