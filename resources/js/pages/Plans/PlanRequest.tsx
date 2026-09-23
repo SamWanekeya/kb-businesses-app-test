@@ -59,7 +59,7 @@ export default function PlanRequestsPage() {
                 page: 1,
                 search: searchTerm || undefined,
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                per_page: pageFilters.per_page,
+                per_page: pageFilters.per_page || 10,
             },
             { preserveState: true, preserveScroll: true },
         );

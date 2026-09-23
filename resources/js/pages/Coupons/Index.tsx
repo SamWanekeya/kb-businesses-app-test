@@ -95,7 +95,7 @@ export default function CouponsPage() {
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                 date_from: dateFrom || undefined,
                 date_to: dateTo || undefined,
-                per_page: pageFilters.per_page,
+                per_page: pageFilters.per_page || 10,
             },
             { preserveState: true, preserveScroll: true },
         );

@@ -82,7 +82,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
             route('users-permissions.users.all-logs'),
             {
                 page: 1,
-                per_page: pageFilters.per_page,
+                per_page: pageFilters.per_page || 10,
             },
             { preserveState: true, preserveScroll: true },
         );

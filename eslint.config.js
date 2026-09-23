@@ -50,17 +50,17 @@ export default [
                 {
                     paths: [
                         {
-                            name: '@/utils',
+                            name: '@utils',
                             message:
                                 'Barrel imports are not allowed. Import directly from the file instead.',
                         },
                         {
-                            name: '@/components',
+                            name: '@components',
                             message:
                                 'Barrel imports are not allowed. Import directly from the file instead.',
                         },
                         {
-                            name: '@/hooks',
+                            name: '@hooks',
                             message:
                                 'Barrel imports are not allowed. Import directly from the file instead.',
                         },
