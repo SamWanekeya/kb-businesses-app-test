@@ -57,7 +57,7 @@ class OpportunitySeeder extends Seeder
                     'opportunity_stage_id' => $opportunityStages->random()?->id,
                     'opportunity_source_id' => $opportunitySources->random()?->id,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $createdDate,
                 ]);
 

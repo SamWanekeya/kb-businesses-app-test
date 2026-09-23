@@ -70,16 +70,16 @@ class DocumentSeeder extends Seeder
             for ($i = 0; $i < 15; $i++) {
                 Document::create([
                     'name' => $documentNames[$i],
-                    'account_id' => $accounts->isNotEmpty() && $faker->boolean(60) ? $accounts->random()->id : null,
-                    'folder_id' => $folders->isNotEmpty() ? $folders->random()->id : null,
-                    'type_id' => $types->isNotEmpty() ? $types->random()->id : null,
-                    'opportunity_id' => $opportunities->isNotEmpty() && $faker->boolean(30) ? $opportunities->random()->id : null,
+                    'account_id' => $accounts->isNotEmpty() && $faker->boolean(60) ? $accounts->random()?->id : null,
+                    'folder_id' => $folders->isNotEmpty() ? $folders->random()?->id : null,
+                    'type_id' => $types->isNotEmpty() ? $types->random()?->id : null,
+                    'opportunity_id' => $opportunities->isNotEmpty() && $faker->boolean(30) ? $opportunities->random()?->id : null,
                     'status' => 'active',
                     'publish_date' => $faker->dateTimeBetween('-2 months', 'now'),
                     'expiration_date' => $faker->boolean(70) ? $faker->dateTimeBetween('now', '+6 months') : null,
                     'description' => $documentDescriptions[$i],
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
             }

@@ -110,7 +110,7 @@ class MeetingSeeder extends Seeder
 
                 if ($parentModule && isset($parentCollections[$parentModule])) {
                     $collection = $parentCollections[$parentModule];
-                    $parentId = $collection->isNotEmpty() ? $collection->random()->id : null;
+                    $parentId = $collection->isNotEmpty() ? $collection->random()?->id : null;
                 }
 
                 $meeting = Meeting::create([
@@ -125,7 +125,7 @@ class MeetingSeeder extends Seeder
                     'parent_id' => $parentId,
                     'status' => $faker->randomElement($statuses),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
 

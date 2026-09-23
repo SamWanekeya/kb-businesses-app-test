@@ -51,7 +51,7 @@ class ReturnOrderSeeder extends Seeder
                     'sales_order_id' => $salesOrder->id,
                     'account_id' => $account->id,
                     'contact_id' => $contact->id,
-                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()->id : null,
+                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()?->id : null,
                     'tracking_number' => strtoupper($faker->bothify('RET########')),
                     'status' => $faker->randomElement($statuses),
                     'reason' => $faker->randomElement($reasons),
@@ -59,7 +59,7 @@ class ReturnOrderSeeder extends Seeder
                     'return_date' => $faker->dateTimeBetween('-1 month', '+1 month'),
                     'notes' => $faker->sentence(10),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
 

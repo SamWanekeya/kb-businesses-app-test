@@ -45,7 +45,7 @@ class ContactSeeder extends Seeder
                     'status' => $faker->randomElement(['active', 'active', 'active', 'inactive']), // 75% active
                     'account_id' => $account->id,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-6 months', 'now'),
                 ]);
             }

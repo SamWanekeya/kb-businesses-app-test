@@ -51,9 +51,9 @@ class InvoiceSeeder extends Seeder
                 $invoice = Invoice::create([
                     'name' => 'Invoice ' . $i,
                     'description' => $faker->sentence(6),
-                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()->id : null,
-                    'quote_id' => $quotes->isNotEmpty() ? $quotes->random()->id : null,
-                    'opportunity_id' => $opportunities->isNotEmpty() ? $opportunities->random()->id : null,
+                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()?->id : null,
+                    'quote_id' => $quotes->isNotEmpty() ? $quotes->random()?->id : null,
+                    'opportunity_id' => $opportunities->isNotEmpty() ? $opportunities->random()?->id : null,
                     'account_id' => $account->id,
                     'contact_id' => $contact->id,
                     'invoice_date' => $invoiceDate,
@@ -68,7 +68,7 @@ class InvoiceSeeder extends Seeder
                     'terms' => 'Payment due within 30 days',
                     'payment_method' => $faker->randomElement($paymentMethods),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $invoiceDate,
                 ]);
 

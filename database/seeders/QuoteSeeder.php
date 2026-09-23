@@ -51,11 +51,11 @@ class QuoteSeeder extends Seeder
                     'quote_number' => 'QUO-' . $organization->id . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
                     'name' => 'Quote for ' . $account->name . ' - Project ' . $i,
                     'description' => $faker->sentence(10),
-                    'opportunity_id' => $opportunities->isNotEmpty() ? $opportunities->random()->id : null,
+                    'opportunity_id' => $opportunities->isNotEmpty() ? $opportunities->random()?->id : null,
                     'account_id' => $account->id,
                     'billing_contact_id' => $contact->id,
                     'shipping_contact_id' => $contact->id,
-                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()->id : null,
+                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()?->id : null,
                     'subtotal' => $subtotal,
                     'total_amount' => $totalAmount,
                     'billing_address' => $faker->streetAddress,
@@ -71,7 +71,7 @@ class QuoteSeeder extends Seeder
                     'status' => $faker->randomElement($statuses),
                     'valid_until' => $validUntil,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : $organization->id,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : $organization->id,
                     'created_at' => $createdDate,
                 ]);
 

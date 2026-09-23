@@ -46,9 +46,9 @@ class ReceiptOrderSeeder extends Seeder
                 $receiptOrder = ReceiptOrder::create([
                     'name' => 'Receipt Order ' . $i,
                     'description' => $faker->sentence(6),
-                    'purchase_order_id' => $purchaseOrders->isNotEmpty() ? $purchaseOrders->random()->id : null,
+                    'purchase_order_id' => $purchaseOrders->isNotEmpty() ? $purchaseOrders->random()?->id : null,
                     'account_id' => $account->id,
-                    'return_order_id' => $returnOrders->isNotEmpty() && $faker->boolean(30) ? $returnOrders->random()->id : null,
+                    'return_order_id' => $returnOrders->isNotEmpty() && $faker->boolean(30) ? $returnOrders->random()?->id : null,
                     'contact_id' => $contact->id,
                     'receipt_date' => $faker->dateTimeBetween('-1 month', 'now'),
                     'expected_date' => $faker->dateTimeBetween('now', '+2 weeks'),
@@ -56,7 +56,7 @@ class ReceiptOrderSeeder extends Seeder
                     'notes' => $faker->sentence(8),
                     'shipping_amount' => $faker->randomFloat(2, 5, 50),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
 

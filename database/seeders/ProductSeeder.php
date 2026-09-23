@@ -65,7 +65,7 @@ class ProductSeeder extends Seeder
                         'tax_id' => $taxes->random()?->id,
                         'status' => 'active',
                         'created_by' => $organization->id,
-                        'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                        'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     ]
                 );
             }

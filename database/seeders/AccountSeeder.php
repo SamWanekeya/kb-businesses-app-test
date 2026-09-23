@@ -72,7 +72,7 @@ class AccountSeeder extends Seeder
                         'account_industry_id' => $accountIndustries->random()?->id,
                         'status' => $status,
                         'created_by' => $organization->id,
-                        'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                        'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                         'created_at' => $faker->dateTimeBetween('-2 years', 'now'),
                         'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
                     ]

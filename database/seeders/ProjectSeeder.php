@@ -58,7 +58,7 @@ class ProjectSeeder extends Seeder
                     'status' => $status,
                     'account_id' => $accounts->random()?->id,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $startDate,
                 ]);
             }

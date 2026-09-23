@@ -48,10 +48,10 @@ class DeliveryOrderSeeder extends Seeder
                 $deliveryOrder = DeliveryOrder::create([
                     'name' => 'Delivery ' . $i,
                     'description' => $faker->sentence(5),
-                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()->id : null,
+                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()?->id : null,
                     'account_id' => $account->id,
                     'contact_id' => $contact->id,
-                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()->id : null,
+                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()?->id : null,
                     'delivery_address' => $faker->streetAddress,
                     'delivery_city' => $faker->city,
                     'delivery_state' => $faker->state,
@@ -64,7 +64,7 @@ class DeliveryOrderSeeder extends Seeder
                     'delivery_notes' => $faker->sentence(8),
                     'shipping_cost' => $faker->randomFloat(2, 10, 100),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
 

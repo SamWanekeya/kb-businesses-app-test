@@ -48,12 +48,12 @@ class PurchaseOrderSeeder extends Seeder
                 $purchaseOrder = PurchaseOrder::create([
                     'name' => 'Purchase Order ' . $i,
                     'description' => $faker->sentence(6),
-                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()->id : null,
+                    'sales_order_id' => $salesOrders->isNotEmpty() ? $salesOrders->random()?->id : null,
                     'account_id' => $account->id,
                     'contact_id' => $contact->id,
                     'billing_contact_id' => $contact->id,
                     'shipping_contact_id' => $contact->id,
-                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()->id : null,
+                    'shipping_provider_type_id' => $shippingTypes->isNotEmpty() ? $shippingTypes->random()?->id : null,
                     'billing_address' => $faker->streetAddress,
                     'billing_city' => $faker->city,
                     'billing_state' => $faker->state,
@@ -69,7 +69,7 @@ class PurchaseOrderSeeder extends Seeder
                     'status' => $faker->randomElement($statuses),
                     'shipping_amount' => $faker->randomFloat(2, 0, 75),
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $createdDate,
                 ]);
 

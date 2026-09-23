@@ -61,9 +61,9 @@ class LeadSeeder extends Seeder
                     'lead_status_id' => $leadStatuses->random()?->id,
                     'lead_source_id' => $leadSources->random()?->id,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
-                    'campaign_id' => $campaigns->isNotEmpty() ? $campaigns->random()->id : null,
-                    'account_industry_id' => $accountIndustries->isNotEmpty() ? $accountIndustries->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
+                    'campaign_id' => $campaigns->isNotEmpty() ? $campaigns->random()?->id : null,
+                    'account_industry_id' => $accountIndustries->isNotEmpty() ? $accountIndustries->random()?->id : null,
                     'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
                 ]);
             }

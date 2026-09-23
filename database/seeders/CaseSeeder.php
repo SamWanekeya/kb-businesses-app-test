@@ -85,7 +85,7 @@ class CaseSeeder extends Seeder
                     'account_id' => $account->id,
                     'contact_id' => $contact?->id,
                     'created_by' => $organization->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()?->id : null,
                     'created_at' => $createdDate,
                 ]);
             }
