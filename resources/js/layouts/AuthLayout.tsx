@@ -165,56 +165,66 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
     }, [languageFromCookie]);
 
     return (
-        <div className="flex h-screen w-full">
+        <div className="flex h-screen justify-center">
             <Head title={title} />
 
-            {/* Left side: branding & marketing */}
-            <div className="relative hidden p-6 lg:block lg:w-1/2">
-                <div className="relative h-full w-full overflow-hidden rounded-xl">
-                    <img src={leftSideBackgroundImage} alt="Kakbima" className="h-full w-full rounded-xl object-cover" />
+            {/* Outer Card Container */}
+            <div className="flex w-full max-w-6xl overflow-hidden">
 
-                    <div className="absolute inset-0 flex flex-col justify-between rounded-xl bg-black/40 p-6">
-                        <div className="text-sm font-semibold text-white">
-                            <a
-                                href={externalWebsiteUrl()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="rounded-md bg-white/20 px-3 py-1 backdrop-blur"
-                            >
-                                {translate('Back to website')}
-                            </a>
-                        </div>
+                {/* Left Side - Image */}
+                <div className="relative hidden p-6 lg:block lg:w-1/2">
+                    <div className="relative h-full w-full overflow-hidden rounded-xl">
+                        <img
+                            src={leftSideBackgroundImage}
+                            alt="Kakbima"
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
 
-                        <div>
-                            <h2 className="text-xl font-medium text-white">
-                                {translate('Welcome to the world of HR')}
-                                <br />
-                                {translate('and recruitment')}
-                            </h2>
+                        {/* Overlay */}
+                        <div className="absolute inset-0 flex flex-col justify-between rounded-xl bg-black/40 p-6">
+                            <div className="text-sm font-semibold text-white">
+                                <a
+                                    href={externalWebsiteUrl()}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-md bg-white/20 px-3 py-1 backdrop-blur"
+                                >
+                                    {translate('Back to website')}
+                                </a>
+                            </div>
+
+                            <div>
+                                <h2 className="text-xl font-medium text-white">
+                                    {translate('Bring your insurance business to the cloud')}
+                                    <br />
+                                    {translate('with Kakbima')}
+                                </h2>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Right side: auth content */}
-            <div className="relative flex w-full items-center justify-center p-6 md:p-12 lg:w-1/2">
-                <div className="absolute top-4 right-4">
-                    <LanguageSelector />
-                </div>
+                {/* Right Side - Content */}
+                <div className="relative flex w-full items-center justify-center p-6 md:p-12 lg:w-1/2">
+                    {/* Language Switcher */}
+                    <div className="absolute top-1 right-1">
+                        <LanguageSelector />
+                    </div>
 
-                <div className={`w-full max-w-md transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                    <div className="bg-card text-card-foreground rounded-xl border p-8 shadow-sm shadow-xl">
-                        <div className="mb-6 text-center">
-                            <div className="mx-auto mb-4 flex h-10 w-50 items-center justify-center">
-                                <img src={currentLogo} alt="Kakbima" />
+                    <div
+                        className={`w-full max-w-md transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                        <div className="bg-card text-card-foreground rounded-xl border p-8 shadow-sm shadow-xl">
+                            <div className="mb-6 text-center">
+                                <div className="mx-auto mb-4 flex h-10 w-50 items-center justify-center">
+                                    <img src={currentLogo} alt="Kakbima" className="h-14 w-auto" />
+                                </div>
+                                <h1 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-neutral-400">{title}</h1>
+
+                                {description && <p className="text-neutral-600 dark:text-neutral-400">{description}</p>}
                             </div>
 
-                            <h1 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-neutral-400">{title}</h1>
-
-                            {description && <p className="text-neutral-600 dark:text-neutral-400">{description}</p>}
+                            {children}
                         </div>
-
-                        {children}
                     </div>
                 </div>
             </div>

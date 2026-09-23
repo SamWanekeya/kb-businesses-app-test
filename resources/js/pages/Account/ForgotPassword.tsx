@@ -20,7 +20,7 @@ import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Forgot password page component.
+ * Can’t access my account page component.
  * Wraps content in AuthLayout and manages form submission.
  */
 export default function ForgotPassword() {
@@ -110,7 +110,7 @@ export default function ForgotPassword() {
     }, []);
 
     return (
-        <AuthLayout title={translate('Forgot password')}>
+        <AuthLayout title={translate('Can’t access my account')}>
             <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
                 <div className="space-y-4">
                     <Label htmlFor="email" className="mb-2 block font-medium text-neutral-700 dark:text-neutral-300">

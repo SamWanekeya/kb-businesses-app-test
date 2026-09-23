@@ -111,7 +111,7 @@ export default function SignIn(): JSX.Element {
 
     return (
         <AuthLayout
-            title={isDemo ? translate('Demo account') : translate('Sign in to your account')}
+            title={isDemo ? translate('Demo account') : translate('Sign in to manage your account')}
             description={isDemo ? translate('A great way to look at real business data and experiment with Kakbima features') : ''}
         >
             {isDemo ? (
@@ -187,7 +187,7 @@ export default function SignIn(): JSX.Element {
                         {clientErrors.password && <p className="mt-1 text-sm text-red-600">{clientErrors.password}</p>}
                     </div>
 
-                    {/* Remember me & Forgot password */}
+                    {/* Remember me & Can’t access my account */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <Checkbox
@@ -206,7 +206,7 @@ export default function SignIn(): JSX.Element {
                         </div>
                         <div>
                             <TextLink href={route('password.request')} className="text-sm font-medium transition-colors duration-200" tabIndex={5}>
-                                {translate('Forgot password?')}
+                                {translate('Can’t access my account')}
                             </TextLink>
                         </div>
                     </div>
@@ -229,7 +229,7 @@ export default function SignIn(): JSX.Element {
 
                     {/* Sign up link */}
                     <div className="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
-                        {translate('Don’t have an account?')}{' '}
+                        {translate('Need a Kakbima account?')}{' '}
                         <TextLink href={route('register')} className="font-medium transition-colors duration-200" tabIndex={6}>
                             {translate('Sign up')}
                         </TextLink>

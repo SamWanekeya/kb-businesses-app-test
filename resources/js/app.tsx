@@ -224,7 +224,7 @@ export const KakbimaRoot: React.FC<any> = ({ App, props }) => {
                 <Suspense
                     fallback={
                         <div className="flex h-screen w-full items-center justify-center">
-                            <img src={currentLogo} alt="Kakbima" className="h-12" />
+                            <img src={currentLogo} alt="Kakbima" className="h-16" />
                         </div>
                     }
                 >

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\WorkEmail;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class SignInRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the request is authorized.
      */
     public function authorize(): bool
     {
@@ -21,20 +21,45 @@ class SignInRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules for the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
+
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                new WorkEmail(),
+            ],
+            'password' => ['required', 'max:128'],
         ];
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Get custom validation messages.
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => __('The work email field is required'),
+            'email.email' => __('Please provide a valid work email address'),
+            'email.max' => __('Are you sure you entered the work email correctly?'),
+            'password.required' => __('The password field is required'),
+            'password.max' => __('Passwords may not be longer than 128 characters.'),
+        ];
+    }
+
+    /**
+     * Attempt to authenticate the user.
+     *
+     * Performs:
+     * - Rate limiting
+     * - Credential verification
+     * - Account eligibility checks
      *
      * @throws ValidationException
      */
@@ -42,21 +67,30 @@ class SignInRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt(
+            $this->only('email', 'password'),
+            $this->boolean('remember')
+        )) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('These credentials do not match our records.'),
+                'email' => __('Invalid sign in credentials. Please try again.'),
             ]);
         }
-        // Check if user account is inactive
+
         $user = Auth::user();
-        if ($user->status === 'inactive') {
+
+        if (
+            $user->status === 'inactive' ||
+            ! $user->is_sign_in_enabled
+        ) {
             Auth::logout();
+
             throw ValidationException::withMessages([
-                'email' => __('Your account is inactive. Please contact administrator.'),
+                'email' => __('Your account is inactive or disabled'),
             ]);
         }
+
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -65,9 +99,9 @@ class SignInRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function ensureIsNotRateLimited(): void
+    protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -76,17 +110,17 @@ class SignInRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'email' => __('Too many sign in attempts. Please wait a few minutes before trying again.', [
                 'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
+                'minutes' => (int) ceil($seconds / 60),
             ]),
         ]);
     }
 
     /**
-     * Get the rate limiting throttle key for the request.
+     * Get the rate limiting throttle key.
      */
-    public function throttleKey(): string
+    protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }

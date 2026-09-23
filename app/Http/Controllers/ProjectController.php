@@ -69,7 +69,7 @@ class ProjectController extends Controller
         $projects = $query->paginate($perPage)->withQueryString();
 
         // Eager-load task counts per project
-        $projectIds = $projects)?->pluck('id');
+        $projectIds = $projects->pluck('id');
         $taskData = ProjectTask::whereIn('project_id', $projectIds)
             ->where('created_by', createdBy())
             ->selectRaw('project_id, count(*) as total, SUM(CASE WHEN progress = 100 THEN 1 ELSE 0 END) as done_count')
