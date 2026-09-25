@@ -494,7 +494,7 @@ function _getURL($env)
 /*
     * _pay method initiate payment will be start from here.
     *
-    * params array $params_array - holds all form data with merchant key, transaction id etc.
+    * params array $params_array - holds all form data with merchant key, transaction ID etc.
     * params string $salt_key - holds the merchant salt key.
     * params string $url - holds the url based in env(enviroment type $env = 'test' or $env = 'prod')
     *
@@ -528,7 +528,7 @@ function _getURL($env)
     *
     * - return integer status = 1 means success and go the url link.
     *
-    * @params array $params_array - holds all form data with merchant key, transaction id etc.
+    * @params array $params_array - holds all form data with merchant key, transaction ID etc.
     * @params string $salt_key - holds the merchant salt key.
     * @params string $url - holds the url based in env(enviroment type $env = 'test' or $env = 'prod')
     *

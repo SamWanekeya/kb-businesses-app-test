@@ -128,7 +128,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         // if (payment_settings?.is_coingate_payment_mode_enabled === true || payment_settings?.is_coingate_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'coingate',
-        //         name: 'Coingate',
+        //         name: 'CoinGate',
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -200,7 +200,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         // if (payment_settings?.is_iyzipay_payment_mode_enabled === true || payment_settings?.is_iyzipay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'iyzipay',
-        //         name: 'Iyzipay',
+        //         name: 'IyziPay',
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -209,7 +209,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         // if (payment_settings?.is_aamarpay_payment_mode_enabled === true || payment_settings?.is_aamarpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'aamarpay',
-        //         name: 'Aamarpay',
+        //         name: 'AamarPay',
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });

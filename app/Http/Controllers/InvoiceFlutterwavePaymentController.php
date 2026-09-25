@@ -73,7 +73,7 @@ class InvoiceFlutterwavePaymentController extends Controller
             if (!$result) {
                 Log::error('Flutterwave invalid response', ['invoice_id' => $invoice->id]);
 
-                return back()->withErrors(['error' => __('Payment verification failed - Invalid response')]);
+                return back()->withErrors(['error' => __('Payment verification failed - invalid response')]);
             }
 
             if ($result['status'] === 'success' && $result['data']['status'] === 'successful') {

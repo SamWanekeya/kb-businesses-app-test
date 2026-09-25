@@ -148,7 +148,7 @@ export function ToyyibPayPaymentForm({
                 <Alert className="mb-4">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                        {translate('You will be redirected to toyyibPay to complete your payment securely via FPX (Malaysian Online Banking)')}
+                        {translate('You will be redirected to ToyyibPay to complete your payment securely via FPX (Malaysian Online Banking)')}
                     </AlertDescription>
                 </Alert>
 

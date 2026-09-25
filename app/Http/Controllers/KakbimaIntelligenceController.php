@@ -27,7 +27,7 @@ class KakbimaIntelligenceController extends Controller
             if (!$apiKey) {
                 return response()->json([
                     'success' => false,
-                    'message' => __('Please set proper configuration for Api Key'),
+                    'message' => __('Please set proper configuration for API key'),
                 ]);
             }
 

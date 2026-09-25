@@ -121,7 +121,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
     }, []);
 
     /**
-     * Recaptcha handlers
+     * reCAPTCHA handlers
      */
     const handleRecaptchaVerify = useCallback((token: string) => {
         setRecaptchaToken(token);

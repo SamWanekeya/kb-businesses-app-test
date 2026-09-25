@@ -32,7 +32,7 @@ class Easebuzz
     *
     * http method used - POST
     *
-    * param string $txnid - holds the transaction id (which is auto generate using hash)
+    * param string $txnid - holds the transaction ID (which is auto generate using hash)
     * param array $params - holds the $_POST data which is pass from the html form.
     *
     * ##Return values
@@ -52,7 +52,7 @@ class Easebuzz
     *
     * - _payment(arg1, arg2, arg3, arg4) :- use for initiate payment.
     *
-    * - _paymentResponse(arg1) :- use for show api response (like error, payment page etc.).
+    * - _paymentResponse(arg1) :- use for show API response (like error, payment page etc.).
     *
     * - _checkArgumentValidation(arg1, arg2, arg3, arg4) :- check no. of argument validation.
     *
@@ -122,7 +122,7 @@ class Easebuzz
     *
     * - _transaction(arg1, arg2, arg3, arg4) :- use for initiate transaction.
     *
-    * - _transactionResponse(arg1, arg2) :- use for verify api response is acceptable or not.
+    * - _transactionResponse(arg1, arg2) :- use for verify API response is acceptable or not.
     *
     * - _checkArgumentValidation(arg1, arg2, arg3, arg4) :- check no. of argument validation.
     *

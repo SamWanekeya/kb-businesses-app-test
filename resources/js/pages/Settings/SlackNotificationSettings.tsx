@@ -80,7 +80,7 @@ export default function SlackNotificationSettings() {
             slack_webhook_url: slackWebhookUrl,
         };
 
-        const toastId = toast.loading(translate('Saving slack settings...'));
+        const toastId = toast.loading(translate('Saving Slack settings...'));
 
         router.post(route('settings.slack-notifications.update'), data, {
             preserveScroll: true,
@@ -190,7 +190,7 @@ export default function SlackNotificationSettings() {
                             <h3 className="font-medium text-gray-900">{translate('Test Slack Configuration')}</h3>
                         </div>
                         <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
-                            <p className="text-xs text-gray-600">{translate('Send a test message to verify your slack webhook.')}</p>
+                            <p className="text-xs text-gray-600">{translate('Send a test message to verify your Slack webhook.')}</p>
 
                             <Button
                                 type="submit"

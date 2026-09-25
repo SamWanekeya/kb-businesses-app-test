@@ -499,7 +499,7 @@ class PurchaseOrderController extends Controller
             ->first();
 
         if (!$purchaseOrder) {
-            return redirect()->back()->with('error', __('Purchase Order not found.'));
+            return redirect()->back()->with('error', __('Purchase order not found.'));
         }
 
         PurchaseOrderActivity::where('purchase_order_id', $purchaseOrder->id)->delete();
@@ -514,7 +514,7 @@ class PurchaseOrderController extends Controller
             ->first();
 
         if (!$purchaseOrder) {
-            return redirect()->back()->with('error', __('Purchase Order not found.'));
+            return redirect()->back()->with('error', __('Purchase order not found.'));
         }
 
         $activity = PurchaseOrderActivity::where('id', $activityId)

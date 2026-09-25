@@ -130,7 +130,7 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
             //     return <RazorpayPaymentForm {...commonProps} razorpayKey={method.config.key} />;
             //
             // case 'paypal':
-            //     return <PaypalPaymentForm {...commonProps} paypalConfig={method.config} />;
+            //     return <PayPalPaymentForm {...commonProps} paypalConfig={method.config} />;
             //
             // case 'mercadopago':
             //     return <MercadopagoPaymentForm {...commonProps} mercadopagoConfig={method.config} />;

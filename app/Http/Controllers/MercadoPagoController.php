@@ -137,7 +137,7 @@ class MercadoPagoController extends Controller
                 $result = $preference->save();
 
                 if (!$result) {
-                    throw new Exception(__('Failed to save MercadoPago preference'));
+                    throw new Exception(__('Failed to save Mercado Pago preference'));
                 }
             } catch (Exception $e) {
                 throw new Exception(message: __('Failed to save MercadoPago preference:  :message', ['message' => $e->getMessage()]));

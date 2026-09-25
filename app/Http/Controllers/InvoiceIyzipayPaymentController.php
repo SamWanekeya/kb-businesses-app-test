@@ -53,7 +53,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
-                return response()->json(['error' => __('Iyzipay not configured')], 400);
+                return response()->json(['error' => __('IyziPay not configured')], 400);
             }
 
             $conversationId = 'invoice_' . $invoice->id . '_' . time();
@@ -131,7 +131,7 @@ class InvoiceIyzipayPaymentController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::error('Iyzipay invoice payment form creation error', [
+            Log::error('IyziPay invoice payment form creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -177,7 +177,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            // Retrieve payment result from Iyzipay
+            // Retrieve payment result from IyziPay
             $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
@@ -189,7 +189,7 @@ class InvoiceIyzipayPaymentController extends Controller
                     'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 
-                Log::info('Iyzipay invoice payment successful', [
+                Log::info('IyziPay invoice payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
@@ -202,7 +202,7 @@ class InvoiceIyzipayPaymentController extends Controller
             return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
-            Log::error('Iyzipay invoice payment callback error', [
+            Log::error('IyziPay invoice payment callback error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);

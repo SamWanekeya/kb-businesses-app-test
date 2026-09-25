@@ -36,7 +36,7 @@ export function AamarpayPaymentForm({
 
     const handlePayment = async () => {
         if (!aamarpayStoreId) {
-            setError(translate('Aamarpay not configured'));
+            setError(translate('AamarPay not configured'));
             return;
         }
 
@@ -97,7 +97,7 @@ export function AamarpayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Aamarpay Payment')}
+                    {translate('AamarPay Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -146,7 +146,7 @@ export function AamarpayPaymentForm({
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {translate('Pay with Aamarpay')}
+                                {translate('Pay with AamarPay')}
                             </>
                         )}
                     </Button>

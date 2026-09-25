@@ -34,7 +34,7 @@ export function InvoiceAamarpayPaymentForm({
 
     const handlePayment = async () => {
         if (!aamarpayStoreId) {
-            setError(translate('Aamarpay configuration is missing'));
+            setError(translate('AamarPay configuration is missing'));
             return;
         }
 
@@ -85,7 +85,7 @@ export function InvoiceAamarpayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Aamarpay Payment')}
+                    {translate('AamarPay Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -116,7 +116,7 @@ export function InvoiceAamarpayPaymentForm({
                         <Alert>
                             <AlertCircle className="h-4 w-4" />
                             <AlertDescription>
-                                {translate('You will be redirected to Aamarpay secure payment page to complete your payment.')}
+                                {translate('You will be redirected to AamarPay secure payment page to complete your payment.')}
                             </AlertDescription>
                         </Alert>
 
@@ -133,7 +133,7 @@ export function InvoiceAamarpayPaymentForm({
                                 ) : (
                                     <>
                                         <CreditCard className="mr-2 h-4 w-4" />
-                                        {translate('Pay with Aamarpay')}
+                                        {translate('Pay with AamarPay')}
                                     </>
                                 )}
                             </Button>
@@ -141,7 +141,7 @@ export function InvoiceAamarpayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-muted-foreground text-center text-xs">{translate('Powered by Aamarpay - Secure payment processing')}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate('Powered by AamarPay - Secure payment processing')}</div>
             </CardContent>
         </Card>
     );

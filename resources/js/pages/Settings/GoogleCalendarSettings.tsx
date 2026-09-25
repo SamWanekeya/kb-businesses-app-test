@@ -36,7 +36,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
             data.append('googleCalendarJson', jsonFile);
         }
 
-        const toastId = toast.loading(translate('Updating Google calendar settings...'));
+        const toastId = toast.loading(translate('Updating Google Calendar settings...'));
         router.post(route('settings.google-calendar.update'), data, {
             preserveScroll: true,
             onSuccess: () => {

@@ -352,7 +352,7 @@ export default function Plans({
         // if (payment_settings?.is_iyzipay_payment_mode_enabled === true || payment_settings?.is_iyzipay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'iyzipay',
-        //         name: translate('Iyzipay'),
+        //         name: translate('IyziPay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -451,7 +451,7 @@ export default function Plans({
         // if (payment_settings?.is_aamarpay_payment_mode_enabled === true || payment_settings?.is_aamarpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'aamarpay',
-        //         name: translate('Aamarpay'),
+        //         name: translate('AamarPay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });

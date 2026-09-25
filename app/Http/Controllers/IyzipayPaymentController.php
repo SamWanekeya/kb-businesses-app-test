@@ -33,10 +33,10 @@ class IyzipayPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
-                return back()->withErrors(['error' => __('Iyzipay not configured')]);
+                return back()->withErrors(['error' => __('IyziPay not configured')]);
             }
 
-            // Retrieve payment result from Iyzipay
+            // Retrieve payment result from IyziPay
             $paymentResult = $this->retrieveIyzipayPayment($validated['token'], $settings['payment_settings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
@@ -97,7 +97,7 @@ class IyzipayPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
-                return response()->json(['error' => __('Iyzipay not configured')], 400);
+                return response()->json(['error' => __('IyziPay not configured')], 400);
             }
 
             $user = auth()?->user();
@@ -195,7 +195,7 @@ class IyzipayPaymentController extends Controller
                 return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid payment response')]);
             }
 
-            // Retrieve payment result from Iyzipay
+            // Retrieve payment result from IyziPay
             $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
@@ -255,7 +255,7 @@ class IyzipayPaymentController extends Controller
             $superAdmin = User::where('type', 'super_admin')?->first();
             $settings = $superAdmin ? getPaymentGatewaySettings($superAdmin->id) : getPaymentGatewaySettings();
 
-            // Retrieve payment result from Iyzipay
+            // Retrieve payment result from IyziPay
             $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {

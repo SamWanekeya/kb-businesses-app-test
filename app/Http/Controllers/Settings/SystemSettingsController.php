@@ -116,9 +116,9 @@ class SystemSettingsController extends Controller
                 updateSetting($key, $value);
             }
 
-            return redirect()->back()->with('success', __('ReCaptcha settings updated successfully.'));
+            return redirect()->back()->with('success', __('reCAPTCHA settings updated successfully.'));
         } catch (Exception $e) {
-            return redirect()->back()->with('error', __('Failed to update ReCaptcha settings: :error', ['error' => $e->getMessage()]));
+            return redirect()->back()->with('error', __('Failed to update reCAPTCHA settings: :error', ['error' => $e->getMessage()]));
         }
     }
 

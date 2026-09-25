@@ -72,7 +72,7 @@ class MolliePaymentController extends Controller
 
             // Update the plan order with the actual Mollie payment ID
             PlanOrder::where('payment_id', $paymentId)
-                ->update(['payment_id' => $payment->id, 'notes' => __('Mollie Payment ID: ') . $payment->id]);
+                ->update(['payment_id' => $payment->id, 'notes' => __('Mollie payment ID: ') . $payment->id]);
 
             return redirect($payment->getCheckoutUrl());
 

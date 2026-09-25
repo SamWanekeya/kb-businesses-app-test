@@ -54,7 +54,7 @@ class SignInHistoryController extends Controller
                 'filters' => $request->only(['search', 'sort_field', 'sort_direction', 'per_page']),
             ]);
         } else {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
@@ -65,7 +65,7 @@ class SignInHistoryController extends Controller
 
             return redirect()->back()->with('success', 'Sign in history deleted successfully.');
         } else {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 }

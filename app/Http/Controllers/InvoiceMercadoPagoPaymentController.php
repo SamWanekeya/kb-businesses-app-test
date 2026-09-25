@@ -65,7 +65,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $result = $preference->save();
 
             if (!$result || !$preference->id) {
-                throw new Exception(__('Failed to create MercadoPago preference'));
+                throw new Exception(__('Failed to create Mercado Pago preference'));
             }
 
             $redirectUrl = $mode === 'sandbox' ? $preference->sandbox_init_point : $preference->init_point;

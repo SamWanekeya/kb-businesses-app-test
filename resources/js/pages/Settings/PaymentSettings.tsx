@@ -831,7 +831,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    </PaymentMethodCard>*/}
                             {/*)}*/}
 
-                            {/*/!* Payfast *!/*/}
+                            {/*/!* PayFast *!/*/}
                             {/*{shouldShowMethod('payfast') && (*/}
                             {/*    <PaymentMethodCard*/}
                             {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST])}*/}
@@ -839,7 +839,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_payfast_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_payfast_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYFAST]}*/}
-                            {/*        helpText={translate('Get your Payfast merchant credentials from your')}*/}
+                            {/*        helpText={translate('Get your PayFast merchant credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -985,7 +985,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    </PaymentMethodCard>*/}
                             {/*)}*/}
 
-                            {/*/!* toyyibPay *!/*/}
+                            {/*/!* ToyyibPay *!/*/}
                             {/*{shouldShowMethod('toyyibpay') && (*/}
                             {/*    <PaymentMethodCard*/}
                             {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY])}*/}
@@ -993,7 +993,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_toyyibpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_toyyibpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.TOYYIBPAY]}*/}
-                            {/*        helpText={translate('Get your toyyibPay credentials from your')}*/}
+                            {/*        helpText={translate('Get your ToyyibPay credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
@@ -1054,15 +1054,15 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    </PaymentMethodCard>*/}
                             {/*)}*/}
 
-                            {/*/!* Iyzipay *!/*/}
+                            {/*/!* IyziPay *!/*/}
                             {/*{shouldShowMethod('iyzipay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={translate('Iyzipay')}*/}
+                            {/*        title={translate('IyziPay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_iyzipay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_iyzipay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.IYZIPAY]}*/}
-                            {/*        helpText={translate('Get your Iyzipay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your IyziPay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.iyzipay_mode as 'sandbox' | 'live'}*/}
@@ -1091,15 +1091,15 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    </PaymentMethodCard>*/}
                             {/*)}*/}
 
-                            {/*/!* Aamarpay *!/*/}
+                            {/*/!* AamarPay *!/*/}
                             {/*{shouldShowMethod('aamarpay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={translate('Aamarpay')}*/}
+                            {/*        title={translate('AamarPay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_aamarpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_aamarpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.AAMARPAY]}*/}
-                            {/*        helpText={translate('Get your Aamarpay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your AamarPay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}

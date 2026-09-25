@@ -788,10 +788,10 @@ if (!function_exists('validatePaymentMethodConfig')) {
                 //
                 //            case 'payfast':
                 //                if (empty($config['merchant_id'])) {
-                //                    $errors[] = __('Payfast merchant ID is required');
+                //                    $errors[] = __('PayFast merchant ID is required');
                 //                }
                 //                if (empty($config['merchant_key'])) {
-                //                    $errors[] = __('Payfast merchant key is required');
+                //                    $errors[] = __('PayFast merchant key is required');
                 //                }
                 //                break;
                 //
@@ -836,10 +836,10 @@ if (!function_exists('validatePaymentMethodConfig')) {
                 //
                 //            case 'cashfree':
                 //                if (empty($config['public_key'])) {
-                //                    $errors[] = __('Cashfree App ID is required');
+                //                    $errors[] = __('Cashfree app ID is required');
                 //                }
                 //                if (empty($config['secret_key'])) {
-                //                    $errors[] = __('Cashfree Secret Key is required');
+                //                    $errors[] = __('Cashfree secret key is required');
                 //                }
                 //                break;
                 //

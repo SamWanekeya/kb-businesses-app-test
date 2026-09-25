@@ -77,7 +77,7 @@ export function InvoiceCoingatePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Coins className="h-5 w-5" />
-                    {translate('Coingate Payment')}
+                    {translate('CoinGate Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -96,14 +96,14 @@ export function InvoiceCoingatePaymentForm({
                         </div>
                     </div>
 
-                    {/* Coingate Information */}
+                    {/* CoinGate Information */}
                     <div className="rounded-lg border bg-orange-50 p-3 dark:bg-orange-950/20">
                         <div className="flex items-start gap-2">
                             <Coins className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-600" />
                             <div className="text-sm">
                                 <p className="font-medium text-orange-900 dark:text-orange-100">{translate('Secure Cryptocurrency Payment')}</p>
                                 <p className="mt-1 text-orange-700 dark:text-orange-300">
-                                    {translate('You will be redirected to Coingate to complete your payment with cryptocurrency.')}
+                                    {translate('You will be redirected to CoinGate to complete your payment with cryptocurrency.')}
                                 </p>
                                 <p className="mt-1 text-xs text-orange-600 dark:text-orange-400">
                                     {translate('Supports Bitcoin, Ethereum, Litecoin and 70+ other cryptocurrencies')}
@@ -118,7 +118,7 @@ export function InvoiceCoingatePaymentForm({
                             <div className="text-xs text-blue-800">
                                 <p className="mb-1 font-medium">{translate('Payment Process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{translate('Click "Pay with Crypto" to proceed to Coingate')}</li>
+                                    <li>{translate('Click "Pay with Crypto" to proceed to CoinGate')}</li>
                                     <li>{translate('Complete payment using your selected cryptocurrency')}</li>
                                     <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>

@@ -24,7 +24,7 @@ function get_transaction_details($params, $merchant_key, $salt, $env)
 {
     $result = _transaction($params, $merchant_key, $salt, $env);
 
-    // verify transaction api response
+    // verify transaction API response
     $easebuzz_transaction_response = _validateTransactionResponse((object)$result, $salt);
 
     return $easebuzz_transaction_response;
@@ -393,7 +393,7 @@ function _getURL($env)
 /*
 * _getTransaction method get all details of a single transaction.
 *
-* params array $params_array - holds all form data with merchant key, transaction id etc.
+* params array $params_array - holds all form data with merchant key, transaction ID etc.
 * params string $salt_key - holds the merchant salt key.
 * params string $url - holds the url based in env(enviroment type $env = 'test' or $env = 'prod')
 *
@@ -412,7 +412,7 @@ function _getURL($env)
 *
 * - return integer status = 1 means success and go the url link.
 *
-* @params array $params_array - holds all form data with merchant key, transaction id etc.
+* @params array $params_array - holds all form data with merchant key, transaction ID etc.
 * @params string $salt_key - holds the merchant salt key.
 * @params string $url - holds the url based in env(enviroment type $env = 'test' or $env = 'prod')
 *

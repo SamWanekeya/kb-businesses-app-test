@@ -60,7 +60,7 @@ class SettingsController extends Controller
         }
         $systemSettings['logoDark'] = $systemSettings['logoDark'] ?? null;
 
-        // Get ReCaptcha settings separately (always without workspace for organization users in non-SaaS mode)
+        // Get reCAPTCHA settings separately (always without workspace for organization users in non-SaaS mode)
         if ($user->type === 'organization') {
             $recaptchaSettings = Setting::where('user_id', $user->id)
                 ->whereIn('key', [

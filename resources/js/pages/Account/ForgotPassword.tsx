@@ -3,7 +3,7 @@
  * @description
  * Handles the "Forgot Password" flow:
  * - Email input validation
- * - Recaptcha verification
+ * - reCAPTCHA verification
  * - POST request to send reset link
  */
 
@@ -95,7 +95,7 @@ export default function ForgotPassword() {
     );
 
     /**
-     * Recaptcha callback handlers.
+     * reCAPTCHA callback handlers.
      */
     const handleRecaptchaVerify = useCallback((token: string) => {
         setRecaptchaToken(token);

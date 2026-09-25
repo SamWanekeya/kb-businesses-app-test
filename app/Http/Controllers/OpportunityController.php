@@ -173,7 +173,7 @@ class OpportunityController extends Controller
         }
 
         if (!empty($errors)) {
-            $message = __('opportunity created successfully, but ') . implode(', ', $errors);
+            $message = __('Opportunity created successfully, but ') . implode(', ', $errors);
 
             return redirect()->back()->with('warning', $message);
         }

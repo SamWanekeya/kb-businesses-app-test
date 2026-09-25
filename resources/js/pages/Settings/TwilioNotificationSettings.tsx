@@ -90,7 +90,7 @@ export default function TwilioNotificationSettings() {
             ...twilioSettings,
         };
 
-        const toastId = toast.loading(translate('Saving twilio settings...'));
+        const toastId = toast.loading(translate('Saving Twilio settings...'));
 
         router.post(route('settings.twilio-notifications.update'), data, {
             preserveScroll: true,

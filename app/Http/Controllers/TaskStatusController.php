@@ -106,9 +106,9 @@ class TaskStatusController extends Controller
                 $taskStatus->status = $taskStatus->status === 'active' ? 'inactive' : 'active';
                 $taskStatus->save();
 
-                return redirect()->back()->with('success', __('Task-Status status updated successfully'));
+                return redirect()->back()->with('success', __('Task-status status updated successfully'));
             } catch (Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update Task-Status status'));
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task-status status'));
             }
         } else {
             return redirect()->back()->with('error', __('Task status not found.'));
@@ -117,6 +117,6 @@ class TaskStatusController extends Controller
         $taskStatus->status = $taskStatus->status === 'active' ? 'inactive' : 'active';
         $taskStatus->save();
 
-        return redirect()->back()->with('success', __('Task-Status updated successfully'));
+        return redirect()->back()->with('success', __('Task-status updated successfully'));
     }
 }

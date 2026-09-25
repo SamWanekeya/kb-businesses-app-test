@@ -36,7 +36,7 @@ class TwilioOpportunityCreateListener
             ];
 
             try {
-                // Clear any existing twilio error
+                // Clear any existing Twilio error
                 session()->forget('twilio_error');
 
                 $twilio = getTwilioConfig();

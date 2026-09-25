@@ -146,7 +146,7 @@ export default function Settings() {
         },
 
         {
-            title: translate('ReCaptcha Settings'),
+            title: translate('reCAPTCHA Settings'),
             href: '#recaptcha-settings',
             icon: <Shield className="mr-2 h-4 w-4" />,
             permission: 'manage-recaptcha-settings',
@@ -496,7 +496,7 @@ export default function Settings() {
                         </section>
                     )}
 
-                    {/* ReCaptcha Settings Section */}
+                    {/* reCAPTCHA Settings Section */}
                     {(useHasPermission('manage-recaptcha-settings') || auth?.user?.type === 'super_admin') && (
                         <section id="recaptcha-settings" ref={recaptchaSettingsRef} className="mb-8">
                             <RecaptchaSettings settings={systemSettings} />

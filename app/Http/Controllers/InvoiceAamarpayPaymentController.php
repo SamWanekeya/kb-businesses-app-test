@@ -39,7 +39,7 @@ class InvoiceAamarpayPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
-                return response()->json(['error' => __('Aamarpay not configured')], 400);
+                return response()->json(['error' => __('AamarPay not configured')], 400);
             }
 
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
@@ -98,7 +98,7 @@ class InvoiceAamarpayPaymentController extends Controller
             return response()->json(['error' => __('Payment creation failed')], 500);
 
         } catch (Exception $e) {
-            Log::error('Aamarpay invoice payment creation error', [
+            Log::error('AamarPay invoice payment creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -144,7 +144,7 @@ class InvoiceAamarpayPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    Log::info('Aamarpay invoice payment successful', [
+                    Log::info('AamarPay invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_id' => $orderId,
@@ -157,7 +157,7 @@ class InvoiceAamarpayPaymentController extends Controller
             return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
-            Log::error('Aamarpay invoice payment success error', [
+            Log::error('AamarPay invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -172,7 +172,7 @@ class InvoiceAamarpayPaymentController extends Controller
             $status = $request->input('pay_status');
 
             if ($transactionId && $status === 'Successful') {
-                Log::info('Aamarpay invoice callback received', [
+                Log::info('AamarPay invoice callback received', [
                     'transaction_id' => $transactionId,
                     'status' => $status,
                 ]);

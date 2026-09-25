@@ -113,7 +113,7 @@ class ReceiptOrderController extends Controller
         ]);
 
         if (empty($validated['purchase_order_id']) && empty($validated['return_order_id'])) {
-            return redirect()->back()->withErrors(['purchase_order_id' => __('Either Purchase Order or Return Order is required.')])->withInput();
+            return redirect()->back()->withErrors(['purchase_order_id' => __('Either purchase order or return order is required.')])->withInput();
         }
 
         $validated['created_by'] = createdBy();
@@ -328,7 +328,7 @@ class ReceiptOrderController extends Controller
         ]);
 
         if (empty($validated['purchase_order_id']) && empty($validated['return_order_id'])) {
-            return redirect()->back()->withErrors(['purchase_order_id' => __('Either Purchase Order or Return Order is required.')])->withInput();
+            return redirect()->back()->withErrors(['purchase_order_id' => __('Either purchase order or return order is required.')])->withInput();
         }
 
         $products = $validated['products'] ?? [];

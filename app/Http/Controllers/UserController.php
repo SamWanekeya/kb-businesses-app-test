@@ -161,7 +161,7 @@ class UserController extends BaseController
             return redirect()->route('users-permissions.users.index')->with('success', __('User created with roles'));
         }
 
-        return redirect()->back()->with('error', __('Unable to create User. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to create user. Please try again!'));
     }
 
     /**
@@ -192,7 +192,7 @@ class UserController extends BaseController
             return redirect()->route('users-permissions.users.index')->with('success', __('User updated with roles'));
         }
 
-        return redirect()->back()->with('error', __('Unable to update User. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to update user. Please try again!'));
     }
 
     /**
@@ -206,7 +206,7 @@ class UserController extends BaseController
             return redirect()->route('users-permissions.users.index')->with('success', __('User deleted with roles'));
         }
 
-        return redirect()->back()->with('error', __('Unable to delete User. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to delete user. Please try again!'));
     }
 
     /**

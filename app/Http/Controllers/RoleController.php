@@ -105,7 +105,7 @@ class RoleController extends BaseController
                 'permissions' => $permissions,
             ]);
         } else {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
@@ -129,10 +129,10 @@ class RoleController extends BaseController
         if ($role) {
             $role->syncPermissions($validatedPermissions);
 
-            return redirect()->route('users-permissions.roles.index')->with('success', __('Role created successfully with Permissions!'));
+            return redirect()->route('users-permissions.roles.index')->with('success', __('Role created successfully with permissions!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to create Role with permissions. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to create role with permissions. Please try again!'));
     }
 
     /**
@@ -189,7 +189,7 @@ class RoleController extends BaseController
                 'permissions' => $permissions,
             ]);
         } else {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
@@ -209,7 +209,7 @@ class RoleController extends BaseController
                 'permissions' => $permissions,
             ]);
         } else {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
@@ -237,10 +237,10 @@ class RoleController extends BaseController
             # Update the permissions
             $role->syncPermissions($validatedPermissions);
 
-            return redirect()->route('users-permissions.roles.index')->with('success', __('Role updated successfully with Permissions!'));
+            return redirect()->route('users-permissions.roles.index')->with('success', __('Role updated successfully with permissions!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to update Role with permissions. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to update role with permissions. Please try again!'));
     }
 
     /**
@@ -268,6 +268,6 @@ class RoleController extends BaseController
             return redirect()->route('users-permissions.roles.index')->with('success', __('Role deleted successfully!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to delete Role. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to delete role. Please try again!'));
     }
 }

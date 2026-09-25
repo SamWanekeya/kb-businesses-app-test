@@ -40,7 +40,7 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
                     loadRecaptchaV3();
                 }
             } catch (error) {
-                console.error('ReCaptcha load error:', error);
+                console.error('reCAPTCHA load error:', error);
                 if (onError) onError();
             }
         };
@@ -55,7 +55,7 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
                         'error-callback': onError || (() => {}),
                     });
                 } catch (error) {
-                    console.error('ReCaptcha v2 render error:', error);
+                    console.error('reCAPTCHA v2 render error:', error);
                 }
             }
         };
@@ -70,12 +70,12 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
                                 onVerify(token);
                             })
                             .catch((error: any) => {
-                                console.error('ReCaptcha v3 execute error:', error);
+                                console.error('reCAPTCHA v3 execute error:', error);
                                 if (onError) onError();
                             });
                     });
                 } catch (error) {
-                    console.error('ReCaptcha v3 ready error:', error);
+                    console.error('reCAPTCHA v3 ready error:', error);
                 }
             }
         };
@@ -89,7 +89,7 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
             script.async = true;
             script.defer = true;
             script.onerror = () => {
-                console.error('Failed to load ReCaptcha script');
+                console.error('Failed to load reCAPTCHA script');
                 if (onError) onError();
             };
             document.head.appendChild(script);
@@ -102,7 +102,7 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
                     widgetId.current = null;
                 }
             } catch (error) {
-                console.error('ReCaptcha cleanup error:', error);
+                console.error('reCAPTCHA cleanup error:', error);
             }
         };
     }, [onError, onExpired, onVerify, recaptchaEnabled, recaptchaSiteKey, recaptchaVersion]);

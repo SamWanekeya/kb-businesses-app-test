@@ -340,7 +340,7 @@ function _getURL($env)
 /*
 * _payoutPayment method initiate payout payment.
 *
-* params array $params_array - holds all form data with merchant key, transaction id etc.
+* params array $params_array - holds all form data with merchant key, transaction ID etc.
 * params string $salt_key - holds the merchant salt key.
 * params string $url - holds the url based in env(enviroment type $env = 'test' or $env = 'prod')
 *

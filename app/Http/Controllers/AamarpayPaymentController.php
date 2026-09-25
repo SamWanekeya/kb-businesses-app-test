@@ -21,7 +21,7 @@ class AamarpayPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['aamarpay_store_id'])) {
-                return back()->withErrors(['error' => __('Aamarpay not configured')]);
+                return back()->withErrors(['error' => __('AamarPay not configured')]);
             }
 
             if ($validated['pay_status'] === 'Successful') {
@@ -54,7 +54,7 @@ class AamarpayPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
-                return response()->json(['error' => __('Aamarpay not configured')], 400);
+                return response()->json(['error' => __('AamarPay not configured')], 400);
             }
 
             $user = auth()?->user();

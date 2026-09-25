@@ -76,7 +76,7 @@ class OrganizationController extends Controller
                 'status' => $organization->status,
                 'created_at' => $organization->created_at,
                 'plan_id' => $organization->plan_id,
-                'plan_name' => $organization->plan ? $organization->plan->name : __('No Plan'),
+                'plan_name' => $organization->plan ? $organization->plan->name : __('No plan'),
                 'plan_expiry_date' => $organization->plan_expiry_date,
             ];
         });
@@ -326,7 +326,7 @@ class OrganizationController extends Controller
                 $enabledFeatures = $plan->getEnabledFeatures();
                 $featureLabels = [
                     'kakbima_intelligence' => __('Kakbima Intelligence'),
-                    'password_protection' => __('Password Protection'),
+                    'password_protection' => __('Password protection'),
                 ];
                 foreach ($enabledFeatures as $feature) {
                     if (isset($featureLabels[$feature])) {

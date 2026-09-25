@@ -414,7 +414,7 @@ class SalesOrderController extends Controller
             ->first();
 
         if (!$salesOrder) {
-            return redirect()->back()->with('error', __('Sales Order not found.'));
+            return redirect()->back()->with('error', __('Sales order not found.'));
         }
 
         SalesOrderActivity::where('sales_order_id', $salesOrder->id)->delete();
@@ -429,7 +429,7 @@ class SalesOrderController extends Controller
             ->first();
 
         if (!$salesOrder) {
-            return redirect()->back()->with('error', __('Sales Order not found.'));
+            return redirect()->back()->with('error', __('Sales order not found.'));
         }
 
         $activity = SalesOrderActivity::where('id', $activityId)

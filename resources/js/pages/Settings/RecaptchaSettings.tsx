@@ -74,8 +74,8 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
 
     return (
         <SettingsSection
-            title={translate('ReCaptcha Settings')}
-            description={translate('Configure Google ReCaptcha settings for form protection')}
+            title={translate('reCAPTCHA Settings')}
+            description={translate('Configure Google reCAPTCHA settings for form protection')}
             action={
                 <Button type="submit" disabled={processing} form="recaptcha-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
@@ -93,7 +93,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                             rel="noopener noreferrer"
                             className="underline hover:no-underline"
                         >
-                            {translate('How to Get Google reCaptcha Site and Secret key')}
+                            {translate('How to Get Google reCAPTCHA Site and Secret key')}
                         </a>
                     </div>
 
@@ -101,8 +101,8 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                         <div className="grid gap-2 md:col-span-2">
                             <div className="flex items-center justify-between">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="recaptchaEnabled">{translate('Enable ReCaptcha')}</Label>
-                                    <p className="text-muted-foreground text-sm">{translate('Show ReCaptcha on authentication pages')}</p>
+                                    <Label htmlFor="recaptchaEnabled">{translate('Enable reCAPTCHA')}</Label>
+                                    <p className="text-muted-foreground text-sm">{translate('Show reCAPTCHA on authentication pages')}</p>
                                 </div>
                                 <Switch
                                     id="recaptchaEnabled"
@@ -116,7 +116,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="recaptchaVersion">{translate('Google Recaptcha Version')}</Label>
+                                <Label htmlFor="recaptchaVersion">{translate('Google reCAPTCHA Version')}</Label>
                                 <Select
                                     value={recaptchaSettings.recaptchaVersion}
                                     onValueChange={(value) => {
@@ -145,7 +145,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     onChange={(e) => {
                                         handleSettingsChange('recaptchaSiteKey', e.target.value);
                                     }}
-                                    placeholder={translate('Enter your Google ReCaptcha site key')}
+                                    placeholder={translate('Enter your Google reCAPTCHA site key')}
                                 />
                             </div>
 
@@ -161,7 +161,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     onChange={(e) => {
                                         handleSettingsChange('recaptchaSecretKey', e.target.value);
                                     }}
-                                    placeholder={translate('Enter your Google ReCaptcha secret key')}
+                                    placeholder={translate('Enter your Google reCAPTCHA secret key')}
                                 />
                             </div>
                         </div>

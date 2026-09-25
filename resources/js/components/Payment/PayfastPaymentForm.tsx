@@ -121,7 +121,7 @@ export function PayfastPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Payfast Payment')}
+                    {translate('PayFast Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -184,7 +184,7 @@ export function PayfastPaymentForm({
                             required
                         />
                         {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to Payfast to complete the payment')}</p>
+                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to PayFast to complete the payment')}</p>
                     </div>
 
                     {planPrice < 5 && (

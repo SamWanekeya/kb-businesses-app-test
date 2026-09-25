@@ -45,7 +45,7 @@ class FlutterwavePaymentController extends Controller
             $result = json_decode($response, true);
 
             if (!$result) {
-                return back()->withErrors(['error' => __('Payment verification failed - Invalid response')]);
+                return back()->withErrors(['error' => __('Payment verification failed - invalid response')]);
             }
 
             if ($result['status'] === 'success' && $result['data']['status'] === 'successful') {

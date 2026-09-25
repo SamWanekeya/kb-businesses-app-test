@@ -34,7 +34,7 @@ export function InvoiceIyzipayPaymentForm({
 
     const handlePayment = async () => {
         if (!iyzipayPublicKey) {
-            setError(translate('Iyzipay configuration is missing'));
+            setError(translate('IyziPay configuration is missing'));
             return;
         }
 
@@ -59,7 +59,7 @@ export function InvoiceIyzipayPaymentForm({
             const data = await response.json();
 
             if (data.success) {
-                // Redirect to Iyzipay payment page
+                // Redirect to IyziPay payment page
                 window.location.href = data.redirect_url;
             } else {
                 throw new Error(data.error || translate('Failed to create payment form'));
@@ -86,7 +86,7 @@ export function InvoiceIyzipayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Iyzipay Payment')}
+                    {translate('IyziPay Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -117,7 +117,7 @@ export function InvoiceIyzipayPaymentForm({
                         <Alert>
                             <AlertCircle className="h-4 w-4" />
                             <AlertDescription>
-                                {translate('You will be redirected to Iyzipay secure payment page to complete your payment.')}
+                                {translate('You will be redirected to IyziPay secure payment page to complete your payment.')}
                             </AlertDescription>
                         </Alert>
 
@@ -134,7 +134,7 @@ export function InvoiceIyzipayPaymentForm({
                                 ) : (
                                     <>
                                         <CreditCard className="mr-2 h-4 w-4" />
-                                        {translate('Pay with Iyzipay')}
+                                        {translate('Pay with IyziPay')}
                                     </>
                                 )}
                             </Button>
@@ -142,7 +142,7 @@ export function InvoiceIyzipayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-muted-foreground text-center text-xs">{translate('Powered by Iyzipay - Secure payment processing')}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate('Powered by IyziPay - Secure payment processing')}</div>
             </CardContent>
         </Card>
     );

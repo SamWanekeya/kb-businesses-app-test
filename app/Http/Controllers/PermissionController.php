@@ -43,7 +43,7 @@ class PermissionController extends BaseController
             return redirect()->route('permissions.index')->with('success', __('Permission created successfully!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to create Permission. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to create permission. Please try again!'));
     }
 
     /**
@@ -86,7 +86,7 @@ class PermissionController extends BaseController
             return redirect()->route('permissions.index')->with('success', __('Permission updated successfully!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to update Permission. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to update permission. Please try again!'));
     }
 
     /**
@@ -100,6 +100,6 @@ class PermissionController extends BaseController
             return redirect()->route('permissions.index')->with('success', __('Permission deleted successfully!'));
         }
 
-        return redirect()->back()->with('error', __('Unable to delete Permission. Please try again!'));
+        return redirect()->back()->with('error', __('Unable to delete permission. Please try again!'));
     }
 }
