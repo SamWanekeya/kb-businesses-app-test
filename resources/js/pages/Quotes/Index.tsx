@@ -26,15 +26,8 @@ export default function Quotes() {
         filters: pageFilters = {},
         publicUrlBase,
         encryptedQuoteIds,
-        flash = {},
     } = usePage().props;
     const permissions = auth?.permissions || [];
-
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
@@ -133,7 +126,7 @@ export default function Quotes() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -153,6 +146,7 @@ export default function Quotes() {
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('quotes.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
                 setIsStatusModalOpen(false);
@@ -160,7 +154,7 @@ export default function Quotes() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

@@ -100,31 +100,25 @@ export default function Meetings() {
         if (formMode === 'create') {
             const toastId = toast.loading(translate('Creating meeting...'));
             router.post(route('meetings.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
-                    else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating meeting...'));
             router.put(route('meetings.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
-                    else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -133,31 +127,27 @@ export default function Meetings() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting meeting...'));
         router.delete(route('meetings.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
-                else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('meetings.toggle-status', currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsStatusModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -250,7 +240,7 @@ export default function Meetings() {
     };
 
     const formatSelectedDate = (d: Date) => {
-        const dateFormat = settings?.dateFormat ?? 'Y-m-d';
+        const dateFormat = settings?.date_format ?? 'Y-m-d';
         const yyyy = d.getFullYear();
         const mm = String(d.getMonth() + 1).padStart(2, '0');
         const dd = String(d.getDate()).padStart(2, '0');

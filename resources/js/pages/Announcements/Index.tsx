@@ -121,70 +121,64 @@ export default function Announcements() {
     const handleFormSubmit = (formData: any) => {
         const routeName = formMode === 'create' ? 'announcements.store' : 'announcements.update';
         const method = formMode === 'create' ? 'post' : 'put';
+        const toastId =
+            formMode === 'create' ? toast.loading(translate('Creating announcement...')) : toast.loading(translate('Updating announcement...'));
 
         router[method](route(routeName, formMode === 'edit' ? currentItem.id : undefined), formData, {
             onSuccess: () => {
                 setIsFormModalOpen(false);
-                toast.success(t(formMode === 'create' ? 'Announcement created successfully.' : 'Announcement updated successfully.'));
+                const toastId = toast.success(
+                    translate(formMode === 'create' ? 'Announcement created successfully.' : 'Announcement updated successfully.'),
+                );
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to save: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting announcement...'));
         router.delete(route('announcements.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.success(translate('Announcement deleted successfully.'));
+                toast.dismiss(toastId);
             },
-            onError: () => toast.error(translate('Failed to delete announcement.')),
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+            },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('announcements.toggle-status', currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsStatusModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (item: any) => {
-        const newStatus = item.is_active ? 'inactive' : 'active';
-        toast.loading(
-            translate('{{action}} announcement...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }),
-        );
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('announcements.toggle-status', item.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

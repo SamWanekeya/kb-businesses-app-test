@@ -30,7 +30,6 @@ export default function ReceiptOrders() {
         users = [],
         allUsers = [],
         filters: pageFilters = {},
-        flash = {},
     } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -41,12 +40,6 @@ export default function ReceiptOrders() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
-
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
 
     const hasActiveFilters = () => {
         return searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedAssignee !== 'all';
@@ -129,44 +122,38 @@ export default function ReceiptOrders() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('receipt-orders.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
+                toast.dismiss(toastId);
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (receiptOrder: any) => {
-        const newStatus = receiptOrder.status === 'pending' ? 'received' : 'pending';
-        toast.loading(
-            translate('{{action}} receipt order...', {
-                action: newStatus === 'received' ? translate('Marking as received') : translate('Setting to pending'),
-            }),
-        );
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('receipt-orders.toggle-status', receiptOrder.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -184,7 +171,7 @@ export default function ReceiptOrders() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccountranslate('all');
+        setSelectedAccount('all');
         setSelectedAssignee('all');
         router.get(route('receipt-orders.index'));
     };

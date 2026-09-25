@@ -89,19 +89,14 @@ export default function InvoiceShow() {
             { reason },
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsRejectPaymentModalOpen(false);
                     setCurrentPayment(null);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    } else {
-                        toast.success(translate('Payment rejected successfully'));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    toast.error(typeof errors === 'string' ? errors : translate('Failed to reject payment'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -122,23 +117,14 @@ export default function InvoiceShow() {
                 sales_order_id: salesOrderId,
             },
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsAssignSalesOrderModalOpen(false);
                     setSelectedSalesOrderId('empty');
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to assign sales order: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -184,10 +170,8 @@ export default function InvoiceShow() {
             {
                 preserveScroll: true,
                 preserveState: false,
-                onSuccess: (page: any) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                     fetch(route('invoices.reminder-history', invoice.id))
                         .then((r) => r.json())
                         .then((data) => {
@@ -197,11 +181,7 @@ export default function InvoiceShow() {
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to send reminder: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -585,14 +565,15 @@ export default function InvoiceShow() {
                                                                                 {},
                                                                                 {
                                                                                     preserveScroll: true,
-                                                                                    onSuccess: (page) => {
-                                                                                        if (page.props.flash.success)
-                                                                                            toast.success(translate(page.props.flash.success));
-                                                                                        if (page.props.flash.error)
-                                                                                            toast.error(translate(page.props.flash.error));
+                                                                                    onSuccess: () => {
+                                                                                        toast.dismiss(toastId);
                                                                                     },
-                                                                                    onError: () =>
-                                                                                        toast.error(translate('Failed to approve payment')),
+                                                                                    onError: (errors) => {
+                                                                                        toast.dismiss(toastId);
+                                                                                        Object.values(errors).forEach((message) =>
+                                                                                            toast.error(translate(message)),
+                                                                                        );
+                                                                                    },
                                                                                 },
                                                                             );
                                                                         }}

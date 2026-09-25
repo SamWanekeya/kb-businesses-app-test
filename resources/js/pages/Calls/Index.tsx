@@ -137,45 +137,25 @@ export default function Calls() {
         if (formMode === 'create') {
             const toastId = toast.loading(translate('Creating call...'));
             router.post(route('calls.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    const errorMessages = Object.entries(errors)
-                        .map(([field, messages]) => {
-                            const messageArray = Array.isArray(messages) ? messages : [messages];
-                            return `${field}: ${messageArray.join(', ')}`;
-                        })
-                        .join('; ');
-                    toast.error(errorMessages);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating call...'));
             router.put(route('calls.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    const errorMessages = Object.entries(errors)
-                        .map(([field, messages]) => {
-                            const messageArray = Array.isArray(messages) ? messages : [messages];
-                            return `${field}: ${messageArray.join(', ')}`;
-                        })
-                        .join('; ');
-                    toast.error(errorMessages);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -184,56 +164,43 @@ export default function Calls() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting call...'));
         router.delete(route('calls.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete call: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('calls.toggle-status', currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsStatusModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (call: any) => {
-        const newStatus = call.status === 'planned' ? 'held' : 'planned';
-        toast.loading(`${newStatus === 'held' ? translate('Marking as held') : translate('Marking as planned')} call...`);
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('calls.toggle-status', call.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

@@ -101,23 +101,31 @@ export default function Notes() {
     const handleFormSubmit = (formData: any) => {
         const routeName = formMode === 'create' ? 'notes.store' : 'notes.update';
         const method = formMode === 'create' ? 'post' : 'put';
+        const toastId = formMode === 'create' ? toast.loading(translate('Creating note...')) : toast.loading(translate('Updating note...'));
 
         router[method](route(routeName, formMode === 'edit' ? currentItem.id : undefined), formData, {
             onSuccess: () => {
                 setIsFormModalOpen(false);
-                toast.success(t(formMode === 'create' ? 'Note created successfully.' : 'Note updated successfully.'));
+                toast.dismiss(toastId);
             },
-            onError: () => toast.error(translate('Failed to save note.')),
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+            },
         });
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting note...'));
         router.delete(route('notes.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.success(translate('Note deleted successfully.'));
+                toast.dismiss(toastId);
             },
-            onError: () => toast.error(translate('Failed to delete note.')),
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+            },
         });
     };
 

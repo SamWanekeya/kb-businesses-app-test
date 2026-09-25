@@ -166,7 +166,7 @@ export default function DeliveryOrderEdit() {
         }
 
         setProcessing(true);
-        const toastId = toast.loading(translate('Saving...'));
+        const toastId = toast.loading(translate('Updating delivery order...'));
 
         router.put(
             route('delivery-orders.update', deliveryOrder.id),

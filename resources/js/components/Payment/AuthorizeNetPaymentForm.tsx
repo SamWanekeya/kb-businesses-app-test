@@ -156,8 +156,8 @@ export function AuthorizeNetPaymentForm({
                     onSuccess();
                 },
                 onError: (errors) => {
-                    setError(Object.values(errors).flat().join(', '));
-                    setIsLoading(false);
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

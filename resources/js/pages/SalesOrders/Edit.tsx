@@ -409,14 +409,14 @@ export default function SalesOrderEdit() {
                     discount_type: discount_type || 'none',
                 })),
         };
+        const toastId = toast.loading(translate('Updating sale order...'));
         router.put(route('sales-orders.update', salesOrder.id), payload, {
             onSuccess: () => {
                 toast.dismiss(toastId);
             },
-            onError: (errs) => {
-                setSubmitting(false);
+            onError: (errors) => {
                 toast.dismiss(toastId);
-                setErrors(errs);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

@@ -74,8 +74,8 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
                 onSuccess();
             },
             onError: (errors) => {
-                const message = typeof errors === 'string' ? errors : Object.values(errors).flat().join(', ');
-                toast.error(message || translate('Failed to submit payment request'));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
             onFinish: () => {
                 setProcessing(false);

@@ -22,13 +22,6 @@ import { useTranslation } from 'react-i18next';
 export default function Invoices() {
     const { t: translate } = useTranslation();
     const getInitials = useInitials();
-    const { flash } = usePage().props;
-
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning ? toast.warning(translate(flash.warning)) : toast.error(translate(flash.warning));
-    }, [flash]);
 
     const {
         csrfToken,
@@ -155,49 +148,39 @@ export default function Invoices() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to delete invoice: ${Object.values(errors).join(', ')}`);
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
+
         router.put(route('invoices.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
+                toast.dismiss(toastId);
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (invoice: any) => {
-        const newStatus = invoice.status === 'draft' ? 'sent' : 'draft';
-        toast.loading(`${newStatus === 'sent' ? translate('Sending') : translate('Setting to draft')} invoice...`);
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('invoices.toggle-status', invoice.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to update status: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -229,11 +212,7 @@ export default function Invoices() {
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to send reminder: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -318,7 +297,7 @@ export default function Invoices() {
             }
         } catch (error) {
             toast.dismiss(toastId);
-            toast.error(translate('Failed to reject payment'));
+            Object.values(errors).forEach((message) => toast.error(translate(message)));
         }
     };
 
@@ -334,7 +313,7 @@ export default function Invoices() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccountranslate('all');
+        setSelectedAccount('all');
         setSelectedAssignee('all');
         router.get(route('invoices.index'));
     };

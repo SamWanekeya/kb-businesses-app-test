@@ -148,90 +148,45 @@ export default function CouponsPage() {
         if (formData.use_limit_per_user) formData.use_limit_per_user = parseInt(formData.use_limit_per_user);
 
         if (formMode === 'create') {
-            {
-                const toastId = toast.loading(translate('Creating coupon...'));
-            }
+            const toastId = toast.loading(translate('Creating coupon...'));
 
             router.post(route('coupons.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    } else {
-                        toast.error(translate('Failed to create coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
-            {
-                const toastId = toast.loading(translate('Updating coupon...'));
-            }
+            const toastId = toast.loading(translate('Updating coupon...'));
 
             router.put(route('coupons.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    } else {
-                        toast.error(translate('Failed to update coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
-        {
-            const toastId = toast.loading(translate('Deleting coupon...'));
-        }
+        const toastId = toast.loading(translate('Deleting coupon...'));
 
         router.delete(route('coupons.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                {
-                    toast.dismiss(toastId);
-                }
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                {
-                    toast.dismiss(toastId);
-                }
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                } else {
-                    toast.error(translate('Failed to delete coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -241,33 +196,18 @@ export default function CouponsPage() {
     };
 
     const handleToggleStatus = (coupon: any) => {
-        {
-            toast.loading(t(coupon.status ? 'Deactivating' : 'Activating') + ' ' + translate('coupon...'));
-        }
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('coupons.toggle-status', coupon.id),
             {},
             {
-                onSuccess: (page) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    } else {
-                        toast.error(translate('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

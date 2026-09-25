@@ -148,61 +148,55 @@ export default function CampaignTypes() {
             return;
         }
         if (formMode === 'create') {
+            const toastId = toast.loading(translate('Creating campaign type...'));
             router.post(route('campaign-types.store'), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to create campaign type.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
+            const toastId = toast.loading(translate('Updating campaign type...'));
             router.put(route('campaign-types.update', currentItem.id), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to update campaign type.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting campaign type...'));
         router.delete(route('campaign-types.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                if (page.props.flash.success) {
-                    toast.success(page.props.flash.success);
-                    if (formMode === 'edit') resetForm();
-                } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${translate('Failed to delete campaign type')}: ${Object.values(errors).join(', ')}`);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (item: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('campaign-types.toggle-status', item.id),
             {},
             {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        if (formMode === 'edit' && currentItem?.id === item.id)
-                            setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => toast.error(`${translate('Failed to update campaign type')}: ${Object.values(errors).join(', ')}`),
             },

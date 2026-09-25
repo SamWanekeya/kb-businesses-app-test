@@ -257,10 +257,10 @@ export default function InvoiceTemplateSettings() {
             } else if (result.error) {
                 toast.error(result.error);
             } else {
-                toast.error(t(result.message));
+                toast.error(translate(result.message));
             }
         } catch (e: any) {
-            toast.error(t(e.response?.data?.message || 'Failed to update invoice template settings'));
+            toast.error(translate(e.response?.data?.message || 'Failed to update invoice template settings'));
         } finally {
             setSaving(false);
         }

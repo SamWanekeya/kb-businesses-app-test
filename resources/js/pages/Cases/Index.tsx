@@ -151,48 +151,26 @@ export default function Cases() {
             const toastId = toast.loading(translate('Creating case...'));
 
             router.post(route('cases.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    } else if (page.props.flash.warning) {
-                        toast.warning(translate(page.props.flash.warning));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to create case: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating case...'));
 
             router.put(route('cases.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    } else if (page.props.flash.warning) {
-                        toast.warning(translate(page.props.flash.warning));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update case: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -202,73 +180,44 @@ export default function Cases() {
         const toastId = toast.loading(translate('Deleting case...'));
 
         router.delete(route('cases.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                } else if (page.props.flash.warning) {
-                    toast.warning(translate(page.props.flash.warning));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to delete case: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('cases.toggle-status', currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsStatusModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (caseItem: any) => {
-        const newStatus = caseItem.status === 'new' ? 'closed' : 'new';
-        toast.loading(`${newStatus === 'new' ? translate('Opening') : translate('Closing')} case...`);
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('cases.toggle-status', caseItem.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update case status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

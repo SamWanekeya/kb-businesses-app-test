@@ -26,22 +26,12 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
             {},
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-
-                    if (successMessage) {
-                        toast.success(successMessage);
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                    }
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to clear cache');
-                    toast.error(errorMessage);
-                },
-                onFinish: () => {
-                    setIsClearing(false);
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

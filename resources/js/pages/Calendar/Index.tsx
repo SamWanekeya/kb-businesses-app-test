@@ -518,7 +518,7 @@ export default function CalendarIndex() {
                                         getEventColor(selectedEvent.type || 'event')
                                     }
                                 >
-                                    {selectedEvent.type ? t(formatTitleCase(selectedEvent.type)) : translate('Event')}
+                                    {selectedEvent.type ? translate(formatTitleCase(selectedEvent.type)) : translate('Event')}
                                 </span>
                             </div>
 
@@ -567,7 +567,7 @@ export default function CalendarIndex() {
                                                           : selectedEvent.status === 'done'
                                                             ? translate('Done')
                                                             : selectedEvent.status
-                                                  : t(formatTitleCase(selectedEvent.status))}
+                                                  : translate(formatTitleCase(selectedEvent.status))}
                                         </span>
                                     </div>
                                 )}

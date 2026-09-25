@@ -36,26 +36,18 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
             data.append('googleCalendarJson', jsonFile);
         }
 
+        const toastId = toast.loading(translate('Updating Google calendar settings...'));
         router.post(route('settings.google-calendar.update'), data, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
+                toast.dismiss(toastId);
                 setIsLoading(false);
                 setJsonFile(null);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                } else {
-                    toast.success(translate('Calendar settings updated successfully'));
-                }
             },
             onError: (errors) => {
                 setIsLoading(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Google Calendar settings');
-                toast.error(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -68,22 +60,12 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
             {},
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-
-                    if (successMessage) {
-                        toast.success(successMessage);
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                    }
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Sync failed');
-                    toast.error(errorMessage);
-                },
-                onFinish: () => {
-                    setIsSyncing(false);
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

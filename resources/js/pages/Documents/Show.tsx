@@ -98,16 +98,13 @@ export default function DocumentShow() {
     const handleFormSubmit = (formData: any) => {
         const toastId = toast.loading(translate('Updating document...'));
         router.put(route('documents.update', document.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsFormModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -115,16 +112,13 @@ export default function DocumentShow() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting document...'));
         router.delete(route('documents.destroy', document.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 toast.dismiss(toastId);
-                if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 router.get(document.folder?.id ? route('documents.folder', document.folder.id) : route('documents.index'));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -220,14 +214,12 @@ export default function DocumentShow() {
             route('documents.toggle-status', document.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                 },
-                onError: () => {
+                onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update status'));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

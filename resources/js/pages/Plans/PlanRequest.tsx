@@ -75,25 +75,12 @@ export default function PlanRequestsPage() {
                 route('subscriptions.plan-requests.approve', item.id),
                 {},
                 {
-                    onSuccess: (page) => {
-                        {
-                            toast.dismiss(toastId);
-                        }
-                        if (page.props.flash.success) {
-                            toast.success(translate(page.props.flash.success));
-                        } else if (page.props.flash.error) {
-                            toast.error(translate(page.props.flash.error));
-                        }
+                    onSuccess: () => {
+                        toast.dismiss(toastId);
                     },
                     onError: (errors) => {
-                        {
-                            toast.dismiss(toastId);
-                        }
-                        if (typeof errors === 'string') {
-                            toast.error(translate(errors));
-                        } else {
-                            toast.error(translate('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                        }
+                        toast.dismiss(toastId);
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 },
             );
@@ -106,25 +93,12 @@ export default function PlanRequestsPage() {
                 route('subscriptions.plan-requests.reject', item.id),
                 {},
                 {
-                    onSuccess: (page) => {
-                        {
-                            toast.dismiss(toastId);
-                        }
-                        if (page.props.flash.success) {
-                            toast.success(translate(page.props.flash.success));
-                        } else if (page.props.flash.error) {
-                            toast.error(translate(page.props.flash.error));
-                        }
+                    onSuccess: () => {
+                        toast.dismiss(toastId);
                     },
                     onError: (errors) => {
-                        {
-                            toast.dismiss(toastId);
-                        }
-                        if (typeof errors === 'string') {
-                            toast.error(translate(errors));
-                        } else {
-                            toast.error(translate('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                        }
+                        toast.dismiss(toastId);
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 },
             );

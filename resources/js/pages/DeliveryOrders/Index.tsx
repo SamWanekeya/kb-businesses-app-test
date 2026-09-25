@@ -125,18 +125,21 @@ export default function DeliveryOrders() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete delivery order: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('delivery-orders.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
+                toast.dismiss(toastId);
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -148,22 +151,18 @@ export default function DeliveryOrders() {
             delivered: 'pending',
             cancelled: 'pending',
         };
-        const newStatus = statusMap[deliveryOrder.status as keyof typeof statusMap] || 'pending';
-        const toastId = toast.loading(translate('Setting delivery order to {{status}}...', { status: newStatus }));
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('delivery-orders.toggle-status', deliveryOrder.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update delivery order status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

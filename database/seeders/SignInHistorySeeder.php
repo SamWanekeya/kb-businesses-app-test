@@ -185,7 +185,7 @@ class SignInHistorySeeder extends Seeder
         $details = array_merge($browser, $location, [
             'status' => 'success',
             'query' => $ipAddress,
-            'referrer_host' => fake()->randomElement(['localhost', 'kakbima.dev', 'kakbima.com', null]),
+            'referrer_host' => fake()->randomElement(['localhost', 'kakbima.dev', 'kakbima.co.ke', 'kakbima.com', null]),
             'referrer_path' => fake()->randomElement(['/sign-in', '/dashboard', '/home', null]),
             'as' => null,
         ]);

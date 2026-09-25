@@ -33,11 +33,6 @@ export default function Products() {
         flash,
     } = usePage().props;
 
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
     const permissions = auth?.permissions || [];
 
     // State
@@ -144,27 +139,21 @@ export default function Products() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (product: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('products.toggle-status', product.id),
             {},
             {
                 onSuccess: () => {},
                 onError: (errors) => {
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

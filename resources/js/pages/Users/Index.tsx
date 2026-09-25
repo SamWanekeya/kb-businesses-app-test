@@ -127,48 +127,26 @@ export default function Users() {
             const toastId = toast.loading(translate('Creating user...'));
 
             router.post(route('users-permissions.users.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    } else if (page.props.flash.warning) {
-                        toast.warning(translate(page.props.flash.warning));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to create user: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating user...'));
 
             router.put(route('users-permissions.users.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    } else if (page.props.flash.warning) {
-                        toast.warning(translate(page.props.flash.warning));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to update user: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -178,24 +156,13 @@ export default function Users() {
         const toastId = toast.loading(translate('Deleting user...'));
 
         router.delete(route('users-permissions.users.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                } else if (page.props.flash.warning) {
-                    toast.warning(translate(page.props.flash.warning));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to delete user: ${Object.values(errors).join(', ')}`);
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -204,49 +171,30 @@ export default function Users() {
         const toastId = toast.loading(translate('Resetting password...'));
 
         router.put(route('users-permissions.users.reset-password', currentItem.id), data, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsResetPasswordModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to reset password: ${Object.values(errors).join(', ')}`);
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (user: any) => {
-        const newStatus = user.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} user...`);
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('users-permissions.users.toggle-status', user.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to update user status: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

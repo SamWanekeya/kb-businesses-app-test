@@ -7,7 +7,7 @@ import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { Textarea } from '@components/UserInterface/Textarea';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ interface Props {
 
 export default function NotificationTemplateShow({ template, languages, variables }: Props) {
     const { t: translate } = useTranslation();
-    const { flash } = usePage().props;
+
     const [currentLang, setCurrentLang] = useState(Object.keys(languages)[0] || 'en');
     const [templateLangs, setTemplateLangs] = useState(
         template.notification_template_langs.reduce<Record<string, { title: string; content: string }>>((acc, lang) => {

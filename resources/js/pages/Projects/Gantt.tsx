@@ -336,21 +336,14 @@ export default function ProjectGantt() {
             };
 
             router.post(route('project-tasks.store'), taskData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    }
                     router.reload();
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to create task: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }

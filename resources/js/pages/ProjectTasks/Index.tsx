@@ -205,49 +205,37 @@ export default function ProjectTasks() {
                     task_status_id: prefilledStatus ? parseInt(prefilledStatus) : formData.task_status_id,
                 },
                 {
-                    onSuccess: (page) => {
+                    onSuccess: () => {
                         setIsFormModalOpen(false);
                         toast.dismiss(toastId);
-                        if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                        else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                     },
                     onError: (errors) => {
                         toast.dismiss(toastId);
-                        toast.error(
-                            typeof errors === 'string'
-                                ? errors
-                                : translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
-                        );
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 },
             );
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating task...'));
             router.put(route('project-tasks.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(
-                        typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
-                    );
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
-        const toastId = toast.loading(translate('Deleting task...'));
+        const toastId = toast.loading(translate('Deleting project task...'));
         router.delete(route('project-tasks.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
@@ -437,15 +425,13 @@ export default function ProjectTasks() {
                                         {
                                             preserveState: true,
                                             preserveScroll: true,
-                                            onSuccess: (page) => {
+                                            onSuccess: () => {
                                                 toast.dismiss(toastId);
-                                                if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
-                                                else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                                                 router.reload();
                                             },
-                                            onError: () => {
+                                            onError: (errors) => {
                                                 toast.dismiss(toastId);
-                                                toast.error(translate('Failed to update task status'));
+                                                Object.values(errors).forEach((message) => toast.error(translate(message)));
                                             },
                                         },
                                     );

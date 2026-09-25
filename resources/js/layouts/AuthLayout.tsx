@@ -161,7 +161,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
      * @returns {string} External Kakbima website URL
      */
     const externalWebsiteUrl = useCallback(() => {
-        return `${createKakbimaExternalUrl('www')}${languageFromCookie}/?utm_source=accounts.kakbima.com`;
+        return `${createKakbimaExternalUrl('www')}${languageFromCookie}/?utm_source=accounts.kakbima.dev`;
     }, [languageFromCookie]);
 
     return (
@@ -170,15 +170,10 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
 
             {/* Outer Card Container */}
             <div className="flex w-full max-w-6xl overflow-hidden">
-
                 {/* Left Side - Image */}
                 <div className="relative hidden p-6 lg:block lg:w-1/2">
                     <div className="relative h-full w-full overflow-hidden rounded-xl">
-                        <img
-                            src={leftSideBackgroundImage}
-                            alt="Kakbima"
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
+                        <img src={leftSideBackgroundImage} alt="Kakbima" className="absolute inset-0 h-full w-full object-cover" />
 
                         {/* Overlay */}
                         <div className="absolute inset-0 flex flex-col justify-between rounded-xl bg-black/40 p-6">
@@ -212,7 +207,8 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
                     </div>
 
                     <div
-                        className={`w-full max-w-md transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                        className={`w-full max-w-md transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+                    >
                         <div className="bg-card text-card-foreground rounded-xl border p-8 shadow-sm shadow-xl">
                             <div className="mb-6 text-center">
                                 <div className="mx-auto mb-4 flex h-10 w-50 items-center justify-center">

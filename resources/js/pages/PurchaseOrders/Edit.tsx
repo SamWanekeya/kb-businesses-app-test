@@ -194,9 +194,12 @@ export default function PurchaseOrderEdit() {
 
         const toastId = toast.loading(translate('Updating purchase order...'));
         put(route('purchase-orders.update', purchaseOrder.id), {
-            onSuccess: () => toast.dismiss(),
-            onError: () => {
+            onSuccess: () => {
                 toast.dismiss(toastId);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

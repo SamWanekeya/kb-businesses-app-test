@@ -35,15 +35,10 @@ export default function Opportunities() {
         allOpportunitySources = [],
         allUsers = [],
         filters: pageFilters = {},
-        flash = {},
+
         globalSettings = {},
     } = usePage().props;
 
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 
@@ -180,11 +175,7 @@ export default function Opportunities() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -195,10 +186,7 @@ export default function Opportunities() {
             return;
         }
 
-        const newStatus = opportunity.status === 'active' ? 'inactive' : 'active';
-        toast.loading(
-            translate('{{action}} opportunity...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }),
-        );
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('opportunities.toggle-status', opportunity.id),
@@ -212,11 +200,7 @@ export default function Opportunities() {
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -729,7 +713,7 @@ export default function Opportunities() {
                                                     },
                                                     onError: () => {
                                                         toast.dismiss(toastId);
-                                                        toast.error(translate('Failed to update opportunity stage'));
+                                                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                                                         setKanbanData(kanbanDataRef);
                                                     },
                                                 },

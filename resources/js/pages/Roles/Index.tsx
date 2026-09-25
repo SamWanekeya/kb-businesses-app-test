@@ -90,19 +90,13 @@ export default function RolesPage() {
         const toastId = toast.loading(translate('Deleting role...'));
 
         router.delete(route('users-permissions.roles.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(
-                    typeof errors === 'string'
-                        ? translate(errors)
-                        : translate('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
-                );
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

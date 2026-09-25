@@ -94,23 +94,13 @@ export default function TwilioNotificationSettings() {
 
         router.post(route('settings.twilio-notifications.update'), data, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
                 toast.dismiss(toastId);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                } else {
-                    toast.success('Twilio settings updated successfully.');
-                }
             },
-            onError: () => {
-                setProcessing(false);
-                toast.error('Failed to update Twilio settings.');
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -131,40 +121,13 @@ export default function TwilioNotificationSettings() {
             { phone: testPhone },
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsSendingSMS(false);
                     toast.dismiss(toastId);
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-
-                    if (successMessage) {
-                        toast.success(successMessage);
-                        setTestSMSResult({ success: true, message: successMessage });
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                        setTestSMSResult({ success: false, message: errorMessage });
-                    } else {
-                        const message = translate('Test SMS sent successfully to {{phone}}', { phone: testPhone });
-                        toast.success(message);
-                        setTestSMSResult({ success: true, message });
-                    }
-
-                    // Reset result after 5 seconds
-                    setTimeout(() => {
-                        setTestSMSResult(null);
-                    }, 5000);
                 },
                 onError: (errors) => {
-                    setIsSendingSMS(false);
                     toast.dismiss(toastId);
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test SMS');
-                    toast.error(errorMessage);
-                    setTestSMSResult({ success: false, message: errorMessage });
-
-                    // Reset result after 5 seconds
-                    setTimeout(() => {
-                        setTestSMSResult(null);
-                    }, 5000);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

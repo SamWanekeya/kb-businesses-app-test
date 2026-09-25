@@ -66,7 +66,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://accounts.kakbima.com'),
+    'url' => env('APP_URL', 'https://accounts.kakbima.dev'),
 
     'asset_url' => env('ASSET_URL'),
 

@@ -37,11 +37,6 @@ export default function Accounts() {
         planLimits,
         filters: pageFilters = {},
     } = usePage().props;
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
     const permissions = auth?.permissions || [];
 
     // State
@@ -153,18 +148,13 @@ export default function Accounts() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to delete account: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (account: any) => {
-        const newStatus = account.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} account...`);
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('accounts.toggle-status', account.id),
@@ -173,11 +163,7 @@ export default function Accounts() {
                 onSuccess: () => toast.dismiss(),
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update account status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

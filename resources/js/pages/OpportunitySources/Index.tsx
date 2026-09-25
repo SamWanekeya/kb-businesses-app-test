@@ -137,64 +137,63 @@ export default function OpportunitySources() {
         setFormErrors({});
 
         if (formMode === 'create') {
+            const toastId = toast.loading(translate('Creating opportunity source ...'));
             router.post(route('opportunity-sources.store'), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to create opportunity source.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
+            const toastId = toast.loading(translate('Updating opportunity source...'));
             router.put(route('opportunity-sources.update', currentItem.id), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to update opportunity source.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting opportunity source...'));
         router.delete(route('opportunity-sources.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                if (page.props.flash.success) {
-                    toast.success(page.props.flash.success);
-                    if (formMode === 'edit') resetForm();
-                } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${translate('Failed to delete opportunity source')}: ${Object.values(errors).join(', ')}`);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleToggleStatus = (item: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('opportunity-sources.toggle-status', item.id),
             {},
             {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        if (formMode === 'edit' && currentItem?.id === item.id) {
-                            setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
-                        }
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
+                    if (formMode === 'edit' && currentItem?.id === item.id) {
+                        setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
+                    }
                 },
-                onError: (errors) => toast.error(`${translate('Failed to update opportunity source')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => {
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
+                },
             },
         );
     };

@@ -17,22 +17,8 @@ import { useTranslation } from 'react-i18next';
 export default function SalesOrders() {
     const { t: translate } = useTranslation();
     const getInitials = useInitials();
-    const {
-        auth,
-        salesOrders,
-        allAccounts,
-        allUsers = [],
-        filters: pageFilters = {},
-        publicUrlBase,
-        encryptedSalesOrderIds,
-        flash = {},
-    } = usePage().props;
+    const { auth, salesOrders, allAccounts, allUsers = [], filters: pageFilters = {}, publicUrlBase, encryptedSalesOrderIds } = usePage().props;
 
-    useEffect(() => {
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
@@ -114,7 +100,7 @@ export default function SalesOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        const toastId = toast.loading(translate('Deleting sales order...'));
+        const toastId = toast.loading(translate('Deleting sale order...'));
 
         router.delete(route('sales-orders.destroy', currentItem.id), {
             onSuccess: () => {
@@ -123,18 +109,21 @@ export default function SalesOrders() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('sales-orders.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
+                toast.dismiss(toastId);
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -165,7 +154,7 @@ export default function SalesOrders() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccountranslate('all');
+        setSelectedAccount('all');
         setSelectedAssignee('all');
         router.get(route('sales-orders.index'));
     };

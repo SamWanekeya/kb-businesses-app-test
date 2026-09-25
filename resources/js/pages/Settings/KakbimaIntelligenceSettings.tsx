@@ -63,23 +63,16 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
         e.preventDefault();
         setProcessing(true);
 
+        const toastId = toast.loading(translate('Updating Kakbima Intelligence...'));
         router.post(route('settings.kakbima-intelligence.update'), kakbimaIntelligenceSettings, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
+                toast.dismiss(toastId);
                 setProcessing(false);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
             },
             onError: (errors) => {
-                setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Kakbima Intelligence settings');
-                toast.error(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

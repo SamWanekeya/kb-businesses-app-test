@@ -129,12 +129,12 @@ export default function ProductEdit() {
         }
         const toastId = toast.loading(translate('Updating product...'));
         put(route('products.update', product.id), {
-            onSuccess: () => toast.dismiss(),
-            onError: (errs) => {
+            onSuccess: () => {
                 toast.dismiss(toastId);
-                Object.values(errs).forEach((msg: any) => toast.error(msg));
-                const firstErrStep = [1, 2, 3, 4].find((s) => Object.keys(validateStep(s)).length > 0);
-                if (firstErrStep) setStep(firstErrStep);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

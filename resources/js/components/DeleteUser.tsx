@@ -2,6 +2,7 @@ import { router } from '@inertiajs/react';
 import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 
+import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { route } from '@utils/Routes';
@@ -16,16 +17,15 @@ export default function DeleteUser() {
     };
 
     const deleteUser = () => {
+        const toastId = toast.loading(translate('Deleting user...'));
         router.delete(route('profile.destroy'), {
             preserveScroll: true,
             onSuccess: () => {
-                closeModal();
+                toast.dismiss(toastId);
             },
-            onError: () => {
-                closeModal();
-            },
-            onFinish: () => {
-                closeModal();
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

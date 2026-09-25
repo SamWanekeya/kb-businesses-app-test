@@ -70,8 +70,6 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const submitProfile = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const toastId = toast.loading(translate('Updating profile information...'));
-
         setProfileProcessing(true);
 
         const formData = new FormData();
@@ -80,6 +78,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         formData.append('_method', 'PATCH');
         if (profileData.avatar) formData.append('avatar', profileData.avatar);
 
+        const toastId = toast.loading(translate('Updating account information...'));
         router.post(route('my-kakbima-account.update'), formData, {
             preserveScroll: true,
             forceFormData: true,

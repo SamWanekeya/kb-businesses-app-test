@@ -136,42 +136,37 @@ export default function TaskStatuses() {
         e.preventDefault();
         setFormErrors({});
         if (formMode === 'create') {
+            const toastId = toast.loading(translate('Creating task status...'));
             router.post(route('task-statuses.store'), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to create task status.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
+            const toastId = toast.loading(translate('Updating task status...'));
             router.put(route('task-statuses.update', currentItem.id), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    setFormErrors(errors);
-                    toast.error(translate('Failed to update task status.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting task status...'));
         router.delete(route('task-statuses.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                if (page.props.flash.success) {
-                    toast.success(page.props.flash.success);
-                    if (formMode === 'edit') resetForm();
-                } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
@@ -181,16 +176,13 @@ export default function TaskStatuses() {
     };
 
     const handleToggleStatus = (item: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('task-statuses.toggle-status', item.id),
             {},
             {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        if (formMode === 'edit' && currentItem?.id === item.id)
-                            setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => toast.error(`${translate('Failed to update task status')}: ${Object.values(errors).join(', ')}`),
             },

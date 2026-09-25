@@ -7,7 +7,7 @@ import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { RichTextField } from '@components/UserInterface/RichTextField';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -41,7 +41,7 @@ interface Props {
 
 export default function EmailTemplateShow({ template, languages, variables }: Props) {
     const { t: translate } = useTranslation();
-    const { flash } = usePage().props;
+
     const [fromName, setFromName] = useState(template.from);
     const [currentLang, setCurrentLang] = useState(languages[0]?.code || 'en');
     const [templateLangs, setTemplateLangs] = useState(

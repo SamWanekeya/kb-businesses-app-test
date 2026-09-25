@@ -61,23 +61,14 @@ export default function EmailNotificationSettings() {
         const toastId = toast.loading(translate('Saving email notification settings...'));
         router.post(route('settings.email-notifications.update'), notifications, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
                 toast.dismiss(toastId);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                } else {
-                    toast.success('Email notification settings updated successfully.');
-                }
             },
-            onError: () => {
+            onError: (errors) => {
                 setProcessing(false);
-                toast.error('Failed to update email notification settings.');
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

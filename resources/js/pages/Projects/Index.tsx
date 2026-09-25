@@ -157,31 +157,25 @@ export default function Projects() {
         if (formMode === 'create') {
             const toastId = toast.loading(translate('Creating project...'));
             router.post(route('projects.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    page.props.flash.success
-                        ? toast.success(translate(page.props.flash.success))
-                        : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(typeof errors === 'string' ? errors : `Failed to create project: ${Object.values(errors).join(', ')}`);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating project...'));
             router.put(route('projects.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
-                    page.props.flash.success
-                        ? toast.success(translate(page.props.flash.success))
-                        : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(typeof errors === 'string' ? errors : `Failed to update project: ${Object.values(errors).join(', ')}`);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -190,34 +184,27 @@ export default function Projects() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting project...'));
         router.delete(route('projects.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                page.props.flash.success
-                    ? toast.success(translate(page.props.flash.success))
-                    : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(typeof errors === 'string' ? errors : `Failed to delete project: ${Object.values(errors).join(', ')}`);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleStatusChange = (formData: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(route('projects.toggle-status', currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsStatusModalOpen(false);
                 toast.dismiss(toastId);
-                page.props.flash.success
-                    ? toast.success(translate(page.props.flash.success))
-                    : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(
-                    typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
-                );
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -231,7 +218,7 @@ export default function Projects() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedPriority('all');
-        setSelectedAccountranslate('all');
+        setSelectedAccount('all');
         setSelectedAssignee('all');
         router.get(route('projects.index'), { status: selectedStatus !== 'all' ? selectedStatus : undefined });
     };

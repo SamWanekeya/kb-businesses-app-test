@@ -149,42 +149,38 @@ export default function AccountIndustries() {
         }
 
         if (formMode === 'create') {
+            const toastId = toast.loading(translate('Creating account industry...'));
             router.post(route('account-industries.store'), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to create account industry.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
+            const toastId = toast.loading(translate('Updating account industry...'));
             router.put(route('account-industries.update', currentItem.id), formData, {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        resetForm();
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(translate('Failed to update account industry.'));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting account industries...'));
         router.delete(route('account-industries.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                if (page.props.flash.success) {
-                    toast.success(page.props.flash.success);
-                    if (formMode === 'edit') resetForm();
-                } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
@@ -194,19 +190,21 @@ export default function AccountIndustries() {
     };
 
     const handleToggleStatus = (item: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('account-industries.toggle-status', item.id),
             {},
             {
-                onSuccess: (page) => {
-                    if (page.props.flash.success) {
-                        toast.success(page.props.flash.success);
-                        if (formMode === 'edit' && currentItem?.id === item.id) {
-                            setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
-                        }
-                    } else if (page.props.flash.error) toast.error(page.props.flash.error);
+                onSuccess: () => {
+                    toast.dismiss(toastId);
+                    if (formMode === 'edit' && currentItem?.id === item.id) {
+                        setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
+                    }
                 },
-                onError: (errors) => toast.error(`${translate('Failed to update account industry')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => {
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
+                },
             },
         );
     };

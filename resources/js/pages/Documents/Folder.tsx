@@ -71,32 +71,26 @@ export default function DocumentFolderView() {
             const toastId = toast.loading(translate('Creating document...'));
             router.post(route('documents.store'), formData, {
                 preserveState: false,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsDocModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
             const toastId = toast.loading(translate('Updating document...'));
             router.put(route('documents.update', currentDoc.id), formData, {
                 preserveState: false,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsDocModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -105,34 +99,29 @@ export default function DocumentFolderView() {
     const handleDocDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting document...'));
         router.delete(route('documents.destroy', currentDoc.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDocDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     const handleDocToggleStatus = (doc: any) => {
+        const toastId = toast.loading(translate('Updating status...'));
         router.put(
             route('documents.toggle-status', doc.id),
             {},
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -144,32 +133,26 @@ export default function DocumentFolderView() {
             const toastId = toast.loading(translate('Creating folder...'));
             router.post(route('documents.document-folders.store'), formData, {
                 preserveState: false,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFolderModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else {
             const toastId = toast.loading(translate('Updating folder...'));
             router.put(route('documents.document-folders.update', currentSubFolder.id), formData, {
                 preserveState: false,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFolderModalOpen(false);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -179,20 +162,16 @@ export default function DocumentFolderView() {
         const toastId = toast.loading(translate('Deleting folder...'));
         const deletingCurrentFolder = currentSubFolder?.id === folder.id;
         router.delete(route('documents.document-folders.destroy', currentSubFolder.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsFolderDeleteModalOpen(false);
                 toast.dismiss(toastId);
-                const f = page.props.flash as any;
-                if (f?.success_title) toast.success(t(f.success_title));
-                else if (f?.success) toast.success(t(f.success));
-                else if (f?.error) toast.error(t(f.error));
                 if (deletingCurrentFolder) {
                     folder.parent_folder?.id ? router.get(route('documents.folder', folder.parent_folder.id)) : router.get(route('documents.index'));
                 }
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

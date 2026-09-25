@@ -85,24 +85,16 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
         e.preventDefault();
         setProcessing(true);
 
-        // Submit to backend using Inertia
+        const toastId = toast.loading(translate('Updating cookie settings...'));
         router.post(route('settings.cookie.update'), cookieSettings, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update cookie settings');
-                toast.error(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

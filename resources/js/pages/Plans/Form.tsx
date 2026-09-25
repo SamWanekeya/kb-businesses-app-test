@@ -91,7 +91,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
             breadcrumbs={[
                 { title: translate('Dashboard'), href: route('dashboard.index') },
                 { title: translate('Plans'), href: route('subscriptions.plans.index') },
-                { title: t(isEdit ? 'Edit Plan' : 'Create Plan') },
+                { title: translate(isEdit ? 'Edit Plan' : 'Create Plan') },
             ]}
             actions={[
                 {

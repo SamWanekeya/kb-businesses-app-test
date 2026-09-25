@@ -86,24 +86,16 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
             defaultTimezone: systemSettings.defaultTimezone,
         };
 
-        // Submit to backend using Inertia
+        const toastId = toast.loading(translate('Saving system settings...'));
         router.post(route('settings.system.update'), cleanSettings, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
+                toast.dismiss(toastId);
                 setProcessing(false);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
             },
             onError: (errors) => {
-                setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update system settings');
-                toast.error(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

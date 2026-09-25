@@ -104,90 +104,45 @@ export default function Currencies() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            {
-                const toastId = toast.loading(translate('Creating currency...'));
-            }
+            const toastId = toast.loading(translate('Creating currency...'));
 
             router.post(route('currencies.store'), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    } else {
-                        toast.error(translate('Failed to create currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
-            {
-                const toastId = toast.loading(translate('Updating currency...'));
-            }
+            const toastId = toast.loading(translate('Updating currency...'));
 
             router.put(route('currencies.update', currentItem.id), formData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    {
-                        toast.dismiss(toastId);
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    } else {
-                        toast.error(translate('Failed to update currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
-        {
-            const toastId = toast.loading(translate('Deleting currency...'));
-        }
+        const toastId = toast.loading(translate('Deleting currency...'));
 
         router.delete(route('currencies.destroy', currentItem.id), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                {
-                    toast.dismiss(toastId);
-                }
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                {
-                    toast.dismiss(toastId);
-                }
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                } else {
-                    toast.error(translate('Failed to delete currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

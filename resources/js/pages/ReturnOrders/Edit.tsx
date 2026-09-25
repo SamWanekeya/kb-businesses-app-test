@@ -239,7 +239,7 @@ export default function ReturnOrderEdit() {
         }
 
         setProcessing(true);
-        const toastId = toast.loading(translate('Saving...'));
+        const toastId = toast.loading(translate('Updating return order...'));
 
         router.put(
             route('return-orders.update', returnOrder.id),
@@ -256,13 +256,9 @@ export default function ReturnOrderEdit() {
                 onSuccess: () => {
                     toast.dismiss(toastId);
                 },
-                onError: (errs: any) => {
+                onError: (errors) => {
                     toast.dismiss(toastId);
-                    setErrors(errs);
-                    setProcessing(false);
-                },
-                onFinish: () => {
-                    setProcessing(false);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

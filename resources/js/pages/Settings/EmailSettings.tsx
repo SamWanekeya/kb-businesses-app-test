@@ -52,25 +52,14 @@ export default function EmailSettings() {
 
         router.post(route('settings.email.update'), emailSettings, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
                 toast.dismiss(toastId);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                } else {
-                    toast.success(translate('Email settings saved successfully'));
-                }
             },
             onError: (errors) => {
                 setProcessing(false);
                 toast.dismiss(toastId);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to save email settings');
-                toast.error(errorMessage);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -89,40 +78,13 @@ export default function EmailSettings() {
             { email: testEmail },
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsSending(false);
                     toast.dismiss(toastId);
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-
-                    if (successMessage) {
-                        toast.success(successMessage);
-                        setTestResult({ success: true, message: successMessage });
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                        setTestResult({ success: false, message: errorMessage });
-                    } else {
-                        const message = translate('Test email sent successfully to {{email}}', { email: testEmail });
-                        toast.success(message);
-                        setTestResult({ success: true, message });
-                    }
-
-                    // Reset result after 5 seconds
-                    setTimeout(() => {
-                        setTestResult(null);
-                    }, 5000);
                 },
                 onError: (errors) => {
-                    setIsSending(false);
                     toast.dismiss(toastId);
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test email');
-                    toast.error(errorMessage);
-                    setTestResult({ success: false, message: errorMessage });
-
-                    // Reset result after 5 seconds
-                    setTimeout(() => {
-                        setTestResult(null);
-                    }, 5000);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

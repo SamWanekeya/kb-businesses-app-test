@@ -34,19 +34,14 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
     const handleCreatePayout = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('referral-program.payout-request.create'), {
-            onSuccess: (page) => {
+            onSuccess: () => {
+                toast.dismiss(toastId);
                 setShowCreateDialog(false);
                 reset();
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
             },
             onError: (errors) => {
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                }
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -57,17 +52,12 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 route('referral-program.payout-request.approve', item.id),
                 {},
                 {
-                    onSuccess: (page) => {
-                        if (page.props.flash.success) {
-                            toast.success(translate(page.props.flash.success));
-                        } else if (page.props.flash.error) {
-                            toast.error(translate(page.props.flash.error));
-                        }
+                    onSuccess: () => {
+                        toast.dismiss(toastId);
                     },
                     onError: (errors) => {
-                        if (typeof errors === 'string') {
-                            toast.error(translate(errors));
-                        }
+                        toast.dismiss(toastId);
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 },
             );
@@ -82,18 +72,13 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             route('referral-program.payout-request.reject', currentItem.id),
             { notes },
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                     setIsRejectModalOpen(false);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
-                    if (typeof errors === 'string') {
-                        toast.error(translate(errors));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

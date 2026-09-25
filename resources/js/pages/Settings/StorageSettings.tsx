@@ -227,24 +227,17 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             formData.wasabiUrl = storageSettings.wasabiUrl;
             formData.wasabiRoot = storageSettings.wasabiRoot;
         }
-
+        const toastId = toast.loading(translate('Updating storage settings...'));
         router.post(route('settings.storage.update'), formData, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
                 setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update storage settings');
-                toast.error(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

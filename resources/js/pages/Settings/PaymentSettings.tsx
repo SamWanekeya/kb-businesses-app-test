@@ -322,17 +322,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
         e.preventDefault();
         post(route('payment.settings'), {
             preserveScroll: true,
-            onSuccess: (page) => {
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
+            onSuccess: () => {
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.error(translate('Failed to update payment settings'));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

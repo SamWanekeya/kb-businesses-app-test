@@ -106,7 +106,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Streams'), href: route('stream.index') },
-        { title: t(moduleTitle) },
+        { title: translate(moduleTitle) },
     ];
 
     return (
@@ -273,11 +273,12 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                             if (currentActivity) {
                                 router.delete(route(`stream.delete-${module.replace(/_/g, '-')}`, currentActivity.id), {
                                     onSuccess: () => {
-                                        toast.success(translate('Activity deleted successfully'));
                                         setIsDeleteModalOpen(false);
+                                        toast.dismiss(toastId);
                                     },
                                     onError: () => {
-                                        toast.error(translate('Failed to delete activity'));
+                                        toast.dismiss(toastId);
+                                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                                     },
                                 });
                             }

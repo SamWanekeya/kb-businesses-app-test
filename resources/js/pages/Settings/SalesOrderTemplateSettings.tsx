@@ -268,10 +268,10 @@ export default function SalesOrderTemplateSettings() {
             } else if (result.error) {
                 toast.error(result.error);
             } else {
-                toast.error(t(result.message));
+                toast.error(translate(result.message));
             }
         } catch (e: any) {
-            toast.error(t(e.response?.data?.message || 'Failed to update sales order template settings'));
+            toast.error(translate(e.response?.data?.message || 'Failed to update sales order template settings'));
         } finally {
             setSaving(false);
         }

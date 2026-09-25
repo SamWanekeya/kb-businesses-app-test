@@ -44,7 +44,6 @@ export default function Leads() {
         samplePath,
         filters: pageFilters = {},
         kanbanData: initialKanbanData,
-        flash = {},
     } = usePage().props;
 
     useEffect(() => {
@@ -52,10 +51,7 @@ export default function Leads() {
             importingRef.current = false;
             return;
         }
-        if (flash?.success) toast.success(translate(flash.success));
-        else if (flash?.error) toast.error(translate(flash.error));
-        else if (flash?.warning) toast.warning(translate(flash.warning));
-    }, [flash]);
+    }, []);
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 
@@ -210,11 +206,7 @@ export default function Leads() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -225,8 +217,7 @@ export default function Leads() {
             return;
         }
 
-        const newStatus = lead.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} lead...`);
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('leads.toggle-status', lead.id),
@@ -240,11 +231,7 @@ export default function Leads() {
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -256,7 +243,7 @@ export default function Leads() {
 
         router.put(route(route_name, currentItem.id), formData, {
             // router.post(route(route_name, currentItem.id), formData, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsConvertModalOpen(false);
                 toast.dismiss(toastId);
                 if (activeView === 'kanban') {
@@ -265,11 +252,7 @@ export default function Leads() {
             },
             onError: (errors) => {
                 toast.dismiss(toastId);
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(translate('Failed to convert: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -773,7 +756,7 @@ export default function Leads() {
                                                 .flatMap((c: any) => c.items)
                                                 .find((l: any) => l.id.toString() === leadId);
                                             if (currentLead) {
-                                                const toastId = toast.loading(translate('Updating...'));
+                                                const toastId = toast.loading(translate('Updating lead...'));
                                                 router.put(
                                                     route('leads.update', leadId),
                                                     { ...currentLead, lead_status_id: status.id },
@@ -784,7 +767,7 @@ export default function Leads() {
                                                         },
                                                         onError: () => {
                                                             toast.dismiss(toastId);
-                                                            toast.error(translate('Failed to update lead status'));
+                                                            Object.values(errors).forEach((message) => toast.error(translate(message)));
                                                         },
                                                     },
                                                 );
@@ -1065,7 +1048,7 @@ export default function Leads() {
                                                 {useHasPermission('toggle-status-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', lead)}>
                                                         <Lock className="h-4 w-4 mr-2" />
-                                                        <span>{lead.status === 'active' ? t("Deactivate") : t("Activate")}</span>
+                                                        <span>{lead.status === 'active' ? translate("Deactivate") : translate("Activate")}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('convert-leads') && !lead.is_converted && (

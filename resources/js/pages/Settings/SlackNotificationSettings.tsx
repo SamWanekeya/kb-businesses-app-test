@@ -84,25 +84,14 @@ export default function SlackNotificationSettings() {
 
         router.post(route('settings.slack-notifications.update'), data, {
             preserveScroll: true,
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setProcessing(false);
                 toast.dismiss(toastId);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                    setIsAvailableSlackWebhookUrl(slackWebhookUrl);
-                } else if (errorMessage) {
-                    setSlackWebhookUrl(isAvailableSlackWebhookUrl);
-                    toast.error(errorMessage);
-                } else {
-                    toast.success('Slack settings updated successfully.');
-                }
             },
             onError: () => {
                 setProcessing(false);
-                toast.error('Failed to update Slack settings.');
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -119,38 +108,13 @@ export default function SlackNotificationSettings() {
             {},
             {
                 preserveScroll: true,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsSendingMessage(false);
                     toast.dismiss(toastId);
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-
-                    if (successMessage) {
-                        toast.success(successMessage);
-                        setTestMessageResult({ success: true, message: successMessage });
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                        setTestMessageResult({ success: false, message: errorMessage });
-                    } else {
-                        const message = translate('Test message sent successfully');
-                        toast.success(message);
-                        setTestMessageResult({ success: true, message });
-                    }
-
-                    setTimeout(() => {
-                        setTestMessageResult(null);
-                    }, 5000);
                 },
                 onError: (errors) => {
-                    setIsSendingMessage(false);
                     toast.dismiss(toastId);
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test message');
-                    toast.error(errorMessage);
-                    setTestMessageResult({ success: false, message: errorMessage });
-
-                    setTimeout(() => {
-                        setTestMessageResult(null);
-                    }, 5000);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );

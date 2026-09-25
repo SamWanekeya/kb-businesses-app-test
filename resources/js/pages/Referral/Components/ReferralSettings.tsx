@@ -28,31 +28,16 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        {
-            const toastId = toast.loading(translate('Updating referral settings...'));
-        }
+        const toastId = toast.loading(translate('Updating referral settings...'));
 
         post(route('referral-program.settings.update'), {
             preserveScroll: true,
-            onSuccess: (page) => {
-                {
-                    toast.dismiss(toastId);
-                }
-                if (page.props.flash.success) {
-                    toast.success(translate(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(translate(page.props.flash.error));
-                }
+            onSuccess: () => {
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                {
-                    toast.dismiss(toastId);
-                }
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                } else {
-                    toast.error(translate('Failed to update referral settings: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };

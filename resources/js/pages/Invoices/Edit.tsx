@@ -240,7 +240,6 @@ export default function InvoiceEdit() {
         e.preventDefault();
         if (!validate()) return;
         setSubmitting(true);
-        const toastId = toast.loading(translate('Updating invoice...'));
         const payload = {
             ...form,
             products: form.products
@@ -250,6 +249,7 @@ export default function InvoiceEdit() {
                     discount_type: discount_type || 'none',
                 })),
         };
+        const toastId = toast.loading(translate('Updating invoice...'));
         router.put(route('invoices.update', invoice.id), payload, {
             onSuccess: () => {
                 toast.dismiss(toastId);

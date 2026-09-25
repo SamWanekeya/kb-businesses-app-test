@@ -143,21 +143,12 @@ export default function Plans({
                 billing_cycle: billingCycle,
             },
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to submit plan request: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -172,21 +163,12 @@ export default function Plans({
                 plan_id: planId,
             },
             {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
                 onError: (errors) => {
                     toast.dismiss(toastId);
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(`Failed to start trial: ${Object.values(errors).join(', ')}`);
-                    }
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -195,14 +177,10 @@ export default function Plans({
     const handleSubscribe = async (planId: number) => {
         const plan = plans.find((p) => p.id === planId);
         if (plan) {
-            try {
-                const response = await fetch(route('payment.methods'));
-                const paymentMethods = await response.json();
-                setSelectedPlan({ ...plan, paymentMethods });
-                setIsSubscriptionModalOpen(true);
-            } catch (error) {
-                toast.error(translate('Failed to load payment methods'));
-            }
+            const response = await fetch(route('payment.methods'));
+            const paymentMethods = await response.json();
+            setSelectedPlan({ ...plan, paymentMethods });
+            setIsSubscriptionModalOpen(true);
         }
     };
 
@@ -617,20 +595,20 @@ export default function Plans({
     // Function to toggle plan status
     const togglePlanStatus = (planId: number) => {
         // Send request to toggle plan status
+        const toastId = toast.loading(translate('Updating status...'));
         router.post(
             route('subscriptions.plans.toggle-status', planId),
             {},
             {
                 preserveState: true,
-                onSuccess: (page) => {
+                onSuccess: () => {
                     // Update local state
                     setPlans(plans.map((plan) => (plan.id === planId ? { ...plan, status: !plan.status } : plan)));
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -644,17 +622,13 @@ export default function Plans({
 
     // Function to handle delete confirmation
     const handleDeleteConfirm = () => {
+        const toastId = toast.loading(translate('Deleting subscription plan...'));
         if (planToDelete) {
             router.delete(route('subscriptions.plans.destroy', planToDelete.id), {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsDeleteModalOpen(false);
                     setPlanToDelete(null);
                     toast.dismiss(toastId);
-                    if (page.props.flash.success) {
-                        toast.success(translate(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(translate(page.props.flash.error));
-                    }
                 },
             });
         }
