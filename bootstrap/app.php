@@ -42,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->removeFromGroup('web', PreventRequestForgery::class);
         $middleware->encryptCookies(except: ['__kb_lcl', '__kb_thm_md']);
+        $middleware->redirectGuestsTo(fn (Request $request) => route('sign-in'));
         /**
          * --------------------------------------------------------------------------
          * Global Middleware Stack

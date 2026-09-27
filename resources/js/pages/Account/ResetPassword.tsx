@@ -114,7 +114,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
             if (hasClientErrors) return;
 
-            post(route('password.store'), {
+            post(route('account-recovery-save'), {
                 onFinish: () => {
                     reset('password', 'password_confirmation');
                 },
@@ -190,7 +190,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 </AccountButton>
                 <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
                     {translate('Back to')}{' '}
-                    <TextLink href={route('login')} className="font-medium transition-colors duration-200" tabIndex={3}>
+                    <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200" tabIndex={3}>
                         {translate('Sign in')}
                     </TextLink>
                 </div>

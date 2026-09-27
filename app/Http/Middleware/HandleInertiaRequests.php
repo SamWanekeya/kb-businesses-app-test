@@ -96,29 +96,40 @@ class HandleInertiaRequests extends Middleware
             'available_languages' => $availableLanguages,
         ]);
 
-
         return [
             ...parent::share($request),
+
             // Environment and security context
             'csrfToken' => csrf_token(),
             'cspNonce' => app('cspNonce'),
 
-            // Auth context
-            'auth' => [
-                'user' => $request->user() ? array_merge(
-                    $request->user()?->toArray(),
-                    [
-                        'avatar' => checkFile($request->user()?->avatar) ?? getFile($request->user()?->avatar),
-                        'plan' => $request->user()?->type === 'organization'
-                            ? optional($request->user()?->plan)->only(['id', 'name', 'maximum_staffs', 'maximum_users'])
-                            : null,
-                    ]
-                ) : null,
-                'permissions' => fn () => $request->user()?->getAllPermissions()?->pluck('name'),
-            ],
+            // Only expose authentication context to authenticated users
+            ...($request->user() ? [
+                'auth' => [
+                    'user' => array_merge(
+                        $request->user()->toArray(),
+                        [
+                            'avatar' => checkFile($request->user()->avatar)
+                                ?? getFile($request->user()->avatar),
+                            'plan' => $request->user()->type === 'organization'
+                                ? optional($request->user()->plan)->only([
+                                    'id',
+                                    'name',
+                                    'maximum_staffs',
+                                    'maximum_users',
+                                ])
+                                : null,
+                        ],
+                    ),
+                    'permissions' => fn () => $request->user()
+                        ->getAllPermissions()
+                        ->pluck('name'),
+                ],
+
+                'isOnBehalfOf' => (bool) session('on_behalf_of_by'),
+            ] : []),
 
             // Impersonation and routing
-            'isOnBehalfOf' => (bool)session('on_behalf_of_by'),
             'namedRoutes' => function () use ($request): array {
                 // If user is signed in, give them all routes
                 if ($request->user()) {
@@ -135,7 +146,7 @@ class HandleInertiaRequests extends Middleware
                         $guestZiggy['routes'],
                         function ($key) {
                             // Hide any routes starting with 'storage.', 'payment.', 'settings.', 'my-kakbima-account.', etc.
-                            return !preg_match('/^(storage|payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|notification-templates|permissions|users-permissions|organizations|referral-program|currencies|taxes|brands|categories|products|reports|account-types|account-industries|accounts|contacts|lead-statuses|lead-sources|leads|opportunity-stages|opportunity-sources|opportunities|campaign-types|target-lists|campaigns|shipping-provider-types|cases|quotes|sales-orders|api|invoices|delivery-orders|return-orders|purchase-orders|receipt-orders|projects|project-tasks|task-statuses|meetings|calls|calendar|document-folders|stream|notes|announcement-categories|announcements|document-types|documents|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
+                            return !preg_match('/^(authenticated|storage|payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|notification-templates|permissions|users-permissions|organizations|referral-program|currencies|taxes|brands|categories|products|reports|account-types|account-industries|accounts|contacts|lead-statuses|lead-sources|leads|opportunity-stages|opportunity-sources|opportunities|campaign-types|target-lists|campaigns|shipping-provider-types|cases|quotes|sales-orders|api|invoices|delivery-orders|return-orders|purchase-orders|receipt-orders|projects|project-tasks|task-statuses|meetings|calls|calendar|document-folders|stream|notes|announcement-categories|announcements|document-types|documents|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
                         },
                         ARRAY_FILTER_USE_KEY
                     );

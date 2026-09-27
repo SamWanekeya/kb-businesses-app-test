@@ -63,7 +63,7 @@ class CheckSubscription
             Auth::logout();
 
             return redirect()
-                ->route('login')
+                ->route('sign-in')
                 ->with('error', $result->message);
         }
 

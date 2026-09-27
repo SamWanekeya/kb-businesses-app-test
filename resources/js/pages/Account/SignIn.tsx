@@ -61,7 +61,7 @@ export default function SignIn(): JSX.Element {
             if (hasErrors) return;
 
             const formData = { ...data, recaptcha_token: recaptchaToken };
-            post(route('login'), formData, {
+            post(route('sign-in'), formData, {
                 onFinish: () => {
                     reset('password');
                 },
@@ -99,7 +99,7 @@ export default function SignIn(): JSX.Element {
      */
     const handleDemoSignIn = useCallback(
         (email: string) => {
-            router.post(route('login'), {
+            router.post(route('sign-in'), {
                 email,
                 password: 'Kakbima@DemoAccount2026',
                 remember: true,
@@ -205,7 +205,7 @@ export default function SignIn(): JSX.Element {
                             </Label>
                         </div>
                         <div>
-                            <TextLink href={route('password.request')} className="text-sm font-medium transition-colors duration-200" tabIndex={5}>
+                            <TextLink href={route('account-recovery-request')} className="text-sm font-medium transition-colors duration-200" tabIndex={5}>
                                 {translate('Can’t access my account')}
                             </TextLink>
                         </div>
@@ -230,7 +230,7 @@ export default function SignIn(): JSX.Element {
                     {/* Sign up link */}
                     <div className="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
                         {translate('Need a Kakbima account?')}{' '}
-                        <TextLink href={route('register')} className="font-medium transition-colors duration-200" tabIndex={6}>
+                        <TextLink href={route('sign-up')} className="font-medium transition-colors duration-200" tabIndex={6}>
                             {translate('Sign up')}
                         </TextLink>
                     </div>

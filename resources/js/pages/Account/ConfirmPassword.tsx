@@ -74,7 +74,7 @@ export default function ConfirmPassword() {
         (e) => {
             e.preventDefault();
             if (hasErrors) return;
-            post(route('password.confirm'), {
+            post(route('authenticated.password.confirm'), {
                 onFinish: () => {
                     reset('password');
                 },

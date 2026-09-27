@@ -1076,5 +1076,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::fallback(function () {
-    return redirect()->route('login');
+    return redirect()->route('sign-in');
 });

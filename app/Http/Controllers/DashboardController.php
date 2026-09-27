@@ -536,7 +536,7 @@ class DashboardController extends Controller
         // If no permissions found, logout user
         auth()?->logout();
 
-        return redirect()->route('login')->with('error', __('No access permissions found.'));
+        return redirect()->route('sign-in')->with('error', __('No access permissions found.'));
     }
 
     private function getDirectorySize($directory)

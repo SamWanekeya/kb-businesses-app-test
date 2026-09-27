@@ -40,7 +40,7 @@ class VerifyEmailTokenController extends Controller
 
         if (!$user) {
             return redirect()
-                ->route('login')
+                ->route('sign-in')
                 ->with('error', __('You must be logged in to verify your email address'));
         }
 
@@ -50,14 +50,14 @@ class VerifyEmailTokenController extends Controller
 
         if (!$record) {
             return redirect()
-                ->route('verification.notice')
+                ->route('authenticated.verification.notice')
                 ->with('error', __('Your verification link is invalid or expired. Please request a new one'));
         }
 
         // Ensure token belongs to authenticated user
         if ((int)$record->user_id !== (int)$user->id) {
             return redirect()
-                ->route('login')
+                ->route('sign-in')
                 ->with('error', __('Your verification link is invalid or expired. Please sign in to request a new one'));
         }
 

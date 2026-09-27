@@ -280,7 +280,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                 {translate('Your email address is unverified.')}{' '}
                                                 <button
                                                     type="button"
-                                                    onClick={() => route('verification.send')}
+                                                    onClick={() => route('authenticated.verification.send')}
                                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500"
                                                 >
                                                     {translate('Click here to resend the verification email.')}

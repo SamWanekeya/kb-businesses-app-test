@@ -20,7 +20,7 @@ export default function ProfileMenu() {
     const user = auth?.user;
 
     const handleLogout = () => {
-        router.post(route('logout'));
+        router.post(route('authenticated.logout'));
     };
 
     const initials = user?.name

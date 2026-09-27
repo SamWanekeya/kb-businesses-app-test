@@ -174,7 +174,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
 
             if (hasErrors || hasClientSideErrors) return;
 
-            post(route('register'), {
+            post(route('sign-up'), {
                 data: { ...data, recaptcha_token: recaptchaToken },
                 onFinish: () => {
                     reset('Password', 'password_confirmation');
@@ -313,7 +313,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
 
                 <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
                     {translate('Already have an account?')}{' '}
-                    <TextLink href={route('login')} className="font-medium" tabIndex={7}>
+                    <TextLink href={route('sign-in')} className="font-medium" tabIndex={7}>
                         {translate('Sign in')}
                     </TextLink>
                 </div>

@@ -23,48 +23,48 @@ use Illuminate\Support\Facades\Route;
 // Routes accessible only to unauthenticated users.
 Route::middleware(['web', 'guest'])->group(function () {
     Route::get('sign-in', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+        ->name('sign-in');
 
     Route::post('sign-in', [AuthenticatedSessionController::class, 'authenticate'])
         ->middleware('throttle:5,1');
 
     Route::get('sign-up', [SignUpUserController::class, 'create'])
-        ->name('register');
+        ->name('sign-up');
 
-    Route::post('sign-up', [SignUpUserController::class, 'register']);
+    Route::post('sign-up', [SignUpUserController::class, 'sign-up']);
     Route::get('account-recovery', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
+        ->name('account-recovery-request');
 
     Route::post('account-recovery', [PasswordResetLinkController::class, 'store'])
         ->middleware('throttle:3,5')
-        ->name('password.email');
+        ->name('account-recovery-mail');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
+        ->name('account-recovery-token');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+        ->name('account-recovery-save');
 });
 
 // Verify the user's email address using the verification token.
 Route::get('verify-email/{token}', VerifyEmailTokenController::class)
     ->middleware(['web', 'throttle:6,1'])
-    ->name('verification-verify.token');
+    ->name('verify-email-token');
 
 // Routes available only to authenticated users.
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+        ->name('authenticated.verification.notice');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1')
-        ->name('verification.send');
+        ->name('authenticated.verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
+        ->name('authenticated.password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::post('sign-out', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+        ->name('authenticated.logout');
 });

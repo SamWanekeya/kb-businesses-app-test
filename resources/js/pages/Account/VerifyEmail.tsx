@@ -29,7 +29,7 @@ export default function VerifyEmail() {
             e.preventDefault();
             const toastId = toast.loading(translate('Sending...'));
 
-            post(route('verification.send'), {
+            post(route('authenticated.verification.send'), {
                 onSuccess: () => {
                     toast.dismiss(toastId);
                 },
@@ -58,7 +58,7 @@ export default function VerifyEmail() {
                 <AccountButton processing={processing}>{translate('Resend verification email')}</AccountButton>
 
                 <div className="text-center">
-                    <TextLink href={route('logout')} method="post" className="font-medium transition-colors duration-200">
+                    <TextLink href={route('authenticated.logout')} method="post" className="font-medium transition-colors duration-200">
                         {translate('Sign out')}
                     </TextLink>
                 </div>

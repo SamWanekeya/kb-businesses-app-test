@@ -62,7 +62,7 @@ class SignUpUserController extends Controller
         $user->sendEmailVerificationNotification();
 
         return redirect()
-            ->route('verification.notice')
+            ->route('authenticated.verification.notice')
             ->with('warning', __('Verify your email to complete account setup'));
     }
 

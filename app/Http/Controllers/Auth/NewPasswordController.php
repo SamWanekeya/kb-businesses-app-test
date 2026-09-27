@@ -76,7 +76,7 @@ class NewPasswordController extends Controller
 
         return match ($status) {
             Password::PASSWORD_RESET => redirect()
-                ->route('login')
+                ->route('sign-in')
                 ->with('success', __('Your password has been reset. You can now sign in.')),
 
             Password::INVALID_TOKEN => back()->with('error', __('This password reset link is invalid or has expired.')),
