@@ -107,12 +107,12 @@ class HandleInertiaRequests extends Middleware
             ...($request->user() ? [
                 'auth' => [
                     'user' => array_merge(
-                        $request->user()->toArray(),
+                        $request->user()?->toArray(),
                         [
-                            'avatar' => checkFile($request->user()->avatar)
-                                ?? getFile($request->user()->avatar),
-                            'plan' => $request->user()->type === 'organization'
-                                ? optional($request->user()->plan)->only([
+                            'avatar' => checkFile($request->user()?->avatar)
+                                ?? getFile($request->user()?->avatar),
+                            'plan' => $request->user()?->type === 'organization'
+                                ? optional($request->user()?->plan)->only([
                                     'id',
                                     'name',
                                     'maximum_staffs',
@@ -121,41 +121,29 @@ class HandleInertiaRequests extends Middleware
                                 : null,
                         ],
                     ),
-                    'permissions' => fn () => $request->user()
-                        ->getAllPermissions()
-                        ->pluck('name'),
+                    'permissions' => fn () => $request->user()?->getAllPermissions()?->pluck('name'),
                 ],
 
                 'isOnBehalfOf' => (bool) session('on_behalf_of_by'),
             ] : []),
 
-            // Impersonation and routing
+            // Routing based on users' authentication status
             'namedRoutes' => function () use ($request): array {
-                // If user is signed in, give them all routes
-                if ($request->user()) {
-                    return array_merge(
-                        (new Ziggy())?->toArray() ?? [],
-                        ['location' => $request->url()]
-                    );
-                }
-                // If guest, strip out authenticated routes
-                $guestZiggy = (new Ziggy())?->toArray() ?? [];
+                $group = $request->user()
+                    ? 'auth'
+                    : 'guest';
 
-                if (isset($guestZiggy['routes'])) {
-                    $guestZiggy['routes'] = array_filter(
-                        $guestZiggy['routes'],
-                        function ($key) {
-                            // Hide any routes starting with 'storage.', 'payment.', 'settings.', 'my-kakbima-account.', etc.
-                            return !preg_match('/^(authenticated|storage|payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|notification-templates|permissions|users-permissions|organizations|referral-program|currencies|taxes|brands|categories|products|reports|account-types|account-industries|accounts|contacts|lead-statuses|lead-sources|leads|opportunity-stages|opportunity-sources|opportunities|campaign-types|target-lists|campaigns|shipping-provider-types|cases|quotes|sales-orders|api|invoices|delivery-orders|return-orders|purchase-orders|receipt-orders|projects|project-tasks|task-statuses|meetings|calls|calendar|document-folders|stream|notes|announcement-categories|announcements|document-types|documents|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
-                        },
-                        ARRAY_FILTER_USE_KEY
-                    );
-                }
+                $public = (new Ziggy('public'))->toArray();
+                $current = (new Ziggy($group))->toArray();
 
-                return array_merge(
-                    $guestZiggy,
-                    ['location' => $request->url()]
-                );
+                return [
+                    ...$current,
+                    'routes' => [
+                        ...$public['routes'],
+                        ...$current['routes'],
+                    ],
+                    'location' => $request->url(),
+                ];
             },
 
             // Flash messages

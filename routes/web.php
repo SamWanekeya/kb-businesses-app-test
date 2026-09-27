@@ -376,11 +376,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         // Currency configuration and maintenance.
-        Route::middleware('permission:manage-currencies')->group(function () {
-            Route::get('currencies', [CurrencyController::class, 'index'])->middleware('permission:manage-currencies')->name('currencies.index');
-            Route::post('currencies', [CurrencyController::class, 'store'])->middleware('permission:create-currencies')->name('currencies.store');
-            Route::put('currencies/{currency}', [CurrencyController::class, 'update'])->middleware('permission:edit-currencies')->name('currencies.update');
-            Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->middleware('permission:delete-currencies')->name('currencies.destroy');
+        Route::middleware(['ensure_super_admin'])->group(function () {
+            Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
+            Route::post('currencies', [CurrencyController::class, 'store'])->name('currencies.store');
+            Route::put('currencies/{currency}', [CurrencyController::class, 'update'])->name('currencies.update');
+            Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
         });
 
         // Tax configuration and status management.

@@ -24,11 +24,7 @@
  *
  */
 
-import { Config, Router, route as ziggyRoute } from 'ziggy-js';
-
-// ---------------------------------------------------------------------------
-// Global type augmentation
-// ---------------------------------------------------------------------------
+import { route as ziggyRoute, type Config, type Router } from 'ziggy-js';
 
 declare global {
     interface Window {
@@ -36,10 +32,6 @@ declare global {
         Ziggy?: Config;
     }
 }
-
-// ---------------------------------------------------------------------------
-// Module-scoped config cache
-// ---------------------------------------------------------------------------
 
 /**
  * Cached Ziggy config. Populated by `initZiggyConfig()` in `setup()`, or
@@ -49,24 +41,17 @@ declare global {
  */
 let cachedConfig: Config | undefined;
 
-// ---------------------------------------------------------------------------
-// Public API
-// ---------------------------------------------------------------------------
-
 /**
- * Stores the Ziggy config in the module-scoped closure.
+ * Replaces the currently active Ziggy configuration.
  *
- * Call this inside `createInertiaApp`'s `setup()` immediately after assigning
- * `window.Ziggy`, before `hydrateRoot` / `createRoot`. This ensures the
- * closure is populated before any component calls `route()` during hydration,
- * and before `scrubFingerprints()` deletes `window.Ziggy`.
- *
- * @param config - The Ziggy `Config` object, typically sourced from
- *   `props.initialPage.props.namedRoutes` in your Inertia `HandleInertiaRequests`
- *   middleware.
+ * @param config - The Ziggy configuration supplied by Laravel.
  */
 export function initZiggyConfig(config: Config): void {
     cachedConfig = config;
+
+    if (typeof window !== 'undefined') {
+        window.Ziggy = config;
+    }
 }
 
 /**
@@ -91,7 +76,7 @@ export function initZiggyConfig(config: Config): void {
  * ```ts
  * route('dashboard.index')                      // '/dashboard'
  * route('posts.show', { id: 42 })         // '/posts/42'
- * route('posts.show', { id: 42 }, true)   // 'https://example.com/posts/42'
+ * route('posts.show', { id: 42 }, true)   // 'https://accounts.kakbima.dev/posts/42'
  * route().current('dashboard')            // true | false
  * route().has('admin.users.index')        // true | false
  * ```

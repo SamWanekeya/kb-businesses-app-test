@@ -192,8 +192,30 @@ export const KakbimaRoot: React.FC<any> = ({ App, props }) => {
 
         (window as any).page = page;
 
-        const unsubscribe = router.on('navigate', (event) => {
+        /**
+         * Synchronize Ziggy before Inertia swaps the current page.
+         *
+         * This is intentionally `beforeUpdate`, not `navigate`.
+         * Inertia fires `beforeUpdate` with the incoming page before the
+         * React component tree is updated. This means route() already has
+         * the correct guest/authenticated configuration when the destination
+         * page renders.
+         */
+        const unsubscribeBeforeUpdate = router.on('beforeUpdate', (event) => {
             const newPage = event.detail.page;
+
+            if (!newPage) return;
+
+            const ziggyConfig = newPage.props.namedRoutes as Config | undefined;
+
+            if (ziggyConfig) {
+                initZiggyConfig(ziggyConfig);
+            }
+        });
+
+        const unsubscribeNavigate = router.on('navigate', (event) => {
+            const newPage = event.detail.page;
+
             if (!newPage) return;
 
             (window as any).page = newPage;
@@ -207,11 +229,13 @@ export const KakbimaRoot: React.FC<any> = ({ App, props }) => {
             if (typeof userLang === 'string') {
                 document.documentElement.lang = userLang;
             }
+
             document.documentElement.dir = rtlLanguages.includes(userLang) ? 'rtl' : 'ltr';
         });
 
         return () => {
-            if (typeof unsubscribe === 'function') unsubscribe();
+            unsubscribeBeforeUpdate();
+            unsubscribeNavigate();
         };
     }, [page]);
 
@@ -289,7 +313,6 @@ function initializeKakbimaApp(): void {
             //    until scrubFingerprints() removes it below.
             const ziggyConfig = props.initialPage.props.namedRoutes as Config;
             initZiggyConfig(ziggyConfig);
-            (window as any).Ziggy = ziggyConfig;
 
             // Global settings
             try {

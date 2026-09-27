@@ -172,6 +172,12 @@ php artisan permission:cache-reset
 vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 ```
 
+4. Generates a clean PHP array of all named routes in the application:
+
+```bash
+php artisan route:names
+```
+
 ---
 
 ## Frontend (Inertia + React) Commands
