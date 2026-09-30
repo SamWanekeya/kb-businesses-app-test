@@ -46,7 +46,7 @@ export default function useEmailValidation() {
             if (!emailRegex.test(value)) {
                 return {
                     valid: false,
-                    message: translate('Please enter a valid work email address'),
+                    message: translate('Please use a work email address rather than a personal email address.'),
                 };
             }
 

@@ -62,9 +62,12 @@ class SignUpRequest extends FormRequest
             'email.unique' => __('That work email is already taken. Try another'),
             'password.required' => __('The password field is required.'),
             'password.confirmed' => __('Passwords do not match.'),
-            'password.min' => __('Password must be at least 12 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.'),
-            'password.uncompromised' => __('This password has appeared in a data breach. Please choose a safer one.'),
-            'password.max' => __('Passwords may not be longer than 128 characters.'),
+            'password.min' => __('The new password must be at least 12 characters.'),
+            'password.max' => __('The new password may not be greater than 128 characters.'),
+            'password.mixed' => __('The new password must contain at least one uppercase and one lowercase letter.'),
+            'password.numbers' => __('The new password must contain at least one number.'),
+            'password.symbols' => __('The new password must contain at least one symbol.'),
+            'password.uncompromised' => __('The new password has appeared in a known data breach. Please choose a different password.'),
         ];
     }
 }

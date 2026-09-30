@@ -4,9 +4,7 @@ use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
 use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
 use App\Http\Controllers\Settings\OrganizationSystemSettingsController;
-use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\PaymentSettingController;
-use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
 use App\Http\Controllers\Settings\WebhookController;
@@ -44,20 +42,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
 
     Route::get('/organization-payment-methods', [OrganizationPaymentSettingController::class, 'getOrganizationPaymentMethods'])
         ->name('payment.organization.methods');
-
-    Route::get('my-kakbima-account', ProfileController::class)
-        ->name('my-kakbima-account.success');
-
-    Route::patch('my-kakbima-account', [ProfileController::class, 'update'])
-        ->name('my-kakbima-account.update');
-
-    Route::post('my-kakbima-account', [ProfileController::class, 'update']);
-
-    Route::delete('my-kakbima-account', [ProfileController::class, 'destroy'])
-        ->name('my-kakbima-account.destroy');
-
-    Route::put('my-kakbima-account/password', [PasswordController::class, 'update'])
-        ->name('my-kakbima-account.password.update');
 
     Route::get('settings', [SettingsController::class, 'index'])
         ->name('settings.index');

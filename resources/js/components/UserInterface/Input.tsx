@@ -1,50 +1,96 @@
 import useEmailValidation from '@hooks/useEmailValidation';
 import { cn } from '@lib/utils';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 /**
+ * Values supported by the component validation pipeline.
+ *
+ * Text-based inputs provide a string while file inputs provide a FileList.
+ * `null` is included for defensive handling of cleared values.
+ */
+type InputValue = string | FileList | null;
+
+/**
+ * Result returned by the input validation pipeline.
+ */
+interface ValidationResult {
+    valid: boolean;
+    message: string | null;
+}
+
+/**
  * Props for the reusable Input component.
+ *
+ * Extends the native input attributes so standard HTML and accessibility
+ * attributes can be passed directly to the underlying input element.
  */
 export interface InputProps extends React.ComponentProps<'input'> {
     /**
-     * Triggered whenever validation runs.
-     * - `valid = true` -> no error
-     * - `valid = false` -> error occurred
-     * - `message` -> human-readable error text
+     * Called whenever validation runs.
+     *
+     * @param valid Whether the current value passed validation.
+     * @param message Human-readable validation feedback, when invalid.
      */
     onValidate?: (valid: boolean, message: string | null) => void;
 
-    /**
-     * Notifies parent when a required field becomes empty (`true`) or non-empty (`false`)
-     */
-    onRequiredStateChange?: (isEmpty: boolean) => void;
-
-    /** Maximum file size in bytes for file input validation */
+    /** Maximum permitted file size in bytes. */
     maxFileSize?: number;
 
-    /** Allowed MIME types for file input validation */
+    /** MIME types accepted by file input validation. */
     acceptTypes?: string[];
 
     /**
-     * Identifier for the input field, also used as `id` attribute
+     * Application-specific identifier used as the native input `id`.
+     *
+     * Kept for compatibility with the existing component API.
      */
     inputIdentifier?: string;
 
-    /** Overrides the default input type (default is 'text') */
+    /**
+     * Overrides the native input type.
+     *
+     * Kept for compatibility with the existing component API.
+     */
     inputType?: React.HTMLInputTypeAttribute;
 
-    /** Error state passed from parent */
+    /**
+     * External validation error supplied by the parent.
+     *
+     * A truthy value marks the input as invalid independently of the
+     * component's internal validation result.
+     */
     error?: string | boolean | null;
 }
 
 /**
- * Reusable Input component supporting:
- * - Text, email, password, URL, and file inputs
- * - Validation for required fields, emails, passwords, URLs, and files
- * - Blocked domains and keywords for email validation
- * - Callback hooks for validation results and required state changes
- * - Accessibility attributes (`aria-invalid`) updated automatically
+ * Input
+ *
+ * Provides a reusable, accessible input control with application-level
+ * validation for common input types.
+ *
+ * Responsibilities:
+ * - Render a consistently styled native input.
+ * - Validate required, text, email, password, URL, and file values.
+ * - Report validation results to the parent component.
+ * - Preserve native HTML input and accessibility behavior.
+ *
+ * Accessibility:
+ * - Uses native input semantics.
+ * - Forwards standard accessibility attributes such as `aria-describedby`.
+ * - Reflects internal and external validation state through `aria-invalid`.
+ * - Allows consumers to provide accessible labels and validation messages.
+ *
+ * Performance:
+ * - Memoizes event handlers used by the native input.
+ * - Avoids maintaining redundant required-field state.
+ * - Keeps validation state local only where it is required to control
+ *   the input's accessibility state.
+ *
+ * Extension points:
+ * - Additional validation rules can be added to `runValidation`.
+ * - Domain-specific validation should remain delegated to dedicated hooks,
+ *   such as `useEmailValidation`.
  *
  * @param className
  * @param inputIdentifier
@@ -56,58 +102,52 @@ export interface InputProps extends React.ComponentProps<'input'> {
  * @param onChange
  * @param onBlur
  * @param onValidate
- * @param onRequiredStateChange
- * @param {InputProps} props - Props for configuring the input behavior and validation
+ * @param ariaInvalid
+ * @param props Input configuration and native HTML input attributes.
  */
 export default function Input({
     className,
     inputIdentifier,
     inputType = 'text',
-    required,
+    required = false,
     maxFileSize,
     acceptTypes,
     error,
     onChange,
     onBlur,
     onValidate,
-    onRequiredStateChange,
+    'aria-invalid': ariaInvalid,
     ...props
 }: InputProps) {
     const { t: translate } = useTranslation();
-
     const validateEmail = useEmailValidation();
 
+    const [hasValidationError, setHasValidationError] = useState(Boolean(error));
+
     /**
-     * Run validation for the input value.
+     * Validates the supplied input value.
      *
-     * Validations include:
-     * - Required fields
-     * - Email format & blocked domains/keywords
-     * - Password complexity
-     * - URL format
-     * - File size and type
-     *
-     * @param value - Current input value (string or FileList)
-     * @returns { valid: boolean; message: string | null } Validation result
+     * Existing validation behavior is intentionally preserved so this
+     * component refactor does not alter application business rules.
      */
     const runValidation = useCallback(
-        (value: any) => {
-            //  Required field validation
+        (value: InputValue): ValidationResult => {
             if (required && (value === '' || value === null || (value instanceof FileList && value.length === 0))) {
-                return { valid: false, message: translate('This field is required') };
+                return {
+                    valid: false,
+                    message: translate('This field is required'),
+                };
             }
 
-            //  Text field validation
-            if (inputType === 'text' && value) {
-                //  Maximum length (255)
-                if (value && value.length > 255) {
+            if (inputType === 'text' && typeof value === 'string' && value.length > 0) {
+                if (value.length > 255) {
                     return {
                         valid: false,
                         message: translate('The maximum characters allowed for the name field is 255'),
                     };
                 }
-                //  Minimum length (2)
-                if (value && value.length < 2) {
+
+                if (value.length < 2) {
                     return {
                         valid: false,
                         message: translate('Are you sure you entered the name correctly?'),
@@ -115,37 +155,26 @@ export default function Input({
                 }
             }
 
-            //  Email validation
-            if (inputType === 'email' && value) {
+            if (inputType === 'email' && typeof value === 'string' && value.length > 0) {
                 return validateEmail(value);
             }
 
-            //  Password validation
-            if (inputType === 'password' && value) {
-                //  Maximum length (128)
-                if (value && value.length > 128) {
+            if (inputType === 'password' && typeof value === 'string' && value.length > 0) {
+                if (value.length > 128) {
                     return {
                         valid: false,
                         message: translate('Passwords must have a maximum of 128 characters'),
                     };
                 }
-                //  Minimum length (12)
-                if (value && value.length < 12) {
+
+                if (value.length < 12) {
                     return {
                         valid: false,
                         message: translate('Passwords must have a minimum of 12 characters'),
                     };
                 }
-                /**
-                 * Password regex rules:
-                 * - Minimum 12 characters
-                 * - At least 1 lowercase letter
-                 * - At least 1 uppercase letter
-                 * - At least 1 digit
-                 * - At least 1 special character
-                 */
-                const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,128}$/;
-                if (!pattern.test(value)) {
+
+                if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,128}$/.test(value)) {
                     return {
                         valid: false,
                         message: translate(
@@ -155,100 +184,96 @@ export default function Input({
                 }
             }
 
-            //  URL validation
-            if (inputType === 'url' && value) {
+            if (inputType === 'url' && typeof value === 'string' && value.length > 0) {
                 try {
-                    new URL(value); // Throws if invalid
+                    new URL(value);
                 } catch {
-                    return { valid: false, message: translate('Please provide a valid URL') };
+                    return {
+                        valid: false,
+                        message: translate('Please provide a valid URL'),
+                    };
                 }
             }
 
-            //  File input validation
             if (inputType === 'file' && value instanceof FileList) {
                 const file = value[0];
-                if (file) {
-                    // Check file size
-                    if (maxFileSize && file.size > maxFileSize) {
-                        const maximumSizeMB = Math.round(maxFileSize / (1024 * 1024));
-                        return {
-                            valid: false,
-                            message: translate(`The selected file is too big it must be smaller than ${maximumSizeMB}MB`),
-                        };
-                    }
 
-                    // Check MIME type
-                    if (acceptTypes && !acceptTypes.includes(file.type)) {
-                        return { valid: false, message: translate('Invalid file type') };
-                    }
+                if (!file) {
+                    return {
+                        valid: true,
+                        message: null,
+                    };
+                }
+
+                if (maxFileSize !== undefined && file.size > maxFileSize) {
+                    const maximumSizeMB = Math.round(maxFileSize / (1024 * 1024));
+
+                    return {
+                        valid: false,
+                        message: translate(`The selected file is too big it must be smaller than ${String(maximumSizeMB)}MB`),
+                    };
+                }
+
+                if (acceptTypes?.length && !acceptTypes.includes(file.type)) {
+                    return {
+                        valid: false,
+                        message: translate('Invalid file type'),
+                    };
                 }
             }
 
-            return { valid: true, message: null };
+            return {
+                valid: true,
+                message: null,
+            };
         },
-        [required, inputType, translate, validateEmail, maxFileSize, acceptTypes],
+        [acceptTypes, inputType, maxFileSize, required, translate, validateEmail],
     );
 
     /**
-     * Notify parent component if a required field is empty.
+     * Processes an input change event.
      *
-     * @param value - Current input value
-     */
-    const notifyRequiredState = useCallback(
-        (value: any) => {
-            if (!onRequiredStateChange) return;
-            const isEmpty = value === '' || value === null || (value instanceof FileList && value.length === 0);
-            onRequiredStateChange(isEmpty);
-        },
-        [onRequiredStateChange],
-    );
-
-    /**
-     * Handle `onChange` events with validation and required state notifications.
-     *
-     * @param e - Input change event
+     * Validation state is maintained declaratively and exposed to the parent
+     * through `onValidate`.
      */
     const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = inputType === 'file' ? e.target.files : e.target.value;
-
-            if (required) notifyRequiredState(value);
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value: InputValue = inputType === 'file' ? event.target.files : event.target.value;
 
             const result = runValidation(value);
 
-            e.target.setAttribute('aria-invalid', result.valid ? 'false' : 'true');
+            setHasValidationError(!result.valid);
             onValidate?.(result.valid, result.message);
-            onChange?.(e);
+            onChange?.(event);
         },
-        [onChange, onValidate, runValidation, inputType, required, notifyRequiredState],
+        [inputType, onChange, onValidate, runValidation],
     );
 
     /**
-     * Handle `onBlur` events with validation and required state notifications.
-     *
-     * @param e - Input blur event
+     * Processes an input blur event using the same validation pipeline as
+     * change events.
      */
     const handleBlur = useCallback(
-        (e: React.FocusEvent<HTMLInputElement>) => {
-            const value = inputType === 'file' ? e.target.files : e.target.value;
-
-            if (required) notifyRequiredState(value);
+        (event: React.FocusEvent<HTMLInputElement>) => {
+            const value: InputValue = inputType === 'file' ? event.target.files : event.target.value;
 
             const result = runValidation(value);
 
-            e.target.setAttribute('aria-invalid', result.valid ? 'false' : 'true');
+            setHasValidationError(!result.valid);
             onValidate?.(result.valid, result.message);
-            onBlur?.(e);
+            onBlur?.(event);
         },
-        [onBlur, onValidate, runValidation, inputType, required, notifyRequiredState],
+        [inputType, onBlur, onValidate, runValidation],
     );
+
+    const isInvalid = ariaInvalid === true || ariaInvalid === 'true' || Boolean(error) || hasValidationError;
 
     return (
         <input
             id={inputIdentifier}
             type={inputType}
             data-slot="input"
-            aria-invalid={error ? 'true' : 'false'}
+            aria-invalid={isInvalid}
             className={cn(
                 'h-12 w-full rounded-md border px-3 py-2 shadow-xs outline-none md:text-sm',
                 'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',

@@ -146,7 +146,7 @@ class StorageConfigService
 
         return [
             'mimes:' . $allowedTypes,
-            'maximum:' . $maximumSize,
+            'max:' . $maximumSize,
         ];
     }
 

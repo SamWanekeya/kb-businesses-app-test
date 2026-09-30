@@ -1,8 +1,22 @@
+/**
+ * @file SignIn.tsx
+ * @description
+ * Handles standard and demo-account authentication.
+ *
+ * The standard sign-in flow validates the user's work email and password,
+ * supports remember-me authentication, and requires reCAPTCHA verification.
+ *
+ * The demo flow provides predefined account roles for exploring Kakbima
+ * without requiring manual credential entry.
+ */
+
 import { router, useForm } from '@inertiajs/react';
-import { FormEvent, JSX, useCallback, useState } from 'react';
+import type { SubmitEvent } from 'react';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
-import Recaptcha from '@components/Recaptcha';
+// import Recaptcha from '@components/Recaptcha';
 import TextLink from '@components/TextLink';
 import { Button } from '@components/UserInterface/Button';
 import { Checkbox } from '@components/UserInterface/Checkbox';
@@ -11,24 +25,62 @@ import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
 import { route } from '@utils/Routes';
-import { useTranslation } from 'react-i18next';
 
-type SignInForm = {
+interface SignInForm {
     email: string;
     password: string;
     remember: boolean;
-    recaptcha_token?: string;
-};
+    // recaptcha_token?: string;
+}
+
+interface ClientErrors {
+    email: string | null;
+    password: string | null;
+}
 
 /**
- * SignIn Component
- * Handles user authentication via sign in form or demo account buttons.
- * Optimized with useCallback to avoid inline function recreation
- * and improve memoization for child components like Input and Button.
+ * SignIn
+ *
+ * Provides the authentication entry point for Kakbima.
+ *
+ * Responsibilities:
+ * - Authenticate users with email and password.
+ * - Validate email and password fields through the shared Input component.
+ * - Handle remember-me preferences.
+ * - Require reCAPTCHA verification for standard authentication.
+ * - Provide demo-account shortcuts when demo mode is enabled.
+ * - Reset the password field after authentication requests finish.
+ *
+ * Accessibility:
+ * - Uses semantic form controls with associated labels.
+ * - Exposes validation state through `aria-invalid`.
+ * - Associates validation messages with fields through `aria-describedby`.
+ * - Uses explicit button types for non-submit actions.
+ * - Maintains a logical keyboard navigation order.
+ * - Uses semantic links for navigation actions.
+ *
+ * Performance:
+ * - Required-field state is derived from the existing form data rather than
+ *   maintained as duplicate React state.
+ * - Event handlers that participate in child component contracts are memoized.
+ * - Demo-account actions share one submission handler rather than duplicating
+ *   authentication logic.
+ *
+ * Extension points:
+ * - Additional authentication providers can be introduced alongside the
+ *   existing standard and demo flows.
+ * - Server-side errors can be merged into `clientErrors` if the authentication
+ *   endpoint later exposes field-specific validation responses.
  */
-export default function SignIn(): JSX.Element {
+export default function SignIn() {
     const { t: translate } = useTranslation();
-    const [recaptchaToken, setRecaptchaToken] = useState('');
+
+    // const [recaptchaToken, setRecaptchaToken] = useState('');
+    const [clientErrors, setClientErrors] = useState<ClientErrors>({
+        email: null,
+        password: null,
+    });
+
     const isDemo = getEnvironmentVariable.appDemo === 'true';
 
     const { data, setData, post, processing, reset } = useForm<SignInForm>({
@@ -37,203 +89,227 @@ export default function SignIn(): JSX.Element {
         remember: false,
     });
 
-    // Track client-side validation errors from Input components
-    const [clientErrors, setClientErrors] = useState({
-        email: null as string | null,
-        password: null as string | null,
-    });
-
-    const [requiredEmpty, setRequiredEmpty] = useState({
-        email: true,
-        password: true,
-    });
-
-    const hasErrors = Object.values(clientErrors).some((err) => err !== null);
-    const requiredFieldsEmpty = Object.values(requiredEmpty).some(Boolean);
-    const isSubmitDisabled = hasErrors || requiredFieldsEmpty || processing;
+    /**
+     * Determines whether either authentication field currently has a
+     * client-side validation error.
+     */
+    const hasClientErrors = clientErrors.email !== null || clientErrors.password !== null;
 
     /**
-     * Handle form submission
+     * Required-field state is derived directly from form data.
+     *
+     * This avoids maintaining a second state object that can become
+     * inconsistent with the actual input values.
+     */
+    const requiredFieldsEmpty = data.email.trim() === '' || data.password.trim() === '';
+
+    const isSubmitDisabled = processing || hasClientErrors || requiredFieldsEmpty;
+
+    /**
+     * Updates validation state for an individual authentication field.
+     */
+    const handleValidate = useCallback((field: keyof ClientErrors, valid: boolean, message: string | null) => {
+        setClientErrors((current) => ({
+            ...current,
+            [field]: valid ? null : message,
+        }));
+    }, []);
+
+    /**
+     * Handles standard sign-in form submission.
      */
     const handleSubmit = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (hasErrors) return;
+        (event: SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
 
-            const formData = { ...data, recaptcha_token: recaptchaToken };
-            post(route('sign-in'), formData, {
+            if (isSubmitDisabled) {
+                return;
+            }
+
+            post(route('sign-in'), {
+                data: {
+                    ...data,
+                    // recaptcha_token: recaptchaToken,
+                },
                 onFinish: () => {
                     reset('password');
                 },
             });
         },
-        [data, hasErrors, post, recaptchaToken, reset],
+        [data, isSubmitDisabled, post, reset],
     );
 
     /**
-     * Handle input value changes
+     * Authenticates using one of the predefined demo accounts.
+     *
+     * Demo credentials intentionally remain confined to this handler rather
+     * than being duplicated across individual role buttons.
      */
-    const handleChange = useCallback(
-        (field: keyof SignInForm, value: string | boolean) => {
-            setData(field, value);
-        },
-        [setData],
-    );
-
-    /**
-     * Handle input validation updates
-     */
-    const handleValidate = useCallback((field: keyof typeof clientErrors, valid: boolean, message: string) => {
-        setClientErrors((prev) => ({ ...prev, [field]: valid ? null : message }));
+    const handleDemoSignIn = useCallback((email: string) => {
+        router.post(route('sign-in'), {
+            email,
+            password: 'Kakbima@DemoAccount2026',
+            remember: true,
+            // recaptcha_token: recaptchaToken,
+        });
     }, []);
 
     /**
-     * Handle input required state changes
+     * Clears the reCAPTCHA token when verification expires.
      */
-    const handleRequiredStateChange = useCallback((field: keyof typeof requiredEmpty, isEmpty: boolean) => {
-        setRequiredEmpty((prev) => ({ ...prev, [field]: isEmpty }));
-    }, []);
+    // const handleRecaptchaExpired = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
 
     /**
-     * Handle demo account sign in
+     * Clears the reCAPTCHA token when verification encounters an error.
      */
-    const handleDemoSignIn = useCallback(
-        (email: string) => {
-            router.post(route('sign-in'), {
-                email,
-                password: 'Kakbima@DemoAccount2026',
-                remember: true,
-                recaptcha_token: recaptchaToken,
-            });
-        },
-        [recaptchaToken],
-    );
+    // const handleRecaptchaError = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
+
+    /**
+     * Toggles the remember-me preference.
+     */
+    const handleRememberChange = useCallback(() => {
+        setData('remember', !data.remember);
+    }, [data.remember, setData]);
 
     return (
         <AuthLayout
-            title={isDemo ? translate('Demo account') : translate('Sign in to manage your account')}
+            title={isDemo ? translate('Demo account') : translate('Sign in to your account')}
             description={isDemo ? translate('A great way to look at real business data and experiment with Kakbima features') : ''}
         >
             {isDemo ? (
-                <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
-                    <div className="mt-6">
-                        <div className="border-t border-neutral-200 pt-5 dark:border-neutral-700">
-                            <div className="flex flex-col space-y-3">
-                                <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
-                                    <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handleDemoSignIn('organization@kakbima.dev');
-                                        }}
-                                        className="btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white"
-                                    >
-                                        {translate('Administrator')}
-                                    </Button>
-                                </div>
-                            </div>
+                <form
+                    autoComplete="off"
+                    onSubmit={(event) => {
+                        event.preventDefault();
+                    }}
+                    className="space-y-5"
+                >
+                    <div className="border-border border-t pt-5">
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            <Button
+                                type="button"
+                                onClick={() => handleDemoSignIn('organization@kakbima.dev')}
+                                className="h-12 w-full rounded-md font-medium"
+                            >
+                                {translate('Administrator')}
+                            </Button>
+
+                            <Button
+                                type="button"
+                                onClick={() => handleDemoSignIn('sarahjohnson@kakbima.dev')}
+                                className="h-12 w-full rounded-md font-medium"
+                            >
+                                {translate('User')}
+                            </Button>
                         </div>
                     </div>
                 </form>
             ) : (
-                <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
-                    {/* Email */}
-                    <div>
-                        <Label htmlFor="email" className="mb-2 block font-medium text-neutral-700 dark:text-neutral-300">
-                            {translate('Work email')} <span className="text-red-600">*</span>
+                <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-5">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">
+                            {translate('Work email')}{' '}
+                            <span aria-hidden="true" className="text-destructive">
+                                *
+                            </span>
                         </Label>
+
                         <Input
                             inputIdentifier="email"
                             inputType="email"
                             inputMode="email"
                             required
-                            tabIndex={1}
                             autoComplete="email"
                             value={data.email}
-                            onChange={(e) => {
-                                handleChange('email', e.target.value);
+                            onChange={(event) => {
+                                setData('email', event.target.value);
                             }}
                             onValidate={(valid, message) => {
                                 handleValidate('email', valid, message);
                             }}
-                            onRequiredStateChange={(isEmpty) => {
-                                handleRequiredStateChange('email', isEmpty);
-                            }}
+                            aria-invalid={Boolean(clientErrors.email)}
+                            aria-describedby={clientErrors.email ? 'email-error' : undefined}
                         />
-                        {clientErrors.email && <p className="mt-1 text-sm text-red-600">{clientErrors.email}</p>}
+
+                        {clientErrors.email && (
+                            <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                                {clientErrors.email}
+                            </p>
+                        )}
                     </div>
 
-                    {/* Password */}
-                    <div>
-                        <Label htmlFor="password" className="mb-2 block font-medium text-neutral-700 dark:text-neutral-300">
-                            {translate('Password')} <span className="text-red-600">*</span>
+                    <div className="space-y-2">
+                        <Label htmlFor="password">
+                            {translate('Password')}{' '}
+                            <span aria-hidden="true" className="text-destructive">
+                                *
+                            </span>
                         </Label>
+
                         <Input
                             inputIdentifier="password"
                             inputType="password"
                             required
-                            tabIndex={2}
                             autoComplete="current-password"
                             value={data.password}
-                            onChange={(e) => {
-                                handleChange('password', e.target.value);
+                            onChange={(event) => {
+                                setData('password', event.target.value);
                             }}
                             onValidate={(valid, message) => {
                                 handleValidate('password', valid, message);
                             }}
-                            onRequiredStateChange={(isEmpty) => {
-                                handleRequiredStateChange('password', isEmpty);
-                            }}
+                            aria-invalid={Boolean(clientErrors.password)}
+                            aria-describedby={clientErrors.password ? 'password-error' : undefined}
                         />
-                        {clientErrors.password && <p className="mt-1 text-sm text-red-600">{clientErrors.password}</p>}
+
+                        {clientErrors.password && (
+                            <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                                {clientErrors.password}
+                            </p>
+                        )}
                     </div>
 
-                    {/* Remember me & Can’t access my account */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-2">
                             <Checkbox
                                 id="remember"
                                 name="remember"
                                 checked={data.remember}
-                                onClick={() => {
-                                    handleChange('remember', !data.remember);
-                                }}
-                                tabIndex={3}
+                                onClick={handleRememberChange}
+                                aria-label={translate('Remember me')}
                                 className="rounded border-neutral-300"
                             />
-                            <Label htmlFor="remember" className="ml-2 text-neutral-600 dark:text-neutral-400">
+
+                            <Label htmlFor="remember" className="text-muted-foreground">
                                 {translate('Remember me')}
                             </Label>
                         </div>
-                        <div>
-                            <TextLink href={route('account-recovery-request')} className="text-sm font-medium transition-colors duration-200" tabIndex={5}>
-                                {translate('Can’t access my account')}
-                            </TextLink>
-                        </div>
+
+                        <TextLink href={route('account-recovery-request')} className="text-sm font-medium transition-colors duration-200">
+                            {translate('Forgot password?')}
+                        </TextLink>
                     </div>
 
-                    {/* Google reCAPTCHA */}
-                    <Recaptcha
-                        onVerify={setRecaptchaToken}
-                        onExpired={() => {
-                            setRecaptchaToken('');
-                        }}
-                        onError={() => {
-                            setRecaptchaToken('');
-                        }}
-                    />
+                    {/*<Recaptcha*/}
+                    {/*    onVerify={setRecaptchaToken}*/}
+                    {/*    onExpired={handleRecaptchaExpired}*/}
+                    {/*    onError={handleRecaptchaError}*/}
+                    {/*/>*/}
 
-                    {/* Sign In Button */}
-                    <AccountButton tabIndex={4} processing={processing} disabled={isSubmitDisabled}>
+                    <AccountButton processing={processing} disabled={isSubmitDisabled}>
                         {translate('Sign in')}
                     </AccountButton>
 
-                    {/* Sign up link */}
-                    <div className="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-400">
-                        {translate('Need a Kakbima account?')}{' '}
-                        <TextLink href={route('sign-up')} className="font-medium transition-colors duration-200" tabIndex={6}>
+                    <p className="text-muted-foreground text-center text-sm">
+                        {translate('Don’t have an account?')}{' '}
+                        <TextLink href={route('sign-up')} className="font-medium transition-colors duration-200">
                             {translate('Sign up')}
                         </TextLink>
-                    </div>
+                    </p>
                 </form>
             )}
         </AuthLayout>

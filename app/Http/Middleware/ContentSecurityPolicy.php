@@ -161,7 +161,7 @@ class ContentSecurityPolicy
         $frameSrc = implode(' ', $this->wrap($cfg['frame'] ?? []));
 
         // Report-To group name and header
-        $reportToGroup = $cfg['report_to_group'] ?? 'hf-csp';
+        $reportToGroup = $cfg['report_to_group'] ?? 'kb-csp';
         $reportTo = [
             'group' => $reportToGroup,
             'maximum_age' => (int)($cfg['report_to_maximum_age'] ?? 5184000),
@@ -252,7 +252,7 @@ class ContentSecurityPolicy
         $normalized['script_hashes'] = $normalized['script_hashes'] ?? '';
         $normalized['style_hashes'] = $normalized['style_hashes'] ?? '';
         $normalized['style_attribute_hashes'] = $normalized['style_attribute_hashes'] ?? '';
-        $normalized['report_to_group'] = $normalized['report_to_group'] ?? 'hf-csp';
+        $normalized['report_to_group'] = $normalized['report_to_group'] ?? 'kb-csp';
         $normalized['report_to_maximum_age'] = $normalized['report_to_maximum_age'] ?? 5184000;
         $normalized['report_route'] = $normalized['report_route'] ?? 'csp.report';
         $normalized['trusted_types'] = $normalized['trusted_types'] ?? false;

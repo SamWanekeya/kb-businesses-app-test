@@ -1,22 +1,47 @@
 /**
  * @file ConfirmPassword.tsx
  * @description
- * Requires the user to re-enter their password for sensitive actions.
+ * Requires the authenticated user to re-enter their current password
+ * before continuing with a sensitive account action.
  */
 
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { route } from '@utils/Routes';
-import { useTranslation } from 'react-i18next';
 
 /**
- * ConfirmPassword page.
- * Handles password confirmation before secure operations.
+ * ConfirmPassword
+ *
+ * Provides a password confirmation step for sensitive authenticated actions.
+ *
+ * Responsibilities:
+ * - Render the current-password field.
+ * - Handle client-side validation feedback.
+ * - Prevent invalid or duplicate submissions.
+ * - Submit the confirmation request through Inertia.
+ * - Clear the password after the request lifecycle completes.
+ *
+ * Accessibility:
+ * - Uses semantic form controls and an associated label.
+ * - Exposes validation state through `aria-invalid`.
+ * - Associates validation feedback with the password input.
+ * - Preserves native keyboard form submission and focus behavior.
+ *
+ * Performance:
+ * - Derives validation state from the existing form value instead of
+ *   maintaining redundant required-field state.
+ * - Memoizes callbacks passed to the reusable Input component.
+ * - Avoids unnecessary memoization of the page itself.
+ *
+ * Extension points:
+ * - Additional confirmation requirements can be introduced without
+ *   changing the Inertia submission architecture.
  */
 export default function ConfirmPassword() {
     const { t: translate } = useTranslation();
@@ -25,94 +50,88 @@ export default function ConfirmPassword() {
         password: '',
     });
 
-    // Validation error state from Input component
-    const [clientErrors, setClientErrors] = useState({
-        password: null as string | null,
-    });
+    const [passwordError, setPasswordError] = useState<string | null>(null);
 
-    // Track which required fields are empty
-    const [requiredEmpty, setRequiredEmpty] = useState({
-        password: true,
-    });
-
-    const hasErrors = Object.values(clientErrors).some((e) => e !== null);
-    const requiredFieldsEmpty = Object.values(requiredEmpty).some(Boolean);
-    const isSubmitDisabled = hasErrors || requiredFieldsEmpty || processing;
+    const isPasswordEmpty = data.password.length === 0;
+    const isSubmitDisabled = processing || isPasswordEmpty || passwordError !== null;
 
     /**
-     * Update password field.
-     * Memoized to avoid unnecessary re-renders in the Input component.
+     * Updates the password field.
+     *
+     * The callback is stable so the reusable Input component does not receive
+     * a new handler reference on every parent render.
      */
     const handlePasswordChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            setData('password', e.target.value);
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setData('password', event.target.value);
         },
         [setData],
     );
 
     /**
-     * Handle client-side validation from Input component.
+     * Receives client-side validation results from the Input component.
+     *
+     * A successful validation clears any previously displayed password error.
      */
-    const handlePasswordValidate = useCallback((valid: boolean, message?: string) => {
-        setClientErrors((prev) => ({
-            ...prev,
-            password: valid ? null : message || null,
-        }));
+    const handlePasswordValidate = useCallback((valid: boolean, message: string | null) => {
+        setPasswordError(valid ? null : message);
     }, []);
 
     /**
-     * Track required field empty state.
+     * Submits the password confirmation request.
+     *
+     * Uses the React 19.3 SubmitEvent type rather than the deprecated
+     * FormEvent type.
      */
-    const handleRequiredStateChange = useCallback((isEmpty: boolean) => {
-        setRequiredEmpty((prev) => ({ ...prev, password: isEmpty }));
-    }, []);
+    const handleSubmit = useCallback(
+        (event: React.SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
 
-    /**
-     * Submit handler for password confirmation.
-     */
-    const handleSubmit: FormEventHandler = useCallback(
-        (e) => {
-            e.preventDefault();
-            if (hasErrors) return;
+            if (isSubmitDisabled) {
+                return;
+            }
+
             post(route('authenticated.password.confirm'), {
                 onFinish: () => {
                     reset('password');
                 },
             });
         },
-        [hasErrors, post, reset],
+        [isSubmitDisabled, post, reset],
     );
 
     return (
-        <AuthLayout
-            title={translate('Confirm your password')}
-            description={translate('For extra security, please re-enter your password to continue')}
-        >
-            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-5">
-                <div className="space-y-4">
-                    <div className="relative">
-                        <Label htmlFor="password" className="mb-2 block font-medium text-neutral-700 dark:text-neutral-300">
-                            {translate('Password')} <span className="text-red-600">*</span>
-                        </Label>
+        <AuthLayout title={translate('Confirm your password')} description={translate('Re-enter your password to continue with this secure action.')}>
+            <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                <div className="space-y-2">
+                    <Label htmlFor="password" className="font-medium text-neutral-700 dark:text-neutral-300">
+                        {translate('Password')}
+                        <span aria-hidden="true" className="ml-1 text-red-600 dark:text-red-400">
+                            *
+                        </span>
+                    </Label>
 
-                        <Input
-                            inputIdentifier="password"
-                            inputType="password"
-                            required
-                            tabIndex={1}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={handlePasswordChange}
-                            onValidate={handlePasswordValidate}
-                            onRequiredStateChange={handleRequiredStateChange}
-                        />
+                    <Input
+                        inputIdentifier="password"
+                        inputType="password"
+                        required
+                        autoComplete="current-password"
+                        value={data.password}
+                        onChange={handlePasswordChange}
+                        onValidate={handlePasswordValidate}
+                        aria-invalid={passwordError !== null}
+                        aria-describedby={passwordError ? 'password-error' : undefined}
+                    />
 
-                        {clientErrors.password && <p className="mt-1 text-sm text-red-600">{clientErrors.password}</p>}
-                    </div>
+                    {passwordError && (
+                        <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                            {passwordError}
+                        </p>
+                    )}
                 </div>
 
-                <AccountButton tabIndex={2} processing={processing} disabled={isSubmitDisabled}>
-                    {translate('Confirm new password')}
+                <AccountButton type="submit" processing={processing} disabled={isSubmitDisabled}>
+                    {translate('Confirm password')}
                 </AccountButton>
             </form>
         </AuthLayout>

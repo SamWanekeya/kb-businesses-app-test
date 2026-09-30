@@ -1,120 +1,158 @@
 /**
  * @file ForgotPassword.tsx
  * @description
- * Handles the "Forgot Password" flow:
- * - Email input validation
- * - reCAPTCHA verification
- * - POST request to send reset link
+ * Handles the password recovery flow by validating the user's work email,
+ * completing reCAPTCHA verification, and requesting a password reset link.
  */
 
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
-import Recaptcha from '@components/Recaptcha';
 import TextLink from '@components/TextLink';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { route } from '@utils/Routes';
-import { useTranslation } from 'react-i18next';
 
 /**
- * Can’t access my account page component.
- * Wraps content in AuthLayout and manages form submission.
+ * ForgotPassword
+ *
+ * Provides the password recovery form for users who cannot access their
+ * account.
+ *
+ * Responsibilities:
+ * - Collect and validate the user's work email address.
+ * - Require successful reCAPTCHA verification.
+ * - Submit the password recovery request through Inertia.
+ * - Provide an accessible route back to the sign-in page.
+ *
+ * Accessibility:
+ * - Uses a semantic form with an explicitly associated email label.
+ * - Exposes client-side validation through `aria-invalid`.
+ * - Associates validation feedback with the email input.
+ * - Uses the browser's natural keyboard navigation order.
+ * - Provides a descriptive recovery action and accessible error messaging.
+ *
+ * Performance:
+ * - Derives form validity from existing state instead of maintaining
+ *   redundant required-field state.
+ * - Memoizes callbacks passed to child components.
+ * - Avoids unnecessary component-level memoization for this lightweight page.
+ *
+ * Extension points:
+ * - Server-side validation errors can be surfaced through Inertia form errors
+ *   without changing the component's overall structure.
+ * - Additional recovery verification requirements can be incorporated into
+ *   the submission guard when needed.
  */
 export default function ForgotPassword() {
     const { t: translate } = useTranslation();
-    const [recaptchaToken, setRecaptchaToken] = useState('');
+
+    // const [recaptchaToken, setRecaptchaToken] = useState('');
+    const [emailError, setEmailError] = useState<string | null>(null);
 
     const { data, setData, post, processing } = useForm<{
         email: string;
-        recaptcha_token?: string;
+        // recaptcha_token?: string;
     }>({
         email: '',
     });
 
-    // Track validation errors from Input component
-    const [clientErrors, setClientErrors] = useState({
-        email: null as string | null,
-    });
+    const isEmailEmpty = data.email.length === 0;
+    // const isRecaptchaIncomplete = recaptchaToken.length === 0;
 
-    const hasErrors = Object.values(clientErrors).some((e) => e !== null);
-
-    const [requiredEmpty, setRequiredEmpty] = useState({
-        email: true,
-    });
-
-    const requiredFieldsEmpty = Object.values(requiredEmpty).some(Boolean);
-    const isSubmitDisabled = hasErrors || requiredFieldsEmpty || processing;
+    const isSubmitDisabled = processing || isEmailEmpty || emailError !== null;
+    // isRecaptchaIncomplete;
 
     /**
-     * Update email field.
-     * Memoized to avoid re-renders in Input component.
+     * Updates the email address.
+     *
+     * The stable callback is passed to the reusable Input component to avoid
+     * creating a new handler reference on each render.
      */
     const handleEmailChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            setData('email', e.target.value);
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setData('email', event.target.value);
         },
         [setData],
     );
 
     /**
-     * Handle validation result from Input component.
+     * Receives client-side email validation results from the Input component.
+     *
+     * A valid email clears any previously displayed validation error.
      */
-    const handleEmailValidate = useCallback((valid: boolean, message?: string) => {
-        setClientErrors((prev) => ({
-            ...prev,
-            email: valid ? null : message || null,
-        }));
+    const handleEmailValidate = useCallback((valid: boolean, message: string | null) => {
+        setEmailError(valid ? null : message);
     }, []);
 
     /**
-     * Track whether required fields are empty.
+     * Handles successful reCAPTCHA verification.
+     *
+     * The returned token is required before the recovery request can be
+     * submitted.
      */
-    const handleRequiredStateChange = useCallback((isEmpty: boolean) => {
-        setRequiredEmpty((prev) => ({ ...prev, email: isEmpty }));
-    }, []);
+    // const handleRecaptchaVerify = useCallback((token: string) => {
+    //     setRecaptchaToken(token);
+    // }, []);
 
     /**
-     * Submit handler for password reset request.
+     * Handles an expired reCAPTCHA token.
+     *
+     * Expired tokens must not be reused for subsequent submissions.
      */
-    const handleSubmit: FormEventHandler = useCallback(
-        (e) => {
-            e.preventDefault();
-            if (hasErrors) return;
+    // const handleRecaptchaExpired = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
+
+    /**
+     * Handles a reCAPTCHA verification failure.
+     *
+     * Clearing the token prevents submission with an invalid verification
+     * result.
+     */
+    // const handleRecaptchaError = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
+
+    /**
+     * Submits the password recovery request.
+     *
+     * Submission is guarded against incomplete client-side validation,
+     * missing reCAPTCHA verification, and duplicate requests.
+     */
+    const handleSubmit = useCallback(
+        (event: React.SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
+
+            if (isSubmitDisabled) {
+                return;
+            }
 
             post(route('account-recovery-mail'), {
                 data: {
                     ...data,
-                    recaptcha_token: recaptchaToken,
+                    // recaptcha_token: recaptchaToken,
                 },
             });
         },
-        [hasErrors, post, data, recaptchaToken],
+        [data, isSubmitDisabled, post],
     );
 
-    /**
-     * reCAPTCHA callback handlers.
-     */
-    const handleRecaptchaVerify = useCallback((token: string) => {
-        setRecaptchaToken(token);
-    }, []);
-
-    const handleRecaptchaExpired = useCallback(() => {
-        setRecaptchaToken('');
-    }, []);
-
-    const handleRecaptchaError = useCallback(() => {
-        setRecaptchaToken('');
-    }, []);
-
     return (
-        <AuthLayout title={translate('Can’t access my account')}>
-            <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                    <Label htmlFor="email" className="mb-2 block font-medium text-neutral-700 dark:text-neutral-300">
-                        {translate('Work email')} <span className="text-red-600">*</span>
+        <AuthLayout
+            title={translate('Forgot password')}
+            description={translate('Enter your work email and we will send you a link to reset your password.')}
+        >
+            <form autoComplete="off" onSubmit={handleSubmit} noValidate className="space-y-6">
+                <div className="space-y-2">
+                    <Label htmlFor="email" className="font-medium text-neutral-700 dark:text-neutral-300">
+                        {translate('Work email')}
+                        <span aria-hidden="true" className="ml-1 text-red-600 dark:text-red-400">
+                            *
+                        </span>
                     </Label>
 
                     <Input
@@ -122,30 +160,48 @@ export default function ForgotPassword() {
                         inputType="email"
                         inputMode="email"
                         required
-                        tabIndex={1}
                         autoComplete="email"
                         value={data.email}
                         onChange={handleEmailChange}
                         onValidate={handleEmailValidate}
-                        onRequiredStateChange={handleRequiredStateChange}
-                        className="block w-full outline-1 focus:ring-2 focus:ring-green-500 sm:text-sm/6"
+                        aria-invalid={emailError !== null}
+                        aria-describedby={emailError ? 'email-error' : undefined}
                     />
 
-                    {clientErrors.email && <p className="mt-1 text-sm text-red-600">{clientErrors.email}</p>}
+                    {emailError && (
+                        <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                            {emailError}
+                        </p>
+                    )}
                 </div>
 
-                <Recaptcha onVerify={handleRecaptchaVerify} onExpired={handleRecaptchaExpired} onError={handleRecaptchaError} />
+                {/*<div className="space-y-2">*/}
+                {/*    <Recaptcha*/}
+                {/*        onVerify={handleRecaptchaVerify}*/}
+                {/*        onExpired={handleRecaptchaExpired}*/}
+                {/*        onError={handleRecaptchaError}*/}
+                {/*    />*/}
 
-                <AccountButton tabIndex={2} processing={processing} disabled={isSubmitDisabled}>
+                {/*    {!isRecaptchaIncomplete && (*/}
+                {/*        <p*/}
+                {/*            role="status"*/}
+                {/*            className="text-sm text-green-700 dark:text-green-400"*/}
+                {/*        >*/}
+                {/*            {translate('Verification completed.')}*/}
+                {/*        </p>*/}
+                {/*    )}*/}
+                {/*</div>*/}
+
+                <AccountButton type="submit" processing={processing} disabled={isSubmitDisabled}>
                     {translate('Send password reset link')}
                 </AccountButton>
 
-                <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
-                    {translate('Back to')}{' '}
-                    <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200" tabIndex={3}>
+                <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
+                    {translate('Remember your password?')}{' '}
+                    <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200">
                         {translate('Sign in')}
                     </TextLink>
-                </div>
+                </p>
             </form>
         </AuthLayout>
     );

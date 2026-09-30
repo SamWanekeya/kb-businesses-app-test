@@ -1,4 +1,3 @@
-import InputError from '@components/InputError';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
@@ -119,7 +118,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.name} />
                             </div>
 
                             <div>
@@ -135,7 +133,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.price ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.price} />
                             </div>
 
                             <div>
@@ -154,7 +151,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                 <p className="text-muted-foreground mt-1 text-xs">
                                     {translate('If left empty, yearly price will be calculated as 80% of monthly price × 12')}
                                 </p>
-                                <InputError message={errors.yearly_price} />
                             </div>
 
                             <div>
@@ -167,7 +163,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     rows={3}
                                     className={errors.description ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.description} />
                             </div>
                         </div>
 
@@ -184,7 +179,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.maximum_users ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.maximum_users} />
                             </div>
 
                             <div>
@@ -199,7 +193,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.maximum_projects ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.maximum_projects} />
                             </div>
 
                             <div>
@@ -214,7 +207,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.maximum_contacts ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.maximum_contacts} />
                             </div>
 
                             <div>
@@ -229,7 +221,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.maximum_accounts ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.maximum_accounts} />
                             </div>
 
                             <div>
@@ -245,7 +236,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.storage_limit ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.storage_limit} />
                             </div>
 
                             <div>
@@ -258,7 +248,6 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.trial_days ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.trial_days} />
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,20 @@
+/**
+ * @file ResetPassword.tsx
+ * @description
+ * Handles password reset requests initiated from a password recovery link.
+ *
+ * Responsibilities:
+ * - Display the recovery email address.
+ * - Validate the new password.
+ * - Validate password confirmation.
+ * - Submit the password reset request through Inertia.
+ * - Clear sensitive password fields after submission.
+ */
+
 import { useForm } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
+import type { SubmitEvent } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
@@ -9,33 +23,56 @@ import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 
-/**
- * Props required to render the ResetPassword screen.
- * Provided by the password reset link.
- */
 interface ResetPasswordProps {
+    /**
+     * Password reset token supplied by the recovery link.
+     */
     token: string;
+
+    /**
+     * Email address associated with the password reset request.
+     */
     email: string;
 }
 
-/**
- * Shape of the password reset form data.
- * Used by Inertia's `useForm`.
- */
+interface ClientErrors {
+    password: string | null;
+    password_confirmation: string | null;
+}
 
 /**
- * Password reset page component.
+ * ResetPassword
  *
- * Handles client-side validation, required-field state,
- * and submission to the password reset endpoint.
+ * Provides the final step of the password recovery flow.
+ *
+ * Responsibilities:
+ * - Display the account email associated with the reset request.
+ * - Validate the new password through the shared Input component.
+ * - Ensure password confirmation matches the new password.
+ * - Prevent submission while client-side validation is incomplete.
+ * - Submit the reset request through Inertia.
+ * - Clear sensitive password values when the request finishes.
+ *
+ * Accessibility:
+ * - Every form control has an associated label.
+ * - Invalid fields expose `aria-invalid`.
+ * - Validation messages are associated through `aria-describedby`.
+ * - Validation messages use `role="alert"` so relevant changes can be announced.
+ * - The read-only email field remains keyboard accessible.
+ *
+ * Performance:
+ * - Required-field state is derived from existing form data rather than
+ *   maintained as duplicate React state.
+ * - Event handlers are memoized only where they are passed into reusable
+ *   components or used as effect dependencies.
+ *
+ * Extension points:
+ * - Server-side validation can be incorporated into the same field error
+ *   state if Inertia errors are later surfaced directly by this page.
  */
 export default function ResetPassword({ token, email }: ResetPasswordProps) {
     const { t: translate } = useTranslation();
 
-    /**
-     * Inertia form state and helpers.
-     * Handles server-side submission and processing state.
-     */
     const { data, setData, post, processing, reset } = useForm({
         token,
         email,
@@ -43,76 +80,79 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
         password_confirmation: '',
     });
 
-    /**
-     * Client-side validation error messages per field.
-     * These do NOT reflect server-side validation.
-     */
-    const [clientErrors, setClientErrors] = useState<Record<string, string | null>>({
+    const [clientErrors, setClientErrors] = useState<ClientErrors>({
         password: null,
         password_confirmation: null,
     });
 
     /**
-     * Tracks whether required fields are currently empty.
-     * Used to disable submission until all required fields are filled.
+     * Determines whether either password field currently has a validation
+     * error.
      */
-    const [requiredEmpty, setRequiredEmpty] = useState({
-        password: true,
-        password_confirmation: true,
-    });
+    const hasClientErrors = clientErrors.password !== null || clientErrors.password_confirmation !== null;
 
-    const hasClientErrors = Object.values(clientErrors).some(Boolean);
-    const requiredFieldsEmpty = Object.values(requiredEmpty).some(Boolean);
+    /**
+     * Required-field state is derived directly from the current form values.
+     *
+     * Keeping this derived rather than storing it separately prevents the
+     * validation state and form state from becoming inconsistent.
+     */
+    const requiredFieldsEmpty = data.password.trim() === '' || data.password_confirmation.trim() === '';
 
     const isSubmitDisabled = processing || hasClientErrors || requiredFieldsEmpty;
 
     /**
-     * Updates client-side validation state for a specific field.
+     * Updates the validation state for a password field.
      *
-     * @param field - Field being validated
-     * @param valid - Whether the field is valid
-     * @param message - Validation error message (if invalid)
+     * A valid field removes its existing client-side error. Invalid fields
+     * retain the validation message supplied by the Input component.
      */
-    const handleValidate = useCallback((field: keyof typeof clientErrors, valid: boolean, message: string | null) => {
-        setClientErrors((prev) => ({
-            ...prev,
+    const handleValidate = useCallback((field: keyof ClientErrors, valid: boolean, message: string | null) => {
+        setClientErrors((current) => ({
+            ...current,
             [field]: valid ? null : message,
         }));
     }, []);
 
     /**
-     * Updates required/empty state for a specific field.
+     * Re-validates password confirmation whenever either password value
+     * changes.
      *
-     * @param field - Field being tracked
-     * @param isEmpty - Whether the field is currently empty
-     */
-    const handleRequiredState = useCallback((field: keyof typeof requiredEmpty, isEmpty: boolean) => {
-        setRequiredEmpty((prev) => ({
-            ...prev,
-            [field]: isEmpty,
-        }));
-    }, []);
-
-    /**
-     * Re-validates password confirmation whenever the password changes.
-     * Prevents stale confirmation values.
+     * The shared Input component validates the individual field, while this
+     * page owns the cross-field rule requiring both passwords to match.
      */
     useEffect(() => {
-        if (!data.password_confirmation) return;
+        if (data.password_confirmation === '') {
+            setClientErrors((current) => ({
+                ...current,
+                password_confirmation: null,
+            }));
 
-        handleValidate('password_confirmation', data.password === data.password_confirmation, translate('Passwords do not match'));
-    }, [data.password, data.password_confirmation, handleValidate, translate]);
+            return;
+        }
+
+        const passwordsMatch = data.password === data.password_confirmation;
+
+        setClientErrors((current) => ({
+            ...current,
+            password_confirmation: passwordsMatch ? null : translate('Passwords do not match'),
+        }));
+    }, [data.password, data.password_confirmation, translate]);
 
     /**
-     * Form submit handler.
-     * Prevents submission when client-side errors exist
-     * and clears sensitive fields on completion.
+     * Handles password reset form submission.
+     *
+     * Submission is prevented while client-side validation errors exist.
+     * Password fields are cleared after the request finishes regardless of
+     * whether the server request succeeds or fails.
      */
-    const handleSubmit: FormEventHandler = useCallback(
-        (e) => {
-            e.preventDefault();
+    const handleSubmit = useCallback(
+        (event: SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
 
-            if (hasClientErrors) return;
+            if (isSubmitDisabled) {
+                return;
+            }
 
             post(route('account-recovery-save'), {
                 onFinish: () => {
@@ -120,23 +160,33 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 },
             });
         },
-        [hasClientErrors, post, reset],
+        [isSubmitDisabled, post, reset],
     );
 
     return (
         <AuthLayout title={translate('Change your password')}>
-            <form autoComplete="off" onSubmit={handleSubmit} className="space-y-5">
-                {/* EMAIL (read-only, no validation needed) */}
-                <div>
-                    <Label>{translate('Work email')}</Label>
+            <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                    <Label htmlFor="email">{translate('Work email')}</Label>
 
-                    <Input inputIdentifier="email" inputType="email" readOnly value={data.email} />
+                    <Input
+                        inputIdentifier="email"
+                        inputType="email"
+                        inputMode="email"
+                        readOnly
+                        value={data.email}
+                        autoComplete="email"
+                        aria-readonly="true"
+                        className="bg-muted/50"
+                    />
                 </div>
 
-                {/* PASSWORD */}
-                <div>
-                    <Label>
-                        {translate('Password')} <span className="text-red-600">*</span>
+                <div className="space-y-2">
+                    <Label htmlFor="password">
+                        {translate('Password')}{' '}
+                        <span aria-hidden="true" className="text-destructive">
+                            *
+                        </span>
                     </Label>
 
                     <Input
@@ -145,24 +195,29 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         required
                         autoComplete="new-password"
                         value={data.password}
-                        onChange={(e) => {
-                            setData('password', e.target.value);
+                        onChange={(event) => {
+                            setData('password', event.target.value);
                         }}
                         onValidate={(valid, message) => {
                             handleValidate('password', valid, message);
                         }}
-                        onRequiredStateChange={(isEmpty) => {
-                            handleRequiredState('password', isEmpty);
-                        }}
+                        aria-invalid={Boolean(clientErrors.password)}
+                        aria-describedby={clientErrors.password ? 'password-error' : undefined}
                     />
 
-                    {clientErrors.password && <p className="mt-1 text-sm text-red-600">{clientErrors.password}</p>}
+                    {clientErrors.password && (
+                        <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                            {clientErrors.password}
+                        </p>
+                    )}
                 </div>
 
-                {/* PASSWORD CONFIRMATION */}
-                <div>
-                    <Label>
-                        {translate('Confirm new password')} <span className="text-red-600">*</span>
+                <div className="space-y-2">
+                    <Label htmlFor="password_confirmation">
+                        {translate('Confirm new password')}{' '}
+                        <span aria-hidden="true" className="text-destructive">
+                            *
+                        </span>
                     </Label>
 
                     <Input
@@ -171,26 +226,30 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         required
                         autoComplete="new-password"
                         value={data.password_confirmation}
-                        onChange={(e) => {
-                            setData('password_confirmation', e.target.value);
+                        onChange={(event) => {
+                            setData('password_confirmation', event.target.value);
                         }}
                         onValidate={(valid, message) => {
                             handleValidate('password_confirmation', valid, message);
                         }}
-                        onRequiredStateChange={(isEmpty) => {
-                            handleRequiredState('password_confirmation', isEmpty);
-                        }}
+                        aria-invalid={Boolean(clientErrors.password_confirmation)}
+                        aria-describedby={clientErrors.password_confirmation ? 'password-confirmation-error' : undefined}
                     />
 
-                    {clientErrors.password_confirmation && <p className="mt-1 text-sm text-red-600">{clientErrors.password_confirmation}</p>}
+                    {clientErrors.password_confirmation && (
+                        <p id="password-confirmation-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                            {clientErrors.password_confirmation}
+                        </p>
+                    )}
                 </div>
 
                 <AccountButton processing={processing} disabled={isSubmitDisabled}>
                     {translate('Change password')}
                 </AccountButton>
-                <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
+
+                <div className="text-muted-foreground text-center text-sm">
                     {translate('Back to')}{' '}
-                    <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200" tabIndex={3}>
+                    <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200">
                         {translate('Sign in')}
                     </TextLink>
                 </div>

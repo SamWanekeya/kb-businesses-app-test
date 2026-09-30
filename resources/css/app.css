@@ -132,7 +132,7 @@
     --popover: oklch(0.19 0 0);
     --popover-foreground: oklch(0.96 0 0);
 
-    /* Primary accent (fallback if hf-color not set) */
+    /* Primary accent (fallback if kb-color not set) */
     --primary: oklch(0.433 0.147 329.6); /* balanced purple fallback */
     --primary-foreground: oklch(0.98 0 0);
 
@@ -249,18 +249,18 @@
 
 /* Theme color variables */
 :root {
-    --hf-color: #a12582;
-    --hf-color-hover: #871e6e;
-    --hf-color-active: #71185c;
+    --kb-color: #a12582;
+    --kb-color-hover: #871e6e;
+    --kb-color-active: #71185c;
 }
 
 /* Apply theme color to various elements */
-.hf-bg-primary:hover {
-    background-color: var(--hf-color-hover);
+.kb-bg-primary:hover {
+    background-color: var(--kb-color-hover);
 }
 
-.hf-bg-primary:active {
-    background-color: var(--hf-color-active);
+.kb-bg-primary:active {
+    background-color: var(--kb-color-active);
 }
 
 button:not(:disabled),
@@ -279,16 +279,16 @@ button[disabled] {
 .btn-primary,
 .bg-primary,
 .active-nav-item {
-    background-color: var(--hf-color);
+    background-color: var(--kb-color);
 }
 
 .border-primary {
     opacity: 1;
-    border-color: var(--hf-color);
+    border-color: var(--kb-color);
 }
 
 .ring-primary {
-    --tw-ring-color: var(--hf-color);
+    --tw-ring-color: var(--kb-color);
 }
 
 /* Dark mode table styles */

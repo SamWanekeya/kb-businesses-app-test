@@ -1574,7 +1574,7 @@ if (!function_exists('uploadFile')) {
             } else {
                 $validation = [
                     'mimes:' . $mimes,
-                    'maximum:' . $maximumSize,
+                    'max:' . $maximumSize,
                 ];
             }
             $validator = Validator::make($request->all(), [
@@ -1784,19 +1784,19 @@ if (!function_exists('uploadFile')) {
             // Handle AWS S3 storage
             if ($storageType === 'aws_s3' || $storageType === 's3') {
                 if (
-                    empty($storage_settings['s3_key']) ||
-                    empty($storage_settings['s3_secret']) ||
-                    empty($storage_settings['s3_region']) ||
-                    empty($storage_settings['s3_bucket'])
+                    empty($storage_settings['aws_access_key_id']) ||
+                    empty($storage_settings['aws_secret_access_key']) ||
+                    empty($storage_settings['aws_default_region']) ||
+                    empty($storage_settings['aws_bucket'])
                 ) {
                     return url('storage/media/' . ltrim($path, '/'));
                 }
 
                 config([
-                    'filesystems.disks.s3.key' => $storage_settings['s3_key'],
-                    'filesystems.disks.s3.secret' => $storage_settings['s3_secret'],
-                    'filesystems.disks.s3.region' => $storage_settings['s3_region'],
-                    'filesystems.disks.s3.bucket' => $storage_settings['s3_bucket'],
+                    'filesystems.disks.s3.key' => $storage_settings['aws_access_key_id'],
+                    'filesystems.disks.s3.secret' => $storage_settings['aws_secret_access_key'],
+                    'filesystems.disks.s3.region' => $storage_settings['aws_default_region'],
+                    'filesystems.disks.s3.bucket' => $storage_settings['aws_bucket'],
                 ]);
 
                 // Normalize path for S3
@@ -1910,19 +1910,19 @@ if (!function_exists('uploadFile')) {
             // Handle AWS S3 storage
             if ($storageType === 'aws_s3' || $storageType === 's3') {
                 if (
-                    empty($storage_settings['s3_key']) ||
-                    empty($storage_settings['s3_secret']) ||
-                    empty($storage_settings['s3_region']) ||
-                    empty($storage_settings['s3_bucket'])
+                    empty($storage_settings['aws_access_key_id']) ||
+                    empty($storage_settings['aws_secret_access_key']) ||
+                    empty($storage_settings['aws_default_region']) ||
+                    empty($storage_settings['aws_bucket'])
                 ) {
                     return false;
                 }
 
                 config([
-                    'filesystems.disks.s3.key' => $storage_settings['s3_key'],
-                    'filesystems.disks.s3.secret' => $storage_settings['s3_secret'],
-                    'filesystems.disks.s3.region' => $storage_settings['s3_region'],
-                    'filesystems.disks.s3.bucket' => $storage_settings['s3_bucket'],
+                    'filesystems.disks.s3.key' => $storage_settings['aws_access_key_id'],
+                    'filesystems.disks.s3.secret' => $storage_settings['aws_secret_access_key'],
+                    'filesystems.disks.s3.region' => $storage_settings['aws_default_region'],
+                    'filesystems.disks.s3.bucket' => $storage_settings['aws_bucket'],
                 ]);
 
                 // Normalize path for S3

@@ -36,7 +36,7 @@ export default function AccountButton({ processing = false, tabIndex, children, 
         <button
             {...props}
             type={props.type || 'submit'}
-            className={`btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white ${className}`}
+            className={`btn-primary kb-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white ${className}`}
             tabIndex={tabIndex}
             disabled={processing || disabled}
         >

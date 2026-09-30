@@ -53,7 +53,7 @@ class WorkEmail implements ValidationRule
     {
         // Defensive: ensure we are working with a string
         if (!is_string($value) || !str_contains($value, '@')) {
-            $fail(__('Please enter a valid work email address'));
+            $fail(__('Please use a work email address rather than a personal email address.'));
 
             return;
         }
@@ -66,7 +66,7 @@ class WorkEmail implements ValidationRule
 
         // Exact domain match (e.g. gmail.com)
         if (in_array($domain, $blockedDomains, true)) {
-            $fail(__('Please enter a valid work email address'));
+            $fail(__('Please use a work email address rather than a personal email address.'));
 
             return;
         }
@@ -74,7 +74,7 @@ class WorkEmail implements ValidationRule
         // Partial keyword match (e.g. "mail", "yahoo", etc.)
         foreach ($blockedKeywords as $keyword) {
             if (str_contains($domain, $keyword)) {
-                $fail(__('Please enter a valid work email address'));
+                $fail(__('Please use a work email address rather than a personal email address.'));
 
                 return;
             }
