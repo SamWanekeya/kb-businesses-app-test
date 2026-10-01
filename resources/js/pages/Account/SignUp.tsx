@@ -414,23 +414,23 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
 
                             <Label htmlFor="terms" className="text-muted-foreground text-sm leading-5">
                                 {translate('I agree to the')}{' '}
-                                <a
+                                <TextLink
                                     href={termsUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-foreground hover:text-primary font-medium underline underline-offset-4 transition-colors"
+                                    className="text-sm font-medium transition-colors duration-200"
                                 >
                                     {translate('Terms')}
-                                </a>{' '}
+                                </TextLink>{' '}
                                 {translate('and')}{' '}
-                                <a
+                                <TextLink
                                     href={privacyUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-foreground hover:text-primary font-medium underline underline-offset-4 transition-colors"
+                                    className="text-sm font-medium transition-colors duration-200"
                                 >
                                     {translate('Privacy')}
-                                </a>
+                                </TextLink>
                             </Label>
                         </div>
 
