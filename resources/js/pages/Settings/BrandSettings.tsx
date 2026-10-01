@@ -283,7 +283,7 @@ export default function BrandSettings() {
                                 <Label htmlFor="organization_tax_id_pin_number">{translate('Tax ID/PIN number')}</Label>
 
                                 <Input
-                                    id="organization_tax_id_pin_number"
+                                    inputIdentifier="organization_tax_id_pin_number"
                                     name="organization_tax_id_pin_number"
                                     value={form.organization_tax_id_pin_number}
                                     onChange={(event) => {
@@ -297,9 +297,9 @@ export default function BrandSettings() {
                                 <Label htmlFor="organization_phone_number">{translate('Phone number')}</Label>
 
                                 <Input
-                                    id="organization_phone_number"
+                                    inputIdentifier="organization_phone_number"
                                     name="organization_phone_number"
-                                    type="tel"
+                                    inputType="tel"
                                     value={form.organization_phone_number}
                                     onChange={(event) => {
                                         handleOrganizationChange('organization_phone_number', event.target.value);
@@ -312,9 +312,10 @@ export default function BrandSettings() {
                                 <Label htmlFor="organization_email">{translate('Email')}</Label>
 
                                 <Input
-                                    id="organization_email"
+                                    inputIdentifier="organization_email"
                                     name="organization_email"
-                                    type="email"
+                                    inputType="email"
+                                    inputMode="email"
                                     value={form.organization_email}
                                     onChange={(event) => {
                                         handleOrganizationChange('organization_email', event.target.value);

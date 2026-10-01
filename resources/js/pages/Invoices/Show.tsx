@@ -1371,9 +1371,15 @@ export default function InvoiceShow() {
                     setIsDeleteModalOpen(false);
                 }}
                 onConfirm={() => {
-                    router.delete(route('invoices.delete-activity', { invoice: invoice.id, activity: currentActivity.id }), {
-                        preserveScroll: true,
-                    });
+                    router.delete(
+                        route('invoices.delete-activity', {
+                            invoice: invoice.id,
+                            activity: currentActivity.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                        },
+                    );
                     setIsDeleteModalOpen(false);
                 }}
                 itemName={translate('this activity')}

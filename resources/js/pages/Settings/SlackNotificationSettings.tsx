@@ -149,7 +149,6 @@ export default function SlackNotificationSettings() {
                                         onChange={(e) => {
                                             setSlackWebhookUrl(e.target.value);
                                         }}
-                                        placeholder="https://hooks.slack.com/services/..."
                                         className="font-mono"
                                     />
                                 </div>

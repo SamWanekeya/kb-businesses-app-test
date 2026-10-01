@@ -56,7 +56,13 @@ export default function Taxes() {
         };
     }, [checkOverflow, taxes?.data]);
 
-    const [formData, setFormData] = useState({ name: '', rate: 0, type: 'percentage', description: '', status: 'active' });
+    const [formData, setFormData] = useState({
+        name: '',
+        rate: 0,
+        type: 'percentage',
+        description: '',
+        status: 'active',
+    });
     const [formErrors, setFormErrors] = useState<any>({});
 
     const resetForm = () => {
@@ -244,8 +250,9 @@ export default function Taxes() {
                                     {translate('Tax Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -279,8 +286,9 @@ export default function Taxes() {
                                     {translate('Rate')}
                                 </Label>
                                 <Input
-                                    id="rate"
-                                    type="number"
+                                    inputIdentifier="rate"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.0001"
                                     min="0"
                                     max="999.9999"
@@ -349,7 +357,8 @@ export default function Taxes() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

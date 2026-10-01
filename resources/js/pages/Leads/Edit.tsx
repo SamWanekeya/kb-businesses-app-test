@@ -117,7 +117,9 @@ export default function LeadEdit() {
                                         {translate('Lead Name')}
                                     </Label>
                                     <Input
-                                        id="name"
+                                        inputType="text"
+                                        inputMode="text"
+                                        inputIdentifier="name"
                                         value={data.name}
                                         onChange={(e) => {
                                             handleInputChange('name', e.target.value);
@@ -132,8 +134,9 @@ export default function LeadEdit() {
                                         {translate('Email')}
                                     </Label>
                                     <Input
-                                        id="email"
-                                        type="email"
+                                        inputIdentifier="email"
+                                        inputType="email"
+                                        inputMode="email"
                                         value={data.email}
                                         onChange={(e) => {
                                             handleInputChange('email', e.target.value);
@@ -148,7 +151,7 @@ export default function LeadEdit() {
                                         {translate('Phone')}
                                     </Label>
                                     <Input
-                                        id="phone"
+                                        inputIdentifier="phone"
                                         value={data.phone}
                                         onChange={(e) => {
                                             handleInputChange('phone', e.target.value);
@@ -163,7 +166,7 @@ export default function LeadEdit() {
                                         {translate('Position')}
                                     </Label>
                                     <Input
-                                        id="position"
+                                        inputIdentifier="position"
                                         value={data.position}
                                         onChange={(e) => {
                                             handleInputChange('position', e.target.value);
@@ -178,7 +181,7 @@ export default function LeadEdit() {
                                         {translate('Organization')}
                                     </Label>
                                     <Input
-                                        id="organization"
+                                        inputIdentifier="organization"
                                         value={data.organization}
                                         onChange={(e) => {
                                             handleInputChange('organization', e.target.value);
@@ -193,7 +196,7 @@ export default function LeadEdit() {
                                         {translate('Account Name')}
                                     </Label>
                                     <Input
-                                        id="account_name"
+                                        inputIdentifier="account_name"
                                         value={data.account_name}
                                         onChange={(e) => {
                                             handleInputChange('account_name', e.target.value);
@@ -208,7 +211,7 @@ export default function LeadEdit() {
                                         {translate('Website')}
                                     </Label>
                                     <Input
-                                        id="website"
+                                        inputIdentifier="website"
                                         value={data.website}
                                         onChange={(e) => {
                                             handleInputChange('website', e.target.value);
@@ -223,8 +226,9 @@ export default function LeadEdit() {
                                         {translate('Lead Value')}
                                     </Label>
                                     <Input
-                                        id="value"
-                                        type="number"
+                                        inputIdentifier="value"
+                                        inputType="number"
+                                        inputMode="decimal"
                                         step="0.01"
                                         min="0"
                                         value={data.value}

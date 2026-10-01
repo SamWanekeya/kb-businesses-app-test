@@ -108,12 +108,20 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
     const handleYearChange = (year: number) => {
         setSelectedYear(year);
-        router.reload({ data: { revenueYear: year, organizationsYear: selectedOrganizationsYear }, only: ['dashboardData'], preserveState: true });
+        router.reload({
+            data: { revenueYear: year, organizationsYear: selectedOrganizationsYear },
+            only: ['dashboardData'],
+            preserveState: true,
+        });
     };
 
     const handleOrganizationsYearChange = (year: number) => {
         setSelectedOrganizationsYear(year);
-        router.reload({ data: { revenueYear: selectedYear, organizationsYear: year }, only: ['dashboardData'], preserveState: true });
+        router.reload({
+            data: { revenueYear: selectedYear, organizationsYear: year },
+            only: ['dashboardData'],
+            preserveState: true,
+        });
     };
 
     const greeting = () => {

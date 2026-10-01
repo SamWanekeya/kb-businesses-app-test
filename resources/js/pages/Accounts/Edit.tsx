@@ -152,7 +152,9 @@ export default function AccountEdit() {
                                 {translate('Account Name')}
                             </Label>
                             <Input
-                                id="name"
+                                inputType="text"
+                                inputMode="text"
+                                inputIdentifier="name"
                                 value={data.name}
                                 onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
@@ -165,8 +167,9 @@ export default function AccountEdit() {
                                 {translate('Email')}
                             </Label>
                             <Input
-                                id="email"
-                                type="email"
+                                inputIdentifier="email"
+                                inputType="email"
+                                inputMode="email"
                                 value={data.email}
                                 onChange={(e) => set('email', e.target.value)}
                                 className={errors.email ? 'border-red-500' : ''}
@@ -323,7 +326,7 @@ export default function AccountEdit() {
                                         {translate('Billing City')}
                                     </Label>
                                     <Input
-                                        id="billing_city"
+                                        inputIdentifier="billing_city"
                                         value={data.billing_city}
                                         onChange={(e) => set('billing_city', e.target.value)}
                                         className={errors.billing_city ? 'border-red-500' : ''}
@@ -335,7 +338,7 @@ export default function AccountEdit() {
                                         {translate('Billing State')}
                                     </Label>
                                     <Input
-                                        id="billing_state"
+                                        inputIdentifier="billing_state"
                                         value={data.billing_state}
                                         onChange={(e) => set('billing_state', e.target.value)}
                                         className={errors.billing_state ? 'border-red-500' : ''}
@@ -347,7 +350,7 @@ export default function AccountEdit() {
                                         {translate('Billing Country')}
                                     </Label>
                                     <Input
-                                        id="billing_country"
+                                        inputIdentifier="billing_country"
                                         value={data.billing_country}
                                         onChange={(e) => set('billing_country', e.target.value)}
                                         className={errors.billing_country ? 'border-red-500' : ''}
@@ -359,7 +362,7 @@ export default function AccountEdit() {
                                         {translate('Billing Postal Code')}
                                     </Label>
                                     <Input
-                                        id="billing_postal_code"
+                                        inputIdentifier="billing_postal_code"
                                         value={data.billing_postal_code}
                                         onChange={(e) => set('billing_postal_code', e.target.value)}
                                         className={errors.billing_postal_code ? 'border-red-500' : ''}
@@ -425,7 +428,7 @@ export default function AccountEdit() {
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_country">{translate('Shipping Country')}</Label>
                                     <Input
-                                        id="shipping_country"
+                                        inputIdentifier="shipping_country"
                                         value={data.shipping_country}
                                         onChange={(e) => set('shipping_country', e.target.value)}
                                     />
@@ -433,7 +436,7 @@ export default function AccountEdit() {
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_postal_code">{translate('Shipping Postal Code')}</Label>
                                     <Input
-                                        id="shipping_postal_code"
+                                        inputIdentifier="shipping_postal_code"
                                         value={data.shipping_postal_code}
                                         onChange={(e) => set('shipping_postal_code', e.target.value)}
                                     />

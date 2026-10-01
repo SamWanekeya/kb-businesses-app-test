@@ -66,7 +66,12 @@ export default function Brands() {
     };
 
     const loadItemForEdit = (item: any) => {
-        setFormData({ name: item.name || '', website: item.website || '', description: item.description || '', status: item.status || 'active' });
+        setFormData({
+            name: item.name || '',
+            website: item.website || '',
+            description: item.description || '',
+            status: item.status || 'active',
+        });
         setFormMode('edit');
         setCurrentItem(item);
         setFormErrors({});
@@ -236,8 +241,9 @@ export default function Brands() {
                                     {translate('Brand Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -251,8 +257,9 @@ export default function Brands() {
                             <div className="space-y-2">
                                 <Label htmlFor="website">{translate('Website')}</Label>
                                 <Input
-                                    id="website"
-                                    type="text"
+                                    inputIdentifier="website"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.website}
                                     onChange={(e) => {
                                         setFormData({ ...formData, website: e.target.value });
@@ -318,7 +325,8 @@ export default function Brands() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

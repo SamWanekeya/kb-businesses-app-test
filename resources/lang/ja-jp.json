@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "パスワードが一致しません。",
     "Passwords may not be longer than 128 characters.": "パスワードは 128 文字以下にする必要があります。",
     "Passwords must have a maximum of 128 characters": "パスワードは最大 128 文字にする必要があります",
-    "Passwords must have a minimum of 12 characters": "パスワードは 12 文字以上である必要があります",
+    "Passwords must have a minimum of 12 characters.": "パスワードは 12 文字以上である必要があります",
     "Pay": "支払う",
     "Pay date": "支払日",
     "Pay now": "今すぐお支払いください",

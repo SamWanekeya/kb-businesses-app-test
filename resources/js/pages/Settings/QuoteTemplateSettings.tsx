@@ -363,7 +363,6 @@ export default function QuoteTemplateSettings() {
                                         label=""
                                         value={data.quoteLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={translate('Select quote logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />

@@ -699,7 +699,13 @@ export default function Opportunities() {
                                             });
                                             updated[stage.id] = {
                                                 ...updated[stage.id],
-                                                items: [...updated[stage.id].items, { ...currentOpportunity, opportunity_stage: stage }],
+                                                items: [
+                                                    ...updated[stage.id].items,
+                                                    {
+                                                        ...currentOpportunity,
+                                                        opportunity_stage: stage,
+                                                    },
+                                                ],
                                             };
                                             setKanbanData(updated);
                                             router.put(

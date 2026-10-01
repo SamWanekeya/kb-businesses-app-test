@@ -231,7 +231,13 @@ export default function Calls() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Calls') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Calls') },
+    ];
 
     const columns = [
         {
@@ -645,7 +651,12 @@ export default function Calls() {
                             required: true,
                             searchable: true,
                             emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
-                            options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
+                            options: [
+                                ...users.map((user: any) => ({
+                                    value: user.id,
+                                    label: `${user.name} (${user.email})`,
+                                })),
+                            ],
                         },
                         {
                             name: 'status',

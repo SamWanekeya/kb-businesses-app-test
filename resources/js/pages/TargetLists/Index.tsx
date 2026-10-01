@@ -235,13 +235,13 @@ export default function TargetLists() {
                                     {translate('Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. Q1 Prospects, Enterprise Leads, Newsletter Subscribers')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -256,7 +256,6 @@ export default function TargetLists() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter target list description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -305,8 +304,8 @@ export default function TargetLists() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
-                                        placeholder={translate('Search target lists...')}
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

@@ -211,7 +211,13 @@ export default function DeliveryOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Delivery Orders') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Delivery Orders') },
+    ];
 
     const columns = [
         {
@@ -383,7 +389,10 @@ export default function DeliveryOrders() {
                             onChange: setSelectedSalesOrder,
                             options: [
                                 { value: 'all', label: translate('All Sales Orders') },
-                                ...(salesOrders?.map((so: any) => ({ value: so.id.toString(), label: `${so.order_number} - ${so.name}` })) || []),
+                                ...(salesOrders?.map((so: any) => ({
+                                    value: so.id.toString(),
+                                    label: `${so.order_number} - ${so.name}`,
+                                })) || []),
                             ],
                         },
                         {

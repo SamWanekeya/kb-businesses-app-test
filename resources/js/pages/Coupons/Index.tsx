@@ -74,7 +74,10 @@ export default function CouponsPage() {
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                 date_from: dateFrom || undefined,
                 date_to: dateTo || undefined,
-                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.sort_field && {
+                    sort_field: pageFilters.sort_field,
+                    sort_direction: pageFilters.sort_direction,
+                }),
                 ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
             },
             { preserveState: true, preserveScroll: true },
@@ -241,7 +244,13 @@ export default function CouponsPage() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Coupons') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Coupons') },
+    ];
 
     // Define table columns
     const columns = [
@@ -463,7 +472,10 @@ export default function CouponsPage() {
                                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                                 date_from: dateFrom || undefined,
                                 date_to: dateTo || undefined,
-                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                                ...(pageFilters.sort_field && {
+                                    sort_field: pageFilters.sort_field,
+                                    sort_direction: pageFilters.sort_direction,
+                                }),
                             },
                             { preserveState: true, preserveScroll: true },
                         );
@@ -540,9 +552,10 @@ export default function CouponsPage() {
                                         {isAutoGenerate ? (
                                             <div className="flex gap-2">
                                                 <Input
-                                                    id={field.name}
+                                                    inputIdentifier={field.name}
                                                     name={field.name}
-                                                    type="text"
+                                                    inputType="text"
+                                                    inputMode="text"
                                                     value={formData[field.name] || ''}
                                                     readOnly
                                                     className="flex-1"
@@ -559,9 +572,10 @@ export default function CouponsPage() {
                                             </div>
                                         ) : (
                                             <Input
-                                                id={field.name}
+                                                inputIdentifier={field.name}
                                                 name={field.name}
-                                                type="text"
+                                                inputType="text"
+                                                inputMode="text"
                                                 value={formData[field.name] || ''}
                                                 onChange={(e) => {
                                                     handleChange(field.name, e.target.value);

@@ -157,7 +157,13 @@ export default function ReturnOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Return Orders') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Return Orders') },
+    ];
 
     const columns = [
         {

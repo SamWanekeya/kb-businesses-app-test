@@ -247,8 +247,9 @@ export default function CampaignTypes() {
                                     {translate('Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -263,7 +264,7 @@ export default function CampaignTypes() {
                                 <Label htmlFor="color">{translate('Color')}</Label>
                                 <div className="flex items-center gap-2">
                                     <Input
-                                        id="color"
+                                        inputIdentifier="color"
                                         type="color"
                                         value={formData.color}
                                         onChange={(e) => {
@@ -273,7 +274,8 @@ export default function CampaignTypes() {
                                         disabled={!canCreate && !canEdit}
                                     />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });
@@ -341,7 +343,8 @@ export default function CampaignTypes() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

@@ -156,7 +156,9 @@ export function ToyyibPayPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="name">{translate('Full Name')} *</Label>
                         <Input
-                            id="name"
+                            inputType="text"
+                            inputMode="text"
+                            inputIdentifier="name"
                             value={customerDetails.name}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));
@@ -171,8 +173,9 @@ export function ToyyibPayPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="email">{translate('Email Address')} *</Label>
                         <Input
-                            id="email"
-                            type="email"
+                            inputIdentifier="email"
+                            inputType="email"
+                            inputMode="email"
                             value={customerDetails.email}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));

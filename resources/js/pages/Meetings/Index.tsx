@@ -57,7 +57,15 @@ export default function Meetings() {
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, '0');
         const dd = String(date.getDate()).padStart(2, '0');
-        router.get(route('meetings.index'), { date: `${yyyy}-${mm}-${dd}`, month: date.getMonth() + 1, year: yyyy }, { preserveScroll: true });
+        router.get(
+            route('meetings.index'),
+            {
+                date: `${yyyy}-${mm}-${dd}`,
+                month: date.getMonth() + 1,
+                year: yyyy,
+            },
+            { preserveScroll: true },
+        );
     };
 
     // Navigate calendar month (only changes dots, keeps selected date)
@@ -199,7 +207,13 @@ export default function Meetings() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Meetings') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Meetings') },
+    ];
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -256,7 +270,13 @@ export default function Meetings() {
             <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                 <button
                     onClick={() => {
-                        const prev = selectedMonth === 1 ? { m: 12, y: selectedYear - 1 } : { m: selectedMonth - 1, y: selectedYear };
+                        const prev =
+                            selectedMonth === 1
+                                ? { m: 12, y: selectedYear - 1 }
+                                : {
+                                      m: selectedMonth - 1,
+                                      y: selectedYear,
+                                  };
                         navigateToMonth(prev.y, prev.m);
                     }}
                     className="cursor-pointer rounded p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -268,7 +288,13 @@ export default function Meetings() {
                 </span>
                 <button
                     onClick={() => {
-                        const next = selectedMonth === 12 ? { m: 1, y: selectedYear + 1 } : { m: selectedMonth + 1, y: selectedYear };
+                        const next =
+                            selectedMonth === 12
+                                ? { m: 1, y: selectedYear + 1 }
+                                : {
+                                      m: selectedMonth + 1,
+                                      y: selectedYear,
+                                  };
                         navigateToMonth(next.y, next.m);
                     }}
                     className="cursor-pointer rounded p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -783,7 +809,12 @@ export default function Meetings() {
                             required: true,
                             searchable: true,
                             emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
-                            options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
+                            options: [
+                                ...users.map((user: any) => ({
+                                    value: user.id,
+                                    label: `${user.name} (${user.email})`,
+                                })),
+                            ],
                         },
                         {
                             name: 'status',

@@ -50,7 +50,14 @@ export default function ReceiptOrderCreate() {
     });
 
     const [productRows, setProductRows] = useState<ProductRow[]>([
-        { id: crypto.randomUUID(), product_id: '', quantity: 1, unit_price: 0, discount_type: 'none', discount_value: 0 },
+        {
+            id: crypto.randomUUID(),
+            product_id: '',
+            quantity: 1,
+            unit_price: 0,
+            discount_type: 'none',
+            discount_value: 0,
+        },
     ]);
     const [errors, setErrors] = useState<Errors>({});
     const [processing, setProcessing] = useState(false);
@@ -151,7 +158,14 @@ export default function ReceiptOrderCreate() {
     const addProductRow = useCallback(() => {
         setProductRows((p) => [
             ...p,
-            { id: crypto.randomUUID(), product_id: '', quantity: 1, unit_price: 0, discount_type: 'none', discount_value: 0 },
+            {
+                id: crypto.randomUUID(),
+                product_id: '',
+                quantity: 1,
+                unit_price: 0,
+                discount_type: 'none',
+                discount_value: 0,
+            },
         ]);
     }, []);
 
@@ -262,23 +276,13 @@ export default function ReceiptOrderCreate() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {translate('Receipt Order Name')} <span className="text-red-500">*</span>
                             </Label>
-                            <Input
-                                value={form.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                placeholder={translate('e.g. Q1 Supplier Receipt')}
-                                className={errors.name ? 'border-red-500' : ''}
-                            />
+                            <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
-                            <Textarea
-                                value={form.description}
-                                onChange={(e) => set('description', e.target.value)}
-                                rows={2}
-                                placeholder={translate('Optional description about this receipt order...')}
-                            />
+                            <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
 
                         {/* Purchase Order + Return Order */}
@@ -565,7 +569,8 @@ export default function ReceiptOrderCreate() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -579,7 +584,8 @@ export default function ReceiptOrderCreate() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={row.unit_price}
@@ -615,7 +621,8 @@ export default function ReceiptOrderCreate() {
                                                         {translate('Discount Value')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={row.discount_value}
@@ -624,7 +631,6 @@ export default function ReceiptOrderCreate() {
                                                             setRow(row.id, 'discount_value', parseFloat(e.target.value) || 0);
                                                         }}
                                                         className="disabled:opacity-40"
-                                                        placeholder="0"
                                                     />
                                                 </td>
 
@@ -698,12 +704,7 @@ export default function ReceiptOrderCreate() {
                 {/* Additional Notes */}
                 <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                     <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
-                    <Textarea
-                        value={form.notes}
-                        onChange={(e) => set('notes', e.target.value)}
-                        rows={3}
-                        placeholder={translate('Enter any additional notes...')}
-                    />
+                    <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
                 </div>
 
                 {/* Actions */}

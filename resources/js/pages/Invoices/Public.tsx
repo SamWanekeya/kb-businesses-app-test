@@ -654,7 +654,10 @@ export default function PublicInvoice({
                                                 </tr>
                                                 <tr
                                                     className="border-t-2"
-                                                    style={{ backgroundColor: `${template.primary}15`, borderTopColor: template.primary }}
+                                                    style={{
+                                                        backgroundColor: `${template.primary}15`,
+                                                        borderTopColor: template.primary,
+                                                    }}
                                                 >
                                                     <td colSpan={4} className="px-4 py-4"></td>
                                                     <td className="px-4 py-4 text-right text-lg font-bold" style={{ color: template.primary }}>

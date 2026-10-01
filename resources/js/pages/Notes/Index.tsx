@@ -137,7 +137,12 @@ export default function Notes() {
             label: translate('Shared With'),
             render: (value: any[]) => (value?.length ? `${value.length} users` : translate('Not shared')),
         },
-        { key: 'created_at', label: translate('Created At'), sortable: true, render: (value: string) => new Date(value).toLocaleDateString() },
+        {
+            key: 'created_at',
+            label: translate('Created At'),
+            sortable: true,
+            render: (value: string) => new Date(value).toLocaleDateString(),
+        },
     ];
 
     const actions = [
@@ -194,7 +199,13 @@ export default function Notes() {
                     : []
             }
 
-            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Notes') }]}
+            breadcrumbs={[
+                {
+                    title: translate('Dashboard'),
+                    href: route('dashboard.index'),
+                },
+                { title: translate('Notes') },
+            ]}
         >
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                 <Card className="p-4">
@@ -672,7 +683,12 @@ export default function Notes() {
                             name: 'shared_users',
                             label: translate('Share With'),
                             type: 'multi-select',
-                            options: users.filter((u: any) => u.id !== auth.user.id).map((u: any) => ({ value: u.id, label: u.name })),
+                            options: users
+                                .filter((u: any) => u.id !== auth.user.id)
+                                .map((u: any) => ({
+                                    value: u.id,
+                                    label: u.name,
+                                })),
                             row: 2,
                         },
                     ],

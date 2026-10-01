@@ -66,7 +66,12 @@ export default function TaskStatuses() {
     };
 
     const loadItemForEdit = (item: any) => {
-        setFormData({ name: item.name || '', description: item.description || '', color: item.color || '#6B7280', status: item.status || 'active' });
+        setFormData({
+            name: item.name || '',
+            description: item.description || '',
+            color: item.color || '#6B7280',
+            status: item.status || 'active',
+        });
         setFormMode('edit');
         setCurrentItem(item);
         setFormErrors({});
@@ -233,13 +238,13 @@ export default function TaskStatuses() {
                                     {translate('Status Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. In Progress, Under Review, Blocked')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -252,7 +257,7 @@ export default function TaskStatuses() {
                                 </Label>
                                 <div className="flex items-center gap-2">
                                     <Input
-                                        id="color"
+                                        inputIdentifier="color"
                                         type="color"
                                         value={formData.color}
                                         onChange={(e) => {
@@ -262,14 +267,14 @@ export default function TaskStatuses() {
                                         disabled={!canCreate && !canEdit}
                                     />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });
                                         }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
-                                        placeholder="#000000"
                                         disabled={!canCreate && !canEdit}
                                     />
                                 </div>
@@ -283,7 +288,6 @@ export default function TaskStatuses() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter task status description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -332,8 +336,8 @@ export default function TaskStatuses() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
-                                        placeholder={translate('Search task statuses...')}
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

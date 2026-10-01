@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "비밀번호가 일치하지 않습니다.",
     "Passwords may not be longer than 128 characters.": "비밀번호는 128자를 초과할 수 없습니다.",
     "Passwords must have a maximum of 128 characters": "비밀번호는 최대 128자여야 합니다.",
-    "Passwords must have a minimum of 12 characters": "비밀번호는 최소 12자 이상이어야 합니다.",
+    "Passwords must have a minimum of 12 characters.": "비밀번호는 최소 12자 이상이어야 합니다.",
     "Pay": "지불하다",
     "Pay date": "지급일",
     "Pay now": "지금 결제",

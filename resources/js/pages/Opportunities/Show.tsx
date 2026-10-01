@@ -367,7 +367,10 @@ export default function OpportunityShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: meetingItems.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: meetingItems.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {meetingItems.map((meeting: any) => (
                                                             <div
@@ -452,7 +455,10 @@ export default function OpportunityShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: callItems.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: callItems.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {callItems.map((call: any) => (
                                                             <div
@@ -942,9 +948,15 @@ export default function OpportunityShow() {
                     setIsDeleteModalOpen(false);
                 }}
                 onConfirm={() => {
-                    router.delete(route('opportunities.delete-activity', { opportunity: opportunity.id, activity: currentActivity.id }), {
-                        preserveScroll: true,
-                    });
+                    router.delete(
+                        route('opportunities.delete-activity', {
+                            opportunity: opportunity.id,
+                            activity: currentActivity.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                        },
+                    );
                     setIsDeleteModalOpen(false);
                 }}
                 itemName={translate('this activity')}

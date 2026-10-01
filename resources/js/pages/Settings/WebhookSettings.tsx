@@ -309,8 +309,8 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                             {translate('URL')}
                                         </Label>
                                         <Input
-                                            id="url"
-                                            placeholder="https://kakbima.dev/webhook"
+                                            inputIdentifier="url"
+                                            inputType="url"
                                             value={formData.url}
                                             onChange={(e) => {
                                                 setFormData((prev) => ({ ...prev, url: e.target.value }));

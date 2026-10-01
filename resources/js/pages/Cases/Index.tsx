@@ -259,7 +259,13 @@ export default function Cases() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Cases') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Cases') },
+    ];
 
     // Define table columns
     const columns = [
@@ -887,7 +893,10 @@ export default function Cases() {
                             options:
                                 formMode === 'view'
                                     ? []
-                                    : (users || []).map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` })),
+                                    : (users || []).map((user: any) => ({
+                                          value: user.id,
+                                          label: `${user.name} (${user.email})`,
+                                      })),
                             readOnly: formMode === 'view',
                         },
                     ],

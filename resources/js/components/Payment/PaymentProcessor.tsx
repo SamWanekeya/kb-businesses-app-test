@@ -4,7 +4,7 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Loader2, Tag } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 
 import { BankTransferForm } from '@components/Payment/BankTransferForm';
 import { PaystackPaymentForm } from '@components/Payment/PaystackPaymentForm';
-import { router } from '@inertiajs/react';
 
 interface PaymentMethod {
     id: string;
@@ -516,7 +515,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                         <div className="flex gap-2">
                             <div className="relative flex-1">
                                 <Input
-                                    id="coupon"
+                                    inputIdentifier="coupon"
                                     value={couponCode}
                                     onChange={(e) => {
                                         setCouponCode(e.target.value);

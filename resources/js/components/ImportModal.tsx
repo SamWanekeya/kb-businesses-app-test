@@ -172,8 +172,8 @@ export function ImportModal({
                                 {translate('Select file')} <span className="text-red-600">*</span>
                             </Label>
                             <Input
-                                id="file"
-                                type="file"
+                                inputIdentifier="file"
+                                inputType="file"
                                 accept=".xlsx,.xls,.csv"
                                 onChange={(e) => {
                                     setFile(e.target.files?.[0] || null);

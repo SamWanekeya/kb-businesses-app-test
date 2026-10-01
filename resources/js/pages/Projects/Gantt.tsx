@@ -554,8 +554,16 @@ export default function ProjectGantt() {
                                       type: 'select',
                                       required: true,
                                       searchable: true,
-                                      emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
-                                      options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
+                                      emptyNote: {
+                                          link: route('users-permissions.users.index'),
+                                          linkText: translate('Users'),
+                                      },
+                                      options: [
+                                          ...users.map((user: any) => ({
+                                              value: user.id,
+                                              label: `${user.name} (${user.email})`,
+                                          })),
+                                      ],
                                   },
                               ]
                             : []),

@@ -49,7 +49,15 @@ export const LayoutProvider = ({ children, globalSettings }: LayoutProviderProps
     const isRtl = useMemo(() => direction === 'rtl', [direction]);
     const effectivePosition = useMemo<LayoutPosition>(() => (isRtl ? 'right' : 'left'), [isRtl]);
 
-    const contextValue = useMemo(() => ({ direction, effectivePosition, isRtl, setDirection }), [direction, effectivePosition, isRtl, setDirection]);
+    const contextValue = useMemo(
+        () => ({
+            direction,
+            effectivePosition,
+            isRtl,
+            setDirection,
+        }),
+        [direction, effectivePosition, isRtl, setDirection],
+    );
 
     return <LayoutContext.Provider value={contextValue}>{children}</LayoutContext.Provider>;
 };

@@ -66,7 +66,12 @@ export default function ShippingProviderTypes() {
     };
 
     const loadItemForEdit = (item: any) => {
-        setFormData({ name: item.name || '', description: item.description || '', color: item.color || '#3B82F6', status: item.status || 'active' });
+        setFormData({
+            name: item.name || '',
+            description: item.description || '',
+            color: item.color || '#3B82F6',
+            status: item.status || 'active',
+        });
         setFormMode('edit');
         setCurrentItem(item);
         setFormErrors({});
@@ -201,7 +206,13 @@ export default function ShippingProviderTypes() {
     const canDelete = useHasPermission('delete-shipping-provider-types');
     const canToggleStatus = useHasPermission('toggle-status-shipping-provider-types');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Shipping Provider Types') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Shipping Provider Types') },
+    ];
 
     return (
         <PageTemplate
@@ -230,13 +241,13 @@ export default function ShippingProviderTypes() {
                                     {translate('Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
                                     }}
-                                    placeholder={translate('e.g. FedEx, DHL, UPS, Local Courier')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -247,7 +258,7 @@ export default function ShippingProviderTypes() {
                                 <Label htmlFor="color">{translate('Color')}</Label>
                                 <div className="flex items-center gap-2">
                                     <Input
-                                        id="color"
+                                        inputIdentifier="color"
                                         type="color"
                                         value={formData.color}
                                         onChange={(e) => {
@@ -257,14 +268,14 @@ export default function ShippingProviderTypes() {
                                         disabled={!canCreate && !canEdit}
                                     />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });
                                         }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
-                                        placeholder="#000000"
                                         disabled={!canCreate && !canEdit}
                                     />
                                 </div>
@@ -278,7 +289,6 @@ export default function ShippingProviderTypes() {
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
-                                    placeholder={translate('Enter shipping provider type description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -327,8 +337,8 @@ export default function ShippingProviderTypes() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
-                                        placeholder={translate('Search shipping provider types...')}
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

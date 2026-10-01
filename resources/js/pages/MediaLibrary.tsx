@@ -419,7 +419,6 @@ export default function MediaLibraryDemo() {
                                 <div className="relative max-w-sm">
                                     <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
-                                        placeholder={translate('Search media files...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -747,11 +746,11 @@ export default function MediaLibraryDemo() {
                                     </p>
 
                                     <Input
-                                        type="file"
+                                        inputType="file"
                                         multiple
                                         onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
                                         className="hidden"
-                                        id="file-upload-modal"
+                                        inputIdentifier="file-upload-modal"
                                     />
 
                                     <Button

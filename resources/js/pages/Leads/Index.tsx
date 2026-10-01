@@ -418,7 +418,11 @@ export default function Leads() {
                 value ? (
                     <span
                         className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
-                        style={{ backgroundColor: value.color + '20', color: value.color, borderColor: value.color + '40' }}
+                        style={{
+                            backgroundColor: value.color + '20',
+                            color: value.color,
+                            borderColor: value.color + '40',
+                        }}
                     >
                         {value.name}
                     </span>
@@ -740,7 +744,13 @@ export default function Leads() {
                                     <div
                                         key={status.id}
                                         className="flex flex-shrink-0 flex-col rounded-xl border"
-                                        style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                                        style={{
+                                            width: '300px',
+                                            minWidth: '300px',
+                                            backgroundColor: colBg,
+                                            borderColor: colBorder,
+                                            height: '100%',
+                                        }}
                                         onDragOver={(e) => {
                                             e.preventDefault();
                                         }}
@@ -784,7 +794,10 @@ export default function Leads() {
                                                 <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{status.name}</span>
                                                 <span
                                                     className="rounded-full px-2 py-0.5 text-xs font-semibold"
-                                                    style={{ backgroundColor: status.color + '22', color: status.color }}
+                                                    style={{
+                                                        backgroundColor: status.color + '22',
+                                                        color: status.color,
+                                                    }}
                                                 >
                                                     {statusLeads.length}
                                                 </span>

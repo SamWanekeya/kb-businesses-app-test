@@ -44,7 +44,15 @@ export default function PurchaseOrderCreate() {
         shipping_state: '',
         shipping_postal_code: '',
         shipping_country: '',
-        products: [{ product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }] as ProductRow[],
+        products: [
+            {
+                product_id: '',
+                quantity: '1',
+                unit_price: '0',
+                discount_type: 'none',
+                discount_value: '0',
+            },
+        ] as ProductRow[],
     });
 
     const breadcrumbs = [
@@ -108,7 +116,14 @@ export default function PurchaseOrderCreate() {
     const addProductRow = () => {
         setData('products', [
             ...data.products,
-            { id: Date.now(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' },
+            {
+                id: Date.now(),
+                product_id: '',
+                quantity: '1',
+                unit_price: '0',
+                discount_type: 'none',
+                discount_value: '0',
+            },
         ]);
     };
 
@@ -223,24 +238,14 @@ export default function PurchaseOrderCreate() {
                             <Label className="text-sm font-medium" required>
                                 {translate('Purchase Order Name')}
                             </Label>
-                            <Input
-                                value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                className={errors.name ? 'border-red-500' : ''}
-                                placeholder={translate('e.g. Q3 Raw Materials Restock')}
-                            />
+                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
                         {/* Description */}
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Description')}</Label>
-                            <Textarea
-                                value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
-                                rows={3}
-                                placeholder={translate('Brief description of this purchase order...')}
-                            />
+                            <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={3} />
                         </div>
 
                         {/* Sales Order + Account */}
@@ -534,7 +539,8 @@ export default function PurchaseOrderCreate() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -551,14 +557,14 @@ export default function PurchaseOrderCreate() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
                                                         onChange={(e) => {
                                                             updateProductRow(row.id, 'unit_price', e.target.value);
                                                         }}
-                                                        placeholder="0"
                                                         className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
                                                     />
                                                     {errors[`products.${i}.unit_price`] && (
@@ -590,7 +596,8 @@ export default function PurchaseOrderCreate() {
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}
@@ -598,7 +605,7 @@ export default function PurchaseOrderCreate() {
                                                             updateProductRow(row.id, 'discount_value', e.target.value);
                                                         }}
                                                         disabled={row.discount_type === 'none'}
-                                                        placeholder="0"
+
                                                         className="disabled:opacity-40"
                                                     />
                                                 </td>

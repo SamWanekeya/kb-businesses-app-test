@@ -349,7 +349,6 @@ export default function InvoiceTemplateSettings() {
                                         label=""
                                         value={data.invoiceLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={translate('Select invoice logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />

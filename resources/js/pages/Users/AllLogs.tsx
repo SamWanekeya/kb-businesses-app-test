@@ -169,7 +169,10 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                             params.search = searchTerm;
                         }
 
-                        router.get(route('users-permissions.users.all-logs'), params, { preserveState: true, preserveScroll: true });
+                        router.get(route('users-permissions.users.all-logs'), params, {
+                            preserveState: true,
+                            preserveScroll: true,
+                        });
                     }}
                 />
             </div>

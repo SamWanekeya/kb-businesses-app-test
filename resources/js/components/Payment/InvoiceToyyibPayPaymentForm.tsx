@@ -140,7 +140,8 @@ export function InvoiceToyyibPayPaymentForm({
                     <Label htmlFor="billEmail">{translate('Email Address')} *</Label>
                     <Input
                         id="billEmail"
-                        type="email"
+                        inputType="email"
+                        inputMode="email"
                         value={customerDetails.billEmail}
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billEmail: e.target.value }));

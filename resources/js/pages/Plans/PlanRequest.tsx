@@ -41,7 +41,10 @@ export default function PlanRequestsPage() {
                 page: 1,
                 search: searchTerm || undefined,
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.sort_field && {
+                    sort_field: pageFilters.sort_field,
+                    sort_direction: pageFilters.sort_direction,
+                }),
                 ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
             },
             { preserveState: true, preserveScroll: true },
@@ -296,7 +299,10 @@ export default function PlanRequestsPage() {
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
                                 search: searchTerm || undefined,
                                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                                ...(pageFilters.sort_field && {
+                                    sort_field: pageFilters.sort_field,
+                                    sort_direction: pageFilters.sort_direction,
+                                }),
                             },
                             { preserveState: true, preserveScroll: true },
                         );

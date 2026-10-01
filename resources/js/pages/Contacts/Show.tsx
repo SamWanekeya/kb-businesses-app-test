@@ -272,7 +272,10 @@ export default function ContactShow() {
                             {contact.quotes?.length > 0 ? (
                                 <div
                                     className="space-y-2 overflow-y-auto p-2"
-                                    style={{ height: '305px', overflowY: contact.quotes.length > 4 ? 'auto' : 'hidden' }}
+                                    style={{
+                                        height: '305px',
+                                        overflowY: contact.quotes.length > 4 ? 'auto' : 'hidden',
+                                    }}
                                 >
                                     {contact.quotes.map((quote: any) => (
                                         <div
@@ -404,7 +407,10 @@ export default function ContactShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {filteredMeetings.map((meeting: any) => (
                                                             <div
@@ -489,7 +495,10 @@ export default function ContactShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {filteredCalls.map((call: any) => (
                                                             <div

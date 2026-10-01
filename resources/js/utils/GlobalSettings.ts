@@ -182,7 +182,13 @@ function createFormatters(timezone: string, dateFormat: string, timeFormat: stri
     // currency already safe, but we can still wrap if you want consistency
     const safeFormatCurrency = withFallback(formatCurrency, '0');
 
-    function formatCurrency(amount: number | string, options: CurrencyFormatOptions = { showSymbol: true, showCode: false }) {
+    function formatCurrency(
+        amount: number | string,
+        options: CurrencyFormatOptions = {
+            showSymbol: true,
+            showCode: false,
+        },
+    ) {
         let value = toNumber(amount);
 
         if (!currencySettings.float_number) {

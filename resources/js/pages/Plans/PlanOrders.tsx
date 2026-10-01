@@ -55,7 +55,10 @@ export default function PlanOrdersPage() {
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                 date_from: dateFrom || undefined,
                 date_to: dateTo || undefined,
-                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.sort_field && {
+                    sort_field: pageFilters.sort_field,
+                    sort_direction: pageFilters.sort_direction,
+                }),
                 ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
             },
             { preserveState: true, preserveScroll: true },
@@ -384,7 +387,10 @@ export default function PlanOrdersPage() {
                                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                                 date_from: dateFrom || undefined,
                                 date_to: dateTo || undefined,
-                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                                ...(pageFilters.sort_field && {
+                                    sort_field: pageFilters.sort_field,
+                                    sort_direction: pageFilters.sort_direction,
+                                }),
                             },
                             { preserveState: true, preserveScroll: true },
                         );
@@ -585,7 +591,7 @@ export default function PlanOrdersPage() {
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="notes">{translate('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="notes" name="notes" placeholder={translate('Enter rejection reason...')} className="mt-1" />
+                                <Textarea id="notes" name="notes" className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">

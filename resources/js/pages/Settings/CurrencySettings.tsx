@@ -176,13 +176,13 @@ export default function CurrencySettings() {
                                         <div className="w-full xl:w-auto xl:max-w-[200px]">
                                             <div className="flex items-center gap-2">
                                                 <Input
-                                                    type="number"
+                                                    inputType="number"
+                                                    inputMode="decimal"
                                                     className="h-8 text-right text-sm"
                                                     value={previewAmount}
                                                     onChange={(e) => {
                                                         setPreviewAmount(parseFloat(e.target.value) || 0);
                                                     }}
-                                                    placeholder="Test amount"
                                                 />
                                                 <Button
                                                     variant="outline"
@@ -263,7 +263,7 @@ export default function CurrencySettings() {
                                                 }}
                                             >
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select decimal format" />
+                                                    <SelectValue placeholder="Select..." />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="0">0 (e.g., 1234)</SelectItem>
@@ -382,7 +382,7 @@ export default function CurrencySettings() {
                                                 }}
                                             >
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder={translate('Select thousands separator')} />
+                                                    <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value=",">Comma (1,234.56)</SelectItem>

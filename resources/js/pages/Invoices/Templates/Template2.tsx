@@ -150,7 +150,14 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                         <tbody>
                             <tr>
                                 <td style={styles.headerCell}>
-                                    <h3 style={{ textTransform: 'uppercase', fontSize: '25px', fontWeight: 'bold', marginBottom: '15px' }}>
+                                    <h3
+                                        style={{
+                                            textTransform: 'uppercase',
+                                            fontSize: '25px',
+                                            fontWeight: 'bold',
+                                            marginBottom: '15px',
+                                        }}
+                                    >
                                         {translate('INVOICE')}
                                     </h3>
                                     <table className="no-space" style={{ width: '100%' }}>
@@ -202,7 +209,14 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Organization')}:</strong>
+                                    <strong
+                                        style={{
+                                            marginBottom: '10px',
+                                            display: 'block',
+                                        }}
+                                    >
+                                        {translate('Organization')}:
+                                    </strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {formatValue(invoice.creator?.name)}
                                         <br />
@@ -224,7 +238,14 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                 <th style={styles.th}>{translate('Discount')}</th>
                                 <th style={styles.th}>
                                     {translate('Price')}{' '}
-                                    <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                    <small
+                                        style={{
+                                            display: 'block',
+                                            fontSize: '12px',
+                                        }}
+                                    >
+                                        {translate('before tax & discount')}
+                                    </small>
                                 </th>
                             </tr>
                             {items.map((item, index) => (
@@ -251,12 +272,54 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                 </tr>
                             ))}
                             <tr>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{translate('Total')}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{invoice.totalQuantity}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.totalRate)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.totalTaxPrice)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.totalDiscount)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.sub_total)}</td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {translate('Total')}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {invoice.totalQuantity}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(invoice.totalRate)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(invoice.totalTaxPrice)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(invoice.totalDiscount)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(invoice.sub_total)}
+                                </td>
                             </tr>
                             <tr>
                                 <td colSpan={6} style={{ border: 'none', padding: '0' }}>
@@ -264,8 +327,21 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                         <tbody>
                                             {invoice.total_discount > 0 && (
                                                 <tr>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                        }}
+                                                    >
+                                                        {translate('Discount')}:
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(invoice.total_discount)}
                                                     </td>
                                                 </tr>
@@ -273,19 +349,39 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                             {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
                                                 <tr key={taxName}>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(taxPrice as number)}
                                                     </td>
                                                 </tr>
                                             ))}
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Paid')}:</td>
+                                                <td
+                                                    style={{
+                                                        padding: '0.75rem 0 0 0',
+                                                        textAlign: 'right',
+                                                    }}
+                                                >
+                                                    {translate('Paid')}:
+                                                </td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(paidAmount)}
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Due')}:</td>
+                                                <td
+                                                    style={{
+                                                        padding: '0.75rem 0 0 0',
+                                                        textAlign: 'right',
+                                                    }}
+                                                >
+                                                    {translate('Due')}:
+                                                </td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(dueAmount)}
                                                 </td>

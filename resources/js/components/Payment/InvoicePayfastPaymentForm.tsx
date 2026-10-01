@@ -166,8 +166,9 @@ export function InvoicePayfastPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
-                            id="email"
-                            type="email"
+                            inputIdentifier="email"
+                            inputType="email"
+                            inputMode="email"
                             value={customerDetails.email}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));

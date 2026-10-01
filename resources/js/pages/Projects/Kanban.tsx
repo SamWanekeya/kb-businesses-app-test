@@ -285,7 +285,13 @@ export default function ProjectKanban() {
                             <div
                                 key={status.id}
                                 className="flex flex-shrink-0 flex-col rounded-xl border"
-                                style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                                style={{
+                                    width: '300px',
+                                    minWidth: '300px',
+                                    backgroundColor: colBg,
+                                    borderColor: colBorder,
+                                    height: '100%',
+                                }}
                                 onDragOver={(e) => {
                                     e.preventDefault();
                                 }}
@@ -548,13 +554,23 @@ export default function ProjectKanban() {
                             label: translate('Status'),
                             type: 'select',
                             searchable: true,
-                            options: statuses.map((status: any) => ({ value: status.id.toString(), label: status.name })),
+                            options: statuses.map((status: any) => ({
+                                value: status.id.toString(),
+                                label: status.name,
+                            })),
                             defaultValue:
                                 formMode === 'create' ? (prefilledStatus ? prefilledStatus.toString() : statuses[0]?.id?.toString()) : undefined,
                             hidden: formMode === 'create' && !!prefilledStatus,
                         },
                         { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5' },
-                        { name: 'progress', label: translate('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0' },
+                        {
+                            name: 'progress',
+                            label: translate('Progress (%)'),
+                            type: 'number',
+                            min: '0',
+                            max: '100',
+                            defaultValue: '0',
+                        },
                         ...(isOrganization
                             ? [
                                   {
@@ -564,7 +580,10 @@ export default function ProjectKanban() {
                                       searchable: true,
                                       options: [
                                           { value: null, label: translate('Unassigned') },
-                                          ...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` })),
+                                          ...users.map((user: any) => ({
+                                              value: user.id,
+                                              label: `${user.name} (${user.email})`,
+                                          })),
                                       ],
                                   },
                               ]

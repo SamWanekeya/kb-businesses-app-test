@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Hasła nie pasują.",
     "Passwords may not be longer than 128 characters.": "Hasła nie mogą być dłuższe niż 128 znaków.",
     "Passwords must have a maximum of 128 characters": "Hasła muszą mieć maksymalnie 128 znaków",
-    "Passwords must have a minimum of 12 characters": "Hasła muszą mieć minimum 12 znaków",
+    "Passwords must have a minimum of 12 characters.": "Hasła muszą mieć minimum 12 znaków",
     "Pay": "Płacić",
     "Pay date": "Data wypłaty",
     "Pay now": "Zapłać teraz",

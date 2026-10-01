@@ -255,8 +255,9 @@ export default function LeadStatuses() {
                                     {translate('Status Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -274,7 +275,7 @@ export default function LeadStatuses() {
                                 </Label>
                                 <div className="flex items-center gap-2">
                                     <Input
-                                        id="color"
+                                        inputIdentifier="color"
                                         type="color"
                                         value={formData.color}
                                         onChange={(e) => {
@@ -284,14 +285,14 @@ export default function LeadStatuses() {
                                         disabled={!canCreate && !canEdit}
                                     />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });
                                         }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
-                                        placeholder="#000000"
                                         disabled={!canCreate && !canEdit}
                                     />
                                 </div>
@@ -358,8 +359,8 @@ export default function LeadStatuses() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
-                                        placeholder={translate('Search lead status...')}
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

@@ -349,7 +349,13 @@ export default function Invoices() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Invoices') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Invoices') },
+    ];
 
     const columns = [
         {
@@ -568,7 +574,10 @@ export default function Invoices() {
                             onChange: setSelectedAccount,
                             options: [
                                 { value: 'all', label: translate('All Accounts') },
-                                ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
+                                ...(allAccounts?.map((acc: any) => ({
+                                    value: acc.id.toString(),
+                                    label: acc.name,
+                                })) || []),
                             ],
                         },
                         {

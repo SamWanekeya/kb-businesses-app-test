@@ -360,7 +360,6 @@ export default function SalesOrderTemplateSettings() {
                                         label=""
                                         value={data.salesOrderLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={translate('Select sales order logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />

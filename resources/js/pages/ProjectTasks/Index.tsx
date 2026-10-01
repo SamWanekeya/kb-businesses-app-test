@@ -406,7 +406,13 @@ export default function ProjectTasks() {
                             <div
                                 key={status.id}
                                 className="flex flex-shrink-0 flex-col rounded-xl border"
-                                style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                                style={{
+                                    width: '300px',
+                                    minWidth: '300px',
+                                    backgroundColor: colBg,
+                                    borderColor: colBorder,
+                                    height: '100%',
+                                }}
                                 onDragOver={(e) => {
                                     e.preventDefault();
                                 }}
@@ -661,7 +667,13 @@ export default function ProjectTasks() {
                             searchable: true,
                             readOnly: formMode === 'view',
                             emptyNote: { link: route('projects.index'), linkText: translate('Projects') },
-                            options: formMode === 'view' ? [] : projects.map((p: any) => ({ value: String(p.id), label: p.name })),
+                            options:
+                                formMode === 'view'
+                                    ? []
+                                    : projects.map((p: any) => ({
+                                          value: String(p.id),
+                                          label: p.name,
+                                      })),
                             onChange: (value: string) => {
                                 setParentTasks([]);
                                 if (formMode === 'create' && value) {
@@ -739,7 +751,13 @@ export default function ProjectTasks() {
                             required: true,
                             searchable: true,
                             emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
-                            options: formMode === 'view' ? [] : users.map((u: any) => ({ value: String(u.id), label: `${u.name} (${u.email})` })),
+                            options:
+                                formMode === 'view'
+                                    ? []
+                                    : users.map((u: any) => ({
+                                          value: String(u.id),
+                                          label: `${u.name} (${u.email})`,
+                                      })),
                             readOnly: formMode === 'view',
                         },
                     ],

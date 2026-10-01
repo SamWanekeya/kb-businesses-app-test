@@ -192,7 +192,13 @@ export default function SalesOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Sales Orders') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Sales Orders') },
+    ];
 
     const columns = [
         {

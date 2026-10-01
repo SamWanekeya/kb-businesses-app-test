@@ -57,7 +57,10 @@ export default function Currencies() {
             {
                 page: 1,
                 search: searchTerm || undefined,
-                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.sort_field && {
+                    sort_field: pageFilters.sort_field,
+                    sort_direction: pageFilters.sort_direction,
+                }),
                 ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
             },
             { preserveState: true, preserveScroll: true },
@@ -170,7 +173,13 @@ export default function Currencies() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Currency') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Currency') },
+    ];
 
     // Define table columns
     const columns = [

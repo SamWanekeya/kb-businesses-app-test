@@ -429,7 +429,10 @@ export default function Campaigns() {
                             options: [
                                 { value: 'all', label: translate('All Users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
-                                ...(allUsers || []).map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                                ...(allUsers || []).map((user: any) => ({
+                                    value: user.id.toString(),
+                                    label: user.name,
+                                })),
                             ],
                         },
                     ]}

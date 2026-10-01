@@ -418,8 +418,18 @@ export default function Projects() {
                 <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 px-4 dark:border-gray-700">
                     {(
                         [
-                            { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-                            { value: 'active', label: translate('Active'), count: stats.ongoing ?? 0, icon: <Play className="h-3.5 w-3.5" /> },
+                            {
+                                value: 'all',
+                                label: translate('All'),
+                                count: stats.total ?? 0,
+                                icon: <LayoutGrid className="h-3.5 w-3.5" />,
+                            },
+                            {
+                                value: 'active',
+                                label: translate('Active'),
+                                count: stats.ongoing ?? 0,
+                                icon: <Play className="h-3.5 w-3.5" />,
+                            },
                             {
                                 value: 'inactive',
                                 label: translate('Inactive'),
@@ -676,7 +686,13 @@ export default function Projects() {
                             searchable: true,
                             readOnly: formMode === 'view',
                             emptyNote: { link: route('accounts.index'), linkText: translate('Accounts') },
-                            options: formMode === 'view' ? [] : accounts.map((a: any) => ({ value: a.id, label: a.name })),
+                            options:
+                                formMode === 'view'
+                                    ? []
+                                    : accounts.map((a: any) => ({
+                                          value: a.id,
+                                          label: a.name,
+                                      })),
                         },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' },
                         { name: 'end_date', label: translate('End Date'), type: 'date' },
@@ -713,7 +729,13 @@ export default function Projects() {
                             searchable: true,
                             readOnly: formMode === 'view',
                             emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
-                            options: formMode === 'view' ? [] : users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
+                            options:
+                                formMode === 'view'
+                                    ? []
+                                    : users.map((u: any) => ({
+                                          value: u.id,
+                                          label: `${u.name} (${u.email})`,
+                                      })),
                         },
                     ],
                     modalSize: 'xl',

@@ -134,7 +134,7 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
                 <Input
                     id="bank-receipt"
                     ref={fileInputRef}
-                    type="file"
+                    inputType="file"
                     accept=".jpg,.jpeg,.png,.pdf"
                     onChange={handleFileChange}
                     className="hidden"

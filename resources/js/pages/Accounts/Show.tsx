@@ -293,7 +293,10 @@ export default function AccountShow() {
                             {account.contacts?.length > 0 ? (
                                 <div
                                     className="space-y-2 overflow-y-auto p-2"
-                                    style={{ height: '244px', overflowY: account.contacts.length > 4 ? 'auto' : 'hidden' }}
+                                    style={{
+                                        height: '244px',
+                                        overflowY: account.contacts.length > 4 ? 'auto' : 'hidden',
+                                    }}
                                 >
                                     {account.contacts.map((contact: any) => (
                                         <div
@@ -350,7 +353,10 @@ export default function AccountShow() {
                             {account.quotes?.length > 0 ? (
                                 <div
                                     className="space-y-2 overflow-y-auto p-2"
-                                    style={{ height: '244px', overflowY: account.quotes.length > 4 ? 'auto' : 'hidden' }}
+                                    style={{
+                                        height: '244px',
+                                        overflowY: account.quotes.length > 4 ? 'auto' : 'hidden',
+                                    }}
                                 >
                                     {account.quotes.map((quote: any) => (
                                         <div
@@ -422,7 +428,10 @@ export default function AccountShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {filteredMeetings.map((meeting: any) => (
                                                             <div
@@ -507,7 +516,10 @@ export default function AccountShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {filteredCalls.map((call: any) => (
                                                             <div
@@ -850,9 +862,15 @@ export default function AccountShow() {
                 }}
                 onConfirm={() => {
                     if (currentActivity?.id) {
-                        router.delete(route('accounts.delete-activity', { account: account.id, activity: currentActivity.id }), {
-                            preserveScroll: true,
-                        });
+                        router.delete(
+                            route('accounts.delete-activity', {
+                                account: account.id,
+                                activity: currentActivity.id,
+                            }),
+                            {
+                                preserveScroll: true,
+                            },
+                        );
                     }
                     setIsDeleteModalOpen(false);
                 }}

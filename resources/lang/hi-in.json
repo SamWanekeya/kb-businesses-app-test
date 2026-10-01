@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "सांकेतिक शब्द मेल नहीं खाते।",
     "Passwords may not be longer than 128 characters.": "पासवर्ड 128 अक्षरों से अधिक लंबा नहीं हो सकता।",
     "Passwords must have a maximum of 128 characters": "पासवर्ड में अधिकतम 128 अक्षर होने चाहिए",
-    "Passwords must have a minimum of 12 characters": "पासवर्ड में कम से कम 12 अक्षर होने चाहिए",
+    "Passwords must have a minimum of 12 characters.": "पासवर्ड में कम से कम 12 अक्षर होने चाहिए",
     "Pay": "वेतन",
     "Pay date": "भुगतान तिथि",
     "Pay now": "अब भुगतान करें",

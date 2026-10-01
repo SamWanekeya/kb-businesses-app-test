@@ -632,7 +632,8 @@ export default function InvoiceEdit() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={line.quantity}
                                                         disabled={isPaidOrCancelled}
@@ -646,7 +647,8 @@ export default function InvoiceEdit() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={line.unit_price}
@@ -682,7 +684,8 @@ export default function InvoiceEdit() {
                                                         {translate('Discount Value')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={line.discount_value}

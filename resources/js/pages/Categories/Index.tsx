@@ -66,7 +66,12 @@ export default function Categories() {
     };
 
     const loadItemForEdit = (item: any) => {
-        setFormData({ name: item.name || '', slug: item.slug || '', description: item.description || '', status: item.status || 'active' });
+        setFormData({
+            name: item.name || '',
+            slug: item.slug || '',
+            description: item.description || '',
+            status: item.status || 'active',
+        });
         setFormMode('edit');
         setCurrentItem(item);
         setFormErrors({});
@@ -232,8 +237,9 @@ export default function Categories() {
                                     {translate('Category Name')}
                                 </Label>
                                 <Input
-                                    id="name"
-                                    type="text"
+                                    inputIdentifier="name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -249,8 +255,9 @@ export default function Categories() {
                                     {translate('Slug')}
                                 </Label>
                                 <Input
-                                    id="slug"
-                                    type="text"
+                                    inputIdentifier="slug"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.slug}
                                     onChange={(e) => {
                                         setFormData({ ...formData, slug: e.target.value });
@@ -317,7 +324,8 @@ export default function Categories() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

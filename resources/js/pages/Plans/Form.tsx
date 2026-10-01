@@ -112,7 +112,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Plan Name')}
                                 </Label>
                                 <Input
-                                    id="name"
+                                    inputType="text"
+                                    inputMode="text"
+                                    inputIdentifier="name"
                                     name="name"
                                     value={data.name}
                                     onChange={handleChange}
@@ -125,9 +127,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Monthly Price')}
                                 </Label>
                                 <Input
-                                    id="price"
+                                    inputIdentifier="price"
                                     name="price"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.01"
                                     value={data.price}
                                     onChange={handleChange}
@@ -140,9 +143,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Yearly Price')} <span className="text-muted-foreground text-sm">({translate('Optional')})</span>
                                 </Label>
                                 <Input
-                                    id="yearly_price"
+                                    inputIdentifier="yearly_price"
                                     name="yearly_price"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.01"
                                     value={data.yearly_price}
                                     onChange={handleChange}
@@ -172,9 +176,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Maximum Users')}
                                 </Label>
                                 <Input
-                                    id="maximum_users"
+                                    inputIdentifier="maximum_users"
                                     name="maximum_users"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     value={data.maximum_users}
                                     onChange={handleChange}
                                     className={errors.maximum_users ? 'border-red-500' : ''}
@@ -186,9 +191,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Maximum Projects')}
                                 </Label>
                                 <Input
-                                    id="maximum_projects"
+                                    inputIdentifier="maximum_projects"
                                     name="maximum_projects"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     value={data.maximum_projects}
                                     onChange={handleChange}
                                     className={errors.maximum_projects ? 'border-red-500' : ''}
@@ -200,9 +206,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Maximum Contacts')}
                                 </Label>
                                 <Input
-                                    id="maximum_contacts"
+                                    inputIdentifier="maximum_contacts"
                                     name="maximum_contacts"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     value={data.maximum_contacts}
                                     onChange={handleChange}
                                     className={errors.maximum_contacts ? 'border-red-500' : ''}
@@ -214,9 +221,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Maximum Accounts')}
                                 </Label>
                                 <Input
-                                    id="maximum_accounts"
+                                    inputIdentifier="maximum_accounts"
                                     name="maximum_accounts"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     value={data.maximum_accounts}
                                     onChange={handleChange}
                                     className={errors.maximum_accounts ? 'border-red-500' : ''}
@@ -228,9 +236,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     {translate('Storage Limit (GB)')}
                                 </Label>
                                 <Input
-                                    id="storage_limit"
+                                    inputIdentifier="storage_limit"
                                     name="storage_limit"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.01"
                                     value={data.storage_limit}
                                     onChange={handleChange}
@@ -241,9 +250,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                             <div>
                                 <Label htmlFor="trial_days">{translate('Trial Days')}</Label>
                                 <Input
-                                    id="trial_days"
+                                    inputIdentifier="trial_days"
                                     name="trial_days"
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     value={data.trial_days}
                                     onChange={handleChange}
                                     className={errors.trial_days ? 'border-red-500' : ''}

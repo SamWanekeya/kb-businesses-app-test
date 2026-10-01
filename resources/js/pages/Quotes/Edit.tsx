@@ -130,7 +130,14 @@ export default function QuoteEdit() {
     const addProductRow = () => {
         setData('products', [
             ...data.products,
-            { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' },
+            {
+                id: crypto.randomUUID(),
+                product_id: '',
+                quantity: '1',
+                unit_price: '0',
+                discount_type: 'none',
+                discount_value: '0',
+            },
         ]);
     };
 
@@ -503,7 +510,8 @@ export default function QuoteEdit() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -520,7 +528,8 @@ export default function QuoteEdit() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
@@ -558,7 +567,8 @@ export default function QuoteEdit() {
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}

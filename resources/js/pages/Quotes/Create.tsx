@@ -54,7 +54,15 @@ export default function QuoteCreate() {
         shipping_state: '',
         shipping_postal_code: '',
         shipping_country: '',
-        products: [{ product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }] as ProductRow[],
+        products: [
+            {
+                product_id: '',
+                quantity: '1',
+                unit_price: '0',
+                discount_type: 'none',
+                discount_value: '0',
+            },
+        ] as ProductRow[],
     });
 
     const breadcrumbs = [
@@ -542,7 +550,8 @@ export default function QuoteCreate() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -559,7 +568,8 @@ export default function QuoteCreate() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
@@ -597,7 +607,8 @@ export default function QuoteCreate() {
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}

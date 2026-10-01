@@ -522,7 +522,10 @@ export default function LeadShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: meetingItems.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: meetingItems.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {meetingItems.map((meeting: any) => (
                                                             <div
@@ -608,7 +611,10 @@ export default function LeadShow() {
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
-                                                        style={{ height: '412px', overflowY: callItems.length > 5 ? 'auto' : 'hidden' }}
+                                                        style={{
+                                                            height: '412px',
+                                                            overflowY: callItems.length > 5 ? 'auto' : 'hidden',
+                                                        }}
                                                     >
                                                         {callItems.map((call: any) => (
                                                             <div

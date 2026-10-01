@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "የይለፍ ቃሎች አይዛመዱም።",
     "Passwords may not be longer than 128 characters.": "የይለፍ ቃሎች ከ128 ቁምፊዎች በላይ ላይሆኑ ይችላሉ።",
     "Passwords must have a maximum of 128 characters": "የይለፍ ቃሎች ቢበዛ 128 ቁምፊዎች ሊኖራቸው ይገባል።",
-    "Passwords must have a minimum of 12 characters": "የይለፍ ቃሎች ቢያንስ 12 ቁምፊዎች ሊኖራቸው ይገባል።",
+    "Passwords must have a minimum of 12 characters.": "የይለፍ ቃሎች ቢያንስ 12 ቁምፊዎች ሊኖራቸው ይገባል።",
     "Pay": "ይክፈሉ።",
     "Pay date": "የሚከፈልበት ቀን",
     "Pay now": "አሁን ይክፈሉ።",

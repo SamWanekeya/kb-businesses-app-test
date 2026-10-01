@@ -357,7 +357,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                 <div className="relative flex-1">
                                     <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
-                                        placeholder={translate('Search payment methods...')}
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);
@@ -487,7 +486,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             onChange={(e) => {
                                                 setData('bank_details', e.target.value);
                                             }}
-                                            placeholder={translate('Bank: Your Bank Name\nAccount Number: 0000 0000\nRouting Number: 000000000')}
                                             rows={6}
                                         />
                                         <p className="text-muted-foreground text-xs">
@@ -514,7 +512,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Publishable Key')}*/}
                             {/*                value={data.stripe_key}*/}
                             {/*                onChange={(value) => setData('stripe_key', value)}*/}
-                            {/*                placeholder="pk_test_..."*/}
                             {/*                error={errors.stripe_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -522,7 +519,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.stripe_secret}*/}
                             {/*                onChange={(value) => setData('stripe_secret', value)}*/}
-                            {/*                placeholder="sk_test_..."*/}
                             {/*                isSecret*/}
                             {/*                error={errors.stripe_secret}*/}
                             {/*            />*/}
@@ -552,7 +548,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Client ID')}*/}
                             {/*                    value={data.paypal_client_id}*/}
                             {/*                    onChange={(value) => setData('paypal_client_id', value)}*/}
-                            {/*                    placeholder={translate('Client ID')}*/}
                             {/*                    error={errors.paypal_client_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
@@ -560,7 +555,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Secret Key')}*/}
                             {/*                    value={data.paypal_secret_key}*/}
                             {/*                    onChange={(value) => setData('paypal_secret_key', value)}*/}
-                            {/*                    placeholder={translate('Secret Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.paypal_secret_key}*/}
                             {/*                />*/}
@@ -585,7 +579,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Key ID')}*/}
                             {/*                value={data.razorpay_key}*/}
                             {/*                onChange={(value) => setData('razorpay_key', value)}*/}
-                            {/*                placeholder="rzp_test_..."*/}
                             {/*                error={errors.razorpay_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -593,7 +586,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.razorpay_secret}*/}
                             {/*                onChange={(value) => setData('razorpay_secret', value)}*/}
-                            {/*                placeholder="..."*/}
                             {/*                isSecret*/}
                             {/*                error={errors.razorpay_secret}*/}
                             {/*            />*/}
@@ -663,7 +655,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             onChange={(value) => {
                                                 setData('paystack_public_key', value);
                                             }}
-                                            placeholder="pk_test_..."
                                             error={errors.paystack_public_key}
                                         />
                                         <PaymentInputField
@@ -673,7 +664,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             onChange={(value) => {
                                                 setData('paystack_secret_key', value);
                                             }}
-                                            placeholder="sk_test_..."
                                             isSecret
                                             error={errors.paystack_secret_key}
                                         />
@@ -697,7 +687,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.flutterwave_public_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_public_key', value)}*/}
-                            {/*                placeholder="FLWPUBK_TEST-..."*/}
                             {/*                error={errors.flutterwave_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -705,7 +694,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.flutterwave_secret_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_secret_key', value)}*/}
-                            {/*                placeholder="FLWSECK_TEST-..."*/}
                             {/*                isSecret*/}
                             {/*                error={errors.flutterwave_secret_key}*/}
                             {/*            />*/}
@@ -735,7 +723,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Profile ID')}*/}
                             {/*                    value={data.paytabs_profile_id}*/}
                             {/*                    onChange={(value) => setData('paytabs_profile_id', value)}*/}
-                            {/*                    placeholder={translate('Profile ID')}*/}
                             {/*                    error={errors.paytabs_profile_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
@@ -743,7 +730,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Server Key')}*/}
                             {/*                    value={data.paytabs_server_key}*/}
                             {/*                    onChange={(value) => setData('paytabs_server_key', value)}*/}
-                            {/*                    placeholder={translate('Server Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.paytabs_server_key}*/}
                             {/*                />*/}
@@ -786,7 +772,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.skrill_merchant_id}*/}
                             {/*                onChange={(value) => setData('skrill_merchant_id', value)}*/}
-                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.skrill_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -794,7 +779,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Word')}*/}
                             {/*                value={data.skrill_secret_word}*/}
                             {/*                onChange={(value) => setData('skrill_secret_word', value)}*/}
-                            {/*                placeholder={translate('Secret Word')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.skrill_secret_word}*/}
                             {/*            />*/}
@@ -823,7 +807,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('API Token')}*/}
                             {/*                value={data.coingate_api_token}*/}
                             {/*                onChange={(value) => setData('coingate_api_token', value)}*/}
-                            {/*                placeholder={translate('API Token')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.coingate_api_token}*/}
                             {/*            />*/}
@@ -853,7 +836,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Merchant ID')}*/}
                             {/*                    value={data.payfast_merchant_id}*/}
                             {/*                    onChange={(value) => setData('payfast_merchant_id', value)}*/}
-                            {/*                    placeholder={translate('Merchant ID')}*/}
                             {/*                    error={errors.payfast_merchant_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
@@ -861,7 +843,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                    label={translate('Merchant Key')}*/}
                             {/*                    value={data.payfast_merchant_key}*/}
                             {/*                    onChange={(value) => setData('payfast_merchant_key', value)}*/}
-                            {/*                    placeholder={translate('Merchant Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.payfast_merchant_key}*/}
                             {/*                />*/}
@@ -871,7 +852,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Passphrase')}*/}
                             {/*                value={data.payfast_passphrase}*/}
                             {/*                onChange={(value) => setData('payfast_passphrase', value)}*/}
-                            {/*                placeholder={translate('Passphrase (optional)')}*/}
                             {/*                error={errors.payfast_passphrase}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -893,7 +873,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('Secret Key')}*/}
                             {/*            value={data.tap_secret_key}*/}
                             {/*            onChange={(value) => setData('tap_secret_key', value)}*/}
-                            {/*            placeholder={translate('Secret Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.tap_secret_key}*/}
                             {/*        />*/}
@@ -915,7 +894,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('API Key')}*/}
                             {/*            value={data.xendit_api_key}*/}
                             {/*            onChange={(value) => setData('xendit_api_key', value)}*/}
-                            {/*            placeholder={translate('API Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.xendit_api_key}*/}
                             {/*        />*/}
@@ -938,7 +916,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.paytr_merchant_id}*/}
                             {/*                onChange={(value) => setData('paytr_merchant_id', value)}*/}
-                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.paytr_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -946,7 +923,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant Key')}*/}
                             {/*                value={data.paytr_merchant_key}*/}
                             {/*                onChange={(value) => setData('paytr_merchant_key', value)}*/}
-                            {/*                placeholder={translate('Merchant Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.paytr_merchant_key}*/}
                             {/*            />*/}
@@ -956,7 +932,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('Merchant Salt')}*/}
                             {/*            value={data.paytr_merchant_salt}*/}
                             {/*            onChange={(value) => setData('paytr_merchant_salt', value)}*/}
-                            {/*            placeholder={translate('Merchant Salt')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.paytr_merchant_salt}*/}
                             {/*        />*/}
@@ -978,7 +953,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('API Key')}*/}
                             {/*            value={data.mollie_api_key}*/}
                             {/*            onChange={(value) => setData('mollie_api_key', value)}*/}
-                            {/*            placeholder={translate('API Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.mollie_api_key}*/}
                             {/*        />*/}
@@ -1001,7 +975,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Category Code')}*/}
                             {/*                value={data.toyyibpay_category_code}*/}
                             {/*                onChange={(value) => setData('toyyibpay_category_code', value)}*/}
-                            {/*                placeholder={translate('Category Code')}*/}
                             {/*                error={errors.toyyibpay_category_code}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1009,7 +982,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.toyyibpay_secret_key}*/}
                             {/*                onChange={(value) => setData('toyyibpay_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.toyyibpay_secret_key}*/}
                             {/*            />*/}
@@ -1038,7 +1010,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.benefit_public_key}*/}
                             {/*                onChange={(value) => setData('benefit_public_key', value)}*/}
-                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.benefit_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1046,7 +1017,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.benefit_secret_key}*/}
                             {/*                onChange={(value) => setData('benefit_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.benefit_secret_key}*/}
                             {/*            />*/}
@@ -1075,7 +1045,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.iyzipay_public_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_public_key', value)}*/}
-                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.iyzipay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1083,7 +1052,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.iyzipay_secret_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.iyzipay_secret_key}*/}
                             {/*            />*/}
@@ -1107,7 +1075,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Store ID')}*/}
                             {/*                value={data.aamarpay_store_id}*/}
                             {/*                onChange={(value) => setData('aamarpay_store_id', value)}*/}
-                            {/*                placeholder={translate('Store ID')}*/}
                             {/*                error={errors.aamarpay_store_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1115,7 +1082,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Signature')}*/}
                             {/*                value={data.aamarpay_signature}*/}
                             {/*                onChange={(value) => setData('aamarpay_signature', value)}*/}
-                            {/*                placeholder={translate('Signature')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.aamarpay_signature}*/}
                             {/*            />*/}
@@ -1143,7 +1109,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('Secret Key')}*/}
                             {/*            value={data.midtrans_secret_key}*/}
                             {/*            onChange={(value) => setData('midtrans_secret_key', value)}*/}
-                            {/*            placeholder={translate('Secret Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.midtrans_secret_key}*/}
                             {/*        />*/}
@@ -1166,7 +1131,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Shop ID')}*/}
                             {/*                value={data.yookassa_shop_id}*/}
                             {/*                onChange={(value) => setData('yookassa_shop_id', value)}*/}
-                            {/*                placeholder={translate('Shop ID')}*/}
                             {/*                error={errors.yookassa_shop_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1174,7 +1138,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.yookassa_secret_key}*/}
                             {/*                onChange={(value) => setData('yookassa_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.yookassa_secret_key}*/}
                             {/*            />*/}
@@ -1232,7 +1195,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            label={translate('Merchant ID')}*/}
                             {/*            value={data.paiement_merchant_id}*/}
                             {/*            onChange={(value) => setData('paiement_merchant_id', value)}*/}
-                            {/*            placeholder={translate('Merchant ID')}*/}
                             {/*            error={errors.paiement_merchant_id}*/}
                             {/*        />*/}
                             {/*    </PaymentMethodCard>*/}
@@ -1254,7 +1216,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Site ID')}*/}
                             {/*                value={data.cinetpay_site_id}*/}
                             {/*                onChange={(value) => setData('cinetpay_site_id', value)}*/}
-                            {/*                placeholder={translate('Site ID')}*/}
                             {/*                error={errors.cinetpay_site_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1262,7 +1223,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('API Key')}*/}
                             {/*                value={data.cinetpay_api_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_api_key', value)}*/}
-                            {/*                placeholder={translate('API Key')}*/}
                             {/*                error={errors.cinetpay_api_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1270,7 +1230,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.cinetpay_secret_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.cinetpay_secret_key}*/}
                             {/*            />*/}
@@ -1299,7 +1258,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.payhere_merchant_id}*/}
                             {/*                onChange={(value) => setData('payhere_merchant_id', value)}*/}
-                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.payhere_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1307,7 +1265,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant Secret')}*/}
                             {/*                value={data.payhere_merchant_secret}*/}
                             {/*                onChange={(value) => setData('payhere_merchant_secret', value)}*/}
-                            {/*                placeholder={translate('Merchant Secret')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.payhere_merchant_secret}*/}
                             {/*            />*/}
@@ -1316,7 +1273,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('App ID')}*/}
                             {/*                value={data.payhere_app_id}*/}
                             {/*                onChange={(value) => setData('payhere_app_id', value)}*/}
-                            {/*                placeholder={translate('App ID')}*/}
                             {/*                error={errors.payhere_app_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1324,7 +1280,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('App Secret')}*/}
                             {/*                value={data.payhere_app_secret}*/}
                             {/*                onChange={(value) => setData('payhere_app_secret', value)}*/}
-                            {/*                placeholder={translate('App Secret')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.payhere_app_secret}*/}
                             {/*            />*/}
@@ -1353,7 +1308,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.fedapay_public_key}*/}
                             {/*                onChange={(value) => setData('fedapay_public_key', value)}*/}
-                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.fedapay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1361,7 +1315,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.fedapay_secret_key}*/}
                             {/*                onChange={(value) => setData('fedapay_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.fedapay_secret_key}*/}
                             {/*            />*/}
@@ -1390,7 +1343,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.authorizenet_merchant_id}*/}
                             {/*                onChange={(value) => setData('authorizenet_merchant_id', value)}*/}
-                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.authorizenet_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1398,7 +1350,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Transaction Key')}*/}
                             {/*                value={data.authorizenet_transaction_key}*/}
                             {/*                onChange={(value) => setData('authorizenet_transaction_key', value)}*/}
-                            {/*                placeholder={translate('Transaction Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.authorizenet_transaction_key}*/}
                             {/*            />*/}
@@ -1422,7 +1373,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.khalti_public_key}*/}
                             {/*                onChange={(value) => setData('khalti_public_key', value)}*/}
-                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.khalti_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1430,7 +1380,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.khalti_secret_key}*/}
                             {/*                onChange={(value) => setData('khalti_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.khalti_secret_key}*/}
                             {/*            />*/}
@@ -1454,7 +1403,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Merchant Key')}*/}
                             {/*                value={data.easebuzz_merchant_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_merchant_key', value)}*/}
-                            {/*                placeholder={translate('Merchant Key')}*/}
                             {/*                error={errors.easebuzz_merchant_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1462,7 +1410,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Salt Key')}*/}
                             {/*                value={data.easebuzz_salt_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_salt_key', value)}*/}
-                            {/*                placeholder={translate('Salt Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.easebuzz_salt_key}*/}
                             {/*            />*/}
@@ -1471,7 +1418,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Environment')}*/}
                             {/*                value={data.easebuzz_environment}*/}
                             {/*                onChange={(value) => setData('easebuzz_environment', value)}*/}
-                            {/*                placeholder={translate('prod/test')}*/}
                             {/*                error={errors.easebuzz_environment}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -1499,7 +1445,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Site Key')}*/}
                             {/*                value={data.ozow_site_key}*/}
                             {/*                onChange={(value) => setData('ozow_site_key', value)}*/}
-                            {/*                placeholder={translate('Site Key')}*/}
                             {/*                error={errors.ozow_site_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1507,7 +1452,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Private Key')}*/}
                             {/*                value={data.ozow_private_key}*/}
                             {/*                onChange={(value) => setData('ozow_private_key', value)}*/}
-                            {/*                placeholder={translate('Private Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.ozow_private_key}*/}
                             {/*            />*/}
@@ -1516,7 +1460,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('API Key')}*/}
                             {/*                value={data.ozow_api_key}*/}
                             {/*                onChange={(value) => setData('ozow_api_key', value)}*/}
-                            {/*                placeholder={translate('API Key')}*/}
                             {/*                error={errors.ozow_api_key}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -1544,7 +1487,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Public Key')}*/}
                             {/*                value={data.cashfree_public_key}*/}
                             {/*                onChange={(value) => setData('cashfree_public_key', value)}*/}
-                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.cashfree_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
@@ -1552,7 +1494,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.cashfree_secret_key}*/}
                             {/*                onChange={(value) => setData('cashfree_secret_key', value)}*/}
-                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.cashfree_secret_key}*/}
                             {/*            />*/}

@@ -236,7 +236,10 @@ export default function Users() {
         pageActions.push({
             label:
                 planLimits && !canCreate
-                    ? translate('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users })
+                    ? translate('User Limit Reached ({{current}}/{{max}})', {
+                          current: planLimits.current_users,
+                          max: planLimits.maximum_users,
+                      })
                     : translate('Add User'),
             icon: <Plus className="mr-0 h-4 w-4 min-[300px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',

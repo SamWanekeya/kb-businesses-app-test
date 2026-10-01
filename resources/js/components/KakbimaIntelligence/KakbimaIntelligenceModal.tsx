@@ -216,7 +216,7 @@ export default function KakbimaIntelligenceModal({ isOpen, onClose, onGenerate, 
                         <div>
                             <Label>{translate('Number of results')}</Label>
                             <Input
-                                type="number"
+                                inputType="number"
                                 inputMode="decimal"
                                 value={numResults}
                                 onChange={(e) => {
@@ -229,7 +229,7 @@ export default function KakbimaIntelligenceModal({ isOpen, onClose, onGenerate, 
                         <div>
                             <Label>{translate('Maximum result length')}</Label>
                             <Input
-                                type="number"
+                                inputType="number"
                                 inputMode="decimal"
                                 value={maxLength}
                                 onChange={(e) => {

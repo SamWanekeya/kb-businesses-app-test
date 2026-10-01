@@ -59,7 +59,14 @@ export default function DeliveryOrderCreate() {
         assigned_to: '',
     });
 
-    const [productRows, setProductRows] = useState<ProductRow[]>([{ id: crypto.randomUUID(), product_id: '', quantity: '1', unit_weight: '0' }]);
+    const [productRows, setProductRows] = useState<ProductRow[]>([
+        {
+            id: crypto.randomUUID(),
+            product_id: '',
+            quantity: '1',
+            unit_weight: '0',
+        },
+    ]);
     const [errors, setErrors] = useState<Errors>({});
     const [processing, setProcessing] = useState(false);
 
@@ -392,7 +399,8 @@ export default function DeliveryOrderCreate() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
@@ -527,7 +535,8 @@ export default function DeliveryOrderCreate() {
                                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Input
-                                                            type="number"
+                                                            inputType="number"
+                                                            inputMode="decimal"
                                                             min="1"
                                                             value={row.quantity}
                                                             onChange={(e) => {
@@ -544,7 +553,8 @@ export default function DeliveryOrderCreate() {
                                                             {translate('Unit Weight (kg)')}
                                                         </span>
                                                         <Input
-                                                            type="number"
+                                                            inputType="number"
+                                                            inputMode="decimal"
                                                             min="0"
                                                             step="0.01"
                                                             value={row.unit_weight}

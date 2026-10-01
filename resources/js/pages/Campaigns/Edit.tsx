@@ -239,7 +239,8 @@ export default function CampaignEdit() {
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.01"
                                     min="0"
                                     value={data.budget}
@@ -254,7 +255,8 @@ export default function CampaignEdit() {
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     step="0.01"
                                     min="0"
                                     value={data.actual_cost}
@@ -266,7 +268,13 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Expected Response')}</Label>
-                            <Input type="number" min="0" value={data.expected_response} onChange={(e) => set('expected_response', e.target.value)} />
+                            <Input
+                                inputType="number"
+                                inputMode="decimal"
+                                min="0"
+                                value={data.expected_response}
+                                onChange={(e) => set('expected_response', e.target.value)}
+                            />
                         </div>
                     </CardContent>
                 </Card>

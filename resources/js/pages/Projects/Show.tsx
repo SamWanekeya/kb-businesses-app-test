@@ -186,7 +186,10 @@ export default function ProjectShow() {
                                     <div
                                         key={status.id}
                                         className="rounded-lg p-3 text-center"
-                                        style={{ backgroundColor: `${status.color}20`, border: `1px solid ${status.color}40` }}
+                                        style={{
+                                            backgroundColor: `${status.color}20`,
+                                            border: `1px solid ${status.color}40`,
+                                        }}
                                     >
                                         <div className="text-lg font-bold" style={{ color: status.color }}>
                                             {taskStats[status.name] || 0}

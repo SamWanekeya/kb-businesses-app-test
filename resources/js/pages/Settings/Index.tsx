@@ -361,7 +361,13 @@ export default function Settings() {
         }
     };
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Settings') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Settings') },
+    ];
 
     return (
         <PageTemplate title={translate('Settings')} description={translate('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>

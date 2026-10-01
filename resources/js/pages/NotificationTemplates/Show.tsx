@@ -104,7 +104,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
                             <div className="grid gap-2">
                                 <Label>{translate('Template Name')}</Label>
-                                <Input value={template.name} placeholder={translate('Enter template name')} disabled />
+                                <Input value={template.name} disabled />
                             </div>
                         </CardContent>
                     </Card>
@@ -197,7 +197,6 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                     onChange={(e) => {
                                                         handleContentChange(code, e.target.value);
                                                     }}
-                                                    placeholder={translate('Write your notification content here. You can use variables...')}
                                                     className="focus:ring-primary min-h-[200px] focus:ring-2"
                                                     rows={8}
                                                 />

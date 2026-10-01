@@ -313,9 +313,10 @@ export default function CrudFormModal({
             case 'color':
                 return (
                     <Input
-                        id={field.name}
+                        inputIdentifier={field.name}
                         name={field.name}
-                        type={field.type}
+                        inputType={field.type}
+                        inputMode={field.type}
                         value={formData[field.name] || ''}
                         onChange={(e) => {
                             handleChange(field.name, e.target.value);
@@ -341,9 +342,9 @@ export default function CrudFormModal({
                         }}
                     >
                         <Input
-                            id={field.name}
+                            inputIdentifier={field.name}
                             name={field.name}
-                            type="time"
+                            inputType="time"
                             value={formData[field.name] || ''}
                             onChange={(e) => {
                                 handleChange(field.name, e.target.value);
@@ -371,9 +372,10 @@ export default function CrudFormModal({
             case 'number':
                 return (
                     <Input
-                        id={field.name}
+                        inputIdentifier={field.name}
                         name={field.name}
-                        type="number"
+                        inputType="number"
+                        inputMode="decimal"
                         inputMode="decimal"
                         value={formData[field.name] || ''}
                         onChange={(e) => {
@@ -518,9 +520,9 @@ export default function CrudFormModal({
                 return (
                     <>
                         <Input
-                            id={field.name}
+                            inputIdentifier={field.name}
                             name={field.name}
-                            type="file"
+                            inputType="file"
                             accept={acceptAttr}
                             onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {

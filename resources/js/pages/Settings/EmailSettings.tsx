@@ -130,7 +130,7 @@ export default function EmailSettings() {
                                             }}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select provider" />
+                                                <SelectValue placeholder="Select..." />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="smtp">SMTP</SelectItem>
@@ -154,7 +154,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('driver', e.target.value);
                                             }}
-                                            placeholder="smtp"
                                         />
                                     </div>
 
@@ -171,7 +170,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('host', e.target.value);
                                             }}
-                                            placeholder="smtp.kakbima.dev"
                                         />
                                     </div>
 
@@ -198,7 +196,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('port', e.target.value);
                                             }}
-                                            placeholder="587"
                                         />
                                     </div>
 
@@ -215,7 +212,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('username', e.target.value);
                                             }}
-                                            placeholder="user@kakbima.dev"
                                         />
                                     </div>
 
@@ -227,13 +223,12 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="password"
-                                            type="password"
+                                            inputIdentifier="password"
+                                            inputType="password"
                                             value={emailSettings.password}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('password', e.target.value);
                                             }}
-                                            placeholder="••••••••••••"
                                         />
                                     </div>
 
@@ -251,7 +246,7 @@ export default function EmailSettings() {
                                             }}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select encryption" />
+                                                <SelectValue placeholder="Select..." />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="tls">TLS</SelectItem>
@@ -274,7 +269,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromAddress', e.target.value);
                                             }}
-                                            placeholder="noreply@kakbima.dev"
                                         />
                                     </div>
 
@@ -291,7 +285,6 @@ export default function EmailSettings() {
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromName', e.target.value);
                                             }}
-                                            placeholder="System"
                                         />
                                     </div>
                                 </div>
@@ -315,13 +308,13 @@ export default function EmailSettings() {
                                         {translate('Send Test To')}
                                     </Label>
                                     <Input
-                                        id="testEmail"
-                                        type="email"
+                                        inputIdentifier="testEmail"
+                                        inputType="email"
+                                        inputMode="email"
                                         value={testEmail}
                                         onChange={(e) => {
                                             setTestEmail(e.target.value);
                                         }}
-                                        placeholder="test@kakbima.dev"
                                         required
                                     />
                                     <p className="text-muted-foreground text-xs">{translate('Enter an email address to send a test message')}</p>

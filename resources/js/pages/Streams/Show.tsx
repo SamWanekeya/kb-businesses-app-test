@@ -54,11 +54,23 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
     const getRecordLink = (activity: Stream) => {
         if (activity.account) return { name: activity.account.name, href: route('accounts.show', activity.account.id) };
         if (activity.lead) return { name: activity.lead.name, href: route('leads.show', activity.lead.id) };
-        if (activity.opportunity) return { name: activity.opportunity.name, href: route('opportunities.show', activity.opportunity.id) };
+        if (activity.opportunity)
+            return {
+                name: activity.opportunity.name,
+                href: route('opportunities.show', activity.opportunity.id),
+            };
         if (activity.invoice) return { name: activity.invoice.name, href: route('invoices.show', activity.invoice.id) };
-        if (activity.purchaseOrder) return { name: activity.purchaseOrder.name, href: route('purchase-orders.show', activity.purchaseOrder.id) };
+        if (activity.purchaseOrder)
+            return {
+                name: activity.purchaseOrder.name,
+                href: route('purchase-orders.show', activity.purchaseOrder.id),
+            };
         if (activity.quote) return { name: activity.quote.name, href: route('quotes.show', activity.quote.id) };
-        if (activity.salesOrder) return { name: activity.salesOrder.name, href: route('sales-orders.show', activity.salesOrder.id) };
+        if (activity.salesOrder)
+            return {
+                name: activity.salesOrder.name,
+                href: route('sales-orders.show', activity.salesOrder.id),
+            };
         return null;
     };
 

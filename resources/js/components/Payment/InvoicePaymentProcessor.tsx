@@ -755,7 +755,8 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                 <Label htmlFor="amount">{translate('Payment Amount')}</Label>
                 <Input
                     id="amount"
-                    type="number"
+                    inputType="number"
+                    inputMode="decimal"
                     value={amount}
                     onChange={(e) => {
                         onAmountChange(parseFloat(e.target.value) || 0);

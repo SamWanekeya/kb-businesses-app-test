@@ -243,7 +243,13 @@ export default function Contacts() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Contacts') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Contacts') },
+    ];
 
     // Define table columns
     const columns = [
@@ -705,7 +711,14 @@ export default function Contacts() {
                             required: true,
                             searchable: true,
                             options:
-                                formMode === 'view' ? [] : [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
+                                formMode === 'view'
+                                    ? []
+                                    : [
+                                          ...users.map((user: any) => ({
+                                              value: user.id,
+                                              label: `${user.name} (${user.email})`,
+                                          })),
+                                      ],
                             readOnly: formMode === 'view',
                             emptyNote:
                                 users.length === 0

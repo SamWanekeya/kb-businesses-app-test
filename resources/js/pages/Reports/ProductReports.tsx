@@ -78,7 +78,8 @@ export default function ProductReports() {
                             <BarChart data={topProducts} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={primaryColor} strokeOpacity={0.3} horizontal={false} vertical={true} />
                                 <XAxis
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     tick={{ fontSize: 11, fill: 'currentColor' }}
                                     className="text-muted-foreground"
                                     axisLine={{ stroke: primaryColor }}

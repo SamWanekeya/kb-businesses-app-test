@@ -60,9 +60,30 @@ export default function PurchaseOrderShow() {
     const PO_STATUS_STEPS = ['draft', 'sent', 'confirmed', 'received', 'cancelled'];
     const currentStatusIndex = PO_STATUS_STEPS.indexOf(purchaseOrder.status);
 
-    const poStatusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string; ring: string }> = {
-        draft: { label: translate('Draft'), icon: FileEdit, color: 'text-gray-600', bg: 'bg-gray-50 dark:bg-gray-800/40', ring: 'ring-gray-500/20' },
-        sent: { label: translate('Sent'), icon: Send, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20', ring: 'ring-blue-600/20' },
+    const poStatusConfig: Record<
+        string,
+        {
+            label: string;
+            icon: React.ElementType;
+            color: string;
+            bg: string;
+            ring: string;
+        }
+    > = {
+        draft: {
+            label: translate('Draft'),
+            icon: FileEdit,
+            color: 'text-gray-600',
+            bg: 'bg-gray-50 dark:bg-gray-800/40',
+            ring: 'ring-gray-500/20',
+        },
+        sent: {
+            label: translate('Sent'),
+            icon: Send,
+            color: 'text-blue-600',
+            bg: 'bg-blue-50 dark:bg-blue-900/20',
+            ring: 'ring-blue-600/20',
+        },
         confirmed: {
             label: translate('Confirmed'),
             icon: CheckCircle,
@@ -508,7 +529,6 @@ export default function PurchaseOrderShow() {
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => {
                                                             setNewComment(e.target.value);
@@ -1045,9 +1065,15 @@ export default function PurchaseOrderShow() {
                     setIsDeleteModalOpen(false);
                 }}
                 onConfirm={() => {
-                    router.delete(route('purchase-orders.delete-activity', { purchaseOrder: purchaseOrder.id, activity: currentActivity.id }), {
-                        preserveScroll: true,
-                    });
+                    router.delete(
+                        route('purchase-orders.delete-activity', {
+                            purchaseOrder: purchaseOrder.id,
+                            activity: currentActivity.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                        },
+                    );
                     setIsDeleteModalOpen(false);
                 }}
                 itemName={translate('this activity')}

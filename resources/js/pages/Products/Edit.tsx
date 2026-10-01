@@ -300,7 +300,8 @@ export default function ProductEdit() {
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Price')}</Label>
                                             <Input
-                                                type="number"
+                                                inputType="number"
+                                                inputMode="decimal"
                                                 step="0.01"
                                                 value={data.price}
                                                 onChange={(e) => set('price', e.target.value)}
@@ -311,7 +312,8 @@ export default function ProductEdit() {
                                         <div className="space-y-1.5">
                                             <Label required>{translate('Stock Quantity')}</Label>
                                             <Input
-                                                type="number"
+                                                inputType="number"
+                                                inputMode="decimal"
                                                 value={data.stock_quantity}
                                                 onChange={(e) => set('stock_quantity', e.target.value)}
                                                 className={errors.stock_quantity ? 'border-red-500' : ''}
@@ -336,7 +338,10 @@ export default function ProductEdit() {
                                                 if (v) {
                                                     fetch(route('media-library.media.index'), {
                                                         credentials: 'same-origin',
-                                                        headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                                                        headers: {
+                                                            Accept: 'application/json',
+                                                            'X-Requested-With': 'XMLHttpRequest',
+                                                        },
                                                     })
                                                         .then((r) => r.json())
                                                         .then((media) => {

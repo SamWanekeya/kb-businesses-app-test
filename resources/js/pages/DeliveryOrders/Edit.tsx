@@ -370,7 +370,8 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
-                                    type="number"
+                                    inputType="number"
+                                    inputMode="decimal"
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
@@ -497,7 +498,8 @@ export default function DeliveryOrderEdit() {
                                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Input
-                                                            type="number"
+                                                            inputType="number"
+                                                            inputMode="decimal"
                                                             min="1"
                                                             value={row.quantity}
                                                             onChange={(e) => {
@@ -514,7 +516,8 @@ export default function DeliveryOrderEdit() {
                                                             {translate('Unit Weight (kg)')}
                                                         </span>
                                                         <Input
-                                                            type="number"
+                                                            inputType="number"
+                                                            inputMode="decimal"
                                                             min="0"
                                                             step="0.01"
                                                             value={row.unit_weight}

@@ -225,7 +225,10 @@ export default function DocumentFolderView() {
         { title: translate('Documents'), href: route('documents.index') },
     ];
     if (folder.parent_folder) {
-        breadcrumbs.push({ title: folder.parent_folder.name, href: route('documents.folder', folder.parent_folder.id) });
+        breadcrumbs.push({
+            title: folder.parent_folder.name,
+            href: route('documents.folder', folder.parent_folder.id),
+        });
     }
     breadcrumbs.push({ title: folder.name });
 
@@ -330,7 +333,12 @@ export default function DocumentFolderView() {
                         <div className="p-3">
                             <div
                                 className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5"
-                                style={{ minHeight: '422px', maxHeight: '422px', overflowY: 'auto', gridAutoRows: '135px' }}
+                                style={{
+                                    minHeight: '422px',
+                                    maxHeight: '422px',
+                                    overflowY: 'auto',
+                                    gridAutoRows: '135px',
+                                }}
                             >
                                 {subFolders.length === 0 && docsList.length === 0 && (
                                     <div className="col-span-full flex flex-col items-center justify-center gap-3" style={{ minHeight: '390px' }}>

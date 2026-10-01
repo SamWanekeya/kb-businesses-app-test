@@ -147,7 +147,14 @@ export default function DocumentShow() {
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Document Management') },
         { title: translate('Documents'), href: route('documents.index') },
-        ...(document.folder ? [{ title: document.folder.name, href: route('documents.folder', document.folder.id) }] : []),
+        ...(document.folder
+            ? [
+                  {
+                      title: document.folder.name,
+                      href: route('documents.folder', document.folder.id),
+                  },
+              ]
+            : []),
         { title: document.name },
     ];
 
@@ -157,25 +164,49 @@ export default function DocumentShow() {
             name: 'account_id',
             label: translate('Account'),
             type: 'select',
-            options: [{ value: 'null', label: translate('No Account') }, ...accounts.map((a: any) => ({ value: a.id, label: a.name }))],
+            options: [
+                { value: 'null', label: translate('No Account') },
+                ...accounts.map((a: any) => ({
+                    value: a.id,
+                    label: a.name,
+                })),
+            ],
         },
         {
             name: 'folder_id',
             label: translate('Folder'),
             type: 'select',
-            options: [{ value: 'null', label: translate('No Folder') }, ...folders.map((f: any) => ({ value: f.id, label: f.name }))],
+            options: [
+                { value: 'null', label: translate('No Folder') },
+                ...folders.map((f: any) => ({
+                    value: f.id,
+                    label: f.name,
+                })),
+            ],
         },
         {
             name: 'type_id',
             label: translate('Type'),
             type: 'select',
-            options: [{ value: 'null', label: translate('No Type') }, ...types.map((type: any) => ({ value: type.id, label: type.type_name }))],
+            options: [
+                { value: 'null', label: translate('No Type') },
+                ...types.map((type: any) => ({
+                    value: type.id,
+                    label: type.type_name,
+                })),
+            ],
         },
         {
             name: 'opportunity_id',
             label: translate('Opportunity'),
             type: 'select',
-            options: [{ value: 'null', label: translate('No Opportunity') }, ...opportunities.map((o: any) => ({ value: o.id, label: o.name }))],
+            options: [
+                {
+                    value: 'null',
+                    label: translate('No Opportunity'),
+                },
+                ...opportunities.map((o: any) => ({ value: o.id, label: o.name })),
+            ],
         },
         { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
         { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },

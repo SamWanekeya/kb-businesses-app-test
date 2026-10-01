@@ -86,7 +86,10 @@ export default function Organizations() {
                 status: selectedStatus !== 'all' ? selectedStatus : undefined,
                 start_date: startDate ? startDate.toISOString().split('T')[0] : undefined,
                 end_date: endDate ? endDate.toISOString().split('T')[0] : undefined,
-                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.sort_field && {
+                    sort_field: pageFilters.sort_field,
+                    sort_direction: pageFilters.sort_direction,
+                }),
                 ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
             },
             { preserveState: true, preserveScroll: true },
@@ -333,7 +336,13 @@ export default function Organizations() {
         tooltipClassName: 'min-[480px]:hidden',
     });
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Organizations') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Organizations') },
+    ];
 
     // Define table columns
     const columns = [
@@ -541,7 +550,10 @@ export default function Organizations() {
                                     status: selectedStatus !== 'all' ? selectedStatus : undefined,
                                     start_date: startDate ? startDate.toISOString().split('T')[0] : undefined,
                                     end_date: endDate ? endDate.toISOString().split('T')[0] : undefined,
-                                    ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                                    ...(pageFilters.sort_field && {
+                                        sort_field: pageFilters.sort_field,
+                                        sort_direction: pageFilters.sort_direction,
+                                    }),
                                 },
                                 { preserveState: true, preserveScroll: true },
                             );

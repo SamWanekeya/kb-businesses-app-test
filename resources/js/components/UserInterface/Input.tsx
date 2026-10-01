@@ -55,6 +55,20 @@ export interface InputProps extends React.ComponentProps<'input'> {
     inputType?: React.HTMLInputTypeAttribute;
 
     /**
+     * Controls the virtual keyboard layout presented by supported devices.
+     *
+     * `none` suppresses the virtual keyboard entirely,
+     * `text` presents a general text keyboard,
+     * `decimal` presents a numeric keyboard suitable for decimal values,
+     * `numeric` presents a digit-only keypad,
+     * `tel` presents a telephone keypad layout,
+     * `search` presents a text keyboard with an optimized search/go key,
+     * `email` presents a keyboard optimized for entering email addresses,
+     * `url` presents a keyboard optimized for web addresses.
+     */
+    inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+
+    /**
      * External validation error supplied by the parent.
      *
      * A truthy value marks the input as invalid independently of the
@@ -95,6 +109,7 @@ export interface InputProps extends React.ComponentProps<'input'> {
  * @param className
  * @param inputIdentifier
  * @param inputType
+ * @param inputMode
  * @param required
  * @param maxFileSize
  * @param acceptTypes
@@ -109,6 +124,7 @@ export default function Input({
     className,
     inputIdentifier,
     inputType = 'text',
+    inputMode,
     required = false,
     maxFileSize,
     acceptTypes,
@@ -170,7 +186,7 @@ export default function Input({
                 if (value.length < 12) {
                     return {
                         valid: false,
-                        message: translate('Passwords must have a minimum of 12 characters'),
+                        message: translate('Passwords must have a minimum of 12 characters.'),
                     };
                 }
 
@@ -272,6 +288,7 @@ export default function Input({
         <input
             id={inputIdentifier}
             type={inputType}
+            inputMode={inputMode}
             data-slot="input"
             aria-invalid={isInvalid}
             className={cn(

@@ -119,7 +119,8 @@ export default function LeadCreate() {
                                         {translate('Lead Name')}
                                     </Label>
                                     <Input
-                                        id="name"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={data.name}
                                         onChange={(e) => {
                                             handleInputChange('name', e.target.value);
@@ -134,8 +135,9 @@ export default function LeadCreate() {
                                         {translate('Email')}
                                     </Label>
                                     <Input
-                                        id="email"
-                                        type="email"
+                                        inputIdentifier="email"
+                                        inputType="email"
+                                        inputMode="email"
                                         value={data.email}
                                         onChange={(e) => {
                                             handleInputChange('email', e.target.value);
@@ -150,7 +152,7 @@ export default function LeadCreate() {
                                         {translate('Phone')}
                                     </Label>
                                     <Input
-                                        id="phone"
+                                        inputIdentifier="phone"
                                         value={data.phone}
                                         onChange={(e) => {
                                             handleInputChange('phone', e.target.value);
@@ -165,7 +167,7 @@ export default function LeadCreate() {
                                         {translate('Position')}
                                     </Label>
                                     <Input
-                                        id="position"
+                                        inputIdentifier="position"
                                         value={data.position}
                                         onChange={(e) => {
                                             handleInputChange('position', e.target.value);
@@ -180,7 +182,7 @@ export default function LeadCreate() {
                                         {translate('Organization')}
                                     </Label>
                                     <Input
-                                        id="organization"
+                                        inputIdentifier="organization"
                                         value={data.organization}
                                         onChange={(e) => {
                                             handleInputChange('organization', e.target.value);
@@ -195,7 +197,7 @@ export default function LeadCreate() {
                                         {translate('Account Name')}
                                     </Label>
                                     <Input
-                                        id="account_name"
+                                        inputIdentifier="account_name"
                                         value={data.account_name}
                                         onChange={(e) => {
                                             handleInputChange('account_name', e.target.value);
@@ -210,7 +212,7 @@ export default function LeadCreate() {
                                         {translate('Website')}
                                     </Label>
                                     <Input
-                                        id="website"
+                                        inputIdentifier="website"
                                         value={data.website}
                                         onChange={(e) => {
                                             handleInputChange('website', e.target.value);
@@ -225,8 +227,9 @@ export default function LeadCreate() {
                                         {translate('Lead Value')}
                                     </Label>
                                     <Input
-                                        id="value"
-                                        type="number"
+                                        inputIdentifier="value"
+                                        inputType="number"
+                                        inputMode="decimal"
                                         step="0.01"
                                         min="0"
                                         value={data.value}

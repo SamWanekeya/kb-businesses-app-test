@@ -179,7 +179,8 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         <Label htmlFor="amount">{translate('Amount')}</Label>
                                         <Input
                                             id="amount"
-                                            type="number"
+                                            inputType="number"
+                                            inputMode="decimal"
                                             step="0.01"
                                             min={settings.threshold_amount}
                                             max={stats.availableBalance}
@@ -275,7 +276,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="notes">{translate('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="notes" name="notes" placeholder={translate('Enter rejection reason...')} className="mt-1" />
+                                <Textarea id="notes" name="notes" className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter>

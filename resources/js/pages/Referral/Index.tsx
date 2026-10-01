@@ -19,7 +19,13 @@ export default function Referral() {
     const { userType, settings, stats, payoutRequests, referralLink, usersWithPlans, currency_symbol, globalSettings } = props as any;
     const [activeSection, setActiveSection] = useState('dashboard');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Referral Program') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Referral Program') },
+    ];
     const sidebarNavItems: NavItem[] = [
         {
             title: translate('Dashboard'),

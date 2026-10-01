@@ -97,13 +97,12 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
                                     {translate('Kakbima Intelligence Key')}
                                 </Label>
                                 <Input
-                                    id="kakbima_intelligence_key"
-                                    type="password"
+                                    inputIdentifier="kakbima_intelligence_key"
+                                    inputType="password"
                                     value={kakbimaIntelligenceSettings.kakbima_intelligence_key}
                                     onChange={(e) => {
                                         handleSettingsChange('kakbima_intelligence_key', e.target.value);
                                     }}
-                                    placeholder={translate('Enter your OpenAI API key')}
                                 />
                             </div>
 

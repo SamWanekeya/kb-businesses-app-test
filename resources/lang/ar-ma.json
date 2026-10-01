@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "كلمات المرور غير متطابقة.",
     "Passwords may not be longer than 128 characters.": "لا يجوز أن تزيد كلمات المرور عن 128 حرفًا.",
     "Passwords must have a maximum of 128 characters": "يجب أن تحتوي كلمات المرور على 128 حرفًا كحد أقصى",
-    "Passwords must have a minimum of 12 characters": "يجب أن تحتوي كلمات المرور على 12 حرفًا على الأقل",
+    "Passwords must have a minimum of 12 characters.": "يجب أن تحتوي كلمات المرور على 12 حرفًا على الأقل",
     "Pay": "يدفع",
     "Pay date": "تاريخ الدفع",
     "Pay now": "ادفع الآن",

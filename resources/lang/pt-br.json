@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "As senhas não coincidem.",
     "Passwords may not be longer than 128 characters.": "As senhas não podem ter mais de 128 caracteres.",
     "Passwords must have a maximum of 128 characters": "As senhas devem ter no máximo 128 caracteres",
-    "Passwords must have a minimum of 12 characters": "As senhas devem ter no mínimo 12 caracteres",
+    "Passwords must have a minimum of 12 characters.": "As senhas devem ter no mínimo 12 caracteres",
     "Pay": "Pagar",
     "Pay date": "Data de pagamento",
     "Pay now": "Pague agora",

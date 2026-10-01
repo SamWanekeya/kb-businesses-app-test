@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Amagama okugqithisa awahambelani.",
     "Passwords may not be longer than 128 characters.": "Amagama okugqithisa angabikho ngaphezu koonobumba be-128.",
     "Passwords must have a maximum of 128 characters": "Amagama okugqithisa kufuneka abe nobuninzi bamagama ali-128",
-    "Passwords must have a minimum of 12 characters": "Amagama okugqithisa kufuneka ubuncinane abenamagama ali-12",
+    "Passwords must have a minimum of 12 characters.": "Amagama okugqithisa kufuneka ubuncinane abenamagama ali-12",
     "Pay": "Hlawula",
     "Pay date": "Umhla wokuhlawula",
     "Pay now": "Bhatala ngoku",

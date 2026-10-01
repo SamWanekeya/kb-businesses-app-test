@@ -198,8 +198,9 @@ export default function DocumentTypes() {
                                     {translate('Type Name')}
                                 </Label>
                                 <Input
-                                    id="type_name"
-                                    type="text"
+                                    inputIdentifier="type_name"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={formData.type_name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, type_name: e.target.value });
@@ -252,7 +253,8 @@ export default function DocumentTypes() {
                                 <div className="relative flex-1">
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
-                                        type="text"
+                                        inputType="text"
+                                        inputMode="text"
                                         value={searchTerm}
                                         onChange={(e) => {
                                             setSearchTerm(e.target.value);

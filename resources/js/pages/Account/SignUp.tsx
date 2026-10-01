@@ -288,6 +288,7 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                         <Input
                             inputIdentifier="name"
                             inputType="text"
+                            inputMode="text"
                             required
                             autoComplete="name"
                             value={data.name}

@@ -466,7 +466,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
 
                                             <Input
                                                 id="avatar"
-                                                type="file"
+                                                inputType="file"
                                                 accept="image/*"
                                                 onChange={handleAvatarChange}
                                                 className="hidden"
@@ -490,7 +490,9 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                         <Label htmlFor="name">{translate('Name')}</Label>
 
                                         <Input
-                                            id="name"
+                                            inputType="text"
+                                            inputMode="text"
+                                            inputIdentifier="name"
                                             value={profileData.name}
                                             onChange={(event) => handleProfileFieldChange('name', event.target.value)}
                                             onValidate={(valid, message) => handleProfileValidate('name', valid, message)}

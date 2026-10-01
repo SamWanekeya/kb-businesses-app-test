@@ -431,7 +431,6 @@ export default function SalesOrderShow() {
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => {
                                                             setNewComment(e.target.value);
@@ -954,9 +953,15 @@ export default function SalesOrderShow() {
                     setIsDeleteModalOpen(false);
                 }}
                 onConfirm={() => {
-                    router.delete(route('sales-orders.delete-activity', { salesOrder: salesOrder.id, activity: currentActivity.id }), {
-                        preserveScroll: true,
-                    });
+                    router.delete(
+                        route('sales-orders.delete-activity', {
+                            salesOrder: salesOrder.id,
+                            activity: currentActivity.id,
+                        }),
+                        {
+                            preserveScroll: true,
+                        },
+                    );
                     setIsDeleteModalOpen(false);
                 }}
                 itemName={translate('this activity')}

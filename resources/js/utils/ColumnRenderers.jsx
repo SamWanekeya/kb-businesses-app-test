@@ -60,7 +60,14 @@ export const columnRenderers = {
         (value) => {
             if (value === null || value === undefined) return <span>-</span>;
             const numValue = typeof value === 'string' ? parseFloat(value) : value;
-            return <span className="text-sm font-medium">{numValue.toLocaleString(locale, { style: 'currency', currency })}</span>;
+            return (
+                <span className="text-sm font-medium">
+                    {numValue.toLocaleString(locale, {
+                        style: 'currency',
+                        currency,
+                    })}
+                </span>
+            );
         },
 
     /**

@@ -253,9 +253,27 @@ export default function Announcements() {
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-announcements',
         },
-        { label: translate('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-announcements' },
-        { label: translate('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-announcements' },
-        { label: translate('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500', requiredPermission: 'delete-announcements' },
+        {
+            label: translate('View'),
+            icon: 'Eye',
+            action: 'view',
+            className: 'text-blue-500',
+            requiredPermission: 'view-announcements',
+        },
+        {
+            label: translate('Edit'),
+            icon: 'Edit',
+            action: 'edit',
+            className: 'text-amber-500',
+            requiredPermission: 'edit-announcements',
+        },
+        {
+            label: translate('Delete'),
+            icon: 'Trash2',
+            action: 'delete',
+            className: 'text-red-500',
+            requiredPermission: 'delete-announcements',
+        },
     ];
 
     return (
@@ -297,7 +315,13 @@ export default function Announcements() {
                       ]
                     : []),
             ]}
-            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Announcements') }]}
+            breadcrumbs={[
+                {
+                    title: translate('Dashboard'),
+                    href: route('dashboard.index'),
+                },
+                { title: translate('Announcements') },
+            ]}
         >
             <div className="rounded-t-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -329,15 +353,30 @@ export default function Announcements() {
                 <div className="flex items-center gap-1 border-b border-gray-200 px-4 dark:border-gray-700">
                     {(
                         [
-                            { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-                            { value: 'active', label: translate('Active'), count: stats.active ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
+                            {
+                                value: 'all',
+                                label: translate('All'),
+                                count: stats.total ?? 0,
+                                icon: <LayoutGrid className="h-3.5 w-3.5" />,
+                            },
+                            {
+                                value: 'active',
+                                label: translate('Active'),
+                                count: stats.active ?? 0,
+                                icon: <CheckCircle className="h-3.5 w-3.5" />,
+                            },
                             {
                                 value: 'inactive',
                                 label: translate('Inactive'),
                                 count: stats.inactive ?? 0,
                                 icon: <AlertCircle className="h-3.5 w-3.5" />,
                             },
-                            { value: 'expired', label: translate('Expired'), count: stats.expired ?? 0, icon: <Clock className="h-3.5 w-3.5" /> },
+                            {
+                                value: 'expired',
+                                label: translate('Expired'),
+                                count: stats.expired ?? 0,
+                                icon: <Clock className="h-3.5 w-3.5" />,
+                            },
                         ] as const
                     ).map((tab) => (
                         <button

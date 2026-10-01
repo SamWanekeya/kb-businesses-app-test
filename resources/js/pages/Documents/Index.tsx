@@ -38,7 +38,14 @@ export default function Documents() {
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(route('documents.index'), { search: searchTerm || undefined, page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('documents.index'),
+            { search: searchTerm || undefined, page: 1 },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleFolderFormSubmit = (formData: any) => {

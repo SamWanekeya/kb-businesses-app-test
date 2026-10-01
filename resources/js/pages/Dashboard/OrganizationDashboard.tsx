@@ -81,7 +81,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
 
     const stats = dashboardData?.stats || {};
     const charts = dashboardData?.charts || {};
-    const recentActivities = dashboardData?.recentActivities || { leads: [], sales: [], projects: [], customers: [], announcements: [] };
+    const recentActivities = dashboardData?.recentActivities || {
+        leads: [],
+        sales: [],
+        projects: [],
+        customers: [],
+        announcements: [],
+    };
 
     const [mounted, setMounted] = React.useState(false);
     const [primaryColor, setPrimaryColor] = React.useState('#A12582');
@@ -98,12 +104,20 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
 
     const handleChartYearChange = (year: number) => {
         setChartYear(year);
-        router.reload({ data: { chart_year: year, lead_year: leadYear }, only: ['dashboardData'], preserveState: true });
+        router.reload({
+            data: { chart_year: year, lead_year: leadYear },
+            only: ['dashboardData'],
+            preserveState: true,
+        });
     };
 
     const handleLeadYearChange = (year: number) => {
         setLeadYear(year);
-        router.reload({ data: { chart_year: chartYear, lead_year: year }, only: ['dashboardData'], preserveState: true });
+        router.reload({
+            data: { chart_year: chartYear, lead_year: year },
+            only: ['dashboardData'],
+            preserveState: true,
+        });
     };
 
     const formatCurrency = (val: number) => window.kbSettings.formatCurrency(val) ?? `$${val.toLocaleString()}`;
@@ -832,7 +846,11 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     </PieChart>
                                                     <div
                                                         className="absolute flex flex-col items-center"
-                                                        style={{ bottom: 5, left: '50%', transform: 'translateX(-50%)' }}
+                                                        style={{
+                                                            bottom: 5,
+                                                            left: '50%',
+                                                            transform: 'translateX(-50%)',
+                                                        }}
                                                     >
                                                         <span className="text-lg leading-tight font-bold" style={{ color }}>
                                                             {usedPct}%

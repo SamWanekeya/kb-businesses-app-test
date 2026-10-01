@@ -195,7 +195,13 @@ export default function Quotes() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Quotes') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Quotes') },
+    ];
 
     const columns = [
         {
@@ -287,7 +293,13 @@ export default function Quotes() {
     ];
 
     const actions = [
-        { label: translate('Copy Quote Link'), icon: 'Copy', action: 'copy-link', className: 'text-purple-500', requiredPermission: 'view-quotes' },
+        {
+            label: translate('Copy Quote Link'),
+            icon: 'Copy',
+            action: 'copy-link',
+            className: 'text-purple-500',
+            requiredPermission: 'view-quotes',
+        },
         {
             label: translate('Change Status'),
             icon: 'RefreshCw',
@@ -295,9 +307,27 @@ export default function Quotes() {
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-quotes',
         },
-        { label: translate('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-quotes' },
-        { label: translate('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-quotes' },
-        { label: translate('Delete'), icon: 'Trash2', action: 'delete', className: 'text-grey-500', requiredPermission: 'delete-quotes' },
+        {
+            label: translate('View'),
+            icon: 'Eye',
+            action: 'view',
+            className: 'text-blue-500',
+            requiredPermission: 'view-quotes',
+        },
+        {
+            label: translate('Edit'),
+            icon: 'Edit',
+            action: 'edit',
+            className: 'text-amber-500',
+            requiredPermission: 'edit-quotes',
+        },
+        {
+            label: translate('Delete'),
+            icon: 'Trash2',
+            action: 'delete',
+            className: 'text-grey-500',
+            requiredPermission: 'delete-quotes',
+        },
     ];
 
     const statusOptions = [
@@ -340,7 +370,10 @@ export default function Quotes() {
                             onChange: setSelectedAccount,
                             options: [
                                 { value: 'all', label: translate('All Accounts') },
-                                ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
+                                ...(allAccounts?.map((acc: any) => ({
+                                    value: acc.id.toString(),
+                                    label: acc.name,
+                                })) || []),
                             ],
                         },
                         {
@@ -352,7 +385,10 @@ export default function Quotes() {
                             onChange: setSelectedOpportunity,
                             options: [
                                 { value: 'all', label: translate('All Opportunities') },
-                                ...(allOpportunities?.map((opp: any) => ({ value: opp.id.toString(), label: opp.name })) || []),
+                                ...(allOpportunities?.map((opp: any) => ({
+                                    value: opp.id.toString(),
+                                    label: opp.name,
+                                })) || []),
                             ],
                         },
                         {
@@ -386,7 +422,12 @@ export default function Quotes() {
                         sortDirection={pageFilters.sort_direction}
                         onSort={handleSort}
                         permissions={permissions}
-                        entityPermissions={{ view: 'view-quotes', create: 'create-quotes', edit: 'edit-quotes', delete: 'delete-quotes' }}
+                        entityPermissions={{
+                            view: 'view-quotes',
+                            create: 'create-quotes',
+                            edit: 'edit-quotes',
+                            delete: 'delete-quotes',
+                        }}
                     />
                 </div>
                 <Pagination

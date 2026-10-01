@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Пароли не совпадают.",
     "Passwords may not be longer than 128 characters.": "Пароли не могут быть длиннее 128 символов.",
     "Passwords must have a maximum of 128 characters": "Пароли должны содержать не более 128 символов.",
-    "Passwords must have a minimum of 12 characters": "Пароли должны состоять минимум из 12 символов",
+    "Passwords must have a minimum of 12 characters.": "Пароли должны состоять минимум из 12 символов",
     "Pay": "Платить",
     "Pay date": "Дата оплаты",
     "Pay now": "Оплатить сейчас",

@@ -245,13 +245,19 @@ export default function AppSidebar() {
         // 2.1 Staff
         const staffChildren: NavItem[] = [];
         if (canManageStaffs) {
-            staffChildren.push({ title: translate('All staff'), href: route('staff-management.staff.all-staff.index') });
+            staffChildren.push({
+                title: translate('All staff'),
+                href: route('staff-management.staff.all-staff.index'),
+            });
         }
         if (canManageAwards) {
             staffChildren.push({ title: translate('Awards'), href: route('staff-management.staff.awards.index') });
         }
         if (canManagePromotions) {
-            staffChildren.push({ title: translate('Promotions'), href: route('staff-management.staff.promotions.index') });
+            staffChildren.push({
+                title: translate('Promotions'),
+                href: route('staff-management.staff.promotions.index'),
+            });
         }
         if (canManageStaffGoals) {
             staffChildren.push({
@@ -266,22 +272,34 @@ export default function AppSidebar() {
             });
         }
         if (canManageResignations) {
-            staffChildren.push({ title: translate('Resignations'), href: route('staff-management.staff.resignations.index') });
+            staffChildren.push({
+                title: translate('Resignations'),
+                href: route('staff-management.staff.resignations.index'),
+            });
         }
         if (canManageTerminations) {
-            staffChildren.push({ title: translate('Terminations'), href: route('staff-management.staff.terminations.index') });
+            staffChildren.push({
+                title: translate('Terminations'),
+                href: route('staff-management.staff.terminations.index'),
+            });
         }
         if (canManageWarnings) {
             staffChildren.push({ title: translate('Warnings'), href: route('staff-management.staff.warnings.index') });
         }
         if (canManageStaffTransfers) {
-            staffChildren.push({ title: translate('Transfers'), href: route('staff-management.staff.transfers.index') });
+            staffChildren.push({
+                title: translate('Transfers'),
+                href: route('staff-management.staff.transfers.index'),
+            });
         }
         if (canManageTrips) {
             staffChildren.push({ title: translate('Trips'), href: route('staff-management.staff.trips.index') });
         }
         if (canManageComplaints) {
-            staffChildren.push({ title: translate('Complaints'), href: route('staff-management.staff.complaints.index') });
+            staffChildren.push({
+                title: translate('Complaints'),
+                href: route('staff-management.staff.complaints.index'),
+            });
         }
         if (staffChildren.length > 0) {
             staffManagementChildren.push({
@@ -299,10 +317,16 @@ export default function AppSidebar() {
             });
         }
         if (canManageBranches) {
-            staffOpsChildren.push({ title: translate('Branches'), href: route('staff-management.staff-operations.branches.index') });
+            staffOpsChildren.push({
+                title: translate('Branches'),
+                href: route('staff-management.staff-operations.branches.index'),
+            });
         }
         if (canManageDepartments) {
-            staffOpsChildren.push({ title: translate('Departments'), href: route('staff-management.staff-operations.departments.index') });
+            staffOpsChildren.push({
+                title: translate('Departments'),
+                href: route('staff-management.staff-operations.departments.index'),
+            });
         }
         if (canManageDesignations) {
             staffOpsChildren.push({
@@ -317,7 +341,10 @@ export default function AppSidebar() {
             });
         }
         if (canManageAwardTypes) {
-            staffOpsChildren.push({ title: translate('Award types'), href: route('staff-management.staff-operations.award-types.index') });
+            staffOpsChildren.push({
+                title: translate('Award types'),
+                href: route('staff-management.staff-operations.award-types.index'),
+            });
         }
         if (canManageContractTypes) {
             staffOpsChildren.push({
@@ -449,7 +476,10 @@ export default function AppSidebar() {
             });
         }
         if (canManageShifts) {
-            attendanceChildren.push({ title: translate('Shifts'), href: route('leave-attendance.attendance.shifts.index') });
+            attendanceChildren.push({
+                title: translate('Shifts'),
+                href: route('leave-attendance.attendance.shifts.index'),
+            });
         }
         if (canManageAttendancePolicies) {
             attendanceChildren.push({

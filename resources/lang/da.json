@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Adgangskoder stemmer ikke overens.",
     "Passwords may not be longer than 128 characters.": "Adgangskoder må ikke være længere end 128 tegn.",
     "Passwords must have a maximum of 128 characters": "Adgangskoder må maksimalt have 128 tegn",
-    "Passwords must have a minimum of 12 characters": "Adgangskoder skal have minimum 12 tegn",
+    "Passwords must have a minimum of 12 characters.": "Adgangskoder skal have minimum 12 tegn",
     "Pay": "Betale",
     "Pay date": "Betalingsdato",
     "Pay now": "Betal nu",

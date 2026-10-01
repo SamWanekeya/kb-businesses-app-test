@@ -139,7 +139,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     {translate('From Name')}
                                 </Label>
                                 <Input
-                                    id="from"
+                                    inputIdentifier="from"
                                     value={fromName}
                                     onChange={(e) => {
                                         setFromName(e.target.value);

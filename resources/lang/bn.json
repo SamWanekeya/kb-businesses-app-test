@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "পাসওয়ার্ড মেলে না।",
     "Passwords may not be longer than 128 characters.": "পাসওয়ার্ড 128 অক্ষরের বেশি নাও হতে পারে।",
     "Passwords must have a maximum of 128 characters": "পাসওয়ার্ডে অবশ্যই সর্বোচ্চ 128টি অক্ষর থাকতে হবে",
-    "Passwords must have a minimum of 12 characters": "পাসওয়ার্ডে ন্যূনতম ১২টি অক্ষর থাকতে হবে",
+    "Passwords must have a minimum of 12 characters.": "পাসওয়ার্ডে ন্যূনতম ১২টি অক্ষর থাকতে হবে",
     "Pay": "বেতন",
     "Pay date": "তারিখ পরিশোধ করুন",
     "Pay now": "এখনই পেমেন্ট করুন",

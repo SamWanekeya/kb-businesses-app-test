@@ -122,7 +122,15 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                         <tbody>
                             <tr>
                                 <td style={styles.headerCell}>
-                                    <h3 style={{ textTransform: 'uppercase', fontSize: '20px', fontWeight: 'bold' }}>{translate('QUOTE')}</h3>
+                                    <h3
+                                        style={{
+                                            textTransform: 'uppercase',
+                                            fontSize: '20px',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {translate('QUOTE')}
+                                    </h3>
                                     <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
                                         {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
                                     </div>
@@ -221,7 +229,14 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 <th style={styles.th}>{translate('Discount')}</th>
                                 <th style={styles.th}>
                                     {translate('Price')}{' '}
-                                    <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                    <small
+                                        style={{
+                                            display: 'block',
+                                            fontSize: '12px',
+                                        }}
+                                    >
+                                        {translate('before tax & discount')}
+                                    </small>
                                 </th>
                             </tr>
                             {items.map((item, index) => (
@@ -248,7 +263,14 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 </tr>
                             ))}
                             <tr>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{translate('Total')}</td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {translate('Total')}
+                                </td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
                                     {typeof items[0]?.quantity === 'string' && items[0]?.quantity.startsWith('<')
                                         ? formatValue(items[0]?.quantity)
@@ -261,11 +283,25 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             : items.reduce((sum, item) => sum + Number(item.price), 0),
                                     )}
                                 </td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(quote.total_tax || 0)}</td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(quote.total_tax || 0)}
+                                </td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
                                     {formatCurrency(quote.total_discount || 0)}
                                 </td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(quote.sub_total || 0)}</td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(quote.sub_total || 0)}
+                                </td>
                             </tr>
                             <tr>
                                 <td colSpan={6} style={{ border: 'none', padding: '0' }}>
@@ -273,8 +309,21 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                         <tbody>
                                             {quote.total_discount > 0 && (
                                                 <tr>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                        }}
+                                                    >
+                                                        {translate('Discount')}:
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(quote.total_discount)}
                                                     </td>
                                                 </tr>
@@ -282,7 +331,13 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
                                                 <tr key={taxName}>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(taxPrice as number)}
                                                     </td>
                                                 </tr>

@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Ní hionann pasfhocail.",
     "Passwords may not be longer than 128 characters.": "Ní fhéadfaidh pasfhocail a bheith níos faide ná 128 carachtar.",
     "Passwords must have a maximum of 128 characters": "Ní mór 128 carachtar ar a mhéad a bheith ag pasfhocail",
-    "Passwords must have a minimum of 12 characters": "Caithfidh 12 charachtar ar a laghad a bheith ag pasfhocail",
+    "Passwords must have a minimum of 12 characters.": "Caithfidh 12 charachtar ar a laghad a bheith ag pasfhocail",
     "Pay": "Íoc",
     "Pay date": "Dáta pá",
     "Pay now": "Íoc anois",

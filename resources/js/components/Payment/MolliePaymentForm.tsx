@@ -94,9 +94,10 @@ export function MolliePaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
-                            id="email"
+                            inputIdentifier="email"
                             name="customer_details[email]"
-                            type="email"
+                            inputType="email"
+                            inputMode="email"
                             value={customerDetails.email}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));

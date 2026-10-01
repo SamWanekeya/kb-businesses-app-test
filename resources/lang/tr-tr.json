@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Şifreler eşleşmiyor.",
     "Passwords may not be longer than 128 characters.": "Şifreler 128 karakterden uzun olamaz.",
     "Passwords must have a maximum of 128 characters": "Şifreler maksimum 128 karakterden oluşmalıdır",
-    "Passwords must have a minimum of 12 characters": "Şifreler en az 12 karakterden oluşmalıdır",
+    "Passwords must have a minimum of 12 characters.": "Şifreler en az 12 karakterden oluşmalıdır",
     "Pay": "Ödemek",
     "Pay date": "Ödeme tarihi",
     "Pay now": "Şimdi öde",

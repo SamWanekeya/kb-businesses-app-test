@@ -312,7 +312,6 @@ export default function ReturnOrderEdit() {
                                 <Input
                                     value={form.name}
                                     onChange={(e) => set('name', e.target.value)}
-                                    placeholder={translate('e.g. Defective Items Return')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                                 {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
@@ -473,22 +472,12 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
                                 <Label className="text-sm font-medium">{translate('Description')}</Label>
-                                <Textarea
-                                    value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    rows={2}
-                                    placeholder={translate('Optional description about this return order...')}
-                                />
+                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
                                 <Label className="text-sm font-medium">{translate('Reason Description')}</Label>
-                                <Textarea
-                                    value={form.reason_description}
-                                    onChange={(e) => set('reason_description', e.target.value)}
-                                    rows={2}
-                                    placeholder={translate('Describe the reason for return in detail...')}
-                                />
+                                <Textarea value={form.reason_description} onChange={(e) => set('reason_description', e.target.value)} rows={2} />
                             </div>
                         </div>
                     </CardContent>
@@ -661,7 +650,8 @@ export default function ReturnOrderEdit() {
                                                     </td>
                                                     <td className="w-24 py-4 pe-6">
                                                         <Input
-                                                            type="number"
+                                                            inputType="number"
+                                                            inputMode="decimal"
                                                             min="1"
                                                             max={item.maximum_quantity}
                                                             value={item.return_quantity}
@@ -754,12 +744,7 @@ export default function ReturnOrderEdit() {
                         </div>
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Notes')}</Label>
-                            <Textarea
-                                value={form.notes}
-                                onChange={(e) => set('notes', e.target.value)}
-                                rows={3}
-                                placeholder={translate('Enter any additional notes...')}
-                            />
+                            <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
                         </div>
                     </CardContent>
                 </Card>

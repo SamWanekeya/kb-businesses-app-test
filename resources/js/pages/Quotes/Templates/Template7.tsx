@@ -181,22 +181,53 @@ export default function Template7({ quote, items, taxesData, settings, color, qr
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
                                 {translate('Price')}{' '}
-                                <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                <small
+                                    style={{
+                                        display: 'block',
+                                        fontSize: '12px',
+                                    }}
+                                >
+                                    {translate('before tax & discount')}
+                                </small>
                             </th>
                         </tr>
                         {items.length > 0 ? (
                             items.map((item, index) => (
                                 <tr key={index} style={{ borderTop: `1px solid ${borderColor}` }}>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {formatValue(item.name)}
                                     </td>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {formatValue(item.quantity)}
                                     </td>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {formatCurrency(item.price)}
                                     </td>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {item.itemTax?.map((tax: any, taxIndex: number) => (
                                             <span key={taxIndex}>
                                                 <span>{tax.name}</span> <span>({tax.rate})</span>
@@ -205,10 +236,22 @@ export default function Template7({ quote, items, taxesData, settings, color, qr
                                             </span>
                                         ))}
                                     </td>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {item.discount ? formatCurrency(item.discount) : '-'}
                                     </td>
-                                    <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
+                                    <td
+                                        style={{
+                                            padding: '0.75rem',
+                                            textAlign: 'left',
+                                            borderTop: `1px solid ${borderColor}`,
+                                        }}
+                                    >
                                         {formatCurrency(
                                             typeof item.price === 'string' && item.price.startsWith('<')
                                                 ? item.price
@@ -219,16 +262,72 @@ export default function Template7({ quote, items, taxesData, settings, color, qr
                             ))
                         ) : (
                             <tr style={{ borderTop: `1px solid ${borderColor}` }}>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
-                                <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>-</td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
+                                <td
+                                    style={{
+                                        padding: '0.75rem',
+                                        textAlign: 'left',
+                                        borderTop: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    -
+                                </td>
                             </tr>
                         )}
                         <tr style={{ borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{translate('Total')}</td>
+                            <td
+                                style={{
+                                    padding: '0.75rem',
+                                    textAlign: 'left',
+                                    borderTop: `1px solid ${borderColor}`,
+                                }}
+                            >
+                                {translate('Total')}
+                            </td>
                             <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
                                 {quote.totalQuantity || 0}
                             </td>
@@ -251,7 +350,14 @@ export default function Template7({ quote, items, taxesData, settings, color, qr
                                     <tbody>
                                         {quote.total_discount > 0 && (
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
+                                                <td
+                                                    style={{
+                                                        padding: '0.75rem 0 0 0',
+                                                        textAlign: 'right',
+                                                    }}
+                                                >
+                                                    {translate('Discount')}:
+                                                </td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(quote.total_discount)}
                                                 </td>

@@ -527,12 +527,12 @@ export default function MediaLibraryModal({
                                     <h3 className="mb-2 text-lg font-medium">{dragActive ? 'Drop files here' : 'Upload your files'}</h3>
                                     <p className="text-muted-foreground mb-6 text-sm">Drag and drop your files here, or click to browse</p>
                                     <Input
-                                        type="file"
+                                        inputType="file"
                                         multiple
                                         accept={acceptAttribute}
                                         onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
                                         className="hidden"
-                                        id="file-upload"
+                                        inputIdentifier="file-upload"
                                     />
                                     <Button
                                         type="button"

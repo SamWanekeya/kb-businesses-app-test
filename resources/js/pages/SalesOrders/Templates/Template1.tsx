@@ -127,7 +127,15 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                     <img src={settings.salesOrderLogo || logoDark} style={{ maxWidth: '150px', maxHeight: '150px' }} alt="Logo" />
                                 </td>
                                 <td className="text-right" style={{ ...styles.headerCell, textAlign: 'right' }}>
-                                    <h3 style={{ textTransform: 'uppercase', fontSize: '40px', fontWeight: 'bold' }}>{translate('SALES ORDER')}</h3>
+                                    <h3
+                                        style={{
+                                            textTransform: 'uppercase',
+                                            fontSize: '40px',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {translate('SALES ORDER')}
+                                    </h3>
                                 </td>
                             </tr>
                         </tbody>
@@ -234,7 +242,14 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                 <th style={styles.th}>{translate('Discount')}</th>
                                 <th style={styles.th}>
                                     {translate('Price')}{' '}
-                                    <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                    <small
+                                        style={{
+                                            display: 'block',
+                                            fontSize: '12px',
+                                        }}
+                                    >
+                                        {translate('before tax & discount')}
+                                    </small>
                                 </th>
                             </tr>
                             {items.map((item, index) => (
@@ -261,12 +276,54 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                 </tr>
                             ))}
                             <tr>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{translate('Total')}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatValue(salesOrder.totalQuantity)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.totalRate)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.totalTaxPrice)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.totalDiscount)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.sub_total)}</td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {translate('Total')}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatValue(salesOrder.totalQuantity)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(salesOrder.totalRate)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(salesOrder.totalTaxPrice)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(salesOrder.totalDiscount)}
+                                </td>
+                                <td
+                                    style={{
+                                        ...styles.td,
+                                        borderBottom: `1px solid ${borderColor}`,
+                                    }}
+                                >
+                                    {formatCurrency(salesOrder.sub_total)}
+                                </td>
                             </tr>
                             <tr>
                                 <td colSpan={6} style={{ border: 'none', padding: '0' }}>
@@ -274,8 +331,21 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                         <tbody>
                                             {salesOrder.total_discount > 0 && (
                                                 <tr>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                        }}
+                                                    >
+                                                        {translate('Discount')}:
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(salesOrder.total_discount)}
                                                     </td>
                                                 </tr>
@@ -283,7 +353,13 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                             {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
                                                 <tr key={taxName}>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <td
+                                                        style={{
+                                                            padding: '0.75rem 0 0 0',
+                                                            textAlign: 'right',
+                                                            width: '146px',
+                                                        }}
+                                                    >
                                                         {formatCurrency(taxPrice as number)}
                                                     </td>
                                                 </tr>

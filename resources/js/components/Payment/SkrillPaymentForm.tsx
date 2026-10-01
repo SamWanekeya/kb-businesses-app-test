@@ -86,8 +86,9 @@ export function SkrillPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
-                            id="email"
-                            type="email"
+                            inputIdentifier="email"
+                            inputType="email"
+                            inputMode="email"
                             value={email}
                             onChange={(e) => {
                                 setEmail(e.target.value);

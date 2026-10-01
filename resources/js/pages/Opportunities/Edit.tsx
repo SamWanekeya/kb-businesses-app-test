@@ -170,7 +170,9 @@ export default function OpportunityEdit() {
                                     {translate('Opportunity Name')}
                                 </Label>
                                 <Input
-                                    id="name"
+                                    inputType="text"
+                                    inputMode="text"
+                                    inputIdentifier="name"
                                     value={data.name}
                                     onChange={(e) => {
                                         handleInputChange('name', e.target.value);
@@ -490,7 +492,8 @@ export default function OpportunityEdit() {
                                                         </td>
                                                         <td className="px-3 py-2">
                                                             <Input
-                                                                type="number"
+                                                                inputType="number"
+                                                                inputMode="decimal"
                                                                 min="1"
                                                                 value={row.quantity}
                                                                 onChange={(e) => {
@@ -504,7 +507,8 @@ export default function OpportunityEdit() {
                                                         </td>
                                                         <td className="px-3 py-2">
                                                             <Input
-                                                                type="number"
+                                                                inputType="number"
+                                                                inputMode="decimal"
                                                                 step="0.01"
                                                                 min="0"
                                                                 value={row.unit_price}
@@ -621,7 +625,8 @@ export default function OpportunityEdit() {
                                                                 {translate('Quantity')} *
                                                             </label>
                                                             <Input
-                                                                type="number"
+                                                                inputType="number"
+                                                                inputMode="decimal"
                                                                 min="1"
                                                                 value={row.quantity}
                                                                 onChange={(e) => {
@@ -638,7 +643,8 @@ export default function OpportunityEdit() {
                                                                 {translate('Unit Price')} *
                                                             </label>
                                                             <Input
-                                                                type="number"
+                                                                inputType="number"
+                                                                inputMode="decimal"
                                                                 step="0.01"
                                                                 min="0"
                                                                 value={row.unit_price}

@@ -206,7 +206,13 @@ export default function ReceiptOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Receipt Orders') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Receipt Orders') },
+    ];
 
     const columns = [
         {

@@ -96,7 +96,7 @@ export default function RolesCreate() {
                                     {translate('Role Name')}
                                 </Label>
                                 <Input
-                                    id="label"
+                                    inputIdentifier="label"
                                     required
                                     value={label}
                                     onChange={(e) => {

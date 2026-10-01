@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "密码不匹配。",
     "Passwords may not be longer than 128 characters.": "密码不得超过 128 个字符。",
     "Passwords must have a maximum of 128 characters": "密码不得超过 128 个字符",
-    "Passwords must have a minimum of 12 characters": "密码必须至少包含 12 个字符",
+    "Passwords must have a minimum of 12 characters.": "密码必须至少包含 12 个字符",
     "Pay": "支付",
     "Pay date": "发薪日期",
     "Pay now": "立即付款",

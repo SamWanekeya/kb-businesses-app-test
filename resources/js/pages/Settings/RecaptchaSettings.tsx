@@ -138,14 +138,14 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     {translate('Site Key')}
                                 </Label>
                                 <Input
-                                    id="recaptchaSiteKey"
+                                    inputIdentifier="recaptchaSiteKey"
                                     name="recaptchaSiteKey"
-                                    type="text"
+                                    inputType="text"
+                                    inputMode="text"
                                     value={recaptchaSettings.recaptchaSiteKey}
                                     onChange={(e) => {
                                         handleSettingsChange('recaptchaSiteKey', e.target.value);
                                     }}
-                                    placeholder={translate('Enter your Google reCAPTCHA site key')}
                                 />
                             </div>
 
@@ -154,14 +154,13 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     {translate('Secret Key')}
                                 </Label>
                                 <Input
-                                    id="recaptchaSecretKey"
+                                    inputIdentifier="recaptchaSecretKey"
                                     name="recaptchaSecretKey"
-                                    type="password"
+                                    inputType="password"
                                     value={recaptchaSettings.recaptchaSecretKey}
                                     onChange={(e) => {
                                         handleSettingsChange('recaptchaSecretKey', e.target.value);
                                     }}
-                                    placeholder={translate('Enter your Google reCAPTCHA secret key')}
                                 />
                             </div>
                         </div>

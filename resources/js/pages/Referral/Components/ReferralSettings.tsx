@@ -67,7 +67,8 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                             </Label>
                             <Input
                                 id="commission_percentage"
-                                type="number"
+                                inputType="number"
+                                inputMode="decimal"
                                 step="0.01"
                                 min="0"
                                 max="100"
@@ -85,7 +86,8 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                             </Label>
                             <Input
                                 id="threshold_amount"
-                                type="number"
+                                inputType="number"
+                                inputMode="decimal"
                                 step="0.01"
                                 min="0"
                                 value={data.threshold_amount}
@@ -107,7 +109,6 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                             onChange={(e) => {
                                 setData('guidelines', e.target.value);
                             }}
-                            placeholder={translate('Enter referral program guidelines and terms...')}
                             rows={6}
                         />
                         {errors.guidelines && <p className="text-sm text-red-500">{errors.guidelines}</p>}

@@ -161,7 +161,6 @@ export default function TwilioNotificationSettings() {
                                         onChange={(e) => {
                                             handleConfigChange('twilio_sid', e.target.value);
                                         }}
-                                        placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                                         className="font-mono"
                                     />
                                 </div>
@@ -171,12 +170,12 @@ export default function TwilioNotificationSettings() {
                                         {translate('Auth Token')}
                                     </Label>
                                     <Input
-                                        type="password"
+                                        inputIdentifier="password"
+                                        inputType="password"
                                         value={twilioSettings.twilio_token}
                                         onChange={(e) => {
                                             handleConfigChange('twilio_token', e.target.value);
                                         }}
-                                        placeholder="••••••••••••••••••••"
                                         className="font-mono"
                                     />
                                 </div>
@@ -190,7 +189,6 @@ export default function TwilioNotificationSettings() {
                                         onChange={(e) => {
                                             handleConfigChange('twilio_from', e.target.value);
                                         }}
-                                        placeholder="+1234567890"
                                         className="font-mono"
                                     />
                                 </div>
@@ -238,7 +236,6 @@ export default function TwilioNotificationSettings() {
                                     onChange={(e) => {
                                         setTestPhone(e.target.value);
                                     }}
-                                    placeholder="+1234567890"
                                     className="font-mono"
                                     required
                                 />

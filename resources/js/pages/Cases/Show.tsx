@@ -50,7 +50,17 @@ export default function CaseShow() {
     const statusSteps = ['new', 'in_progress', 'pending', 'resolved', 'closed'];
     const currentStatusIndex = statusSteps.indexOf(caseData.status);
 
-    const statusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string; ring: string; dot: string }> = {
+    const statusConfig: Record<
+        string,
+        {
+            label: string;
+            icon: React.ElementType;
+            color: string;
+            bg: string;
+            ring: string;
+            dot: string;
+        }
+    > = {
         new: {
             label: translate('New'),
             icon: Zap,
@@ -101,16 +111,46 @@ export default function CaseShow() {
     };
 
     const caseTypeConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string }> = {
-        support: { label: translate('Support'), icon: ShieldAlert, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-        bug: { label: translate('Bug Report'), icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20' },
-        feature_request: { label: translate('Feature Request'), icon: Layers, color: 'text-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' },
-        complaint: { label: translate('Complaint'), icon: MessageSquare, color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-900/20' },
-        inquiry: { label: translate('Inquiry'), icon: FileText, color: 'text-teal-600', bg: 'bg-teal-50 dark:bg-teal-900/20' },
+        support: {
+            label: translate('Support'),
+            icon: ShieldAlert,
+            color: 'text-blue-600',
+            bg: 'bg-blue-50 dark:bg-blue-900/20',
+        },
+        bug: {
+            label: translate('Bug Report'),
+            icon: AlertTriangle,
+            color: 'text-red-600',
+            bg: 'bg-red-50 dark:bg-red-900/20',
+        },
+        feature_request: {
+            label: translate('Feature Request'),
+            icon: Layers,
+            color: 'text-purple-600',
+            bg: 'bg-purple-50 dark:bg-purple-900/20',
+        },
+        complaint: {
+            label: translate('Complaint'),
+            icon: MessageSquare,
+            color: 'text-orange-600',
+            bg: 'bg-orange-50 dark:bg-orange-900/20',
+        },
+        inquiry: {
+            label: translate('Inquiry'),
+            icon: FileText,
+            color: 'text-teal-600',
+            bg: 'bg-teal-50 dark:bg-teal-900/20',
+        },
     };
 
     const status = statusConfig[caseData.status] || statusConfig.new;
     const priority = priorityConfig[caseData.priority] || priorityConfig.low;
-    const caseType = caseTypeConfig[caseData.case_type] || { label: caseData.case_type, icon: Tag, color: 'text-gray-600', bg: 'bg-gray-50' };
+    const caseType = caseTypeConfig[caseData.case_type] || {
+        label: caseData.case_type,
+        icon: Tag,
+        color: 'text-gray-600',
+        bg: 'bg-gray-50',
+    };
     const CaseTypeIcon = caseType.icon;
 
     const ActivityRow = ({
@@ -466,7 +506,10 @@ export default function CaseShow() {
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"
-                                                style={{ height: '412px', overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden' }}
+                                                style={{
+                                                    height: '412px',
+                                                    overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden',
+                                                }}
                                             >
                                                 {filteredMeetings.map((meeting: any) => (
                                                     <ActivityRow
@@ -500,7 +543,10 @@ export default function CaseShow() {
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"
-                                                style={{ height: '412px', overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden' }}
+                                                style={{
+                                                    height: '412px',
+                                                    overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden',
+                                                }}
                                             >
                                                 {filteredCalls.map((call: any) => (
                                                     <ActivityRow

@@ -132,7 +132,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
                 <Input
                     id="bank-receipt"
                     ref={fileInputRef}
-                    type="file"
+                    inputType="file"
                     accept=".jpg,.jpeg,.png,.pdf"
                     onChange={handleFileChange}
                     className="hidden"

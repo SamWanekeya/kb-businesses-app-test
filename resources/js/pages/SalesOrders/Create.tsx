@@ -108,7 +108,6 @@ function SearchSelect({
                         <input
                             autoFocus
                             className="w-full rounded border border-gray-200 bg-white px-2 py-1 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-                            placeholder={translate('Search...')}
                             value={search}
                             onChange={(e) => {
                                 setSearch(e.target.value);
@@ -389,7 +388,10 @@ export default function SalesOrderCreate() {
         { title: translate('Create') },
     ];
 
-    const quoteOptions = (quotes || []).map((q: any) => ({ value: String(q.id), label: `${q.quote_number} – ${q.name}` }));
+    const quoteOptions = (quotes || []).map((q: any) => ({
+        value: String(q.id),
+        label: `${q.quote_number} – ${q.name}`,
+    }));
     const accountOptions = (accounts || []).map((a: any) => ({ value: String(a.id), label: a.name }));
     const contactOptions = (contacts || []).map((c: any) => ({ value: String(c.id), label: c.name }));
     const providerOptions = (shippingProviderTypes || []).map((s: any) => ({ value: String(s.id), label: s.name }));
@@ -430,19 +432,13 @@ export default function SalesOrderCreate() {
                                 <Input
                                     value={form.name}
                                     onChange={(e) => set('name', e.target.value)}
-                                    placeholder={translate('e.g. Annual Hardware Order 2025')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                             </Field>
                         </div>
                         <div className="md:col-span-2">
                             <Field label={translate('Description')} error={errors.description}>
-                                <Textarea
-                                    value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    placeholder={translate('Describe the purpose or details of this order...')}
-                                    rows={2}
-                                />
+                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </Field>
                         </div>
                         <Field label={translate('Quote')} required error={errors.quote_id}>
@@ -728,7 +724,8 @@ export default function SalesOrderCreate() {
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="1"
                                                         value={line.quantity}
                                                         onChange={(e) => {
@@ -741,14 +738,14 @@ export default function SalesOrderCreate() {
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={line.unit_price}
                                                         onChange={(e) => {
                                                             setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
                                                         }}
-                                                        placeholder="0.00"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -776,7 +773,8 @@ export default function SalesOrderCreate() {
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
-                                                        type="number"
+                                                        inputType="number"
+                                                        inputMode="decimal"
                                                         min="0"
                                                         step="0.01"
                                                         value={line.discount_value}
@@ -785,7 +783,6 @@ export default function SalesOrderCreate() {
                                                             setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
                                                         }}
                                                         className="disabled:opacity-40"
-                                                        placeholder="0"
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
@@ -884,7 +881,6 @@ export default function SalesOrderCreate() {
                                             <Textarea
                                                 value={form.billing_address}
                                                 onChange={(e) => set('billing_address', e.target.value)}
-                                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                                 rows={2}
                                                 className={errors.billing_address ? 'border-red-500' : ''}
                                             />
@@ -894,7 +890,6 @@ export default function SalesOrderCreate() {
                                                 <Input
                                                     value={form.billing_city}
                                                     onChange={(e) => set('billing_city', e.target.value)}
-                                                    placeholder="New York"
                                                     className={errors.billing_city ? 'border-red-500' : ''}
                                                 />
                                             </Field>
@@ -902,7 +897,6 @@ export default function SalesOrderCreate() {
                                                 <Input
                                                     value={form.billing_state}
                                                     onChange={(e) => set('billing_state', e.target.value)}
-                                                    placeholder="NY"
                                                     className={errors.billing_state ? 'border-red-500' : ''}
                                                 />
                                             </Field>
@@ -912,7 +906,6 @@ export default function SalesOrderCreate() {
                                                 <Input
                                                     value={form.billing_country}
                                                     onChange={(e) => set('billing_country', e.target.value)}
-                                                    placeholder="United States"
                                                     className={errors.billing_country ? 'border-red-500' : ''}
                                                 />
                                             </Field>
@@ -920,7 +913,6 @@ export default function SalesOrderCreate() {
                                                 <Input
                                                     value={form.billing_postal_code}
                                                     onChange={(e) => set('billing_postal_code', e.target.value)}
-                                                    placeholder="10001"
                                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                                 />
                                             </Field>
@@ -936,39 +928,25 @@ export default function SalesOrderCreate() {
                                             <Textarea
                                                 value={form.shipping_address}
                                                 onChange={(e) => set('shipping_address', e.target.value)}
-                                                placeholder={translate('e.g. 456 Elm St, Warehouse B')}
                                                 rows={2}
                                             />
                                         </Field>
                                         <div className="grid grid-cols-2 gap-3">
                                             <Field label={translate('Shipping City')} error={errors.shipping_city}>
-                                                <Input
-                                                    value={form.shipping_city}
-                                                    onChange={(e) => set('shipping_city', e.target.value)}
-                                                    placeholder="Los Angeles"
-                                                />
+                                                <Input value={form.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
                                             </Field>
                                             <Field label={translate('Shipping State')} error={errors.shipping_state}>
-                                                <Input
-                                                    value={form.shipping_state}
-                                                    onChange={(e) => set('shipping_state', e.target.value)}
-                                                    placeholder="CA"
-                                                />
+                                                <Input value={form.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
                                             </Field>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
                                             <Field label={translate('Shipping Country')} error={errors.shipping_country}>
-                                                <Input
-                                                    value={form.shipping_country}
-                                                    onChange={(e) => set('shipping_country', e.target.value)}
-                                                    placeholder="United States"
-                                                />
+                                                <Input value={form.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} />
                                             </Field>
                                             <Field label={translate('Shipping Postal Code')} error={errors.shipping_postal_code}>
                                                 <Input
                                                     value={form.shipping_postal_code}
                                                     onChange={(e) => set('shipping_postal_code', e.target.value)}
-                                                    placeholder="90001"
                                                 />
                                             </Field>
                                         </div>

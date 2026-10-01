@@ -2416,7 +2416,7 @@
     "Passwords do not match.": "Mapassword haaenderani.",
     "Passwords may not be longer than 128 characters.": "Mapassword anogona kusapfuura mabhii zana nemakumi maviri nemasere.",
     "Passwords must have a maximum of 128 characters": "Mapassword anofanirwa kunge aine mavara asingaite 128",
-    "Passwords must have a minimum of 12 characters": "Mapassword anofanirwa kunge aine mavara asingaite gumi nemaviri",
+    "Passwords must have a minimum of 12 characters.": "Mapassword anofanirwa kunge aine mavara asingaite gumi nemaviri",
     "Pay": "Pay",
     "Pay date": "Pay date",
     "Pay now": "Bhadhara izvozvi",

@@ -217,7 +217,13 @@ export default function PurchaseOrders() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard.index') }, { title: translate('Purchase Orders') }];
+    const breadcrumbs = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: translate('Purchase Orders') },
+    ];
 
     const columns = [
         {
@@ -377,7 +383,10 @@ export default function PurchaseOrders() {
                             onChange: setSelectedAccount,
                             options: [
                                 { value: 'all', label: translate('All Accounts') },
-                                ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
+                                ...(allAccounts?.map((acc: any) => ({
+                                    value: acc.id.toString(),
+                                    label: acc.name,
+                                })) || []),
                             ],
                         },
                         {
