@@ -31,7 +31,7 @@ Route::middleware(['web', 'guest'])->group(function () {
     Route::get('sign-up', [SignUpUserController::class, 'create'])
         ->name('sign-up');
 
-    Route::post('sign-up', [SignUpUserController::class, 'sign-up']);
+    Route::post('sign-up', [SignUpUserController::class, 'register']);
     Route::get('account-recovery', [PasswordResetLinkController::class, 'create'])
         ->name('account-recovery-request');
 
