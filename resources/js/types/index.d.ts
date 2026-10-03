@@ -58,7 +58,7 @@ export interface SharedData {
             type?: string;
             role?: string;
             lang?: string;
-            email_verified_at: string;
+            email_verified_at: string | null;
             avatar: string;
         } | null;
         permissions?: string[];

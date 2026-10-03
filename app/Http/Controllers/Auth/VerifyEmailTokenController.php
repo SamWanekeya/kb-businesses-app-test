@@ -6,73 +6,190 @@ use App\Http\Controllers\Controller;
 use App\Models\EmailVerificationToken;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
- * Handles email verification using single-use tokens.
+ * Class VerifyEmailTokenController
  *
- * This controller enforces that a user must be logged in
- * to verify their email address.
+ * Handles verification of a user's email address using an opaque,
+ * database-backed verification token.
  *
- * Verification flow:
- * 1. User must be authenticated.
- * 2. Token must exist and not be expired.
- *    - If logged in: redirect to /verify-email with flash to request new token
- *    - If not logged in: redirect to sign in with error
- * 3. Token must belong to the authenticated user.
- * 4. Email is marked as verified.
- * 5. Token is deleted (single-use).
- * 6. Redirect to dashboard with success message.
+ * Responsibilities:
+ * - Validate the supplied verification token.
+ * - Validate the token expiration time.
+ * - Ensure the token belongs to the authenticated user when signed in.
+ * - Ensure the token was issued for the user's current email address.
+ * - Mark the user's email address as verified.
+ * - Remove the consumed verification token.
+ * - Provide appropriate feedback for invalid, expired, already verified,
+ *   and successfully verified requests.
  */
 class VerifyEmailTokenController extends Controller
 {
     /**
-     * Verify the authenticated user's email using a token.
+     * Verify the user's email address.
      *
-     * @param string $token The opaque email verification token
+     * @param Request $request The incoming verification request.
+     * @param string $token The raw verification token supplied in the URL.
      *
      * @return RedirectResponse
      */
-    public function __invoke(string $token): RedirectResponse
-    {
-        // Require authentication
-        $user = Auth::user();
+    public function __invoke(
+        Request $request,
+        string $token,
+    ): RedirectResponse {
+        $user = $request->user();
 
-        if (!$user) {
+        try {
+            $verificationToken = EmailVerificationToken::query()
+                ->where(
+                    'token',
+                    hash('sha256', $token),
+                )
+                ->first();
+
+            if (!$verificationToken) {
+                return $this->invalidTokenResponse($request);
+            }
+
+            if ($verificationToken->expires_at->isPast()) {
+                $verificationToken->delete();
+
+                return $this->invalidTokenResponse($request);
+            }
+
+            if (
+                $user
+                && (int) $verificationToken->user_id !== (int) $user->getKey()
+            ) {
+                return $this->invalidTokenResponse($request);
+            }
+
+            $tokenUser = $verificationToken->user;
+
+            if (!$tokenUser) {
+                return $this->invalidTokenResponse($request);
+            }
+
+            if (
+                $verificationToken->email
+                !== $tokenUser->getEmailForVerification()
+            ) {
+                return $this->invalidTokenResponse($request);
+            }
+
+            if ($tokenUser->hasVerifiedEmail()) {
+                return redirect()
+                    ->route('dashboard.index')
+                    ->with(
+                        'info',
+                        __('Your email address has already been verified.'),
+                    );
+            }
+
+            if (!$user) {
+                return redirect()
+                    ->route('sign-in')
+                    ->with(
+                        'warning',
+                        __('Please sign in to complete your email verification.'),
+                    );
+            }
+
+            DB::transaction(function () use ($tokenUser, $verificationToken): void {
+                $lockedToken = EmailVerificationToken::query()
+                    ->whereKey($verificationToken->getKey())
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$lockedToken) {
+                    return;
+                }
+
+                if ($lockedToken->expires_at->isPast()) {
+                    $lockedToken->delete();
+
+                    return;
+                }
+
+                if (
+                    $lockedToken->email
+                    !== $tokenUser->getEmailForVerification()
+                ) {
+                    return;
+                }
+
+                $tokenUser->markEmailAsVerified();
+
+                event(new Verified($tokenUser));
+
+                $lockedToken->delete();
+            });
+
             return redirect()
-                ->route('sign-in')
-                ->with('error', __('You must be logged in to verify your email address'));
+                ->intended(
+                    route('dashboard.index', absolute: false),
+                )
+                ->with(
+                    'success',
+                    __('Your email address has been successfully verified.'),
+                );
+        } catch (Throwable $exception) {
+            Log::error(
+                'Email verification failed.',
+                [
+                    'user_id' => $user?->getKey(),
+                    'email' => $user?->getEmailForVerification(),
+                    'exception' => $exception,
+                ],
+            );
+
+            return redirect()
+                ->route(
+                    $user
+                        ? 'authenticated.verification.notice'
+                        : 'sign-in',
+                )
+                ->with(
+                    'error',
+                    __(
+                        'We could not verify your email address. Please request a new verification email and try again.',
+                    ),
+                );
         }
+    }
 
-        // Resolve token (must exist and not be expired)
-        $record = EmailVerificationToken::where('token', $token)
-            ->where('expires_at', '>', now())?->first();
-
-        if (!$record) {
+    /**
+     * Build the response for an invalid or expired verification token.
+     *
+     * @param Request $request The incoming verification request.
+     *
+     * @return RedirectResponse
+     */
+    private function invalidTokenResponse(
+        Request $request,
+    ): RedirectResponse {
+        if ($request->user()) {
             return redirect()
                 ->route('authenticated.verification.notice')
-                ->with('error', __('Your verification link is invalid or expired. Please request a new one'));
+                ->with(
+                    'error',
+                    __(
+                        'This verification link is invalid or has expired. Please request a new verification email.',
+                    ),
+                );
         }
 
-        // Ensure token belongs to authenticated user
-        if ((int)$record->user_id !== (int)$user->id) {
-            return redirect()
-                ->route('sign-in')
-                ->with('error', __('Your verification link is invalid or expired. Please sign in to request a new one'));
-        }
-
-        // Mark email as verified
-        if (!$user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
-            event(new Verified($user));
-        }
-
-        // Delete token (single-use)
-        $record->delete();
-
-        // Redirect to dashboard with success message
         return redirect()
-            ->route('dashboard.index')
-            ->with('success', __('Your email address has been successfully verified'));
+            ->route('sign-in')
+            ->with(
+                'error',
+                __(
+                    'This verification link is invalid or has expired. Please sign in and request a new verification email.',
+                ),
+            );
     }
 }

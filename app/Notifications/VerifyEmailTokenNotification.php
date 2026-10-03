@@ -2,72 +2,112 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Notification sent to users to verify their email address using
- * an opaque verification token.
+ * Class VerifyEmailTokenNotification
+ *
+ * Sends the email verification notification containing the user's
+ * opaque verification token.
+ *
+ * Responsibilities:
+ * - Generate the verification URL from the supplied token.
+ * - Display the configured verification expiration.
+ * - Provide context-specific verification email content.
  */
 class VerifyEmailTokenNotification extends Notification
 {
+    use Queueable;
+
     /**
-     * Opaque email verification token.
-     *
-     * @var string
+     * The raw verification token.
      */
     protected string $token;
 
     /**
+     * The reason for sending the verification notification.
+     */
+    protected string $reason;
+
+    /**
      * Create a new notification instance.
      *
-     * @param string $token Opaque email verification token
+     * @param string $token The raw verification token.
+     * @param string $reason The reason for sending the notification.
      */
-    public function __construct(string $token)
-    {
+    public function __construct(
+        string $token,
+        string $reason = 'registration',
+    ) {
         $this->token = $token;
+        $this->reason = $reason;
     }
 
     /**
      * Get the notification delivery channels.
      *
-     * @param mixed $notifiable The entity being notified
+     * @param object $notifiable The notification recipient.
      *
-     * @return array<int, string> List of delivery channels
+     * @return list<string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
     /**
-     * Build the email verification notification message.
+     * Build the verification email.
      *
-     * This email contains a call-to-action link that allows the recipient
-     * to verify their email address using an opaque verification token.
-     * The token does not expose any personally identifiable information
-     * and is subject to expiration for security purposes.
+     * @param object $notifiable The notification recipient.
      *
-     * A plain-text URL fallback is included to ensure accessibility and
-     * compatibility with email clients that may block action buttons.
-     *
-     * @param mixed $notifiable The entity being notified
-     *
-     * @return MailMessage The email message instance
+     * @return MailMessage
      */
-    public function toMail($notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
-        $verificationUrl = route('verify-email-token', $this->token);
+        $verificationUrl = route(
+            'verify-email-token',
+            ['token' => $this->token],
+        );
 
-        return (new MailMessage())
-            ->subject(__('Verify your Kakbima email address'))
-            ->greeting(__('Hi :name,', ['name' => $notifiable->name]))
-            ->line(__('Thanks for signing up. Please click the button below to verify your email address and activate your account.'))
-            ->action(__('Verify email'), $verificationUrl)
-            ->line(__('This verification link will expire in :minutes minutes.', [
-                'minutes' => config('auth.verification.expire'),
+        $message = (new MailMessage())
+            ->greeting(__('Hi :name,', [
+                'name' => $notifiable->name,
             ]))
-            ->line(__('If you did not create a Kakbima account, you can safely ignore this email.'))
-            ->salutation('— ' . __('The Kakbima Team'));
+            ->action(
+                __('Verify email'),
+                $verificationUrl,
+            )
+            ->line(__(
+                'This verification link will expire in :minutes minutes.',
+                [
+                    'minutes' => config('auth.verification.expire'),
+                ],
+            ));
+
+        if ($this->reason === 'email-change') {
+            $message
+                ->subject(__('Verify your new Kakbima email address'))
+                ->line(__(
+                    'You recently changed the email address associated with your Kakbima account. Please click the button below to verify your new email address and continue using your account.',
+                ))
+                ->line(__(
+                    'If you did not make this change, please sign in to your Kakbima account and update your email address.',
+                ));
+        } else {
+            $message
+                ->subject(__('Verify your Kakbima email address'))
+                ->line(__(
+                    'Thanks for signing up. Please click the button below to verify your email address and complete your Kakbima account setup.',
+                ))
+                ->line(__(
+                    'If you did not create a Kakbima account, you can safely ignore this email.',
+                ));
+        }
+
+        return $message->salutation(
+            '— ' . __('The Kakbima Team'),
+        );
     }
 }

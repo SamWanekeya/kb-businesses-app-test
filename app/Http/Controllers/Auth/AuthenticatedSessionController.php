@@ -20,6 +20,42 @@ use WhichBrowser\Parser;
 class AuthenticatedSessionController extends Controller
 {
     /**
+     * Synchronize the authenticated user's preferences with browser cookies.
+     *
+     * @param User $user The authenticated user whose preferences are being synced.
+     *
+     * @return void
+     */
+    protected function syncUserPreferencesToCookies(User $user): void
+    {
+        $minutes = 400 * 24 * 60; // 400 days in minutes
+
+        Cookie::queue(
+            cookie(
+                name: '__kb_lcl',
+                value: $user->lang,
+                minutes: $minutes,
+                path: '/',
+                secure: true,
+                httpOnly: false,
+                sameSite: 'Lax'
+            )
+        );
+
+        Cookie::queue(
+            cookie(
+                name: '__kb_thm_md',
+                value: $user->theme_mode,
+                minutes: $minutes,
+                path: '/',
+                secure: true,
+                httpOnly: false,
+                sameSite: 'Lax'
+            )
+        );
+    }
+
+    /**
      * Display the sign-in page.
      *
      * @param Request $request
@@ -69,7 +105,6 @@ class AuthenticatedSessionController extends Controller
      * @throws ValidationException When authentication fails (via SignInRequest).
      *
      * @return RedirectResponse Redirects to the originally intended destination or dashboard.
-     *
      */
     public function authenticate(SignInRequest $request): RedirectResponse
     {
@@ -169,42 +204,6 @@ class AuthenticatedSessionController extends Controller
         }
 
         return redirect()->intended(route('dashboard.index', absolute: false));
-    }
-
-    /**
-     * Synchronize the authenticated user's preferences with browser cookies.
-     *
-     * @param User $user The authenticated user whose preferences are being synced.
-     *
-     * @return void
-     */
-    protected function syncUserPreferencesToCookies(User $user): void
-    {
-        $minutes = 400 * 24 * 60; // 400 days in minutes
-
-        Cookie::queue(
-            cookie(
-                name: '__kb_lcl',
-                value: $user->lang,
-                minutes: $minutes,
-                path: '/',
-                secure: true,
-                httpOnly: false,
-                sameSite: 'Lax'
-            )
-        );
-
-        Cookie::queue(
-            cookie(
-                name: '__kb_thm_md',
-                value: $user->theme_mode,
-                minutes: $minutes,
-                path: '/',
-                secure: true,
-                httpOnly: false,
-                sameSite: 'Lax'
-            )
-        );
     }
 
     /**

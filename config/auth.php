@@ -140,7 +140,8 @@ return [
         |
         */
 
-        'expire' => env('EMAIL_VERIFICATION_EXPIRE', 30),
+        'expire' => (int) env('EMAIL_VERIFICATION_EXPIRE', 30),
+        'throttle' => 6,
 
     ],
 

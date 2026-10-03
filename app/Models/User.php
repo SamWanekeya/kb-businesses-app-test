@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
+use App\Notifications\VerifyEmailTokenNotification;
 use App\Services\MailConfigService;
 use Database\Factories\UserFactory;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Lab404\Impersonate\Models\Impersonate;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -321,25 +324,53 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     }
 
     /**
-     * Send the email verification notification with dynamic config.
+     * Send the email verification notification.
+     *
+     * Generates a cryptographically secure verification token, invalidates
+     * any previously issued token for the user, stores the token hash, and
+     * sends the verification notification containing the raw token.
+     *
+     * @param string $reason The reason for sending the verification notification.
+     *
+     * @throws \Throwable When the verification token cannot be created or
+     *                    the verification notification cannot be sent.
+     *
+     * @return void
      */
-    public function sendEmailVerificationNotification()
-    {
-        try {
-            MailConfigService::setDynamicConfig();
-            parent::sendEmailVerificationNotification();
+    public function sendEmailVerificationNotification(
+        string $reason = 'registration',
+    ): void {
+        $token = Str::random(64);
 
-            return ['success' => true, 'message' => 'Verification email sent successfully'];
-        } catch (Exception $e) {
-            Log::error('Email verification failed', [
-                'user_id' => $this->id,
-                'email' => $this->email,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+        DB::transaction(function () use ($token): void {
+            EmailVerificationToken::query()
+                ->where('user_id', $this->getKey())
+                ->delete();
+
+            EmailVerificationToken::create([
+                'user_id' => $this->getKey(),
+                'email' => $this->getEmailForVerification(),
+                'token' => hash('sha256', $token),
+                'expires_at' => now()->addMinutes(
+                    config('auth.verification.expire'),
+                ),
             ]);
+        });
 
-            return ['success' => false, 'message' => 'Failed to send verification email: ' . $e->getMessage()];
-        }
+        $this->notify(
+            new VerifyEmailTokenNotification(
+                token: $token,
+                reason: $reason,
+            ),
+        );
+    }
+
+    /**
+     * Send the password reset notification to the user.
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     public function organizationDefaultData($organization)

@@ -63,27 +63,41 @@ class MyKakbimaAccountController extends Controller
     }
 
     /**
-     * Update the authenticated user's profile.
+     * Update the authenticated user's profile information.
      *
-     * Profile validation and authorization are completed by
-     * ProfileUpdateRequest before this method executes.
+     * Redirects users to the email verification screen when their email
+     * address has changed. The account page is stored as the intended
+     * destination so the user returns to their profile after verification.
      *
-     * @param ProfileUpdateRequest $request The validated profile request.
+     * @param ProfileUpdateRequest $request The validated profile update request.
      *
-     * @return RedirectResponse Redirects to the profile update success page.
+     * @return RedirectResponse
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = $request->user();
+
+        $emailChanged = $user->email !== $request->validated('email');
+
         $this->updateProfileAction->execute(
-            user: $request->user(),
+            user: $user,
             request: $request,
             attributes: $request->validated(),
         );
 
+        if ($emailChanged) {
+            $request->session()->put(
+                'url.intended',
+                route('my-kakbima-account.success', absolute: false),
+            );
+
+            return to_route('authenticated.verification.notice');
+        }
+
         return to_route('my-kakbima-account.success')
             ->with(
                 'success',
-                __('Profile updated successfully.')
+                __('Profile updated successfully.'),
             );
     }
 

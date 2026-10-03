@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\SignUpRequest;
 use App\Models\Plan;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,11 +60,14 @@ class SignUpUserController extends Controller
         });
 
         Auth::login($user);
-        $user->sendEmailVerificationNotification();
+
+        event(new Registered($user));
 
         return redirect()
             ->route('authenticated.verification.notice')
-            ->with('warning', __('Verify your email to complete account setup'));
+            ->with([
+                'warning' => __('Verify your email to complete account setup.'),
+            ]);
     }
 
     /**
@@ -93,7 +97,7 @@ class SignUpUserController extends Controller
      */
     protected function resolvePlanId(?string $encrypted): ?int
     {
-        if (!$encrypted) {
+        if (! $encrypted) {
             return null;
         }
 

@@ -32,7 +32,7 @@ class ResetPasswordNotification extends BaseResetPassword
         ], false));
 
         return (new MailMessage())
-//            ->from('no-reply@kakbima.dev', 'Kakbima')
+//            ->from('no-reply@kakbima.com', 'Kakbima')
             ->subject(__('Reset your Kakbima account password'))
             ->greeting(__('Hi :name,', ['name' => $notifiable->name]))
             ->line(__('We received a request to reset the password for your Kakbima account. Click the button below to choose a new password.'))

@@ -12,7 +12,7 @@ use App\Http\Middleware\MinifyHtml;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustHosts;
 use App\Http\Middleware\TrustProxies;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\EnsureEmailIsVerified;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;

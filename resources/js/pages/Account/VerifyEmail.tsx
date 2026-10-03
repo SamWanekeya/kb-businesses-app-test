@@ -29,6 +29,7 @@ import { route } from '@utils/Routes';
  * - Display the email address associated with the current account.
  * - Allow the user to resend the verification email.
  * - Surface server-side resend failures through toast notifications.
+ * - Surface successful resend requests through toast notifications.
  * - Provide a sign-out action.
  *
  * Accessibility:
@@ -36,6 +37,7 @@ import { route } from '@utils/Routes';
  * - Uses a native form for the resend action.
  * - Keeps the resend action keyboard accessible through AccountButton.
  * - Uses a semantic navigation link for signing out through TextLink.
+ * - Uses `aria-live` to announce verification instructions and status changes.
  *
  * Performance:
  * - The submission handler is memoized because it is passed to the form.
@@ -46,6 +48,8 @@ import { route } from '@utils/Routes';
  *   submission architecture.
  * - Success feedback can be rendered inline if persistent status messaging
  *   becomes preferable to transient toast notifications.
+ *
+ * @returns The email-verification screen.
  */
 export default function VerifyEmail() {
     const { t: translate } = useTranslation();
@@ -57,20 +61,25 @@ export default function VerifyEmail() {
      * Resends the account verification email.
      *
      * A loading toast provides immediate feedback while the request is
-     * processing. Server validation errors are surfaced individually so
-     * users receive actionable feedback when the request fails.
+     * processing. Successful requests display a confirmation message,
+     * while server-side errors are surfaced individually so users receive
+     * actionable feedback when the request fails.
      */
     const handleSubmit = useCallback(
         (event: SubmitEvent<HTMLFormElement>) => {
             event.preventDefault();
 
-            const toastId = toast.loading(translate('Sending verification email...'));
+            const toastId = toast.loading(
+                translate('Sending verification email...'),
+            );
 
             post(route('authenticated.verification.send'), {
+                preserveScroll: true,
+
                 onSuccess: () => {
                     toast.dismiss(toastId);
-                    toast.success(translate('A new verification link has been sent to your email address.'));
                 },
+
                 onError: (errors) => {
                     toast.dismiss(toastId);
 
@@ -88,24 +97,49 @@ export default function VerifyEmail() {
     return (
         <AuthLayout title={translate('Verify your email')}>
             <div className="space-y-6">
-                <div className="text-muted-foreground space-y-4 text-sm leading-6" aria-live="polite">
+                <div
+                    className="text-muted-foreground space-y-4 text-sm leading-6"
+                    aria-live="polite"
+                >
                     <p>
-                        <strong className="text-foreground font-semibold">{translate('Check your inbox!')}</strong>{' '}
-                        {translate('We’ve sent a verification link to')} <span className="text-foreground font-medium">{email}</span>.{' '}
-                        {translate('Please click the link to activate your account and get started.')}
+                        <strong className="text-foreground font-semibold">
+                            {translate('Check your inbox!')}
+                        </strong>{' '}
+                        {translate('We’ve sent a verification link to')}{' '}
+                        <span className="text-foreground font-medium">
+                            {email}
+                        </span>
+                        .{' '}
+                        {translate(
+                            'Please click the link to verify your email address and continue using your account.',
+                        )}
                     </p>
 
                     <p>
-                        <strong className="text-foreground font-semibold">{translate('Didn’t get the email?')}</strong>{' '}
-                        {translate('Check your spam folder or click the button below to try again.')}
+                        <strong className="text-foreground font-semibold">
+                            {translate('Didn’t get the email?')}
+                        </strong>{' '}
+                        {translate(
+                            'Check your spam folder or click the button below to request another verification email.',
+                        )}
                     </p>
                 </div>
 
-                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-5">
-                    <AccountButton processing={processing}>{translate('Resend verification email')}</AccountButton>
+                <form
+                    autoComplete="off"
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
+                >
+                    <AccountButton processing={processing}>
+                        {translate('Resend verification email')}
+                    </AccountButton>
 
                     <div className="text-center">
-                        <TextLink href={route('authenticated.logout')} method="post" className="font-medium transition-colors duration-200">
+                        <TextLink
+                            href={route('authenticated.logout')}
+                            method="post"
+                            className="font-medium transition-colors duration-200"
+                        >
                             {translate('Sign out')}
                         </TextLink>
                     </div>

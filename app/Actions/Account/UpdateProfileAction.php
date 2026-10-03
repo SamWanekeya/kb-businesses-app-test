@@ -4,8 +4,10 @@ namespace App\Actions\Account;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RuntimeException;
+use Throwable;
 
 /**
  * Updates an authenticated user's profile.
@@ -64,11 +66,28 @@ final class UpdateProfileAction
 
         $user->fill($attributes);
 
-        if ($user->isDirty('email')) {
+        $emailChanged = $user->isDirty('email');
+
+        if ($emailChanged) {
             $user->email_verified_at = null;
         }
 
         $user->save();
+
+        if ($emailChanged) {
+            try {
+                $user->sendEmailVerificationNotification('email-change');
+            } catch (Throwable $exception) {
+                Log::error(
+                    'Email verification notification failed after email change.',
+                    [
+                        'user_id' => $user->getKey(),
+                        'email' => $user->getEmailForVerification(),
+                        'exception' => $exception,
+                    ],
+                );
+            }
+        }
 
         if (
             $hasNewAvatar

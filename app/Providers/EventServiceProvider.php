@@ -56,7 +56,7 @@ use App\Listeners\WebhookOpportunityCreateListener;
 use App\Listeners\WebhookQuoteCreateListener;
 use App\Listeners\WebhookTaskCreateListener;
 use App\Listeners\WebhookUserCreateListener;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
