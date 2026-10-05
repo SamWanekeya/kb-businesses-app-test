@@ -318,7 +318,7 @@ class PlanController extends Controller
     public function edit(Plan $plan)
     {
         $otherDefaultPlanExists = Plan::where('is_default', true)
-            ->where('id', '!=', $plan->id)
+            ->whereKeyNot($plan->id)
             ->exists();
 
         return Inertia::render('Plans/Edit', [

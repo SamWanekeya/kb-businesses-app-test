@@ -301,7 +301,7 @@ class ProjectController extends Controller
                 $validated = $request->validate([
                     'name' => 'required|string|max:255',
                     'code' => ['nullable', 'string', 'max:255', function ($attribute, $value, $fail) use ($projectId) {
-                        if ($value && Project::where('code', $value)->where('created_by', createdBy())->where('id', '!=', $projectId)->exists()) {
+                        if ($value && Project::where('code', $value)->where('created_by', createdBy())->whereKeyNot($projectId)->exists()) {
                             $fail('The code has already been taken.');
                         }
                     }],

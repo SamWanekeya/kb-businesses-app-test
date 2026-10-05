@@ -83,7 +83,7 @@ class RoleRequest extends FormRequest
 
         // If updating, exclude current role from check
         if ($roleId) {
-            $query->where('id', '!=', $roleId);
+            $query->whereKeyNot($roleId);
         }
 
         if ($query->exists()) {

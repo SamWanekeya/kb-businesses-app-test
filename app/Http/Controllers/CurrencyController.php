@@ -89,7 +89,7 @@ class CurrencyController extends Controller
 
         // If this is set as default, unset all other defaults
         if ($request->input('is_default')) {
-            Currency::where('id', '!=', $currency->id)
+            Currency::whereKeyNot($currency->id)
                 ->where('is_default', true)
                 ->update(['is_default' => false]);
         }

@@ -214,7 +214,7 @@ class CampaignController extends Controller
                 $exists = Campaign::where('name', $validated['name'])
                     ->where('campaign_type_id', $validated['campaign_type_id'])
                     ->where('created_by', createdBy())
-                    ->where('id', '!=', $campaignId)
+                    ->whereKeyNot($campaignId)
                     ->exists();
 
                 if ($exists) {

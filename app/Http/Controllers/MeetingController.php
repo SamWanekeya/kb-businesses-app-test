@@ -436,7 +436,7 @@ class MeetingController extends Controller
                     ->where('attendee_id', $attendee['id'])
                     ->whereHas('meeting', function ($q) use ($startDateTime, $endDateTime, $meetingId) {
                         $q->where('created_by', createdBy())
-                            ->where('id', '!=', $meetingId)
+                            ->whereKeyNot($meetingId)
                             ->where(function ($query) use ($startDateTime, $endDateTime) {
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);

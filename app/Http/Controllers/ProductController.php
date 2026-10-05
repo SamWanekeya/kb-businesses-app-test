@@ -208,7 +208,7 @@ class ProductController extends Controller
                 'users' => $users,
                 'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
-                'existingSkus' => Product::where('created_by', createdBy())->where('id', '!=', $id)?->pluck('sku'),
+                'existingSkus' => Product::where('created_by', createdBy())->whereKeyNot($id)?->pluck('sku'),
             ]);
         } else {
             return redirect()->route('products.index')->with('error', __('Product not found.'));

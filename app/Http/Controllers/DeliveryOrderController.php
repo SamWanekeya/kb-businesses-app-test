@@ -300,7 +300,7 @@ class DeliveryOrderController extends Controller
             'expected_delivery_date' => 'nullable|date|after:delivery_date',
             'status' => 'nullable|in:pending,in_transit,delivered,cancelled',
             'tracking_number' => ['nullable', 'string', 'max:255', function ($attribute, $value, $fail) use ($deliveryOrderId) {
-                if ($value && DeliveryOrder::where('tracking_number', $value)->where('created_by', createdBy())->where('id', '!=', $deliveryOrderId)->exists()) {
+                if ($value && DeliveryOrder::where('tracking_number', $value)->where('created_by', createdBy())->whereKeyNot($deliveryOrderId)->exists()) {
                     $fail('The Tracking number has already been taken.');
                 }
             }],

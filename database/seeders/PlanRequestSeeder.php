@@ -58,7 +58,7 @@ class PlanRequestSeeder extends Seeder
 
                 // Ensure user isn't requesting their current plan
                 if ($user->plan_id === $requestedPlan->id) {
-                    $requestedPlan = $plans->where('id', '!=', $user->plan_id)->random();
+                    $requestedPlan = $plans->whereKeyNot($user->plan_id)->random();
                 }
 
                 $planRequest = PlanRequest::create([

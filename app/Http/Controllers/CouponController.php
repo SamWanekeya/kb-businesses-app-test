@@ -212,7 +212,7 @@ class CouponController extends BaseController
         if ($request->code_type === 'auto' && $coupon->code_type !== 'auto') {
             do {
                 $data['code'] = strtoupper(Str::random(8));
-            } while (Coupon::where('code', $data['code'])->where('id', '!=', $coupon->id)->exists());
+            } while (Coupon::where('code', $data['code'])->whereKeyNot($coupon->id)->exists());
         }
 
         $coupon->update($data);

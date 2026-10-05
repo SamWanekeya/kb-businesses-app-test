@@ -72,38 +72,30 @@ class VerifyEmailTokenNotification extends Notification
         );
 
         $message = (new MailMessage())
-            ->greeting(__('Hi :name,', [
-                'name' => $notifiable->name,
-            ]))
-            ->action(
-                __('Verify email'),
-                $verificationUrl,
-            )
-            ->line(__(
-                'This verification link will expire in :minutes minutes.',
-                [
-                    'minutes' => config('auth.verification.expire'),
-                ],
-            ));
+            ->greeting(__('Hi :name,', ['name' => $notifiable->name]));
 
         if ($this->reason === 'email-change') {
             $message
                 ->subject(__('Verify your new Kakbima email address'))
+                ->line(__('You recently changed the email address associated with your Kakbima account. Please click the button below to verify your new email address and continue using your account.'))
+                ->action(__('Verify email'), $verificationUrl)
                 ->line(__(
-                    'You recently changed the email address associated with your Kakbima account. Please click the button below to verify your new email address and continue using your account.',
+                    'This verification link will expire in :minutes minutes.',
+                    [
+                        'minutes' => config('auth.verification.expire'), ],
                 ))
-                ->line(__(
-                    'If you did not make this change, please sign in to your Kakbima account and update your email address.',
-                ));
+                ->line(__('If you did not make this change, please sign in to your Kakbima account and update your email address.'));
         } else {
             $message
                 ->subject(__('Verify your Kakbima email address'))
+                ->line(__('Thanks for signing up. Please click the button below to verify your email address and complete your Kakbima account setup.'))
+                ->action(__('Verify email'), $verificationUrl)
                 ->line(__(
-                    'Thanks for signing up. Please click the button below to verify your email address and complete your Kakbima account setup.',
+                    'This verification link will expire in :minutes minutes.',
+                    [
+                        'minutes' => config('auth.verification.expire'), ],
                 ))
-                ->line(__(
-                    'If you did not create a Kakbima account, you can safely ignore this email.',
-                ));
+                ->line(__('If you did not create a Kakbima account, you can safely ignore this email.'));
         }
 
         return $message->salutation(

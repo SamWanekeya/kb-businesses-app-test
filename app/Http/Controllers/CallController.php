@@ -395,7 +395,7 @@ class CallController extends Controller
                     ->where('attendee_id', $attendee['id'])
                     ->whereHas('call', function ($q) use ($startDateTime, $endDateTime, $callId) {
                         $q->where('created_by', createdBy())
-                            ->where('id', '!=', $callId)
+                            ->whereKeyNot($callId)
                             ->where(function ($query) use ($startDateTime, $endDateTime) {
                                 $query->whereRaw("CONCAT(start_date, ' ', start_time) < ?", [$endDateTime->format('Y-m-d H:i')])
                                     ->whereRaw("CONCAT(end_date, ' ', end_time) > ?", [$startDateTime->format('Y-m-d H:i')]);

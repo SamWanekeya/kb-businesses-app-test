@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Account\PasswordController;
 use App\Http\Controllers\Account\MyKakbimaAccountController;
+use App\Http\Controllers\Account\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 // These routes require authentication, and email verification.
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('my-kakbima-account', MyKakbimaAccountController::class)
-        ->name('my-kakbima-account.success');
+        ->name('my-kakbima-account.landing');
 
     Route::patch('my-kakbima-account', [MyKakbimaAccountController::class, 'update'])
         ->name('my-kakbima-account.update');

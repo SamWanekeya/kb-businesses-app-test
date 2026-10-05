@@ -176,7 +176,7 @@ class DocumentFolderController extends Controller
             ->firstOrFail();
 
         $parentFolders = DocumentFolder::where('created_by', createdBy())
-            ->where('id', '!=', $id) // Exclude current folder to prevent circular reference
+            ->whereKeyNot($id) // Exclude current folder to prevent circular reference
             ->get(['id', 'name']);
 
         return Inertia::render('DocumentFolders/Edit', [
@@ -203,7 +203,7 @@ class DocumentFolderController extends Controller
                 $exists = DocumentFolder::where('name', $validated['name'])
                     ->where('parent_folder_id', $validated['parent_folder_id'] ?? null)
                     ->where('created_by', createdBy())
-                    ->where('id', '!=', $documentFolderId)
+                    ->whereKeyNot($documentFolderId)
                     ->exists();
 
                 if ($exists) {

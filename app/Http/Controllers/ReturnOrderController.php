@@ -236,7 +236,7 @@ class ReturnOrderController extends Controller
             'contact_id' => 'required|exists:contacts,id',
             'shipping_provider_type_id' => 'required|exists:shipping_provider_types,id',
             'tracking_number' => ['nullable', 'string', 'max:255', function ($attribute, $value, $fail) use ($returnOrderId) {
-                if ($value && ReturnOrder::where('tracking_number', $value)->where('created_by', createdBy())->where('id', '!=', $returnOrderId)->exists()) {
+                if ($value && ReturnOrder::where('tracking_number', $value)->where('created_by', createdBy())->whereKeyNot($returnOrderId)->exists()) {
                     $fail('The Tracking number has already been taken.');
                 }
             }],

@@ -4,9 +4,7 @@ namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailTokenNotification;
-use App\Services\MailConfigService;
 use Database\Factories\UserFactory;
-use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -75,30 +73,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        static::creating(function ($user) {
-            // Assign default plan to organization users if no default plan exists
-            if ($user->type === 'organization' && !$user->plan_id) {
-                $defaultPlan = Plan::getDefaultPlan();
-                if ($defaultPlan) {
-                    $user->plan_id = $defaultPlan->id;
-                    $user->is_plan_active = 1;
-                    $user->plan_expiry_date = now()->addMonth();
-                }
-            }
-        });
-
         static::created(function ($user) {
-            // Skip for super_admin
-            if ($user->type === 'super_admin') {
-                return;
-            }
-
-            // Set language for new users based on organization owner
-            $authUser = auth()?->user();
-            $organizationSettings = settings();
-            $userLang = isset($organizationSettings['defaultLanguage']) ? $organizationSettings['defaultLanguage'] : ($authUser?->lang ?? 'en');
-            $user->lang = $userLang ?? 'en';
-
             // Generate referral code for organization users (same logic as UserObserver)
             if ($user->type === 'organization' && !$user->referral_code) {
                 do {
@@ -108,20 +83,6 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             }
 
             $user->save();
-
-            // Set layout direction based on language
-            $rtlLanguages = ['ar', 'he'];
-            $isRtl = in_array($userLang, $rtlLanguages);
-            $layoutDirection = $isRtl ? 'right' : 'left';
-            Setting::updateOrCreate(
-                [
-                    'key' => 'layoutDirection',
-                    'user_id' => $user->id,
-                ],
-                [
-                    'value' => $layoutDirection,
-                ]
-            );
         });
     }
 

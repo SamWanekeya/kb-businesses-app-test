@@ -88,13 +88,13 @@ class MyKakbimaAccountController extends Controller
         if ($emailChanged) {
             $request->session()->put(
                 'url.intended',
-                route('my-kakbima-account.success', absolute: false),
+                route('my-kakbima-account.landing', absolute: false),
             );
 
             return to_route('authenticated.verification.notice');
         }
 
-        return to_route('my-kakbima-account.success')
+        return to_route('my-kakbima-account.landing')
             ->with(
                 'success',
                 __('Profile updated successfully.'),
