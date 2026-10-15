@@ -108,7 +108,7 @@ export default function VerifyEmail() {
                     </p>
                 </div>
 
-                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-5">
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-3">
                     <AccountButton processing={processing}>{translate('Resend verification email')}</AccountButton>
 
                     <div className="text-center">

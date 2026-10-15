@@ -164,16 +164,21 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
         return `${createKakbimaExternalUrl('www')}${languageFromCookie}/?utm_source=accounts.kakbima.dev`;
     }, [languageFromCookie]);
 
+
     return (
-        <div className="flex h-screen justify-center">
+        <div className="flex h-dvh w-full justify-center overflow-hidden">
             <Head title={title} />
 
             {/* Outer Card Container */}
-            <div className="flex w-full max-w-6xl overflow-hidden">
+            <div className="flex h-full min-h-0 w-full max-w-6xl overflow-hidden">
                 {/* Left Side - Image */}
-                <div className="relative hidden p-6 lg:block lg:w-1/2">
+                <div className="relative hidden min-h-0 p-6 lg:block lg:w-1/2">
                     <div className="relative h-full w-full overflow-hidden rounded-xl">
-                        <img src={leftSideBackgroundImage} alt="Kakbima" className="absolute inset-0 h-full w-full object-cover" />
+                        <img
+                            src={leftSideBackgroundImage}
+                            alt="Kakbima"
+                            className="absolute inset-0 h-full w-full object-cover"
+                        />
 
                         {/* Overlay */}
                         <div className="absolute inset-0 flex flex-col justify-between rounded-xl bg-black/40 p-6">
@@ -200,32 +205,51 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
                 </div>
 
                 {/* Right Side - Content */}
-                <div className="relative flex w-full items-center justify-center p-6 md:p-12 lg:w-1/2">
+                <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden p-3 sm:p-5 lg:w-1/2 lg:p-6">
                     {/* Language Switcher */}
-                    <div className="absolute top-1 right-1">
+                    <div className="absolute top-2 right-2 z-10 sm:top-4 sm:right-4">
                         <LanguageSelector />
                     </div>
 
+                    {/* Authentication Card */}
                     <div
-                        className={`w-full max-w-md transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+                        className={`flex max-h-full min-h-0 w-full max-w-md flex-col transition-all duration-700 ${
+                            mounted
+                                ? 'translate-y-0 opacity-100'
+                                : 'translate-y-4 opacity-0'
+                        }`}
                     >
-                        <div className="bg-card text-card-foreground rounded-xl border p-8 shadow-sm shadow-xl">
-                            <div className="mb-6 text-center">
-                                <div className="mx-auto mb-4 flex h-10 w-50 items-center justify-center">
-                                    <img src={currentLogo} alt="Kakbima" className="h-14 w-auto" />
+                        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-xl">
+                            {/* Scrollable Card Content */}
+                            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6 md:p-8 scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent hover:scrollbar-thumb-border focus-within:scrollbar-thumb-border active:scrollbar-thumb-border">
+                                <div className="mb-5 text-center">
+                                    <div className="mx-auto mb-3 flex h-10 w-50 items-center justify-center">
+                                        <img
+                                            src={currentLogo}
+                                            alt="Kakbima"
+                                            className="h-14 w-auto"
+                                        />
+                                    </div>
+
+                                    <h1 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-neutral-400">
+                                        {title}
+                                    </h1>
+
+                                    {description && (
+                                        <p className="text-neutral-600 dark:text-neutral-400">
+                                            {description}
+                                        </p>
+                                    )}
                                 </div>
-                                <h1 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-neutral-400">{title}</h1>
 
-                                {description && <p className="text-neutral-600 dark:text-neutral-400">{description}</p>}
+                                {children}
                             </div>
-
-                            {children}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Global cookie consent */}
+            {/* Global Cookie Consent */}
             <CookieConsentBanner />
         </div>
     );

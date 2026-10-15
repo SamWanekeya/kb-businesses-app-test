@@ -28,7 +28,7 @@ blockquote {
 }
 
 a {
-    color: #008037;
+    color: #a12582;
 }
 
 a img {
@@ -236,20 +236,20 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #008037;
-    border-bottom: 8px solid #008037;
-    border-left: 18px solid #008037;
-    border-right: 18px solid #008037;
-    border-top: 8px solid #008037;
+    background-color: #a12582;
+    border-bottom: 8px solid #a12582;
+    border-left: 18px solid #a12582;
+    border-right: 18px solid #a12582;
+    border-top: 8px solid #a12582;
 }
 
-.button-green,
+.button-purple,
 .button-success {
-    background-color: #48bb78;
-    border-bottom: 8px solid #48bb78;
-    border-left: 18px solid #48bb78;
-    border-right: 18px solid #48bb78;
-    border-top: 8px solid #48bb78;
+    background-color: #C9A1BE;
+    border-bottom: 8px solid #C9A1BE;
+    border-left: 18px solid #C9A1BE;
+    border-right: 18px solid #C9A1BE;
+    border-top: 8px solid #C9A1BE;
 }
 
 .button-red,

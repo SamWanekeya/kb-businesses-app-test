@@ -274,8 +274,8 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
 
     return (
         <AuthLayout title={translate('Create your Kakbima account')}>
-            <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-5">
-                <div className="space-y-5">
+            <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
+                <div className="space-y-3">
                     {/* Full name */}
                     <div className="space-y-2">
                         <Label htmlFor="name">

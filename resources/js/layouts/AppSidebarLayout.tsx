@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { JSX, PropsWithChildren } from 'react';
 
 import AppContent from '@components/AppContent';
 import AppShell from '@components/AppShell';
@@ -17,7 +17,7 @@ import AppSidebarHeader from '@components/AppSidebarHeader';
  * @param {React.ReactNode} props.children - Content to be rendered inside the sidebar layout.
  * @returns {JSX.Element} The rendered sidebar layout.
  */
-export default function AppSidebarLayout({ children }: PropsWithChildren<object>) {
+export default function AppSidebarLayout({ children }: PropsWithChildren<object>): JSX.Element {
     return (
         <AppShell variant="sidebar">
             <AppSidebar />

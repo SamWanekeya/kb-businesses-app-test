@@ -209,7 +209,7 @@ export default function SignIn() {
                     </div>
                 </form>
             ) : (
-                <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-5">
+                <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                     <div className="space-y-2">
                         <Label htmlFor="email">
                             {translate('Work email')}{' '}

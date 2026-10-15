@@ -358,7 +358,7 @@ function initializeKakbimaApp(): void {
             }
         },
 
-        progress: { color: '#008037' },
+        progress: { color: '#a12582' },
     });
 }
 
