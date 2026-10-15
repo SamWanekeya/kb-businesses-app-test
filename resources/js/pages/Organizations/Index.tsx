@@ -744,7 +744,7 @@ export default function Organizations() {
                                                     onClick={() => {
                                                         handleAction('delete', organization);
                                                     }}
-                                                    className="text-red-600 focus:text-red-600"
+                                                    className="focus:text-destructive text-red-600"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
                                                     <span>{translate('Delete')}</span>

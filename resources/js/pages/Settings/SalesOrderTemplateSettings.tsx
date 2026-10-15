@@ -312,7 +312,7 @@ export default function SalesOrderTemplateSettings() {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.salesOrderTemplate && <p className="text-sm text-red-600">{errors.salesOrderTemplate}</p>}
+                                    {errors.salesOrderTemplate && <p className="text-destructive text-sm">{errors.salesOrderTemplate}</p>}
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -363,7 +363,7 @@ export default function SalesOrderTemplateSettings() {
                                         showPreview={true}
                                         returnType="id"
                                     />
-                                    {errors.salesOrderLogo && <p className="text-sm text-red-600">{errors.salesOrderLogo}</p>}
+                                    {errors.salesOrderLogo && <p className="text-destructive text-sm">{errors.salesOrderLogo}</p>}
                                     <p className="text-xs text-gray-500">{translate('Select a logo for sales orders')}</p>
                                 </div>
                             </div>

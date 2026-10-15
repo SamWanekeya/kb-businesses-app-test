@@ -91,6 +91,6 @@
     @vite(['resources/js/app.tsx', "resources/css/app.css"], 'static')
 </head>
 <body class="font-mulish antialiased">
-<x-inertia::app id="kakbima-saas" />
+<x-inertia::app id="kakbima-insurance-software" />
 </body>
 </html>

@@ -106,7 +106,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                             <div className="space-y-2">
                                                 <div className="text-sm font-semibold">
                                                     {field.key?.replace(/_/g, ' ')?.replace(/\b\w/g, (l) => l.toUpperCase())}
-                                                    {field.required && <span className="ml-1 text-red-600">*</span>}
+                                                    {field.required && <span className="text-destructive ml-1">*</span>}
                                                 </div>
                                                 <Select
                                                     value={mapping[field.key] || '__unselect__'}

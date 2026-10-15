@@ -840,7 +840,7 @@ export default function Opportunities() {
                                                                                             onClick={() => {
                                                                                                 handleAction('delete', opportunity);
                                                                                             }}
-                                                                                            className="text-red-600"
+                                                                                            className="text-destructive"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                                                             {translate('Delete')}

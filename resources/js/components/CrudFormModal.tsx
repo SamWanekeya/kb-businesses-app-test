@@ -376,7 +376,6 @@ export default function CrudFormModal({
                         name={field.name}
                         inputType="number"
                         inputMode="decimal"
-                        inputMode="decimal"
                         value={formData[field.name] || ''}
                         onChange={(e) => {
                             handleChange(field.name, e.target.value ? parseFloat(e.target.value) : '');
@@ -744,12 +743,12 @@ export default function CrudFormModal({
                                                 <Label htmlFor={field.name} className="text-sm font-medium">
                                                     {field.label}{' '}
                                                     {field.required && !(field.type === 'file' && mode === 'edit') && (
-                                                        <span className="text-red-600">*</span>
+                                                        <span className="text-destructive">*</span>
                                                     )}
                                                 </Label>
                                             ) : null}
                                             {renderField(field)}
-                                            {errors[field.name] && <p className="text-xs text-red-600">{errors[field.name]}</p>}
+                                            {errors[field.name] && <p className="text-destructive text-xs">{errors[field.name]}</p>}
                                         </div>
                                     );
                                 })}
@@ -773,12 +772,12 @@ export default function CrudFormModal({
                                                 <Label htmlFor={field.name} className="text-sm font-medium">
                                                     {field.label}{' '}
                                                     {field.required && !(field.type === 'file' && mode === 'edit') && (
-                                                        <span className="text-red-600">*</span>
+                                                        <span className="text-destructive">*</span>
                                                     )}
                                                 </Label>
                                             ) : null}
                                             {renderField(field)}
-                                            {errors[field.name] && <p className="text-xs text-red-600">{errors[field.name]}</p>}
+                                            {errors[field.name] && <p className="text-destructive text-xs">{errors[field.name]}</p>}
                                         </div>
                                     );
                                 })}
@@ -797,12 +796,12 @@ export default function CrudFormModal({
                                                     <Label htmlFor={field.name} className="text-sm font-medium">
                                                         {field.label}{' '}
                                                         {field.required && !(field.type === 'file' && mode === 'edit') && (
-                                                            <span className="text-red-600">*</span>
+                                                            <span className="text-destructive">*</span>
                                                         )}
                                                     </Label>
                                                 ) : null}
                                                 {renderField(field)}
-                                                {errors[field.name] && <p className="text-xs text-red-600">{errors[field.name]}</p>}
+                                                {errors[field.name] && <p className="text-destructive text-xs">{errors[field.name]}</p>}
                                             </div>
                                         );
                                     })}

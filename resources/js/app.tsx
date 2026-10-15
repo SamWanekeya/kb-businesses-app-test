@@ -278,7 +278,7 @@ export const KakbimaRoot: React.FC<any> = ({ App, props }) => {
  */
 function initializeKakbimaApp(): void {
     // Pre-hydration language & theme sync
-    const el = document.getElementById('kakbima-saas');
+    const el = document.getElementById('kakbima-insurance-software');
     if (el) {
         const userLang = getCookie('__kb_lcl');
         i18n.changeLanguage(userLang);
@@ -293,7 +293,7 @@ function initializeKakbimaApp(): void {
     }
 
     void createInertiaApp({
-        id: 'kakbima-saas',
+        id: 'kakbima-insurance-software',
 
         resolve: (name: string) => {
             const pages = import.meta.glob('./pages/**/*.tsx');

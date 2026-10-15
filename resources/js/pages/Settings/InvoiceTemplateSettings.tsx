@@ -301,7 +301,7 @@ export default function InvoiceTemplateSettings() {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.invoiceTemplate && <p className="text-sm text-red-600">{errors.invoiceTemplate}</p>}
+                                    {errors.invoiceTemplate && <p className="text-destructive text-sm">{errors.invoiceTemplate}</p>}
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -352,7 +352,7 @@ export default function InvoiceTemplateSettings() {
                                         showPreview={true}
                                         returnType="id"
                                     />
-                                    {errors.invoiceLogo && <p className="text-sm text-red-600">{errors.invoiceLogo}</p>}
+                                    {errors.invoiceLogo && <p className="text-destructive text-sm">{errors.invoiceLogo}</p>}
                                     <p className="text-xs text-gray-500">{translate('Select a logo for invoices')}</p>
                                 </div>
                             </div>

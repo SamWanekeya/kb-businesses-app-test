@@ -623,7 +623,7 @@ export default function PurchaseOrderEdit() {
                                         <span>{translate('Subtotal')}</span>
                                         <span className="font-mono font-medium">{fmt(subtotal + totalDiscount)}</span>
                                     </div>
-                                    <div className="flex justify-between text-sm text-red-600">
+                                    <div className="text-destructive flex justify-between text-sm">
                                         <span>{translate('Discount')}</span>
                                         <span className="font-mono font-medium">-{fmt(totalDiscount)}</span>
                                     </div>

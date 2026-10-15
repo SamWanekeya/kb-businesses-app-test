@@ -115,7 +115,7 @@ export function InvoiceToyyibPayPaymentForm({
                 <div className="space-y-2">
                     <Label htmlFor="billName">{translate('Bill Name')} *</Label>
                     <Input
-                        id="billName"
+                        inputIdentifier="billName"
                         value={customerDetails.billName}
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billName: e.target.value }));
@@ -127,7 +127,7 @@ export function InvoiceToyyibPayPaymentForm({
                 <div className="space-y-2">
                     <Label htmlFor="billTo">{translate('Bill To (Name)')} *</Label>
                     <Input
-                        id="billTo"
+                        inputIdentifier="billTo"
                         value={customerDetails.billTo}
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billTo: e.target.value }));
@@ -139,7 +139,7 @@ export function InvoiceToyyibPayPaymentForm({
                 <div className="space-y-2">
                     <Label htmlFor="billEmail">{translate('Email Address')} *</Label>
                     <Input
-                        id="billEmail"
+                        inputIdentifier="billEmail"
                         inputType="email"
                         inputMode="email"
                         value={customerDetails.billEmail}
@@ -153,7 +153,7 @@ export function InvoiceToyyibPayPaymentForm({
                 <div className="space-y-2">
                     <Label htmlFor="billPhone">{translate('Phone Number')} *</Label>
                     <Input
-                        id="billPhone"
+                        inputIdentifier="billPhone"
                         value={customerDetails.billPhone}
                         onChange={(e) => {
                             setCustomerDetails((prev) => ({ ...prev, billPhone: e.target.value }));

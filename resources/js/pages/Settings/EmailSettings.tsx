@@ -149,7 +149,7 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="driver"
+                                            inputIdentifier="driver"
                                             value={emailSettings.driver}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('driver', e.target.value);
@@ -165,7 +165,7 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="host"
+                                            inputIdentifier="host"
                                             value={emailSettings.host}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('host', e.target.value);
@@ -191,7 +191,7 @@ export default function EmailSettings() {
                                             </TooltipProvider>
                                         </div>
                                         <Input
-                                            id="port"
+                                            inputIdentifier="port"
                                             value={emailSettings.port}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('port', e.target.value);
@@ -207,7 +207,7 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="username"
+                                            inputIdentifier="username"
                                             value={emailSettings.username}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('username', e.target.value);
@@ -264,7 +264,7 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="fromAddress"
+                                            inputIdentifier="fromAddress"
                                             value={emailSettings.fromAddress}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromAddress', e.target.value);
@@ -280,7 +280,7 @@ export default function EmailSettings() {
                                             </Label>
                                         </div>
                                         <Input
-                                            id="fromName"
+                                            inputIdentifier="fromName"
                                             value={emailSettings.fromName}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromName', e.target.value);

@@ -925,7 +925,7 @@ export default function Leads() {
                                                                                             onClick={() => {
                                                                                                 handleAction('delete', lead);
                                                                                             }}
-                                                                                            className="text-red-600"
+                                                                                            className="text-destructive"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                                                             {translate('Delete')}

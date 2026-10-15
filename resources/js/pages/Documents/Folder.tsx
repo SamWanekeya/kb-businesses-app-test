@@ -399,7 +399,7 @@ export default function DocumentFolderView() {
                                                         )}
                                                         {useHasPermission('delete-document-folders') && (
                                                             <DropdownMenuItem
-                                                                className="text-red-600"
+                                                                className="text-destructive"
                                                                 onClick={() => {
                                                                     setCurrentSubFolder(sf);
                                                                     setIsFolderDeleteModalOpen(true);
@@ -495,7 +495,7 @@ export default function DocumentFolderView() {
                                                                 useHasPermission('delete-documents') && <DropdownMenuSeparator />}
                                                             {useHasPermission('delete-documents') && (
                                                                 <DropdownMenuItem
-                                                                    className="text-red-600"
+                                                                    className="text-destructive"
                                                                     onClick={() => {
                                                                         setCurrentDoc(doc);
                                                                         setIsDocDeleteModalOpen(true);

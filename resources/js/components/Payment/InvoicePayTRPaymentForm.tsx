@@ -179,7 +179,7 @@ export function InvoicePayTRPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="phone">{translate('Phone Number')} *</Label>
                         <Input
-                            id="phone"
+                            inputIdentifier="phone"
                             value={customerDetails.phone}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }));
@@ -192,7 +192,7 @@ export function InvoicePayTRPaymentForm({
                     <div className="space-y-2">
                         <Label htmlFor="address">{translate('Address')}</Label>
                         <Input
-                            id="address"
+                            inputIdentifier="address"
                             value={customerDetails.address}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, address: e.target.value }));

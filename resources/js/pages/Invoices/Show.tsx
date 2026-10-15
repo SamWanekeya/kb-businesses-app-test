@@ -592,7 +592,7 @@ export default function InvoiceShow() {
                                                                     <Button
                                                                         size="sm"
                                                                         variant="ghost"
-                                                                        className="h-7 w-7 p-0 text-red-600"
+                                                                        className="text-destructive h-7 w-7 p-0"
                                                                         onClick={() => {
                                                                             setCurrentPayment(payment);
                                                                             setIsRejectPaymentModalOpen(true);

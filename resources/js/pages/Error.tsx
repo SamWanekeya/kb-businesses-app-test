@@ -43,7 +43,7 @@ export default function Error({ status, message }: ErrorProps) {
         403: {
             title: translate('Access denied'),
             description: translate(message) || translate('You don’t have permission to access this resource.'),
-            icon: <ShieldAlert className="h-12 w-12 text-red-600" />,
+            icon: <ShieldAlert className="text-destructive h-12 w-12" />,
         },
         404: {
             title: translate('Page not found'),

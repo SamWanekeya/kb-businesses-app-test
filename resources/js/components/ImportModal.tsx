@@ -169,7 +169,7 @@ export function ImportModal({
 
                         <div className="space-y-2">
                             <Label htmlFor="file">
-                                {translate('Select file')} <span className="text-red-600">*</span>
+                                {translate('Select file')} <span className="text-destructive">*</span>
                             </Label>
                             <Input
                                 inputIdentifier="file"

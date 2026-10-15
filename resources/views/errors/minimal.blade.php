@@ -88,7 +88,7 @@
     @vite(['resources/js/app.tsx', "resources/css/app.css"], 'static')
 </head>
 <body class="font-mulish antialiased !mb-0">
-<x-inertia::app id="kakbima-saas" data-page="{{ json_encode([
+<x-inertia::app id="kakbima-insurance-software" data-page="{{ json_encode([
         'component' => 'Error',
         'props' => [
             'status' => (int) $__env->yieldContent('code'),

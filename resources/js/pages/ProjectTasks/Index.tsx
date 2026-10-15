@@ -553,7 +553,7 @@ export default function ProjectTasks() {
                                                                                     onClick={() => {
                                                                                         handleAction('delete', task);
                                                                                     }}
-                                                                                    className="text-red-600"
+                                                                                    className="text-destructive"
                                                                                 >
                                                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                                                     {translate('Delete')}

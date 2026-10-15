@@ -310,9 +310,9 @@ export default function MediaLibraryDemo() {
             return (
                 <div className="flex flex-col items-center">
                     <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
-                        <FileText className="h-8 w-8 text-red-600" />
+                        <FileText className="text-destructive h-8 w-8" />
                     </div>
-                    <span className="text-xs font-medium text-red-600">PDF</span>
+                    <span className="text-destructive text-xs font-medium">PDF</span>
                 </div>
             );
         }

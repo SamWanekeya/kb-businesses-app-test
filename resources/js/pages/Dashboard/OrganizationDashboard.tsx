@@ -563,7 +563,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                             </div>
                                             <div className="text-center space-y-1">
                                                 <p className="text-sm text-muted-foreground">{fmtUsed} {translate('of')} {limitGB.toFixed(1)} GB {translate('used')}</p>
-                                                {usedPct > 80 && <p className="text-xs text-red-600">{translate('Storage limit nearly reached')}</p>}
+                                                {usedPct > 80 && <p className="text-xs text-destructive">{translate('Storage limit nearly reached')}</p>}
                                             </div>
                                         </div>
                                     );

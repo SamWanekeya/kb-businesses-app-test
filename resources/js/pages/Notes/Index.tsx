@@ -353,7 +353,7 @@ export default function Notes() {
                                                                 onClick={() => {
                                                                     handleAction('delete', note);
                                                                 }}
-                                                                className="text-red-600"
+                                                                className="text-destructive"
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4" />
                                                                 {translate('Delete')}
@@ -419,7 +419,7 @@ export default function Notes() {
                                                                 onClick={() => {
                                                                     handleAction('delete', note);
                                                                 }}
-                                                                className="text-red-600"
+                                                                className="text-destructive"
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
                                                                 {translate('Delete')}

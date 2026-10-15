@@ -146,7 +146,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Disable Laravel's event discovery.
-//        $this->disableEventDiscovery();
+        //        $this->disableEventDiscovery();
     }
 
     /**

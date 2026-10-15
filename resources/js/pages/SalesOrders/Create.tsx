@@ -831,7 +831,7 @@ export default function SalesOrderCreate() {
                                     <span>{translate('Subtotal')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
-                                <div className="flex justify-between text-sm text-red-600">
+                                <div className="text-destructive flex justify-between text-sm">
                                     <span>{translate('Discount')}</span>
                                     <span className="font-mono font-medium">-{fmt(totals.discount)}</span>
                                 </div>

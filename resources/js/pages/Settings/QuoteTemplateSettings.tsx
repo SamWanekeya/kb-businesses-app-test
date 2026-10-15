@@ -315,7 +315,7 @@ export default function QuoteTemplateSettings() {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.quoteTemplate && <p className="text-sm text-red-600">{errors.quoteTemplate}</p>}
+                                    {errors.quoteTemplate && <p className="text-destructive text-sm">{errors.quoteTemplate}</p>}
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -366,7 +366,7 @@ export default function QuoteTemplateSettings() {
                                         showPreview={true}
                                         returnType="id"
                                     />
-                                    {errors.quoteLogo && <p className="text-sm text-red-600">{errors.quoteLogo}</p>}
+                                    {errors.quoteLogo && <p className="text-destructive text-sm">{errors.quoteLogo}</p>}
                                     <p className="text-xs text-gray-500">{translate('Select a logo for quotes')}</p>
                                 </div>
                             </div>

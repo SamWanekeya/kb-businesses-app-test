@@ -220,7 +220,7 @@ export default function Documents() {
                                                     )}
                                                     {useHasPermission('delete-document-folders') && (
                                                         <DropdownMenuItem
-                                                            className="text-red-600"
+                                                            className="text-destructive"
                                                             onClick={() => {
                                                                 setCurrentFolder(folder);
                                                                 setIsFolderDeleteModalOpen(true);

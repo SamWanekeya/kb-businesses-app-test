@@ -18,7 +18,7 @@ export default function Label({ className, required, children, ...props }: Label
             {...props}
         >
             {children}
-            {required && <span className="ml-1 text-red-600">*</span>}
+            {required && <span className="text-destructive ml-1">*</span>}
         </LabelPrimitive.Root>
     );
 }
