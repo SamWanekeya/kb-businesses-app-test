@@ -29,7 +29,7 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
         const file = e.target.files?.[0] || null;
         if (file) {
             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-            const maximumSize = 5 * 1024 * 1024; // 5MB
+            const maximumSize = 5 * 1024 * 1024; // Convert MB to bytes
             if (!allowedTypes.includes(file.type)) {
                 toast.error(translate('Only JPG, PNG, and PDF files are allowed'));
                 return;

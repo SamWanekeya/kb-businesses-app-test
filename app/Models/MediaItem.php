@@ -31,7 +31,7 @@ class MediaItem extends Model implements HasMedia
             $allowedExtensions[] = 'jpg';
         }
 
-        $maximumSizeBytes = ($config['maximum_file_size_mb'] ?? 10) * 1024 * 1024; // Convert MB to bytes
+        $maximumSizeBytes = ($config['maximum_file_size_mb'] ?? 5) * 1024 * 1024; // Convert MB to bytes
 
         $this->addMediaCollection('images')
             ->acceptsFile(function ($file) use ($allowedExtensions, $maximumSizeBytes) {

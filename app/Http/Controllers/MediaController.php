@@ -271,14 +271,14 @@ class MediaController extends Controller
     private function getUserStorageLimit($user)
     {
         if ($user->type === 'organization' && $user->plan) {
-            return $user->plan->storage_limit * 1024 * 1024 * 1024;
+            return $user->plan->storage_limit * 1024 * 1024 * 1024; // Convert GB to bytes
         }
 
         if ($user->created_by) {
             $organization = $user->created_by ? $user->organization : null;
             ;
             if ($organization && $organization->plan) {
-                return $organization->plan->storage_limit * 1024 * 1024 * 1024;
+                return $organization->plan->storage_limit * 1024 * 1024 * 1024; // Convert GB to bytes
             }
         }
 
@@ -449,7 +449,7 @@ class MediaController extends Controller
                     ->sum('size');
 
                 // Change the GB limit to bytes.
-                $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
+                $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024; // Convert GB to bytes
 
                 $planLimits = [
                     'current_storage' => $currentStorageUsage,
