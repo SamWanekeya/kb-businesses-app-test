@@ -69,9 +69,7 @@ export default function VerifyEmail() {
         (event: SubmitEvent<HTMLFormElement>) => {
             event.preventDefault();
 
-            const toastId = toast.loading(
-                translate('Sending verification email...'),
-            );
+            const toastId = toast.loading(translate('Sending verification email...'));
 
             post(route('authenticated.verification.send'), {
                 preserveScroll: true,
@@ -97,49 +95,24 @@ export default function VerifyEmail() {
     return (
         <AuthLayout title={translate('Verify your email')}>
             <div className="space-y-6">
-                <div
-                    className="text-muted-foreground space-y-4 text-sm leading-6"
-                    aria-live="polite"
-                >
+                <div className="text-muted-foreground space-y-4 text-sm leading-6" aria-live="polite">
                     <p>
-                        <strong className="text-foreground font-semibold">
-                            {translate('Check your inbox!')}
-                        </strong>{' '}
-                        {translate('We’ve sent a verification link to')}{' '}
-                        <span className="text-foreground font-medium">
-                            {email}
-                        </span>
-                        .{' '}
-                        {translate(
-                            'Please click the link to verify your email address and continue using your account.',
-                        )}
+                        <strong className="text-foreground font-semibold">{translate('Check your inbox!')}</strong>{' '}
+                        {translate('We’ve sent a verification link to')} <span className="text-foreground font-medium">{email}</span>.{' '}
+                        {translate('Please click the link to verify your email address and continue using your account.')}
                     </p>
 
                     <p>
-                        <strong className="text-foreground font-semibold">
-                            {translate('Didn’t get the email?')}
-                        </strong>{' '}
-                        {translate(
-                            'Check your spam folder or click the button below to request another verification email.',
-                        )}
+                        <strong className="text-foreground font-semibold">{translate('Didn’t get the email?')}</strong>{' '}
+                        {translate('Check your spam folder or click the button below to request another verification email.')}
                     </p>
                 </div>
 
-                <form
-                    autoComplete="off"
-                    onSubmit={handleSubmit}
-                    className="space-y-5"
-                >
-                    <AccountButton processing={processing}>
-                        {translate('Resend verification email')}
-                    </AccountButton>
+                <form autoComplete="off" onSubmit={handleSubmit} className="space-y-5">
+                    <AccountButton processing={processing}>{translate('Resend verification email')}</AccountButton>
 
                     <div className="text-center">
-                        <TextLink
-                            href={route('authenticated.logout')}
-                            method="post"
-                            className="font-medium transition-colors duration-200"
-                        >
+                        <TextLink href={route('authenticated.logout')} method="post" className="font-medium transition-colors duration-200">
                             {translate('Sign out')}
                         </TextLink>
                     </div>
