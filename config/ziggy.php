@@ -39,7 +39,7 @@ return [
             'cases.*',
             'categories.*',
             'contacts.*',
-            'coupons.*',
+            'discounts.*',
             'currencies.*',
             'customer-facing.*',
             'dashboard.*',

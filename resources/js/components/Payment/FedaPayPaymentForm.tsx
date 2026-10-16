@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface FedaPayPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     fedapayPublicKey: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface FedaPayPaymentFormProps {
 export function FedaPayPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     fedapayPublicKey,
     currency = 'XOF',
@@ -53,7 +53,7 @@ export function FedaPayPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -101,9 +101,9 @@ export function FedaPayPaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

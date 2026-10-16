@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 interface PayfastPaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     payfastMerchantId: string;
@@ -23,7 +23,7 @@ interface PayfastPaymentFormProps {
 
 export function PayfastPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     payfastMerchantId,
@@ -91,7 +91,7 @@ export function PayfastPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                     customer_details: customerDetails,
                 }),
             });
@@ -129,7 +129,7 @@ export function PayfastPaymentForm({
                     <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
-                    <input type="hidden" name="coupon_code" value={couponCode || ''} />
+                    <input type="hidden" name="discount_code" value={discountCode || ''} />
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="firstName">{translate('First Name')}</Label>

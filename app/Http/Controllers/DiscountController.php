@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CouponRequest;
-use App\Models\Coupon;
+use App\Http\Requests\DiscountRequest;
+use App\Models\Discount;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class CouponController extends BaseController
+class DiscountController extends BaseController
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = Coupon::with('creator');
+        $query = Discount::with('creator');
 
         // Apply search
         if ($request->filled('search') && $request->search) {
@@ -62,10 +62,10 @@ class CouponController extends BaseController
             $perPage = 10;
         }
 
-        $coupons = $query->paginate((int)$perPage)->withQueryString();
+        $discounts = $query->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('Coupons/Index', [
-            'coupons' => $coupons,
+        return Inertia::render('Discounts/Index', [
+            'discounts' => $discounts,
             'filters' => $request->only(['search', 'type', 'status', 'sort_field', 'sort_direction', 'per_page', 'date_from', 'date_to', 'page']),
         ]);
     }
@@ -73,11 +73,11 @@ class CouponController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, Coupon $coupon)
+    public function show(Request $request, Discount $discount)
     {
-        $coupon->load(['creator', 'history.user', 'history.plan']);
+        $discount->load(['creator', 'history.user', 'history.plan']);
 
-        $usageHistory = $coupon->history->map(function ($order) {
+        $usageHistory = $discount->history->map(function ($order) {
             return [
                 'id' => $order->id,
                 'user_name' => $order->user->name ?? 'N/A',
@@ -103,8 +103,8 @@ class CouponController extends BaseController
             ['path' => $request->url(), 'pageName' => 'page']
         );
 
-        return Inertia::render('Coupons/Show', [
-            'coupon' => $coupon,
+        return Inertia::render('Discounts/Show', [
+            'discount' => $discount,
             'usage_history' => $paginatedUsage,
         ]);
     }
@@ -112,7 +112,7 @@ class CouponController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CouponRequest $request)
+    public function store(DiscountRequest $request)
     {
         $data = $request->all();
         $data['created_by'] = Auth::id();
@@ -121,54 +121,54 @@ class CouponController extends BaseController
         if (empty($request->code) && $request->code_type === 'auto') {
             do {
                 $data['code'] = strtoupper(Str::random(8));
-            } while (Coupon::where('code', $data['code'])->exists());
+            } while (Discount::where('code', $data['code'])->exists());
         }
 
-        $coupon = Coupon::create($data);
+        $discount = Discount::create($data);
 
-        return redirect()->route('coupons.index')->with('success', __('Coupon created successfully!'));
+        return redirect()->route('discounts.index')->with('success', __('Discount created successfully!'));
     }
 
     /**
-     * Validate coupon code
+     * Validate discount code
      */
     public function validate(Request $request)
     {
         $request->validate([
-            'coupon_code' => 'required|string',
+            'discount_code' => 'required|string',
             'plan_id' => 'required|integer',
             'amount' => 'required|numeric|min:0',
         ]);
 
-        $coupon = Coupon::where('code', $request->coupon_code)
+        $discount = Discount::where('code', $request->discount_code)
             ->where('status', 1)
             ->first();
 
-        if (!$coupon) {
+        if (!$discount) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Invalid or inactive coupon code'),
+                'message' => __('Invalid or inactive discount code'),
             ], 400);
         }
 
-        // Check if coupon is expired
-        if ($coupon->expiry_date && $coupon->expiry_date < now()) {
+        // Check if discount is expired
+        if ($discount->expiry_date && $discount->expiry_date < now()) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Coupon has expired'),
+                'message' => __('Discount has expired'),
             ], 400);
         }
 
         // Check usage limit
-        if ($coupon->use_limit_per_coupon && $coupon->used_count >= $coupon->use_limit_per_coupon) {
+        if ($discount->use_limit_per_discount && $discount->used_count >= $discount->use_limit_per_discount) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Coupon usage limit exceeded'),
+                'message' => __('Discount usage limit exceeded'),
             ], 400);
         }
 
         // Check minimum amount
-        if ($coupon->minimum_spend && $request->amount < $coupon->minimum_spend) {
+        if ($discount->minimum_spend && $request->amount < $discount->minimum_spend) {
             return response()->json([
                 'valid' => false,
                 'message' => __('Minimum spend requirement not met'),
@@ -177,56 +177,56 @@ class CouponController extends BaseController
 
         return response()->json([
             'valid' => true,
-            'coupon' => [
-                'id' => $coupon->id,
-                'code' => $coupon->code,
-                'type' => $coupon->type,
-                'value' => $coupon->discount_amount,
+            'discount' => [
+                'id' => $discount->id,
+                'code' => $discount->code,
+                'type' => $discount->type,
+                'value' => $discount->discount_amount,
             ],
         ]);
     }
 
     /**
-     * Toggle the status of the specified coupon.
+     * Toggle the status of the specified discount.
      */
-    public function toggleStatus(Coupon $coupon)
+    public function toggleStatus(Discount $discount)
     {
-        $coupon->update([
-            'status' => !$coupon->status,
+        $discount->update([
+            'status' => !$discount->status,
         ]);
 
         return redirect()->back()->with([
-            'success' => __('Coupon status updated successfully!'),
+            'success' => __('Discount status updated successfully!'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CouponRequest $request, Coupon $coupon)
+    public function update(DiscountRequest $request, Discount $discount)
     {
 
         $data = $request->all();
 
         // Generate new code if switching to auto-generate
-        if ($request->code_type === 'auto' && $coupon->code_type !== 'auto') {
+        if ($request->code_type === 'auto' && $discount->code_type !== 'auto') {
             do {
                 $data['code'] = strtoupper(Str::random(8));
-            } while (Coupon::where('code', $data['code'])->whereKeyNot($coupon->id)->exists());
+            } while (Discount::where('code', $data['code'])->whereKeyNot($discount->id)->exists());
         }
 
-        $coupon->update($data);
+        $discount->update($data);
 
-        return redirect()->route('coupons.index')->with('success', __('Coupon updated successfully!'));
+        return redirect()->route('discounts.index')->with('success', __('Discount updated successfully!'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Coupon $coupon)
+    public function destroy(Discount $discount)
     {
-        $coupon->delete();
+        $discount->delete();
 
-        return redirect()->route('coupons.index')->with('success', __('Coupon deleted successfully!'));
+        return redirect()->route('discounts.index')->with('success', __('Discount deleted successfully!'));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coupon;
+use App\Models\Discount;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use Exception;
@@ -30,34 +30,34 @@ class MercadoPagoController extends Controller
             $request->validate([
                 'plan_id' => 'required|exists:plans,id',
                 'billing_cycle' => 'nullable|in:monthly,yearly',
-                'coupon_code' => 'nullable|string',
+                'discount_code' => 'nullable|string',
             ]);
 
-            // Support for both billing_cycle and coupon from form
+            // Support for both billing_cycle and discount from form
             $billingCycle = $request->billing_cycle ?? 'monthly';
-            $couponCode = $request->coupon_code ?? $request->coupon ?? null;
+            $discountCode = $request->discount_code ?? $request->discount ?? null;
 
             $plan = Plan::findOrFail($request->plan_id);
             $amount = $plan->getPriceForCycle($billingCycle);
 
-            // Apply coupon if provided
-            if ($couponCode) {
-                // Get coupon and apply discount
-                $coupon = Coupon::where('code', strtoupper($couponCode))
+            // Apply discount if provided
+            if ($discountCode) {
+                // Get discount and apply discount
+                $discount = Discount::where('code', strtoupper($discountCode))
                     ->where('is_active', '1')
                     ->first();
 
-                if ($coupon) {
-                    $usedCoupon = $coupon->used_coupon();
-                    if ($usedCoupon < $coupon->limit) {
-                        if ($coupon->type == 'percentage') {
-                            $discount = ($amount / 100) * $coupon->discount;
+                if ($discount) {
+                    $usedDiscount = $discount->used_discount();
+                    if ($usedDiscount < $discount->limit) {
+                        if ($discount->type == 'percentage') {
+                            $discount = ($amount / 100) * $discount->discount;
                         } else {
-                            $discount = $coupon->discount;
+                            $discount = $discount->discount;
                         }
 
                         // Check min/max spend
-                        if ($amount >= $coupon->minimum_spend && ($coupon->maximum_spend == 0 || $amount <= $coupon->maximum_spend)) {
+                        if ($amount >= $discount->minimum_spend && ($discount->maximum_spend == 0 || $amount <= $discount->maximum_spend)) {
                             $amount = $amount - $discount;
                         }
                     }
@@ -113,8 +113,8 @@ class MercadoPagoController extends Controller
 
             // Set external reference
             $externalReference = 'plan_' . $plan->id . '_' . auth()?->id() . '_' . $billingCycle;
-            if ($couponCode) {
-                $externalReference .= '_coupon_' . $couponCode;
+            if ($discountCode) {
+                $externalReference .= '_discount_' . $discountCode;
             }
             $preference->external_reference = $externalReference;
 
@@ -199,7 +199,7 @@ class MercadoPagoController extends Controller
     /**
      * Handle successful payment for plans
      */
-    public function success(Request $request, $plan_id = null, $coupon_id = null, $flag = null)
+    public function success(Request $request, $plan_id = null, $discount_id = null, $flag = null)
     {
         try {
             $paymentId = $request->payment_id;
@@ -210,7 +210,7 @@ class MercadoPagoController extends Controller
             // Handle plan.mercado.callback route
             if ($plan_id && $request->routeIs('plan.mercado.callback')) {
                 $planId = $plan_id;
-                $couponCode = $request->query('coupon_id');
+                $discountCode = $request->query('discount_id');
                 $status = $request->query('flag') ?? $flag;
             }
 
@@ -226,9 +226,9 @@ class MercadoPagoController extends Controller
                 $userId = (int)$parts[2];
                 $billingCycle = $parts[3];
 
-                // Check if coupon was used
-                if (count($parts) > 5 && $parts[4] === 'coupon') {
-                    $couponCode = $parts[5];
+                // Check if discount was used
+                if (count($parts) > 5 && $parts[4] === 'discount') {
+                    $discountCode = $parts[5];
                 }
             } elseif (!isset($planId)) {
                 return redirect()->route('subscriptions.plans.index')->with('error', __('Invalid payment reference'));
@@ -258,7 +258,7 @@ class MercadoPagoController extends Controller
             $planOrder->amount = $plan->getPriceForCycle($billingCycle);
             $planOrder->billing_cycle = $billingCycle;
             $planOrder->status = 'completed';
-            $planOrder->coupon_code = $couponCode ?? null;
+            $planOrder->discount_code = $discountCode ?? null;
             $planOrder->save();
 
             // Activate subscription
@@ -347,7 +347,7 @@ class MercadoPagoController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
 
             // Get MercadoPago credentials
             $credentials = $this->getMercadoPagoCredentials();
@@ -381,7 +381,7 @@ class MercadoPagoController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'] ?? 'monthly',
                     'payment_method' => 'mercadopago',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $payment->id,
                 ]);
 

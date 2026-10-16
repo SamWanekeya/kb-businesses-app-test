@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 interface PaymentData {
     planId: number;
     billingCycle: string;
-    couponCode?: string;
+    discountCode?: string;
     paymentMethod: string;
 
     [key: string]: any;
@@ -89,7 +89,7 @@ export default function usePaymentProcessor(options: UsePaymentProcessorOptions 
         return {
             plan_id: data.planId,
             billing_cycle: data.billingCycle,
-            coupon_code: data.couponCode ?? '',
+            discount_code: data.discountCode ?? '',
             ...data,
         };
     };

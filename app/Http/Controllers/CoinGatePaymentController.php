@@ -16,7 +16,7 @@ class CoinGatePaymentController extends Controller
         $validated = $request->validate([
             'plan_id' => 'required|exists:plans,id',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'coupon_code' => 'nullable|string',
+            'discount_code' => 'nullable|string',
         ]);
 
         try {
@@ -45,7 +45,7 @@ class CoinGatePaymentController extends Controller
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'coingate',
-                'coupon_code' => $validated['coupon_code'],
+                'discount_code' => $validated['discount_code'],
                 'payment_id' => $orderId,
                 'original_price' => $price,
                 'final_price' => $price,

@@ -22,7 +22,7 @@ class ZeroPaymentController extends Controller
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => '-',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => strtoupper(uniqid()),
                 'status' => 'pending',
             ]);

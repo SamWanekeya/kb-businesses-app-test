@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Announcement;
-use App\Models\Coupon;
+use App\Models\Discount;
 use App\Models\Invoice;
 use App\Models\Lead;
 use App\Models\Opportunity;
@@ -73,7 +73,7 @@ class DashboardController extends Controller
         $totalRevenue = PlanOrder::where('status', 'approved')->sum('final_price') ?? 0;
         $activePlans = Plan::where('is_plan_enabled', 'on')?->count();
         $pendingRequests = PlanRequest::where('status', 'pending')?->count();
-        $activeCoupons = Coupon::where('status', true)?->count();
+        $activeDiscounts = Discount::where('status', true)?->count();
 
         $monthlyRevenue = [];
         for ($i = 1; $i <= 12; $i++) {
@@ -129,7 +129,7 @@ class DashboardController extends Controller
                 'activePlans' => $activePlans,
                 'pendingRequests' => $pendingRequests,
                 'monthlyGrowth' => $monthlyGrowth,
-                'activeCoupons' => $activeCoupons,
+                'activeDiscounts' => $activeDiscounts,
             ],
             'recentActivity' => User::where('type', 'organization')
                 ->orderBy('created_at', 'desc')

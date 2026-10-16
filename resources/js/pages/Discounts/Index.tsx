@@ -1,4 +1,4 @@
-// pages/coupons/index.tsx
+// pages/discounts/index.tsx
 import CrudDeleteModal from '@components/CrudDeleteModal';
 import CrudFormModal from '@components/CrudFormModal';
 import CrudTable from '@components/CrudTable';
@@ -16,9 +16,9 @@ import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function CouponsPage() {
+export default function DiscountsPage() {
     const { t: translate } = useTranslation();
-    const { auth, coupons, filters: pageFilters = {}, globalSettings } = usePage().props;
+    const { auth, discounts, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State
@@ -66,7 +66,7 @@ export default function CouponsPage() {
 
     const applyFilters = () => {
         router.get(
-            route('coupons.index'),
+            route('discounts.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -88,7 +88,7 @@ export default function CouponsPage() {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
         router.get(
-            route('coupons.index'),
+            route('discounts.index'),
             {
                 sort_field: field,
                 sort_direction: direction,
@@ -109,7 +109,7 @@ export default function CouponsPage() {
 
         switch (action) {
             case 'view-details':
-                router.get(route('coupons.show', item.id));
+                router.get(route('discounts.show', item.id));
                 break;
             case 'edit':
                 setFormMode('edit');
@@ -129,7 +129,7 @@ export default function CouponsPage() {
         setIsFormModalOpen(true);
     };
 
-    const generateCouponCode = () => {
+    const generateDiscountCode = () => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let code = '';
         for (let i = 0; i < 10; i++) {
@@ -147,13 +147,13 @@ export default function CouponsPage() {
         if (formData.minimum_spend) formData.minimum_spend = parseFloat(formData.minimum_spend);
         if (formData.maximum_spend) formData.maximum_spend = parseFloat(formData.maximum_spend);
         if (formData.discount_amount) formData.discount_amount = parseFloat(formData.discount_amount);
-        if (formData.use_limit_per_coupon) formData.use_limit_per_coupon = parseInt(formData.use_limit_per_coupon);
+        if (formData.use_limit_per_discount) formData.use_limit_per_discount = parseInt(formData.use_limit_per_discount);
         if (formData.use_limit_per_user) formData.use_limit_per_user = parseInt(formData.use_limit_per_user);
 
         if (formMode === 'create') {
-            const toastId = toast.loading(translate('Creating coupon...'));
+            const toastId = toast.loading(translate('Creating discount...'));
 
-            router.post(route('coupons.store'), formData, {
+            router.post(route('discounts.store'), formData, {
                 onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
@@ -164,9 +164,9 @@ export default function CouponsPage() {
                 },
             });
         } else if (formMode === 'edit') {
-            const toastId = toast.loading(translate('Updating coupon...'));
+            const toastId = toast.loading(translate('Updating discount...'));
 
-            router.put(route('coupons.update', currentItem.id), formData, {
+            router.put(route('discounts.update', currentItem.id), formData, {
                 onSuccess: () => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
@@ -180,9 +180,9 @@ export default function CouponsPage() {
     };
 
     const handleDeleteConfirm = () => {
-        const toastId = toast.loading(translate('Deleting coupon...'));
+        const toastId = toast.loading(translate('Deleting discount...'));
 
-        router.delete(route('coupons.destroy', currentItem.id), {
+        router.delete(route('discounts.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
@@ -195,14 +195,14 @@ export default function CouponsPage() {
     };
 
     const handleResetFilters = () => {
-        router.get(route('coupons.index'));
+        router.get(route('discounts.index'));
     };
 
-    const handleToggleStatus = (coupon: any) => {
+    const handleToggleStatus = (discount: any) => {
         const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
-            route('coupons.toggle-status', coupon.id),
+            route('discounts.toggle-status', discount.id),
             {},
             {
                 onSuccess: () => {
@@ -229,9 +229,9 @@ export default function CouponsPage() {
     // Define page actions
     const pageActions = [];
 
-    if (useHasPermission('create-coupons')) {
+    if (useHasPermission('create-discounts')) {
         pageActions.push({
-            label: translate('Add Coupon'),
+            label: translate('Add Discount'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -239,7 +239,7 @@ export default function CouponsPage() {
             },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: translate('Add Coupon'),
+            tooltip: translate('Add Discount'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
@@ -249,7 +249,7 @@ export default function CouponsPage() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Coupons') },
+        { title: translate('Discounts') },
     ];
 
     // Define table columns
@@ -308,8 +308,8 @@ export default function CouponsPage() {
             },
         },
         {
-            key: 'use_limit_per_coupon',
-            label: translate('Coupon Limit'),
+            key: 'use_limit_per_discount',
+            label: translate('Discount Limit'),
             render: (value) => value || translate('Unlimited'),
         },
         {
@@ -347,21 +347,21 @@ export default function CouponsPage() {
             icon: 'Eye',
             action: 'view-details',
             className: 'text-blue-500',
-            requiredPermission: 'view-coupons',
+            requiredPermission: 'view-discounts',
         },
         {
             label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'create-coupons',
+            requiredPermission: 'create-discounts',
         },
         {
             label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-coupons',
+            requiredPermission: 'delete-discounts',
         },
     ];
 
@@ -380,11 +380,11 @@ export default function CouponsPage() {
 
     return (
         <PageTemplate
-            title={translate('Coupons')}
-            url="/coupons"
+            title={translate('Discounts')}
+            url="/discounts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            description={translate('Manage your coupons and discounts.')}
+            description={translate('Manage your discounts and discounts.')}
         >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
@@ -435,35 +435,35 @@ export default function CouponsPage() {
                 <CrudTable
                     columns={columns}
                     actions={actions}
-                    data={coupons?.data || []}
-                    from={coupons?.from || 1}
+                    data={discounts?.data || []}
+                    from={discounts?.from || 1}
                     onAction={handleAction}
                     sortField={pageFilters.sort_field}
                     sortDirection={pageFilters.sort_direction}
                     onSort={handleSort}
                     permissions={permissions}
                     entityPermissions={{
-                        view: 'view-coupons',
-                        create: 'create-coupons',
-                        edit: 'create-coupons',
-                        delete: 'delete-coupons',
+                        view: 'view-discounts',
+                        create: 'create-discounts',
+                        edit: 'create-discounts',
+                        delete: 'delete-discounts',
                     }}
                 />
 
                 {/* Pagination section */}
                 <Pagination
-                    from={coupons?.from || 0}
-                    to={coupons?.to || 0}
-                    total={coupons?.total || 0}
-                    links={coupons?.links}
-                    entityName={translate('coupons')}
+                    from={discounts?.from || 0}
+                    to={discounts?.to || 0}
+                    total={discounts?.total || 0}
+                    links={discounts?.links}
+                    entityName={translate('discounts')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
-                            route('coupons.index'),
+                            route('discounts.index'),
                             {
                                 page: 1,
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
@@ -495,7 +495,7 @@ export default function CouponsPage() {
                     fields: [
                         {
                             name: 'name',
-                            label: translate('Coupon Name'),
+                            label: translate('Discount Name'),
                             type: 'text',
                             required: true,
                             width: 'calc(50% - 0.5rem)',
@@ -521,7 +521,7 @@ export default function CouponsPage() {
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
-                            name: 'use_limit_per_coupon',
+                            name: 'use_limit_per_discount',
                             label: translate('Total Usage Limit'),
                             type: 'number',
                             min: 1,
@@ -541,7 +541,7 @@ export default function CouponsPage() {
                         },
                         {
                             name: 'code',
-                            label: translate('Coupon Code'),
+                            label: translate('Discount Code'),
                             type: 'text',
                             required: true,
                             width: 'calc(50% - 0.5rem)',
@@ -563,7 +563,7 @@ export default function CouponsPage() {
                                                 <Button
                                                     type="button"
                                                     onClick={() => {
-                                                        handleChange(field.name, generateCouponCode());
+                                                        handleChange(field.name, generateDiscountCode());
                                                     }}
                                                     variant="default"
                                                 >
@@ -620,7 +620,7 @@ export default function CouponsPage() {
                     layout: 'flex',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? translate('Add Coupon') : formMode === 'edit' ? translate('Edit Coupon') : translate('View Coupon')}
+                title={formMode === 'create' ? translate('Add Discount') : formMode === 'edit' ? translate('Edit Discount') : translate('View Discount')}
                 mode={formMode}
             />
 
@@ -632,7 +632,7 @@ export default function CouponsPage() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName="coupon"
+                entityName="discount"
             />
         </PageTemplate>
     );

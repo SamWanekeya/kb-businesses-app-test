@@ -31,7 +31,7 @@ class PayTabsPaymentController extends Controller
 
             $plan = Plan::findOrFail($validated['plan_id']);
             $user = auth()?->user();
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $cartId = 'PT_' . time() . '_' . $user->id;
 
             createPlanOrder([
@@ -39,7 +39,7 @@ class PayTabsPaymentController extends Controller
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'paytabs',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $cartId,
                 'status' => 'pending',
             ]);

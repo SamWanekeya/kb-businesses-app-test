@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 interface StripePaymentFormProps {
     planId?: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle?: string;
     stripeKey: string;
     onSuccess: () => void;
@@ -24,7 +24,7 @@ interface StripePaymentFormProps {
 
 const CheckoutForm = ({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     invoiceId,
     amount,
@@ -80,7 +80,7 @@ const CheckoutForm = ({
             processPayment('stripe', {
                 planId,
                 billingCycle,
-                couponCode,
+                discountCode,
                 payment_method_id: paymentMethod.id,
                 cardholder_name: cardholderName,
             });
@@ -146,7 +146,7 @@ const CheckoutForm = ({
 
 export function StripePaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     stripeKey,
     onSuccess,
@@ -194,7 +194,7 @@ export function StripePaymentForm({
         <Elements stripe={stripePromise}>
             <CheckoutForm
                 planId={planId}
-                couponCode={couponCode}
+                discountCode={discountCode}
                 billingCycle={billingCycle}
                 invoiceId={invoiceId}
                 amount={amount}

@@ -14,7 +14,7 @@ class PlanOrderController extends BaseController
 {
     public function index(Request $request)
     {
-        $query = PlanOrder::with(['user', 'plan', 'coupon', 'processedBy']);
+        $query = PlanOrder::with(['user', 'plan', 'discount', 'processedBy']);
 
         if (Auth::user()?->hasRole('organization')) {
             $query->where('user_id', Auth::user()?->id);

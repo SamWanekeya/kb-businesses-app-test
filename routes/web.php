@@ -16,7 +16,7 @@ use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookieConsentController;
-use App\Http\Controllers\CouponController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryOrderController;
@@ -175,12 +175,12 @@ Route::get('/clear-translations-cache', [TranslationController::class, 'clearTra
 
 // Authenticated application routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Subscription plan discovery, trial, subscription, and coupon validation remain available to authenticated users without plan gating.
+    // Subscription plan discovery, trial, subscription, and discount validation remain available to authenticated users without plan gating.
     Route::get('subscriptions/plans', [PlanController::class, 'index'])->name('subscriptions.plans.index');
     Route::post('subscriptions/plans/request', [PlanController::class, 'requestPlan'])->name('subscriptions.plans.request');
     Route::post('subscriptions/plans/trial', [PlanController::class, 'startTrial'])->name('subscriptions.plans.trial');
     Route::post('subscriptions/plans/subscribe', [PlanController::class, 'subscribe'])->name('subscriptions.plans.subscribe');
-    Route::post('subscriptions/plans/coupons/validate', [CouponController::class, 'validate'])->name('subscriptions.coupons.validate');
+    Route::post('subscriptions/plans/discounts/validate', [DiscountController::class, 'validate'])->name('subscriptions.discounts.validate');
 
     // Subscription payment processing routes remain outside the subscription access check so users can establish or change plan access.
     //    Route::post('subscriptions/payments/zero', [ZeroPaymentController::class, 'processPayment'])->name('subscriptions.zero.payment');
@@ -349,14 +349,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('organizations/{organization}/upgrade-plan', [OrganizationController::class, 'upgradePlan'])->middleware('permission:upgrade-plan-organizations')->name('organizations.upgrade-plan');
         });
 
-        // Coupon creation, maintenance, validation, and status management.
-        Route::middleware('permission:manage-coupons')->group(function () {
-            Route::get('coupons', [CouponController::class, 'index'])->middleware('permission:manage-coupons')->name('coupons.index');
-            Route::get('coupons/{coupon}', [CouponController::class, 'show'])->middleware('permission:view-coupons')->name('coupons.show');
-            Route::post('coupons', [CouponController::class, 'store'])->middleware('permission:create-coupons')->name('coupons.store');
-            Route::put('coupons/{coupon}', [CouponController::class, 'update'])->middleware('permission:edit-coupons')->name('coupons.update');
-            Route::put('coupons/{coupon}/toggle-status', [CouponController::class, 'toggleStatus'])->middleware('permission:toggle-status-coupons')->name('coupons.toggle-status');
-            Route::delete('coupons/{coupon}', [CouponController::class, 'destroy'])->middleware('permission:delete-coupons')->name('coupons.destroy');
+        // Discount creation, maintenance, validation, and status management.
+        Route::middleware('permission:manage-discounts')->group(function () {
+            Route::get('discounts', [DiscountController::class, 'index'])->middleware('permission:manage-discounts')->name('discounts.index');
+            Route::get('discounts/{discount}', [DiscountController::class, 'show'])->middleware('permission:view-discounts')->name('discounts.show');
+            Route::post('discounts', [DiscountController::class, 'store'])->middleware('permission:create-discounts')->name('discounts.store');
+            Route::put('discounts/{discount}', [DiscountController::class, 'update'])->middleware('permission:edit-discounts')->name('discounts.update');
+            Route::put('discounts/{discount}/toggle-status', [DiscountController::class, 'toggleStatus'])->middleware('permission:toggle-status-discounts')->name('discounts.toggle-status');
+            Route::delete('discounts/{discount}', [DiscountController::class, 'destroy'])->middleware('permission:delete-discounts')->name('discounts.destroy');
         });
 
         // Subscription plan request review and approval workflow.

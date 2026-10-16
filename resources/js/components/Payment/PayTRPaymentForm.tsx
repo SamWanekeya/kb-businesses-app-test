@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 interface PayTRPaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     paytrMerchantId: string;
@@ -21,7 +21,7 @@ interface PayTRPaymentFormProps {
 
 export function PayTRPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     paytrMerchantId,
@@ -75,7 +75,7 @@ export function PayTRPaymentForm({
             const response = await fetch(route('paytr.create-token'), {
                 plan_id: planId,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode,
+                discount_code: discountCode,
                 user_name: customerDetails.name,
                 user_email: customerDetails.email,
                 user_phone: customerDetails.phone,

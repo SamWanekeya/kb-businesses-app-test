@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface MidtransPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     midtransSecretKey: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface MidtransPaymentFormProps {
 export function MidtransPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     midtransSecretKey,
     currency = 'IDR',
@@ -53,7 +53,7 @@ export function MidtransPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -112,7 +112,7 @@ export function MidtransPaymentForm({
             {
                 plan_id: planId,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode,
+                discount_code: discountCode,
                 transaction_status: result.transaction_status,
                 order_id: orderId,
             },
@@ -159,9 +159,9 @@ export function MidtransPaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

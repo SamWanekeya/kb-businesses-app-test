@@ -7,7 +7,7 @@ import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-interface CouponUsage {
+interface DiscountUsage {
     id: number;
     user_name: string;
     user_email: string;
@@ -17,7 +17,7 @@ interface CouponUsage {
     used_at: string;
 }
 
-interface CouponData {
+interface DiscountData {
     id: number;
     name: string;
     code: string;
@@ -25,7 +25,7 @@ interface CouponData {
     discount_amount: number;
     minimum_spend?: number;
     maximum_spend?: number;
-    use_limit_per_coupon?: number;
+    use_limit_per_discount?: number;
     use_limit_per_user?: number;
     used_count: number;
     expiry_date?: string;
@@ -37,14 +37,14 @@ interface CouponData {
     };
 }
 
-export default function CouponDetailsPage() {
+export default function DiscountDetailsPage() {
     const { t: translate } = useTranslation();
-    const { coupon, usage_history } = usePage().props as { coupon: CouponData; usage_history: any };
+    const { discount, usage_history } = usePage().props as { discount: DiscountData; usage_history: any };
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Coupons'), href: route('coupons.index') },
-        { title: translate('Coupon Details') },
+        { title: translate('Discounts'), href: route('discounts.index') },
+        { title: translate('Discount Details') },
     ];
 
     const usageColumns = [
@@ -97,7 +97,7 @@ export default function CouponDetailsPage() {
     };
     return (
         <PageTemplate
-            title={coupon.name}
+            title={discount.name}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
@@ -115,20 +115,20 @@ export default function CouponDetailsPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div>
-                            <p className="text-l font-extrabold">{translate('Coupon Details & Usage History')}</p>
+                            <p className="text-l font-extrabold">{translate('Discount Details & Usage History')}</p>
                         </div>
                     </div>
-                    {getStatusBadge(coupon.status)}
+                    {getStatusBadge(discount.status)}
                 </div>
 
-                {/* Coupon Info Cards */}
+                {/* Discount Info Cards */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Discount Value')}</p>
-                                    <h3 className="mt-2 font-mono text-xl font-semibold">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
+                                    <h3 className="mt-2 font-mono text-xl font-semibold">{formatDiscount(discount.type, discount.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
                                     <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -143,8 +143,8 @@ export default function CouponDetailsPage() {
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Times Used')}</p>
                                     <h3 className="mt-2 text-xl font-semibold">
-                                        {coupon.used_count}
-                                        {coupon.use_limit_per_coupon && ` / ${coupon.use_limit_per_coupon}`}
+                                        {discount.used_count}
+                                        {discount.use_limit_per_discount && ` / ${discount.use_limit_per_discount}`}
                                     </h3>
                                 </div>
                                 <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
@@ -159,7 +159,7 @@ export default function CouponDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('User Limit')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold"> {coupon.use_limit_per_user || translate('Unlimited')}</h3>
+                                    <h3 className="mt-2 text-xl font-semibold"> {discount.use_limit_per_user || translate('Unlimited')}</h3>
                                 </div>
                                 <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
                                     <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -175,8 +175,8 @@ export default function CouponDetailsPage() {
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Expires')}</p>
                                     <h3 className="mt-2 text-xl font-semibold">
                                         {' '}
-                                        {coupon.expiry_date
-                                            ? window.kbSettings.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
+                                        {discount.expiry_date
+                                            ? window.kbSettings.formatDateTime(discount.expiry_date, false) || discount.expiry_date
                                             : translate('Never')}
                                     </h3>
                                 </div>
@@ -188,34 +188,34 @@ export default function CouponDetailsPage() {
                     </Card>
                 </div>
 
-                {/* Coupon Details */}
+                {/* Discount Details */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-semibold">{translate('Coupon Information')}</h2>
+                    <h2 className="mb-4 text-lg font-semibold">{translate('Discount Information')}</h2>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-extrabold">{translate('Coupon Code')}</label>
-                                <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{coupon.code}</p>
+                                <label className="text-sm font-extrabold">{translate('Discount Code')}</label>
+                                <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{discount.code}</p>
                             </div>
                             <div>
                                 <label className="text-sm font-extrabold">{translate('Type')}</label>
-                                <div className="mt-1 py-2">{getTypeBadge(coupon.type)}</div>
+                                <div className="mt-1 py-2">{getTypeBadge(discount.type)}</div>
                             </div>
                         </div>
                         <div className="space-y-4">
-                            {coupon.minimum_spend && (
+                            {discount.minimum_spend && (
                                 <div>
                                     <label className="text-sm font-extrabold">{translate('Minimum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
-                                        {window.kbSettings.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
+                                        {window.kbSettings.formatCurrency(discount.minimum_spend) || `$${discount.minimum_spend.toFixed(2)}`}
                                     </p>
                                 </div>
                             )}
-                            {coupon.maximum_spend && (
+                            {discount.maximum_spend && (
                                 <div>
                                     <label className="text-sm font-extrabold">{translate('Maximum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
-                                        {window.kbSettings.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
+                                        {window.kbSettings.formatCurrency(discount.maximum_spend) || `$${discount.maximum_spend.toFixed(2)}`}
                                     </p>
                                 </div>
                             )}
@@ -270,8 +270,8 @@ export default function CouponDetailsPage() {
                                 onPageChange={(url) => {
                                     const urlObj = new URL(url, window.location.origin);
                                     const page = urlObj.searchParams.getranslate('page');
-                                    window.location.href = route('coupons.show', {
-                                        coupon: coupon.id,
+                                    window.location.href = route('discounts.show', {
+                                        discount: discount.id,
                                         page: page,
                                     });
                                 }}

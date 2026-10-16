@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 interface SkrillPaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     skrillMerchantId: string;
@@ -22,7 +22,7 @@ interface SkrillPaymentFormProps {
 
 export function SkrillPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     skrillMerchantId,
@@ -49,7 +49,7 @@ export function SkrillPaymentForm({
             const paymentData = {
                 plan_id: planId,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode || null,
+                discount_code: discountCode || null,
                 payment_id: `skrill_${Date.now()}`,
                 transaction_id: `txn_${Date.now()}`,
                 email: email,

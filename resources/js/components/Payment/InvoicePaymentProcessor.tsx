@@ -353,7 +353,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
             //     return (
             //         <StripePaymentForm
             //             planId={0} // Not used for invoice payments
-            //             couponCode=""
+            //             discountCode=""
             //             billingCycle="monthly" // Not used for invoice payments
             //             stripeKey={invoice.paymentMethods?.stripe_key || ''}
             //             onSuccess={onSuccess}

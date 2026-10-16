@@ -38,8 +38,8 @@ export const usePlanOrdersConfig: CrudConfig = {
                 render: (value) => `${window.kbSettings.formatCurrency(value)}`,
             },
             {
-                key: 'coupon_code',
-                label: translate('Coupon Code'),
+                key: 'discount_code',
+                label: translate('Discount Code'),
                 render: (value) => value || '-',
             },
             {
@@ -74,7 +74,7 @@ export const usePlanOrdersConfig: CrudConfig = {
     },
     search: {
         enabled: true,
-        fields: ['order_number', 'user.name', 'plan.name', 'coupon_code'],
+        fields: ['order_number', 'user.name', 'plan.name', 'discount_code'],
     },
     filters: [
         {

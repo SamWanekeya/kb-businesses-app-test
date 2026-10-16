@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 interface CoinGatePaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     currency: string;
@@ -17,7 +17,7 @@ interface CoinGatePaymentFormProps {
     onCancel: () => void;
 }
 
-export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPrice, currency, onSuccess, onCancel }: CoinGatePaymentFormProps) {
+export function CoinGatePaymentForm({ planId, discountCode, billingCycle, planPrice, currency, onSuccess, onCancel }: CoinGatePaymentFormProps) {
     const { t: translate } = useTranslation();
     const { csrfToken } = usePage().props;
 
@@ -46,7 +46,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
         const formData = {
             plan_id: planId,
             billing_cycle: billingCycle,
-            coupon_code: couponCode || '',
+            discount_code: discountCode || '',
             crypto_currency: 'BTC',
         };
 

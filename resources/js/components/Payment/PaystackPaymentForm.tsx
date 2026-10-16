@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 interface PaystackPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: string;
     paystackKey: string;
     currency: string;
@@ -17,7 +17,7 @@ interface PaystackPaymentFormProps {
 export function PaystackPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     paystackKey,
     currency,
@@ -61,7 +61,7 @@ export function PaystackPaymentForm({
                     processPayment('paystack', {
                         planId,
                         billingCycle,
-                        couponCode,
+                        discountCode,
                         payment_id: response.reference,
                     });
                 },
@@ -84,7 +84,7 @@ export function PaystackPaymentForm({
                 document.head.removeChild(script);
             }
         };
-    }, [paystackKey, planId, billingCycle, couponCode, currency]);
+    }, [paystackKey, planId, billingCycle, discountCode, currency]);
 
     if (!paystackKey) {
         return <div className="p-4 text-center text-red-500">{translate('Paystack not configured')}</div>;

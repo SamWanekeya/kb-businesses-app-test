@@ -9,7 +9,7 @@ import '../../../css/cashfree-modal-fix.css';
 interface CashfreePaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     cashfreeAppId: string;
     mode?: 'sandbox' | 'production';
@@ -21,7 +21,7 @@ interface CashfreePaymentFormProps {
 export function CashfreePaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     cashfreeAppId,
     mode = 'sandbox',
@@ -68,7 +68,7 @@ export function CashfreePaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -144,7 +144,7 @@ export function CashfreePaymentForm({
                                     cf_payment_id: result.paymentDetails?.paymentId,
                                     plan_id: planId,
                                     billing_cycle: billingCycle,
-                                    coupon_code: couponCode,
+                                    discount_code: discountCode,
                                 }),
                             });
 

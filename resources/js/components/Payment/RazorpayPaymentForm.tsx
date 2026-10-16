@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 interface RazorpayPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     razorpayKey: string;
     currency?: string;
@@ -17,7 +17,7 @@ interface RazorpayPaymentFormProps {
 
 export function RazorpayPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     razorpayKey,
     currency = 'INR',
@@ -61,7 +61,7 @@ export function RazorpayPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -100,7 +100,7 @@ export function RazorpayPaymentForm({
                                 razorpay_signature: response.razorpay_signature,
                                 plan_id: planId,
                                 billing_cycle: billingCycle,
-                                coupon_code: couponCode,
+                                discount_code: discountCode,
                             }),
                         });
 

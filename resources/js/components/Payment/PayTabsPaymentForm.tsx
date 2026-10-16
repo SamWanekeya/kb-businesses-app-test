@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 interface PayTabsPaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     paytabsClientKey: string;
@@ -20,7 +20,7 @@ interface PayTabsPaymentFormProps {
 
 export function PayTabsPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     paytabsClientKey,
@@ -40,7 +40,7 @@ export function PayTabsPaymentForm({
             const paymentData = {
                 plan_id: planId,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode || null,
+                discount_code: discountCode || null,
                 payment_id: `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 transaction_id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 _token: csrfToken,
@@ -120,10 +120,10 @@ export function PayTabsPaymentForm({
                                 {currency} {planPrice}
                             </span>
                         </div>
-                        {couponCode && (
+                        {discountCode && (
                             <div className="mt-2 flex items-center justify-between border-t pt-2">
-                                <span className="text-sm font-medium text-green-600">{translate('Coupon Applied')}:</span>
-                                <span className="text-sm font-medium text-green-700">{couponCode}</span>
+                                <span className="text-sm font-medium text-green-600">{translate('Discount Applied')}:</span>
+                                <span className="text-sm font-medium text-green-700">{discountCode}</span>
                             </div>
                         )}
                     </div>

@@ -15,7 +15,7 @@ class PayfastPaymentController extends Controller
         $validated = $request->validate([
             'plan_id' => 'required|exists:plans,id',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'coupon_code' => 'nullable|string',
+            'discount_code' => 'nullable|string',
             'customer_details' => 'required|array',
             'customer_details.firstName' => 'required|string',
             'customer_details.lastName' => 'required|string',
@@ -32,7 +32,7 @@ class PayfastPaymentController extends Controller
             }
 
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
 
             if ($pricing['final_price'] < 5.00) {
                 return response()->json(['success' => false, 'error' => __('Minimum amount is R5.00')]);
@@ -45,7 +45,7 @@ class PayfastPaymentController extends Controller
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'payfast',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $paymentId,
                 'status' => 'pending',
             ]);

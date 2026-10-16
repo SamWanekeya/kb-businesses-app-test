@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ReferralController;
 use App\Models\BaseModel;
-use App\Models\Coupon;
+use App\Models\Discount;
 use App\Models\EmailTemplate;
 use App\Models\NotificationTemplate;
 use App\Models\NotificationTemplateLang;
@@ -973,7 +973,7 @@ if (!function_exists('validatePaymentMethodConfig')) {
 
 if (!function_exists('calculatePlanPricing')) {
     /**
-     * Compute final plan pricing with optional coupon application.
+     * Compute final plan pricing with optional discount application.
      *
      * Encapsulates all pricing rules to ensure consistency between:
      * - Checkout
@@ -981,43 +981,43 @@ if (!function_exists('calculatePlanPricing')) {
      * - Payment validation
      *
      * Why this exists:
-     * Prevents duplicated discount logic and ensures coupon handling remains
+     * Prevents duplicated discount logic and ensures discount handling remains
      * consistent across all payment entry points.
      *
      * Business rules:
      * - Supports percentage and fixed discounts
      * - Fixed discounts cannot exceed original price
      * - Final price is never negative
-     * - Only active coupons are considered
+     * - Only active discounts are considered
      *
      * Assumptions:
      * - Plan provides pricing per billing cycle
      *
      * Edge cases:
-     * - Invalid/expired coupon -> silently ignored
-     * - Missing coupon -> no discount applied
+     * - Invalid/expired discount -> silently ignored
+     * - Missing discount -> no discount applied
      *
      */
-    function calculatePlanPricing($plan, $couponCode = null, $billingCycle = 'monthly'): array
+    function calculatePlanPricing($plan, $discountCode = null, $billingCycle = 'monthly'): array
     {
         // $originalPrice = $plan->price;
         $originalPrice = $plan->getPriceForCycle($billingCycle);
         $discountAmount = 0;
         $finalPrice = $originalPrice;
-        $couponId = null;
+        $discountId = null;
 
-        if ($couponCode) {
-            $coupon = Coupon::where('code', $couponCode)
+        if ($discountCode) {
+            $discount = Discount::where('code', $discountCode)
                 ->where('status', 1)?->first();
 
-            if ($coupon) {
-                if ($coupon->type === 'percentage') {
-                    $discountAmount = ($originalPrice * $coupon->discount_amount) / 100;
+            if ($discount) {
+                if ($discount->type === 'percentage') {
+                    $discountAmount = ($originalPrice * $discount->discount_amount) / 100;
                 } else {
-                    $discountAmount = min($coupon->discount_amount, $originalPrice);
+                    $discountAmount = min($discount->discount_amount, $originalPrice);
                 }
                 $finalPrice = max(0, $originalPrice - $discountAmount);
-                $couponId = $coupon->id;
+                $discountId = $discount->id;
             }
         }
 
@@ -1025,7 +1025,7 @@ if (!function_exists('calculatePlanPricing')) {
             'original_price' => $originalPrice,
             'discount_amount' => $discountAmount,
             'final_price' => $finalPrice,
-            'coupon_id' => $couponId,
+            'discount_id' => $discountId,
         ];
     }
 }
@@ -1036,7 +1036,7 @@ if (!function_exists('createPlanOrder')) {
      *
      * Couples pricing calculation with persistence to ensure that:
      * - Stored order values always reflect the exact pricing logic used at checkout
-     * - Coupon application is captured at time of purchase (immutable)
+     * - Discount application is captured at time of purchase (immutable)
      *
      * Why this exists:
      * Prevents discrepancies between displayed price and stored order data.
@@ -1057,15 +1057,15 @@ if (!function_exists('createPlanOrder')) {
     {
         $plan = Plan::findOrFail($data['plan_id']);
         $billingCycle = $data['billing_cycle'] ?? 'monthly';
-        $pricing = calculatePlanPricing($plan, $data['coupon_code'] ?? null, $data['billing_cycle'] ?? 'monthly');
+        $pricing = calculatePlanPricing($plan, $data['discount_code'] ?? null, $data['billing_cycle'] ?? 'monthly');
 
         return PlanOrder::create([
             'user_id' => $data['user_id'],
             'plan_id' => $plan->id,
-            'coupon_id' => $pricing['coupon_id'],
+            'discount_id' => $pricing['discount_id'],
             'billing_cycle' => $billingCycle,
             'payment_method' => $data['payment_method'],
-            'coupon_code' => $data['coupon_code'] ?? null,
+            'discount_code' => $data['discount_code'] ?? null,
             'original_price' => $pricing['original_price'],
             'discount_amount' => $pricing['discount_amount'],
             'final_price' => $pricing['final_price'],
@@ -1214,7 +1214,7 @@ if (!function_exists('validatePaymentRequest')) {
         $baseRules = [
             'plan_id' => 'required|exists:plans,id',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'coupon_code' => 'nullable|string',
+            'discount_code' => 'nullable|string',
         ];
 
         return $request->validate(array_merge($baseRules, $additionalRules));

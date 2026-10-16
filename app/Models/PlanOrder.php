@@ -11,13 +11,13 @@ class PlanOrder extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
-        'coupon_id',
+        'discount_id',
         'billing_cycle',
         'order_number',
         'original_price',
         'discount_amount',
         'final_price',
-        'coupon_code',
+        'discount_code',
         'payment_method',
         'payment_id',
         'status',
@@ -65,9 +65,9 @@ class PlanOrder extends Model
         return $this->belongsTo(User::class, 'processed_by');
     }
 
-    public function coupon()
+    public function discount()
     {
-        return $this->belongsTo(Coupon::class);
+        return $this->belongsTo(Discount::class);
     }
 
     public function approve($processedBy = null)
@@ -111,22 +111,22 @@ class PlanOrder extends Model
         ]);
     }
 
-    public function calculatePrices($planPrice, $coupon = null)
+    public function calculatePrices($planPrice, $discount = null)
     {
         $this->original_price = $planPrice;
         $this->discount_amount = 0;
         $this->final_price = $planPrice;
 
-        if ($coupon && $coupon->status) {
-            if ($coupon->type === 'percentage') {
-                $this->discount_amount = ($planPrice * $coupon->discount_amount) / 100;
+        if ($discount && $discount->status) {
+            if ($discount->type === 'percentage') {
+                $this->discount_amount = ($planPrice * $discount->discount_amount) / 100;
             } else {
-                $this->discount_amount = min($coupon->discount_amount, $planPrice);
+                $this->discount_amount = min($discount->discount_amount, $planPrice);
             }
 
             $this->final_price = $planPrice - $this->discount_amount;
-            $this->coupon_id = $coupon->id;
-            $this->coupon_code = $coupon->code;
+            $this->discount_id = $discount->id;
+            $this->discount_code = $discount->code;
         }
     }
 }

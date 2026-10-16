@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 interface MercadoPagoPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     accessToken: string;
     currency?: string;
@@ -19,7 +19,7 @@ interface MercadoPagoPaymentFormProps {
 export function MercadoPagoPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     accessToken,
     currency = 'BRL',
@@ -45,7 +45,7 @@ export function MercadoPagoPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode ?? undefined,
+                    discount_code: discountCode ?? undefined,
                 }),
             });
 

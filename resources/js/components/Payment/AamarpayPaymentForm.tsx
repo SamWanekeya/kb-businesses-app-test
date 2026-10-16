@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface AamarpayPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     aamarpayStoreId: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface AamarpayPaymentFormProps {
 export function AamarpayPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     aamarpayStoreId,
     currency = 'BDT',
@@ -69,12 +69,12 @@ export function AamarpayPaymentForm({
             billingCycleInput.value = billingCycle;
             form.appendChild(billingCycleInput);
 
-            if (couponCode) {
-                const couponInput = document.createElement('input');
-                couponInput.type = 'hidden';
-                couponInput.name = 'coupon_code';
-                couponInput.value = couponCode;
-                form.appendChild(couponInput);
+            if (discountCode) {
+                const discountInput = document.createElement('input');
+                discountInput.type = 'hidden';
+                discountInput.name = 'discount_code';
+                discountInput.value = discountCode;
+                form.appendChild(discountInput);
             }
 
             document.body.appendChild(form);
@@ -116,9 +116,9 @@ export function AamarpayPaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

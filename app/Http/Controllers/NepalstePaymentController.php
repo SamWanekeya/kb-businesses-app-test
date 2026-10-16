@@ -31,7 +31,7 @@ class NepalstePaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'nepalste',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['payment_id'],
                 ]);
 
@@ -51,7 +51,7 @@ class NepalstePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['nepalste_public_key']) || !isset($settings['payment_settings']['nepalste_secret_key'])) {

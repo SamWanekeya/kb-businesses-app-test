@@ -48,8 +48,8 @@ class ToyyibPayPaymentController extends Controller
                 return back()->withErrors(['error' => __('ToyyibPay payment gateway not configured properly')]);
             }
 
-            // Calculate final amount with coupon
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            // Calculate final amount with discount
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $finalAmount = $pricing['final_price'];
 
             // Set callback and return URLs
@@ -65,7 +65,7 @@ class ToyyibPayPaymentController extends Controller
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'toyyibpay',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $paymentId,
                 'status' => 'pending',
             ]);
@@ -164,7 +164,7 @@ class ToyyibPayPaymentController extends Controller
                         'plan_id' => $planOrder->plan_id,
                         'billing_cycle' => $planOrder->billing_cycle,
                         'payment_method' => 'toyyibpay',
-                        'coupon_code' => $planOrder->coupon_code,
+                        'discount_code' => $planOrder->discount_code,
                         'payment_id' => $order_id,
                     ]);
                 }

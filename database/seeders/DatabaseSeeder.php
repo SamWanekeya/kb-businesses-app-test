@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 OrganizationSeeder::class,
                 StaffRoleSeeder::class,
-                CouponSeeder::class,
+                DiscountSeeder::class,
                 PlanOrderSeeder::class,
                 PlanRequestSeeder::class,
                 ReferralSettingSeeder::class,

@@ -12,14 +12,14 @@ import { useTranslation } from 'react-i18next';
 interface BankTransferFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: string;
     bankDetails: string;
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, bankDetails, onSuccess, onCancel }: BankTransferFormProps) {
+export function BankTransferForm({ planId, planPrice, discountCode, billingCycle, bankDetails, onSuccess, onCancel }: BankTransferFormProps) {
     const { t: translate } = useTranslation();
     const [processing, setProcessing] = useState(false);
     const [receipt, setReceipt] = useState<File | null>(null);
@@ -64,7 +64,7 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
         const formData = new FormData();
         formData.append('plan_id', planId.toString());
         formData.append('billing_cycle', billingCycle);
-        formData.append('coupon_code', couponCode || '');
+        formData.append('discount_code', discountCode || '');
         formData.append('amount', planPrice.toString());
         formData.append('receipt', receipt);
 

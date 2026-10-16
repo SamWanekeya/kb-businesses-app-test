@@ -42,9 +42,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
     const { csrfToken } = usePage().props;
 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
-    const [couponCode, setCouponCode] = useState('');
-    const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
-    const [couponLoading, setCouponLoading] = useState(false);
+    const [discountCode, setDiscountCode] = useState('');
+    const [appliedDiscount, setAppliedDiscount] = useState<any>(null);
+    const [discountLoading, setDiscountLoading] = useState(false);
     const [showPaymentForm, setShowPaymentForm] = useState(false);
 
     const [currentPrice, setCurrentPrice] = useState(Number(plan.price));
@@ -55,29 +55,29 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
     }, [plan.price]);
 
     const originalPrice = currentPrice;
-    const discountAmount = appliedCoupon
-        ? appliedCoupon.type === 'percentage'
-            ? (originalPrice * appliedCoupon.value) / 100
-            : appliedCoupon.value
+    const discountAmount = appliedDiscount
+        ? appliedDiscount.type === 'percentage'
+            ? (originalPrice * appliedDiscount.value) / 100
+            : appliedDiscount.value
         : 0;
     const finalPrice = Math.max(0, originalPrice - discountAmount);
 
-    const handleApplyCoupon = async () => {
-        if (!couponCode.trim()) {
-            toast.error(translate('Please enter a coupon code'));
+    const handleApplyDiscount = async () => {
+        if (!discountCode.trim()) {
+            toast.error(translate('Please enter a discount code'));
             return;
         }
 
-        setCouponLoading(true);
+        setDiscountLoading(true);
         try {
-            const response = await fetch(route('subscriptions.coupons.validate'), {
+            const response = await fetch(route('subscriptions.discounts.validate'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                     plan_id: plan.id,
                     amount: originalPrice,
                 }),
@@ -86,23 +86,23 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
             const data = await response.json();
 
             if (response.ok && data.valid) {
-                setAppliedCoupon(data.coupon);
-                toast.success(translate('Coupon applied successfully'));
+                setAppliedDiscount(data.discount);
+                toast.success(translate('Discount applied successfully'));
             } else {
-                toast.error(data.message || translate('Invalid coupon code'));
-                setAppliedCoupon(null);
+                toast.error(data.message || translate('Invalid discount code'));
+                setAppliedDiscount(null);
             }
         } catch (error: any) {
-            toast.error(translate('Failed to validate coupon'));
-            setAppliedCoupon(null);
+            toast.error(translate('Failed to validate discount'));
+            setAppliedDiscount(null);
         } finally {
-            setCouponLoading(false);
+            setDiscountLoading(false);
         }
     };
 
-    const handleRemoveCoupon = () => {
-        setAppliedCoupon(null);
-        setCouponCode('');
+    const handleRemoveDiscount = () => {
+        setAppliedDiscount(null);
+        setDiscountCode('');
     };
 
     const handlePayNow = () => {
@@ -132,7 +132,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
             {
                 plan_id: plan.id,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode,
+                discount_code: discountCode,
                 amount: finalPrice,
             },
             {
@@ -155,7 +155,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
     const renderPaymentForm = () => {
         const commonProps = {
             planId: plan.id,
-            couponCode,
+            discountCode,
             billingCycle,
             onSuccess,
             onCancel: handlePaymentCancel,
@@ -505,32 +505,32 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                 )}
             </div>
 
-            {/* Coupon Code */}
+            {/* Discount Code */}
             <div className="space-y-3">
                 {plan.price != 0 && (
                     <>
-                        <Label htmlFor="coupon">
-                            {translate('Coupon Code')} ({translate('Optional')})
+                        <Label htmlFor="discount">
+                            {translate('Discount Code')} ({translate('Optional')})
                         </Label>
                         <div className="flex gap-2">
                             <div className="relative flex-1">
                                 <Input
-                                    inputIdentifier="coupon"
-                                    value={couponCode}
+                                    inputIdentifier="discount"
+                                    value={discountCode}
                                     onChange={(e) => {
-                                        setCouponCode(e.target.value);
+                                        setDiscountCode(e.target.value);
                                     }}
                                     className="pr-10"
-                                    disabled={!!appliedCoupon}
+                                    disabled={!!appliedDiscount}
                                 />
                                 <Tag className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
                             </div>
-                            {!appliedCoupon ? (
-                                <Button type="button" variant="outline" onClick={handleApplyCoupon} disabled={!couponCode.trim() || couponLoading}>
-                                    {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
+                            {!appliedDiscount ? (
+                                <Button type="button" variant="outline" onClick={handleApplyDiscount} disabled={!discountCode.trim() || discountLoading}>
+                                    {discountLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
                                 </Button>
                             ) : (
-                                <Button type="button" variant="outline" onClick={handleRemoveCoupon}>
+                                <Button type="button" variant="outline" onClick={handleRemoveDiscount}>
                                     {translate('Remove')}
                                 </Button>
                             )}
@@ -538,14 +538,14 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                     </>
                 )}
 
-                {appliedCoupon && (
+                {appliedDiscount && (
                     <div className="rounded-lg border border-green-200 bg-green-50 p-3">
                         <div className="flex items-center justify-between text-sm">
                             <span className="font-medium text-green-700">
-                                {translate('Coupon Applied')}: {appliedCoupon.code}
+                                {translate('Discount Applied')}: {appliedDiscount.code}
                             </span>
                             <span className="text-green-600">
-                                -{appliedCoupon.type === 'percentage' ? `${appliedCoupon.value}%` : `${currency_symbol}${appliedCoupon.value}`}
+                                -{appliedDiscount.type === 'percentage' ? `${appliedDiscount.value}%` : `${currency_symbol}${appliedDiscount.value}`}
                             </span>
                         </div>
                     </div>
@@ -563,7 +563,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                 {originalPrice}
                             </span>
                         </div>
-                        {appliedCoupon && (
+                        {appliedDiscount && (
                             <div className="flex justify-between text-sm text-green-600">
                                 <span>{translate('Discount')}</span>
                                 <span>

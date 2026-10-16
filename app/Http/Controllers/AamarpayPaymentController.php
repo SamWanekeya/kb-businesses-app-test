@@ -30,7 +30,7 @@ class AamarpayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'aamarpay',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['mer_txnid'],
                 ]);
 
@@ -50,7 +50,7 @@ class AamarpayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
@@ -85,7 +85,7 @@ class AamarpayPaymentController extends Controller
                 'cus_phone' => '1234567890',
                 'success_url' => route('aamarpay.success', [
                     'response' => 'success',
-                    'coupon' => $validated['coupon_code'] ?? '',
+                    'discount' => $validated['discount_code'] ?? '',
                     'plan_id' => $plan->id,
                     'price' => $pricing['final_price'],
                     'order_id' => $orderID,
@@ -94,7 +94,7 @@ class AamarpayPaymentController extends Controller
                 ]),
                 'fail_url' => route('aamarpay.success', [
                     'response' => 'failure',
-                    'coupon' => $validated['coupon_code'] ?? '',
+                    'discount' => $validated['discount_code'] ?? '',
                     'plan_id' => $plan->id,
                     'price' => $pricing['final_price'],
                     'order_id' => $orderID,
@@ -141,7 +141,7 @@ class AamarpayPaymentController extends Controller
             $response = $request->input('response');
             $planId = $request->input('plan_id');
             $userId = $request->input('user_id');
-            $coupon = $request->input('coupon');
+            $discount = $request->input('discount');
             $billingCycle = $request->input('billing_cycle', 'monthly');
             $orderId = $request->input('order_id');
 
@@ -155,7 +155,7 @@ class AamarpayPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'billing_cycle' => $billingCycle,
                         'payment_method' => 'aamarpay',
-                        'coupon_code' => $coupon,
+                        'discount_code' => $discount,
                         'payment_id' => $orderId,
                     ]);
 

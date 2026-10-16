@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface NepalstePaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     nepalstePublicKey: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface NepalstePaymentFormProps {
 export function NepalstePaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     nepalstePublicKey,
     currency = 'NPR',
@@ -53,7 +53,7 @@ export function NepalstePaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -114,9 +114,9 @@ export function NepalstePaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

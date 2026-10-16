@@ -15,7 +15,7 @@ class MolliePaymentController extends Controller
         $validated = $request->validate([
             'plan_id' => 'required|exists:plans,id',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'coupon_code' => 'nullable|string',
+            'discount_code' => 'nullable|string',
             'customer_details' => 'required|array',
             'customer_details.firstName' => 'required|string',
             'customer_details.lastName' => 'required|string',
@@ -24,7 +24,7 @@ class MolliePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $credentials = $this->getMollieCredentials();
 
             if (!$credentials['api_key']) {
@@ -39,7 +39,7 @@ class MolliePaymentController extends Controller
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'mollie',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $paymentId,
                 'status' => 'pending',
             ]);
@@ -100,7 +100,7 @@ class MolliePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $credentials = $this->getMollieCredentials();
 
             if (!$credentials['api_key']) {
@@ -115,7 +115,7 @@ class MolliePaymentController extends Controller
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'mollie',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $paymentId,
                 'status' => 'pending',
             ]);

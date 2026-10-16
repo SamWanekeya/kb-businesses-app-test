@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Coupon;
+use App\Models\Discount;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class CouponSeeder extends Seeder
+class DiscountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,14 +21,14 @@ class CouponSeeder extends Seeder
             return;
         }
 
-        $coupons = [
+        $discounts = [
             [
                 'name' => 'Summer Sale',
                 'type' => 'percentage',
                 'minimum_spend' => 50.00,
                 'maximum_spend' => 500.00,
                 'discount_amount' => 20.00,
-                'use_limit_per_coupon' => 100,
+                'use_limit_per_discount' => 100,
                 'use_limit_per_user' => 1,
                 'expiry_date' => now()->addMonths(3),
                 'code' => 'SUMMER20',
@@ -42,7 +42,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 25.00,
                 'maximum_spend' => null,
                 'discount_amount' => 10.00,
-                'use_limit_per_coupon' => null,
+                'use_limit_per_discount' => null,
                 'use_limit_per_user' => 1,
                 'expiry_date' => now()->addMonths(6),
                 'code' => 'WELCOME10',
@@ -56,7 +56,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 100.00,
                 'maximum_spend' => 1000.00,
                 'discount_amount' => 15.00,
-                'use_limit_per_coupon' => 50,
+                'use_limit_per_discount' => 50,
                 'use_limit_per_user' => 2,
                 'expiry_date' => now()->addWeeks(2),
                 'code' => 'FLASH15',
@@ -65,12 +65,12 @@ class CouponSeeder extends Seeder
                 'created_by' => $user->id,
             ],
             [
-                'name' => 'Auto Generated Coupon',
+                'name' => 'Auto Generated Discount',
                 'type' => 'flat',
                 'minimum_spend' => null,
                 'maximum_spend' => null,
                 'discount_amount' => 5.00,
-                'use_limit_per_coupon' => 200,
+                'use_limit_per_discount' => 200,
                 'use_limit_per_user' => 3,
                 'expiry_date' => now()->addMonths(1),
                 'code' => 'AUTO5OFF',
@@ -80,15 +80,15 @@ class CouponSeeder extends Seeder
             ],
         ];
 
-        // Add more coupons for pagination testing
-        $additionalCoupons = [
+        // Add more discounts for pagination testing
+        $additionalDiscounts = [
             [
                 'name' => 'Black Friday Deal',
                 'type' => 'percentage',
                 'minimum_spend' => 200.00,
                 'maximum_spend' => 2000.00,
                 'discount_amount' => 30.00,
-                'use_limit_per_coupon' => 500,
+                'use_limit_per_discount' => 500,
                 'use_limit_per_user' => 1,
                 'expiry_date' => now()->addMonths(2),
                 'code' => 'BLACKFRI30',
@@ -102,7 +102,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 75.00,
                 'maximum_spend' => null,
                 'discount_amount' => 25.00,
-                'use_limit_per_coupon' => 300,
+                'use_limit_per_discount' => 300,
                 'use_limit_per_user' => 2,
                 'expiry_date' => now()->addMonths(4),
                 'code' => 'HOLIDAY25',
@@ -116,7 +116,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 30.00,
                 'maximum_spend' => 300.00,
                 'discount_amount' => 10.00,
-                'use_limit_per_coupon' => null,
+                'use_limit_per_discount' => null,
                 'use_limit_per_user' => 5,
                 'expiry_date' => now()->addMonths(12),
                 'code' => 'STUDENT10',
@@ -130,7 +130,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 150.00,
                 'maximum_spend' => 1500.00,
                 'discount_amount' => 50.00,
-                'use_limit_per_coupon' => 100,
+                'use_limit_per_discount' => 100,
                 'use_limit_per_user' => 1,
                 'expiry_date' => now()->addMonths(6),
                 'code' => 'VIP50BONUS',
@@ -144,7 +144,7 @@ class CouponSeeder extends Seeder
                 'minimum_spend' => 40.00,
                 'maximum_spend' => 400.00,
                 'discount_amount' => 12.00,
-                'use_limit_per_coupon' => 200,
+                'use_limit_per_discount' => 200,
                 'use_limit_per_user' => 3,
                 'expiry_date' => now()->addWeeks(8),
                 'code' => 'WEEKEND12',
@@ -154,14 +154,14 @@ class CouponSeeder extends Seeder
             ],
         ];
 
-        $allCoupons = array_merge($coupons, $additionalCoupons);
+        $allDiscounts = array_merge($discounts, $additionalDiscounts);
 
-        foreach ($allCoupons as $couponData) {
-            if (!Coupon::where('code', $couponData['code'])->exists()) {
-                Coupon::create($couponData);
+        foreach ($allDiscounts as $discountData) {
+            if (!Discount::where('code', $discountData['code'])->exists()) {
+                Discount::create($discountData);
             }
         }
 
-        $this->command->info('Sample coupons created successfully!');
+        $this->command->info('Sample discounts created successfully!');
     }
 }

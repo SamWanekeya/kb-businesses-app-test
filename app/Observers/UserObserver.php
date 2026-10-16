@@ -50,7 +50,7 @@ class UserObserver
                     'plan_id' => $user->plan_id,
                     // 'billing_cycle'=>'monthly',
                     'payment_method' => 'manual',
-                    'coupon_code' => null,
+                    'discount_code' => null,
                     'payment_id' => null,
                     'status' => 'approved',
                     'processed_at' => now(),

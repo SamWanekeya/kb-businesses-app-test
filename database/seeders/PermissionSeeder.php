@@ -76,15 +76,15 @@ class PermissionSeeder extends Seeder
             ['name' => 'subscribe-plans', 'module' => 'plans', 'label' => 'Subscribe Plans', 'description' => 'Can subscribe to subscription plans'],
 
 
-            // Coupon management
-            ['name' => 'manage-coupons', 'module' => 'coupons', 'label' => 'Manage Coupons', 'description' => 'Can manage subscription Coupons'],
-            ['name' => 'manage-any-coupons', 'module' => 'coupons', 'label' => 'Manage All Coupons', 'description' => 'Manage Any Coupons'],
-            ['name' => 'manage-own-coupons', 'module' => 'coupons', 'label' => 'Manage Own Coupons', 'description' => 'Manage Limited Coupons that is created by own'],
-            ['name' => 'view-coupons', 'module' => 'coupons', 'label' => 'View Coupons', 'description' => 'View Coupons'],
-            ['name' => 'create-coupons', 'module' => 'coupons', 'label' => 'Create Coupons', 'description' => 'Can create subscription Coupons'],
-            ['name' => 'edit-coupons', 'module' => 'coupons', 'label' => 'Edit Coupons', 'description' => 'Can edit subscription Coupons'],
-            ['name' => 'delete-coupons', 'module' => 'coupons', 'label' => 'Delete Coupons', 'description' => 'Can delete subscription Coupons'],
-            ['name' => 'toggle-status-coupons', 'module' => 'coupons', 'label' => 'Change Status Coupons', 'description' => 'Can change status Coupons'],
+            // Discount management
+            ['name' => 'manage-discounts', 'module' => 'discounts', 'label' => 'Manage Discounts', 'description' => 'Can manage subscription Discounts'],
+            ['name' => 'manage-any-discounts', 'module' => 'discounts', 'label' => 'Manage All Discounts', 'description' => 'Manage Any Discounts'],
+            ['name' => 'manage-own-discounts', 'module' => 'discounts', 'label' => 'Manage Own Discounts', 'description' => 'Manage Limited Discounts that is created by own'],
+            ['name' => 'view-discounts', 'module' => 'discounts', 'label' => 'View Discounts', 'description' => 'View Discounts'],
+            ['name' => 'create-discounts', 'module' => 'discounts', 'label' => 'Create Discounts', 'description' => 'Can create subscription Discounts'],
+            ['name' => 'edit-discounts', 'module' => 'discounts', 'label' => 'Edit Discounts', 'description' => 'Can edit subscription Discounts'],
+            ['name' => 'delete-discounts', 'module' => 'discounts', 'label' => 'Delete Discounts', 'description' => 'Can delete subscription Discounts'],
+            ['name' => 'toggle-status-discounts', 'module' => 'discounts', 'label' => 'Change Status Discounts', 'description' => 'Can change status Discounts'],
 
             // Plan Requests management
             ['name' => 'manage-plan-requests', 'module' => 'plan-requests', 'label' => 'Manage Plan Requests', 'description' => 'Can manage plan requests'],

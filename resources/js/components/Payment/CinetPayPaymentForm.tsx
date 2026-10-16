@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface CinetPayPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     cinetpaySiteId: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface CinetPayPaymentFormProps {
 export function CinetPayPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     cinetpaySiteId,
     currency = 'XOF',
@@ -53,7 +53,7 @@ export function CinetPayPaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -102,9 +102,9 @@ export function CinetPayPaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

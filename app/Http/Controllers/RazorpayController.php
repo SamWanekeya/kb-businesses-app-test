@@ -23,7 +23,7 @@ class RazorpayController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
 
             $amountInSmallestUnit = $pricing['final_price'] * 100;
 
@@ -107,7 +107,7 @@ class RazorpayController extends Controller
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'razorpay',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $validated['razorpay_payment_id'],
             ]);
 

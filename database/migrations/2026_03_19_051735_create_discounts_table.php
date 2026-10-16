@@ -10,14 +10,14 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->enum('type', ['percentage', 'flat']);
             $table->decimal('minimum_spend', total: 19, places: 7)->nullable();
             $table->decimal('maximum_spend', total: 19, places: 7)->nullable();
             $table->decimal('discount_amount', total: 19, places: 7);
-            $table->integer('use_limit_per_coupon')->nullable();
+            $table->integer('use_limit_per_discount')->nullable();
             $table->integer('use_limit_per_user')->nullable();
             $table->date('expiry_date')->nullable();
             $table->string('code')->unique();
@@ -33,6 +33,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupons');
+        Schema::dropIfExists('discounts');
     }
 };

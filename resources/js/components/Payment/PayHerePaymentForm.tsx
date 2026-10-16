@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface PayHerePaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     payhereMerchantId: string;
     currency?: string;
@@ -21,7 +21,7 @@ interface PayHerePaymentFormProps {
 export function PayHerePaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     payhereMerchantId,
     currency = 'LKR',
@@ -53,7 +53,7 @@ export function PayHerePaymentForm({
                 body: JSON.stringify({
                     plan_id: planId,
                     billing_cycle: billingCycle,
-                    coupon_code: couponCode,
+                    discount_code: discountCode,
                 }),
             });
 
@@ -115,9 +115,9 @@ export function PayHerePaymentForm({
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
-                    {couponCode && (
+                    {discountCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {translate('Coupon Applied')}: {couponCode}
+                            {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>

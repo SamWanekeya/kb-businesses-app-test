@@ -20,7 +20,7 @@ class BenefitPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['benefit_secret_key']) || !isset($settings['payment_settings']['benefit_public_key'])) {
@@ -40,7 +40,7 @@ class BenefitPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'benefit',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['payment_id'],
                 ]);
 
@@ -67,7 +67,7 @@ class BenefitPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['benefit_secret_key'])) {
@@ -99,7 +99,7 @@ class BenefitPaymentController extends Controller
                 "redirect" => ["url" => route('benefit.success', [
                     'plan_id' => $plan->id,
                     'amount' => $pricing['final_price'],
-                    'coupon' => $validated['coupon_code'] ?? '',
+                    'discount' => $validated['discount_code'] ?? '',
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
                 ])],
@@ -196,7 +196,7 @@ class BenefitPaymentController extends Controller
             $planId = $request->input('plan_id');
             $userId = $request->input('user_id');
             $amount = $request->input('amount');
-            $coupon = $request->input('coupon');
+            $discount = $request->input('discount');
             $billingCycle = $request->input('billing_cycle', 'monthly');
 
             if ($planId && $userId) {
@@ -209,7 +209,7 @@ class BenefitPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'billing_cycle' => $billingCycle,
                         'payment_method' => 'benefit',
-                        'coupon_code' => $coupon,
+                        'discount_code' => $discount,
                         'payment_id' => $request->input('tap_id', 'benefit_' . time()),
                     ]);
 

@@ -12,7 +12,7 @@ return [
         'plan-orders',
         'currencies',
         'referral-program',
-        'coupons',
+        'discounts',
         'appointments',
         'organizations',
         'settings',

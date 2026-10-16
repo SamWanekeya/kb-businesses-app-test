@@ -29,7 +29,7 @@ class IyzipayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
@@ -45,7 +45,7 @@ class IyzipayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'iyzipay',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 
@@ -93,7 +93,7 @@ class IyzipayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
@@ -118,7 +118,7 @@ class IyzipayPaymentController extends Controller
                 'plan_id' => $plan->id,
                 'user_id' => $user->id,
                 'billing_cycle' => $validated['billing_cycle'],
-                'coupon_code' => $validated['coupon_code'] ?? '',
+                'discount_code' => $validated['discount_code'] ?? '',
             ]));
             $checkoutRequest->setEnabledInstallments([1]);
 
@@ -238,7 +238,7 @@ class IyzipayPaymentController extends Controller
             $planId = $request->input('plan_id');
             $userId = $request->input('user_id');
             $billingCycle = $request->input('billing_cycle', 'monthly');
-            $couponCode = $request->input('coupon_code');
+            $discountCode = $request->input('discount_code');
 
             if (!$token || !$planId || !$userId) {
                 return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid payment response')]);
@@ -264,7 +264,7 @@ class IyzipayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $billingCycle,
                     'payment_method' => 'iyzipay',
-                    'coupon_code' => $couponCode,
+                    'discount_code' => $discountCode,
                     'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 

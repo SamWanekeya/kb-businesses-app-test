@@ -16,13 +16,13 @@ interface PaymentMethod {
 interface PaymentFormWrapperProps {
     planId: number;
     planPrice: number;
-    couponCode?: string;
+    discountCode?: string;
     billingCycle: 'monthly' | 'yearly';
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billingCycle, onSuccess, onCancel }: PaymentFormWrapperProps) {
+export function PaymentFormWrapper({ planId, planPrice, discountCode = '', billingCycle, onSuccess, onCancel }: PaymentFormWrapperProps) {
     const { t: translate } = useTranslation();
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
     const [selectedMethod, setSelectedMethod] = useState<string>('');
@@ -116,7 +116,7 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
         const commonProps = {
             planId,
             planPrice,
-            couponCode,
+            discountCode,
             billingCycle,
             onSuccess,
             onCancel,

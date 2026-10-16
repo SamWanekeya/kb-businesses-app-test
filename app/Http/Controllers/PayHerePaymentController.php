@@ -32,7 +32,7 @@ class PayHerePaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'payhere',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['payment_id'],
                 ]);
 
@@ -52,7 +52,7 @@ class PayHerePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
@@ -68,7 +68,7 @@ class PayHerePaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? '',
+                    'discount_code' => $validated['discount_code'] ?? '',
                 ]),
                 'cancel_url' => route('subscriptions.plans.index'),
                 'notify_url' => route('payhere.callback'),
@@ -119,7 +119,7 @@ class PayHerePaymentController extends Controller
             $planId = $request->input('plan_id');
             $userId = $request->input('user_id');
             $billingCycle = $request->input('billing_cycle', 'monthly');
-            $couponCode = $request->input('coupon_code');
+            $discountCode = $request->input('discount_code');
             $paymentId = $request->input('order_id');
 
             if ($planId && $userId && $paymentId) {
@@ -132,7 +132,7 @@ class PayHerePaymentController extends Controller
                         'plan_id' => $plan->id,
                         'billing_cycle' => $billingCycle,
                         'payment_method' => 'payhere',
-                        'coupon_code' => $couponCode,
+                        'discount_code' => $discountCode,
                         'payment_id' => $paymentId,
                     ]);
 

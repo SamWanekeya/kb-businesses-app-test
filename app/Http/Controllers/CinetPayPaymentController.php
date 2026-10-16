@@ -31,7 +31,7 @@ class CinetPayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'cinetpay',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['cpm_trans_id'],
                 ]);
 
@@ -51,7 +51,7 @@ class CinetPayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $request->billing_cycle);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $request->billing_cycle);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
@@ -77,7 +77,7 @@ class CinetPayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                 ]),
                 'customer_name' => $user->name ?? 'Customer',
                 'customer_surname' => $user->last_name ?? 'User',

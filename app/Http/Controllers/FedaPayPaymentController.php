@@ -34,7 +34,7 @@ class FedaPayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'fedapay',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['transaction_id'],
                 ]);
 
@@ -60,7 +60,7 @@ class FedaPayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
@@ -84,7 +84,7 @@ class FedaPayPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                 ],
             ]);
 
@@ -119,7 +119,7 @@ class FedaPayPaymentController extends Controller
                     'plan_id' => $metadata['plan_id'],
                     'billing_cycle' => $metadata['billing_cycle'],
                     'payment_method' => 'fedapay',
-                    'coupon_code' => $metadata['coupon_code'] ?? null,
+                    'discount_code' => $metadata['discount_code'] ?? null,
                     'payment_id' => $transactionId,
                 ]);
 

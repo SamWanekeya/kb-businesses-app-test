@@ -201,8 +201,8 @@ export default function AppSidebar() {
             icon: Gift,
         },
         {
-            title: translate('Coupons'),
-            href: route('coupons.index'),
+            title: translate('Discounts'),
+            href: route('discounts.index'),
             icon: HandCoins,
         },
         {

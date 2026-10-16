@@ -17,7 +17,7 @@ class YooKassaPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['yookassa_shop_id'])) {
@@ -41,7 +41,7 @@ class YooKassaPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'order_id' => $orderID,
                         'billing_cycle' => $validated['billing_cycle'],
-                        'coupon_code' => $validated['coupon_code'] ?? null,
+                        'discount_code' => $validated['discount_code'] ?? null,
                     ]),
                 ],
                 'capture' => true,
@@ -50,7 +50,7 @@ class YooKassaPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'order_id' => $orderID,
                 ],
             ], uniqid('', true));
@@ -75,7 +75,7 @@ class YooKassaPaymentController extends Controller
         try {
             $planId = $request->input('plan_id');
             $billingCycle = $request->input('billing_cycle');
-            $couponCode = $request->input('coupon_code');
+            $discountCode = $request->input('discount_code');
             $orderId = $request->input('order_id');
 
             if ($planId && $orderId) {
@@ -107,7 +107,7 @@ class YooKassaPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'billing_cycle' => $billingCycle,
                         'payment_method' => 'yookassa',
-                        'coupon_code' => $couponCode,
+                        'discount_code' => $discountCode,
                         'payment_id' => $orderId,
                     ]);
 
@@ -146,7 +146,7 @@ class YooKassaPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'billing_cycle' => $metadata['billing_cycle'] ?? 'monthly',
                         'payment_method' => 'yookassa',
-                        'coupon_code' => $metadata['coupon_code'] ?? null,
+                        'discount_code' => $metadata['discount_code'] ?? null,
                         'payment_id' => $paymentId,
                     ]);
                 }

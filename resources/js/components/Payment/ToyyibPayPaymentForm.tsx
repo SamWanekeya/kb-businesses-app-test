@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 interface ToyyibPayPaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     toyyibpayCategoryCode: string;
@@ -23,7 +23,7 @@ interface ToyyibPayPaymentFormProps {
 
 export function ToyyibPayPaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     toyyibpayCategoryCode,
@@ -80,7 +80,7 @@ export function ToyyibPayPaymentForm({
             const formData = {
                 plan_id: planId,
                 billing_cycle: billingCycle,
-                coupon_code: couponCode || '',
+                discount_code: discountCode || '',
                 billName: `Plan Subscription - ${planId}`,
                 billDescription: `${billingCycle} subscription for ${customerDetails.name}`,
                 billAmount: planPrice,

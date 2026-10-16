@@ -20,7 +20,7 @@ class CashfreeController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
 
             $credentials = $this->getCashfreeCredentials();
 
@@ -197,7 +197,7 @@ class CashfreeController extends Controller
                 'plan_id' => $validated['plan_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'cashfree',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $successfulPayment['cf_payment_id'],
             ];
 

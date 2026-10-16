@@ -14,13 +14,13 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('coupon_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('discount_id')->nullable()->constrained()->nullOnDelete();
             $table->string('billing_cycle')->nullable();
             $table->string('order_number')->unique();
             $table->decimal('original_price', total: 19, places: 7);
             $table->decimal('discount_amount', total: 19, places: 7)->default(0);
             $table->decimal('final_price', total: 19, places: 7);
-            $table->string('coupon_code')->nullable();
+            $table->string('discount_code')->nullable();
             $table->string('payment_method')->nullable();
             $table->text('payment_id')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');

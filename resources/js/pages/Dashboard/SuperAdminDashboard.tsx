@@ -32,7 +32,7 @@ interface SuperAdminDashboardData {
         activePlans: number;
         pendingRequests: number;
         monthlyGrowth: number;
-        activeCoupons: number;
+        activeDiscounts: number;
     };
     recentActivity: Array<{
         id: number;
@@ -95,7 +95,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         activePlans: 0,
         pendingRequests: 0,
         monthlyGrowth: 0,
-        activeCoupons: 0,
+        activeDiscounts: 0,
     };
 
     const recentActivity = dashboardData?.recentActivity || [];
@@ -270,8 +270,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         {[
                             {
                                 icon: Tag,
-                                label: translate('Coupons'),
-                                href: route('coupons.index'),
+                                label: translate('Discounts'),
+                                href: route('discounts.index'),
                                 color: 'text-rose-300 hover:text-rose-200',
                                 bg: 'hover:bg-rose-400/10',
                             },

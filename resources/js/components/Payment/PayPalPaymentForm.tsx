@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 interface PayPalPaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: string;
     paypalClientId: string;
     currency: string;
@@ -17,7 +17,7 @@ interface PayPalPaymentFormProps {
 export function PayPalPaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     paypalClientId,
     currency,
@@ -61,7 +61,7 @@ export function PayPalPaymentForm({
                                 processPayment('paypal', {
                                     planId,
                                     billingCycle,
-                                    couponCode,
+                                    discountCode,
                                     order_id: data.orderID,
                                     payment_id: details.id,
                                 });
@@ -89,7 +89,7 @@ export function PayPalPaymentForm({
                 document.head.removeChild(script);
             }
         };
-    }, [paypalClientId, planId, billingCycle, couponCode, currency]);
+    }, [paypalClientId, planId, billingCycle, discountCode, currency]);
 
     if (!paypalClientId) {
         return <div className="p-4 text-center text-red-500">{translate('PayPal not configured')}</div>;

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Coupon;
+use App\Models\Discount;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;
@@ -21,7 +21,7 @@ class PlanOrderSeeder extends Seeder
         // Get required data with proper validation
         $organizationUsers = User::where('type', 'organization')->get();
         $plans = Plan::all();
-        $activeCoupons = Coupon::where('status', true)->get();
+        $activeDiscounts = Discount::where('status', true)->get();
         $superAdmin = User::where('type', 'super_admin')?->first();
 
         if ($organizationUsers->isEmpty() || $plans->isEmpty()) {
@@ -43,7 +43,7 @@ class PlanOrderSeeder extends Seeder
                 $plan = $plans->random();
                 $status = $faker->randomElement($statuses);
                 $billingCycle = $faker->randomElement($billingCycles);
-                $coupon = ($i === 0 && $activeCoupons->isNotEmpty()) ? $activeCoupons->random() : null;
+                $discount = ($i === 0 && $activeDiscounts->isNotEmpty()) ? $activeDiscounts->random() : null;
 
                 // Calculate price based on billing cycle
                 $planPrice = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
@@ -53,7 +53,7 @@ class PlanOrderSeeder extends Seeder
                 $planOrder->plan_id = $plan->id;
                 $planOrder->billing_cycle = $billingCycle;
                 $planOrder->payment_method = $faker->randomElement($paymentMethods);
-                $planOrder->calculatePrices($planPrice, $coupon);
+                $planOrder->calculatePrices($planPrice, $discount);
                 $planOrder->status = $status;
                 $planOrder->ordered_at = $faker->dateTimeBetween('-6 months', 'now');
 

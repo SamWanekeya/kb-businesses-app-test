@@ -31,7 +31,7 @@ class EasebuzzPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'easebuzz',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $validated['easepayid'],
                 ]);
 
@@ -51,7 +51,7 @@ class EasebuzzPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
@@ -82,7 +82,7 @@ class EasebuzzPaymentController extends Controller
                 'surl' => route('easebuzz.success'),
                 'furl' => route('subscriptions.plans.index'),
                 'udf1' => $validated['billing_cycle'],
-                'udf2' => $validated['coupon_code'] ?? '',
+                'udf2' => $validated['discount_code'] ?? '',
             ];
 
             // Use Easebuzz library to initiate payment

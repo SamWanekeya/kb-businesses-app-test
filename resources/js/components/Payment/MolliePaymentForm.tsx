@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 interface MolliePaymentFormProps {
     planId: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: 'monthly' | 'yearly';
     planPrice: number;
     mollieApiKey: string;
@@ -22,7 +22,7 @@ interface MolliePaymentFormProps {
 
 export function MolliePaymentForm({
     planId,
-    couponCode,
+    discountCode,
     billingCycle,
     planPrice,
     mollieApiKey,
@@ -62,7 +62,7 @@ export function MolliePaymentForm({
                     <input type="hidden" name="_token" value={csrfToken} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
-                    <input type="hidden" name="coupon_code" value={couponCode || ''} />
+                    <input type="hidden" name="discount_code" value={discountCode || ''} />
                     <input type="hidden" name="payment_id" value={`mollie_${Date.now()}`} />
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">

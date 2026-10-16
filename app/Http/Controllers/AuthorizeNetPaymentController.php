@@ -23,7 +23,7 @@ class AuthorizeNetPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
@@ -66,7 +66,7 @@ class AuthorizeNetPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
@@ -87,7 +87,7 @@ class AuthorizeNetPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'payment_method' => 'authorizenet',
-                    'coupon_code' => $validated['coupon_code'] ?? null,
+                    'discount_code' => $validated['discount_code'] ?? null,
                     'payment_id' => $result['transaction_id'],
                 ]);
 

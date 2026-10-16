@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Coupon extends Model
+class Discount extends Model
 {
     protected $fillable = [
         'name',
@@ -13,7 +13,7 @@ class Coupon extends Model
         'minimum_spend',
         'maximum_spend',
         'discount_amount',
-        'use_limit_per_coupon',
+        'use_limit_per_discount',
         'use_limit_per_user',
         'expiry_date',
         'code',

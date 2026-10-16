@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 interface FlutterwavePaymentFormProps {
     planId: number;
     planPrice: number;
-    couponCode: string;
+    discountCode: string;
     billingCycle: string;
     flutterwaveKey: string;
     currency: string;
@@ -17,7 +17,7 @@ interface FlutterwavePaymentFormProps {
 export function FlutterwavePaymentForm({
     planId,
     planPrice,
-    couponCode,
+    discountCode,
     billingCycle,
     flutterwaveKey,
     currency,
@@ -63,7 +63,7 @@ export function FlutterwavePaymentForm({
                         processPayment('flutterwave', {
                             planId,
                             billingCycle,
-                            couponCode,
+                            discountCode,
                             payment_id: data.transaction_id,
                             tx_ref: data.tx_ref,
                         });
@@ -85,7 +85,7 @@ export function FlutterwavePaymentForm({
                 document.head.removeChild(script);
             }
         };
-    }, [flutterwaveKey, planId, billingCycle, couponCode, currency]);
+    }, [flutterwaveKey, planId, billingCycle, discountCode, currency]);
 
     if (!flutterwaveKey) {
         return <div className="p-4 text-center text-red-500">{translate('Flutterwave not configured')}</div>;

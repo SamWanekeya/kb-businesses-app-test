@@ -21,7 +21,7 @@ class PayTRPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
+            $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $credentials = $this->getPayTRCredentials();
 
             if (!$credentials['merchant_id'] || !$credentials['merchant_key'] || !$credentials['merchant_salt']) {
@@ -42,7 +42,7 @@ class PayTRPaymentController extends Controller
                 'plan_id' => $plan->id,
                 'billing_cycle' => $validated['billing_cycle'],
                 'payment_method' => 'paytr',
-                'coupon_code' => $validated['coupon_code'] ?? null,
+                'discount_code' => $validated['discount_code'] ?? null,
                 'payment_id' => $merchant_oid,
                 'status' => 'pending',
             ]);
@@ -148,7 +148,7 @@ class PayTRPaymentController extends Controller
                         'plan_id' => $planOrder->plan_id,
                         'billing_cycle' => $planOrder->billing_cycle,
                         'payment_method' => 'paytr',
-                        'coupon_code' => $planOrder->coupon_code,
+                        'discount_code' => $planOrder->discount_code,
                         'payment_id' => $merchant_oid,
                     ]);
                 }

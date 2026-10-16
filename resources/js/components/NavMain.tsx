@@ -149,7 +149,7 @@ export default function NavMain({ items, position }: { items: NavItem[]; positio
 
         // Check if current path is a sub-path of href
         // This handles cases like:
-        // - /coupons/123 when href is /coupons
+        // - /discounts/123 when href is /discounts
         // - /staff-management/staff/all-staff/create when href is /staff-management/staff
         // - /meetings/all-meetings when href is /meetings/all-meetings
         return normalizedCurrent.startsWith(normalizedHref + '/');
