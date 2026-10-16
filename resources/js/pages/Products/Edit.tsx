@@ -473,13 +473,13 @@ export default function ProductEdit() {
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="bg-muted border-border rounded-lg border p-2">
                                         <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
-                                        <p className="text-foreground mt-0.5 font-mono text-sm font-bold">
+                                        <p className="text-foreground mt-0.5 font-mono text-sm font-extrabold">
                                             {data.price ? `${currency_symbol}${parseFloat(data.price).toFixed(2)}` : `${currency_symbol}0.00`}
                                         </p>
                                     </div>
                                     <div className="rounded-lg border border-orange-200 bg-orange-50 p-2 dark:border-orange-800/40 dark:bg-orange-900/20">
                                         <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Stock')}</p>
-                                        <p className="mt-0.5 text-sm font-bold text-orange-500">{data.stock_quantity || '0'}</p>
+                                        <p className="mt-0.5 text-sm font-extrabold text-orange-500">{data.stock_quantity || '0'}</p>
                                     </div>
                                 </div>
                             </div>

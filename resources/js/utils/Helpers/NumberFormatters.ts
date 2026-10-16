@@ -1,6 +1,26 @@
 // resources/js/utils/Helpers/NumberFormatters.ts
 
 /**
+ * Formats a numeric rating value to a fixed one-decimal-place string.
+ *
+ * Intended for consistent display of rating-like values (e.g. scores, averages)
+ * that may arrive as either strings or numbers from external sources.
+ * Invalid or non-numeric inputs are safely handled by returning an empty string.
+ *
+ * Behavior:
+ * - Accepts both string and number inputs
+ * - Attempts to coerce the value into a number
+ * - Returns a string formatted to one decimal place if the value is finite
+ * - Returns an empty string for non-numeric or invalid values
+ */
+export const formatRating = (value: unknown): string => {
+    if (typeof value !== 'string' && typeof value !== 'number') return '';
+
+    const num = Number(value);
+    return Number.isFinite(num) ? num.toFixed(1) : '';
+};
+
+/**
  * Formats a numeric value as a localized currency string.
  *
  * Intended for consistent display of monetary values originating from APIs,

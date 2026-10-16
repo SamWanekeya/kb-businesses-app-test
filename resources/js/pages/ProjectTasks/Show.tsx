@@ -151,7 +151,7 @@ export default function ProjectTaskShow() {
                                             <>
                                                 <Avatar className="h-7 w-7 flex-shrink-0">
                                                     <AvatarImage src={task.assigned_user.avatar} alt={task.assigned_user.name} />
-                                                    <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                    <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                         {getInitials(task.assigned_user.name || '')}
                                                     </AvatarFallback>
                                                 </Avatar>
@@ -240,7 +240,7 @@ export default function ProjectTaskShow() {
                                             <>
                                                 <Avatar className="h-7 w-7 flex-shrink-0">
                                                     <AvatarImage src={task.creator.avatar} alt={task.creator.name} />
-                                                    <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                    <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                         {getInitials(task.creator.name || '')}
                                                     </AvatarFallback>
                                                 </Avatar>
@@ -347,21 +347,21 @@ export default function ProjectTaskShow() {
                         <CardContent className="pt-6">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-center dark:border-blue-800 dark:bg-blue-900/20">
-                                    <div className="flex items-center justify-center gap-2 text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                    <div className="flex items-center justify-center gap-2 text-2xl font-extrabold text-blue-600 dark:text-blue-400">
                                         <Clock className="h-5 w-5" />
                                         {task.estimated_hours || 0}h
                                     </div>
                                     <div className="text-sm text-gray-600 dark:text-gray-400">{translate('Estimated')}</div>
                                 </div>
                                 <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-center dark:border-green-800 dark:bg-green-900/20">
-                                    <div className="flex items-center justify-center gap-2 text-2xl font-bold text-green-600 dark:text-green-400">
+                                    <div className="flex items-center justify-center gap-2 text-2xl font-extrabold text-green-600 dark:text-green-400">
                                         <CheckCircle className="h-5 w-5" />
                                         {task.actual_hours || 0}h
                                     </div>
                                     <div className="text-sm text-gray-600 dark:text-gray-400">{translate('Actual')}</div>
                                 </div>
                                 <div className="rounded-lg border border-orange-200 bg-orange-50 p-4 text-center dark:border-orange-800 dark:bg-orange-900/20">
-                                    <div className="flex items-center justify-center gap-2 text-2xl font-bold text-orange-600 dark:text-orange-400">
+                                    <div className="flex items-center justify-center gap-2 text-2xl font-extrabold text-orange-600 dark:text-orange-400">
                                         <BarChart3 className="h-5 w-5" />
                                         {task.estimated_hours && task.actual_hours
                                             ? Math.round(((task.actual_hours - task.estimated_hours) / task.estimated_hours) * 100)

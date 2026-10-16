@@ -167,7 +167,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
         <AuthLayout title={translate('Change your password')}>
             <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                 <div className="space-y-2">
-                    <Label htmlFor="email">{translate('Work email')}</Label>
+                    <Label htmlFor="email">{translate('Your work email')}</Label>
 
                     <Input
                         inputIdentifier="email"
@@ -183,7 +183,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                 <div className="space-y-2">
                     <Label htmlFor="password">
-                        {translate('Password')}{' '}
+                        {translate('Your password')}{' '}
                         <span aria-hidden="true" className="text-destructive">
                             *
                         </span>

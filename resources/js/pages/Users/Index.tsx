@@ -482,7 +482,7 @@ export default function Users() {
                                                 </Avatar>
                                             ) : null}
                                             <div
-                                                className={`bg-primary/10 text-primary flex h-12 w-12 items-center justify-center rounded-lg text-sm font-bold ${
+                                                className={`bg-primary/10 text-primary flex h-12 w-12 items-center justify-center rounded-lg text-sm font-extrabold ${
                                                     user.avatar ? 'hidden' : ''
                                                 }`}
                                             >
@@ -689,7 +689,7 @@ export default function Users() {
                         { name: 'email', label: translate('Email'), type: 'email', required: true },
                         {
                             name: 'password',
-                            label: translate('Password'),
+                            label: translate('Your password'),
                             type: 'password',
                             required: true,
                             conditional: (mode) => mode === 'create',

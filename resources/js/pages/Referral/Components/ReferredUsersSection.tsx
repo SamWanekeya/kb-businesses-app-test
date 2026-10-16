@@ -95,7 +95,7 @@ export default function ReferredUsersSection({
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Total Referred Users')}</p>
-                                <p className="mt-2 text-2xl font-bold">{referredUsers.total}</p>
+                                <p className="mt-2 text-2xl font-extrabold">{referredUsers.total}</p>
                             </div>
                             <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
                                 <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -109,7 +109,7 @@ export default function ReferredUsersSection({
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Users with Plans')}</p>
-                                <p className="mt-2 text-2xl font-bold">{usersWithPlans}</p>
+                                <p className="mt-2 text-2xl font-extrabold">{usersWithPlans}</p>
                             </div>
                             <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
                                 <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -123,7 +123,7 @@ export default function ReferredUsersSection({
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Earned')}</p>
-                                <p className="mt-2 font-mono text-2xl font-bold">
+                                <p className="mt-2 font-mono text-2xl font-extrabold">
                                     {currency_symbol}
                                     {(totalCommissionEarned || 0).toFixed(2)}
                                 </p>

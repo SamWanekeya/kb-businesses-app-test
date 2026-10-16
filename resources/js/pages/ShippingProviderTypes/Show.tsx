@@ -59,7 +59,7 @@ export default function ShippingProviderTypeShow() {
                 <div className="rounded-lg border bg-white p-6 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="flex items-center text-lg font-bold">
+                            <h1 className="flex items-center text-lg font-extrabold">
                                 <Truck className="text-muted-foreground mr-2 h-5 w-5" />
                                 {shippingProviderType.name}
                             </h1>

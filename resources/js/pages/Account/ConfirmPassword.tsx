@@ -105,7 +105,7 @@ export default function ConfirmPassword() {
             <form onSubmit={handleSubmit} noValidate className="space-y-6">
                 <div className="space-y-2">
                     <Label htmlFor="password" className="font-medium text-neutral-700 dark:text-neutral-300">
-                        {translate('Password')}
+                        {translate('Your password')}
                         <span aria-hidden="true" className="ml-1 text-red-600 dark:text-red-400">
                             *
                         </span>
@@ -131,7 +131,7 @@ export default function ConfirmPassword() {
                 </div>
 
                 <AccountButton type="submit" processing={processing} disabled={isSubmitDisabled}>
-                    {translate('Confirm password')}
+                    {translate('Confirm your password')}
                 </AccountButton>
             </form>
         </AuthLayout>

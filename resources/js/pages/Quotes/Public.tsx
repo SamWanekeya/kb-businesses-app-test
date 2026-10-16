@@ -291,7 +291,7 @@ export default function PublicQuote({
                     {/* Action Bar */}
                     <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center print:hidden">
                         <div className="mb-4 sm:mb-0">
-                            <h1 className="text-2xl font-bold text-gray-900">
+                            <h1 className="text-2xl font-extrabold text-gray-900">
                                 {translate('Quote Details')} - {quote.quote_number}
                             </h1>
                             <p className="mt-1 text-gray-600">{translate('View your quote')}</p>
@@ -339,7 +339,7 @@ export default function PublicQuote({
                         <div className="rounded-lg border bg-white p-8 shadow-sm print:hidden">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <h1 className="text-lg leading-tight font-bold text-gray-900">{quote.name}</h1>
+                                    <h1 className="text-lg leading-tight font-extrabold text-gray-900">{quote.name}</h1>
                                     <p className="mt-2 max-w-3xl text-base leading-relaxed text-gray-600">
                                         {quote.description || translate('No description provided')}
                                     </p>
@@ -393,8 +393,8 @@ export default function PublicQuote({
                                     <div className="relative p-4">
                                         <div className="flex items-start justify-between">
                                             <div className="min-w-0 pr-2">
-                                                <p className="mb-1 text-xs font-bold tracking-wide text-gray-500">{label}</p>
-                                                <p className="truncate text-lg leading-snug font-bold text-gray-900">{value}</p>
+                                                <p className="mb-1 text-xs font-extrabold tracking-wide text-gray-500">{label}</p>
+                                                <p className="truncate text-lg leading-snug font-extrabold text-gray-900">{value}</p>
                                             </div>
                                             <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                                 <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -715,7 +715,7 @@ export default function PublicQuote({
                                                                             </div>
                                                                         )}
                                                                         <div className="min-w-0">
-                                                                            <p className="truncate text-sm font-bold text-gray-900">{product.name}</p>
+                                                                            <p className="truncate text-sm font-extrabold text-gray-900">{product.name}</p>
                                                                             {product.sku && (
                                                                                 <p className="mt-0.5 text-xs text-gray-500">SKU: {product.sku}</p>
                                                                             )}
@@ -772,7 +772,7 @@ export default function PublicQuote({
                                                                     )}
                                                                 </TableCell>
                                                                 <TableCell className="py-3 text-right">
-                                                                    <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                    <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                         {formatCurrency(finalTotal)}
                                                                     </p>
                                                                 </TableCell>
@@ -800,8 +800,8 @@ export default function PublicQuote({
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
-                                                    <span className="text-sm font-bold text-gray-900">{translate('Grand Total')}</span>
-                                                    <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                                    <span className="text-sm font-extrabold text-gray-900">{translate('Grand Total')}</span>
+                                                    <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -880,7 +880,7 @@ export default function PublicQuote({
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
                                                                 <span className="text-xs text-gray-400">
-                                                                    {formatRelativeTime(activity.created_at)}
+                                                                    {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                 </span>
                                                             </div>
                                                         </div>

@@ -166,7 +166,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                             <TooltipTrigger asChild>
                                                                 <span className="h-full w-full">
                                                                     <AvatarImage src={activity.user?.avatar} alt={activity.user?.name || 'U'} />
-                                                                    <AvatarFallback className="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold sm:h-9 sm:w-9">
+                                                                    <AvatarFallback className="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-full text-xs font-extrabold sm:h-9 sm:w-9">
                                                                         {getInitials(activity.user?.name || 'U')}
                                                                     </AvatarFallback>
                                                                 </span>

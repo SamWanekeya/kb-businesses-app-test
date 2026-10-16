@@ -786,7 +786,7 @@ export default function Opportunities() {
                                                             <div className="p-3">
                                                                 {/* Top row: avatar + name/account + menu */}
                                                                 <div className="mb-2.5 flex items-start gap-2.5">
-                                                                    {/* <div className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center text-primary bg-primary/15 ring-1 ring-primary text-xs font-bold">
+                                                                    {/* <div className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center text-primary bg-primary/15 ring-1 ring-primary text-xs font-extrabold">
                                                                 {getInitials(opportunity.name)}
                                                             </div> */}
                                                                     <div className="min-w-0 flex-1">
@@ -958,11 +958,11 @@ export default function Opportunities() {
                                 <div className="flex h-full flex-col p-6">
                                     <div className="mb-4 flex items-start justify-between">
                                         <div className="flex items-start space-x-4">
-                                            <div className="bg-primary/15 text-primary ring-primary flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold ring-1">
+                                            <div className="bg-primary/15 text-primary ring-primary flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full text-lg font-extrabold ring-1">
                                                 {getInitials(opportunity.name)}
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{opportunity.name}</h3>
+                                                <h3 className="mb-2 text-lg font-extrabold text-gray-900 dark:text-white">{opportunity.name}</h3>
                                                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-300">
                                                     {opportunity.account?.name || translate('No account')}
                                                 </p>

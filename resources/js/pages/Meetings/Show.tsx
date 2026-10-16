@@ -128,7 +128,7 @@ export default function MeetingShow() {
                                                         target.src = resolveImageUrl('avatars/avatar.png');
                                                     }}
                                                 />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {attendee?.attendee?.name?.charAt(0)?.toUpperCase() || 'U'}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -162,7 +162,7 @@ export default function MeetingShow() {
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={meeting.assigned_user.avatar} alt={meeting.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(meeting.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

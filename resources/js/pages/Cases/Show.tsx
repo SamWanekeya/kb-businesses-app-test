@@ -181,7 +181,7 @@ export default function CaseShow() {
                                 <span className="text-muted-foreground/40">·</span>
                                 <Avatar className="h-4 w-4">
                                     <AvatarImage src={item.assigned_user?.avatar} alt={item.assigned_user?.name} />
-                                    <AvatarFallback className="bg-primary/15 text-primary text-[8px] font-bold">
+                                    <AvatarFallback className="bg-primary/15 text-primary text-[8px] font-extrabold">
                                         {getInitials(item.assigned_user?.name || 'U')}
                                     </AvatarFallback>
                                 </Avatar>
@@ -262,7 +262,7 @@ export default function CaseShow() {
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
                                         <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                        <p className="text-foreground truncate text-lg leading-snug font-bold">{value}</p>
+                                        <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -336,7 +336,7 @@ export default function CaseShow() {
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={caseData.assigned_user.avatar} alt={caseData.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(caseData.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

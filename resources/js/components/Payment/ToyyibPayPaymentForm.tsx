@@ -46,7 +46,7 @@ export function ToyyibPayPaymentForm({
         const newErrors: { [key: string]: string } = {};
 
         if (!customerDetails.name.trim()) {
-            newErrors.name = translate('Full name is required');
+            newErrors.name = translate('Your full name is required');
         }
 
         if (!customerDetails.email.trim()) {
@@ -218,7 +218,7 @@ export function ToyyibPayPaymentForm({
                     <div className="border-t pt-4">
                         <div className="mb-4 flex items-center justify-between">
                             <span className="text-muted-foreground text-sm">{translate('Total Amount')}:</span>
-                            <span className="text-lg font-bold">
+                            <span className="text-lg font-extrabold">
                                 {currency} {planPrice.toFixed(2)}
                             </span>
                         </div>

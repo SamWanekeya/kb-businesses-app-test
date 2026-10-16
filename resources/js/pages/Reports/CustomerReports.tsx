@@ -226,7 +226,7 @@ export default function CustomerReports() {
                                                 </div>
                                                 <div className="border-border w-[calc(100%-4rem)] rounded-xl border bg-white p-4 shadow-sm md:w-[calc(50%-2.5rem)] dark:bg-slate-800">
                                                     <div className="mb-1 flex items-center justify-between space-x-2">
-                                                        <div className="truncate text-sm font-bold text-slate-900 dark:text-slate-100">
+                                                        <div className="truncate text-sm font-extrabold text-slate-900 dark:text-slate-100">
                                                             {interaction.title}
                                                         </div>
                                                         <time className="text-muted-foreground shrink-0 text-[11px] font-medium">
@@ -274,7 +274,7 @@ export default function CustomerReports() {
                                         <p className="text-muted-foreground mt-0.5 truncate text-xs">{contact.email || translate('No Email')}</p>
                                     </div>
                                     <div className="flex shrink-0 flex-col items-end gap-1">
-                                        <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
+                                        <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
                                             {window.kbSettings.formatCurrency(contact.total_spent) || `$${contact.total_spent}`}
                                         </span>
                                         <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">

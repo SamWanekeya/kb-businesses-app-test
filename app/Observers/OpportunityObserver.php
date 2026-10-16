@@ -148,39 +148,39 @@ class OpportunityObserver
             case 'opportunity_stage_id':
                 $oldOpportunityStage = $oldValue ? OpportunityStage::find($oldValue) : null;
                 $newOpportunityStage = $newValue ? OpportunityStage::find($newValue) : null;
-                $oldPart = $oldOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($oldOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $oldOpportunityStage->name . '</span>' : 'None';
-                $newPart = $newOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($newOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $newOpportunityStage->name . '</span>' : 'None';
+                $oldPart = $oldOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($oldOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-extrabold">' . $oldOpportunityStage->name . '</span>' : 'None';
+                $newPart = $newOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($newOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-extrabold">' . $newOpportunityStage->name . '</span>' : 'None';
 
                 return $oldPart . ' into ' . $newPart;
             case 'opportunity_source_id':
                 $oldSource = $oldValue ? OpportunitySource::find($oldValue)?->name : 'None';
                 $newSource = $newValue ? OpportunitySource::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldSource ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSource ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldSource ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newSource ?? 'None') . '</span>';
             case 'name':
-                return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-extrabold text-base">' . ($newValue ?? '') . '</span>';
             case 'amount':
                 $oldAmount = $oldValue ? '$' . number_format($oldValue, 2) : '$0.00';
                 $newAmount = $newValue ? '$' . number_format($newValue, 2) : '$0.00';
 
-                return '<span class="font-bold text-base">' . $oldAmount . '</span> into <span class="font-bold text-base">' . $newAmount . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldAmount . '</span> into <span class="font-extrabold text-base">' . $newAmount . '</span>';
             case 'assigned_to':
                 $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
                 $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
-                return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldUser . '</span> into <span class="font-extrabold text-base">' . $newUser . '</span>';
             default:
                 // Handle date fields
                 if (str_contains($field, '_date') || str_contains($field, '_at') || in_array($field, ['close_date'])) {
                     $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                     $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                    return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                    return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
                 }
                 $oldVal = $oldValue ?? 'None';
                 $newVal = $newValue ?? 'None';
 
-                return '<span class="font-bold text-base">' . $oldVal . '</span> into <span class="font-bold text-base">' . $newVal . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldVal . '</span> into <span class="font-extrabold text-base">' . $newVal . '</span>';
         }
     }
 }

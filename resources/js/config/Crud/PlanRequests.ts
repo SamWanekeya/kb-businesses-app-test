@@ -22,7 +22,7 @@ export const usePlanRequestsConfig = (): CrudConfig => {
         table: {
             columns: [
                 { key: 'user.name', label: translate('Name'), sortable: true },
-                { key: 'user.email', label: translate('Work email'), sortable: true },
+                { key: 'user.email', label: translate('Your work email'), sortable: true },
                 { key: 'plan.name', label: translate('Plan name'), sortable: true },
                 {
                     key: 'plan.duration',

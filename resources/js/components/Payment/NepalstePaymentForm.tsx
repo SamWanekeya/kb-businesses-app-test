@@ -109,7 +109,7 @@ export function NepalstePaymentForm({
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
                         <span className="font-medium">{translate('Total Amount')}</span>
-                        <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
+                        <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}

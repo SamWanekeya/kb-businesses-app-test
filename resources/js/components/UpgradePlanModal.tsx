@@ -146,7 +146,7 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
                                             {/* Price */}
                                             <div className="mb-1 flex items-baseline gap-1">
                                                 <CreditCard className="h-3.5 w-3.5 flex-shrink-0 text-neutral-400" />
-                                                <span className="text-base leading-tight font-bold text-neutral-500">
+                                                <span className="text-base leading-tight font-extrabold text-neutral-500">
                                                     {window.kbSettings.formatCurrency(plan.price) || `$${plan.price}`}
                                                 </span>
                                                 <span className="text-sm leading-tight text-neutral-600">

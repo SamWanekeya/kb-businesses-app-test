@@ -149,50 +149,50 @@ class QuoteObserver
 
                 return $oldStatus . ' into ' . $newStatus;
             case 'name':
-                return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-extrabold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
                 $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
                 $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
-                return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldUser . '</span> into <span class="font-extrabold text-base">' . $newUser . '</span>';
             case 'account_id':
                 $oldAccount = $oldValue ? Account::find($oldValue)?->name : 'None';
                 $newAccount = $newValue ? Account::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldAccount ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newAccount ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldAccount ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newAccount ?? 'None') . '</span>';
             case 'opportunity_id':
                 $oldOpportunity = $oldValue ? Opportunity::find($oldValue)?->name : 'None';
                 $newOpportunity = $newValue ? Opportunity::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldOpportunity ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newOpportunity ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldOpportunity ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newOpportunity ?? 'None') . '</span>';
             case 'billing_contact_id':
             case 'shipping_contact_id':
                 $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
                 $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newContact ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newContact ?? 'None') . '</span>';
             case 'shipping_provider_type_id':
                 $oldProvider = $oldValue ? ShippingProviderType::find($oldValue)?->name : 'None';
                 $newProvider = $newValue ? ShippingProviderType::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldProvider ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newProvider ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldProvider ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newProvider ?? 'None') . '</span>';
             case 'valid_until':
                 $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                 $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
             default:
                 // Handle date fields
                 if (str_contains($field, '_date') || str_contains($field, '_at') || in_array($field, ['valid_until'])) {
                     $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                     $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                    return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                    return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
                 }
                 $oldVal = $oldValue ?? 'None';
                 $newVal = $newValue ?? 'None';
 
-                return '<span class="font-bold text-base">' . $oldVal . '</span> into <span class="font-bold text-base">' . $newVal . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldVal . '</span> into <span class="font-extrabold text-base">' . $newVal . '</span>';
         }
     }
 }

@@ -352,7 +352,7 @@ export default function Projects() {
                             <p className={`text-sm font-medium ${s.color}`}>{s.label}</p>
                             <span className={s.color}>{React.cloneElement(s.icon, { className: 'h-5 w-5' })}</span>
                         </div>
-                        <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
+                        <p className={`text-xl font-extrabold ${s.color}`}>{s.value}</p>
                         <p className={`text-xs ${s.color} opacity-70`}>{s.sub}</p>
                     </Card>
                 ))}

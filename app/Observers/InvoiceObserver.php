@@ -135,42 +135,42 @@ class InvoiceObserver
 
                 return $oldStatus . ' into ' . $newStatus;
             case 'invoice_number':
-                return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-extrabold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
                 $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
                 $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
-                return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldUser . '</span> into <span class="font-extrabold text-base">' . $newUser . '</span>';
             case 'sales_order_id':
                 $oldSalesOrder = $oldValue ? SalesOrder::find($oldValue)?->sales_order_number : 'None';
                 $newSalesOrder = $newValue ? SalesOrder::find($newValue)?->sales_order_number : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldSalesOrder ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSalesOrder ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldSalesOrder ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newSalesOrder ?? 'None') . '</span>';
             case 'billing_contact_id':
             case 'shipping_contact_id':
                 $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
                 $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
 
-                return '<span class="font-bold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newContact ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newContact ?? 'None') . '</span>';
             case 'due_date':
                 $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                 $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
             case 'payment_method':
-                return '<span class="font-bold text-base">' . ($oldValue ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newValue ?? 'None') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldValue ?? 'None') . '</span> into <span class="font-extrabold text-base">' . ($newValue ?? 'None') . '</span>';
             default:
                 // Handle date fields
                 if (str_contains($field, '_date') || str_contains($field, '_at') || in_array($field, ['due_date'])) {
                     $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                     $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                    return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                    return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
                 }
                 $oldVal = $oldValue ?? 'None';
                 $newVal = $newValue ?? 'None';
 
-                return '<span class="font-bold text-base">' . $oldVal . '</span> into <span class="font-bold text-base">' . $newVal . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldVal . '</span> into <span class="font-extrabold text-base">' . $newVal . '</span>';
         }
     }
 }

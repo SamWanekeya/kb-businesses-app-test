@@ -29,7 +29,7 @@ export function SummaryCard({ title, value, icon, iconColor, blobCls, iconCls, v
                             {title}
                         </p>
                         <p
-                            className={`font-mono text-2xl font-bold tracking-tight min-[1450px]:text-3xl ${valueColor} truncate`}
+                            className={`font-mono text-2xl font-extrabold tracking-tight min-[1450px]:text-3xl ${valueColor} truncate`}
                             title={String(value)}
                         >
                             {value}

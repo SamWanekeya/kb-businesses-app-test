@@ -278,7 +278,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     <div className="min-w-0 transition-transform duration-300 group-hover:translate-x-2">
                         <p className="mb-0.5 text-sm text-slate-400">{greetingText},</p>
                         <div className="flex items-center gap-2">
-                            <h2 className="group-hover:text-primary truncate text-xl font-bold text-white transition-colors duration-300 sm:text-2xl">
+                            <h2 className="group-hover:text-primary truncate text-xl font-extrabold text-white transition-colors duration-300 sm:text-2xl">
                                 {auth?.user?.name ?? translate('Welcome')}
                             </h2>
                             <span className="animate-hand-wave text-2xl select-none sm:text-3xl">👋</span>
@@ -378,7 +378,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <ArrowUpRight className="h-4 w-4 text-green-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-green-500" />
                                     </div>
                                     <p className="mb-1 text-xs text-green-700 dark:text-green-400">{translate('Total Leads')}</p>
-                                    <p className="truncate text-xl font-bold tracking-tight text-green-900 sm:text-2xl dark:text-green-100">
+                                    <p className="truncate text-xl font-extrabold tracking-tight text-green-900 sm:text-2xl dark:text-green-100">
                                         {(stats.totalLeads || 0).toLocaleString()}
                                     </p>
                                     <p className="mt-1.5 flex items-center gap-0.5 text-[11px] text-green-600">
@@ -410,7 +410,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <ArrowUpRight className="h-4 w-4 text-violet-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-violet-500" />
                                     </div>
                                     <p className="mb-1 text-xs text-violet-700 dark:text-violet-400">{translate('Total Sales')}</p>
-                                    <p className="truncate text-xl font-bold tracking-tight text-violet-900 sm:text-2xl dark:text-violet-100">
+                                    <p className="truncate text-xl font-extrabold tracking-tight text-violet-900 sm:text-2xl dark:text-violet-100">
                                         {(stats.totalSales || 0).toLocaleString()}
                                     </p>
                                     <p className="mt-1.5 text-[11px] text-violet-500 dark:text-violet-400">
@@ -441,7 +441,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <ArrowUpRight className="h-4 w-4 text-orange-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-orange-500" />
                                     </div>
                                     <p className="mb-1 text-xs text-orange-700 dark:text-orange-400">{translate('Total Accounts')}</p>
-                                    <p className="truncate text-xl font-bold tracking-tight text-orange-900 sm:text-2xl dark:text-orange-100">
+                                    <p className="truncate text-xl font-extrabold tracking-tight text-orange-900 sm:text-2xl dark:text-orange-100">
                                         {(stats.totalCustomers || 0).toLocaleString()}
                                     </p>
                                     <p className="mt-1.5 text-[11px] text-orange-500 dark:text-orange-400">{translate('active customers')}</p>
@@ -470,7 +470,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <ArrowUpRight className="h-4 w-4 text-indigo-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-indigo-500" />
                                     </div>
                                     <p className="mb-1 text-xs text-indigo-700 dark:text-indigo-400">{translate('Total Projects')}</p>
-                                    <p className="truncate text-xl font-bold tracking-tight text-indigo-900 sm:text-2xl dark:text-indigo-100">
+                                    <p className="truncate text-xl font-extrabold tracking-tight text-indigo-900 sm:text-2xl dark:text-indigo-100">
                                         {(stats.totalProjects || 0).toLocaleString()}
                                     </p>
                                     <p className="mt-1.5 text-[11px] text-indigo-500 dark:text-indigo-400">{translate('active projects')}</p>
@@ -499,7 +499,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                     </div>
                                     <p className="mb-1 text-xs text-emerald-700 dark:text-emerald-400">{translate('Organization Revenue')}</p>
                                     <p
-                                        className="truncate font-mono text-xl font-bold tracking-tight text-emerald-900 sm:text-2xl dark:text-emerald-100"
+                                        className="truncate font-mono text-xl font-extrabold tracking-tight text-emerald-900 sm:text-2xl dark:text-emerald-100"
                                         title={
                                             window.kbSettings.formatCurrency(stats.organizationRevenue || 0) ??
                                             `$${(stats.organizationRevenue || 0).toLocaleString()}`
@@ -557,7 +557,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     <Tooltip formatter={(v) => [`${v}%`, translate('Storage')]} />
                                                 </PieChart>
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                                    <span className="text-xl font-bold" style={{ color }}>{usedPct}%</span>
+                                                    <span className="text-xl font-extrabold" style={{ color }}>{usedPct}%</span>
                                                     <span className="text-xs text-muted-foreground">{translate('Used')}</span>
                                                 </div>
                                             </div>
@@ -852,7 +852,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                             transform: 'translateX(-50%)',
                                                         }}
                                                     >
-                                                        <span className="text-lg leading-tight font-bold" style={{ color }}>
+                                                        <span className="text-lg leading-tight font-extrabold" style={{ color }}>
                                                             {usedPct}%
                                                         </span>
                                                         <span className="text-muted-foreground text-[10px]">{translate('Used')}</span>
@@ -876,19 +876,19 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 <div className="mt-3 grid w-full grid-cols-3 gap-2">
                                                     <div className="flex flex-col items-center gap-0.5 rounded-lg border border-orange-200 bg-orange-50 px-2 py-2 dark:border-orange-800 dark:bg-orange-950/30">
                                                         <p className="text-[10px] text-orange-600 dark:text-orange-400">{translate('Used')}</p>
-                                                        <p className="text-center text-xs leading-tight font-bold text-orange-700 dark:text-orange-300">
+                                                        <p className="text-center text-xs leading-tight font-extrabold text-orange-700 dark:text-orange-300">
                                                             {fmtUsed}
                                                         </p>
                                                     </div>
                                                     <div className="flex flex-col items-center gap-0.5 rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-2 dark:border-emerald-800 dark:bg-emerald-950/30">
                                                         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{translate('Free')}</p>
-                                                        <p className="text-center text-xs leading-tight font-bold text-emerald-700 dark:text-emerald-300">
+                                                        <p className="text-center text-xs leading-tight font-extrabold text-emerald-700 dark:text-emerald-300">
                                                             {freeGB.toFixed(1)} GB
                                                         </p>
                                                     </div>
                                                     <div className="flex flex-col items-center gap-0.5 rounded-lg border border-blue-200 bg-blue-50 px-2 py-2 dark:border-blue-800 dark:bg-blue-950/30">
                                                         <p className="text-[10px] text-blue-600 dark:text-blue-400">{translate('Total')}</p>
-                                                        <p className="text-center text-xs leading-tight font-bold text-blue-700 dark:text-blue-300">
+                                                        <p className="text-center text-xs leading-tight font-extrabold text-blue-700 dark:text-blue-300">
                                                             {limitGB.toFixed(1)} GB
                                                         </p>
                                                     </div>

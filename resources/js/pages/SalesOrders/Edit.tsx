@@ -842,7 +842,7 @@ export default function SalesOrderEdit() {
                                     <span>{translate('Tax')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.tax)}</span>
                                 </div>
-                                <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
+                                <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                     <span>{translate('Grand Total')}</span>
                                     <span className="font-mono text-lg text-green-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>

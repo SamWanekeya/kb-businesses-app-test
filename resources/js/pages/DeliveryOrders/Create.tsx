@@ -596,7 +596,7 @@ export default function DeliveryOrderCreate() {
                             {totalWeight >= 0 && productRows.some((r) => r.product_id) && (
                                 <div className="flex justify-end border-t border-gray-100 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
                                     <div className="w-64">
-                                        <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
+                                        <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                             <span>{translate('Total Weight')}</span>
                                             <span className="text-lg text-green-600">{totalWeight.toFixed(2)} kg</span>
                                         </div>

@@ -212,7 +212,7 @@ export default function Notes() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">{translate('Total Notes')}</p>
-                            <p className="text-2xl font-bold">{totalPersonalNotes + totalSharedNotes}</p>
+                            <p className="text-2xl font-extrabold">{totalPersonalNotes + totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
                             <NotebookPen className="h-6 w-6 text-blue-600" />
@@ -223,7 +223,7 @@ export default function Notes() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">{translate('Personal Notes')}</p>
-                            <p className="text-2xl font-bold">{totalPersonalNotes}</p>
+                            <p className="text-2xl font-extrabold">{totalPersonalNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
                             <Users className="h-6 w-6 text-green-600" />
@@ -234,7 +234,7 @@ export default function Notes() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">{translate('Shared Notes')}</p>
-                            <p className="text-2xl font-bold">{totalSharedNotes}</p>
+                            <p className="text-2xl font-extrabold">{totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
                             <Share2 className="h-6 w-6 text-purple-600" />

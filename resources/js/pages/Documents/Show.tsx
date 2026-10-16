@@ -345,7 +345,7 @@ export default function DocumentShow() {
                     <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
                         {/* Header */}
                         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                            <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100">
+                            <div className="flex items-center gap-2 text-sm font-extrabold text-gray-800 dark:text-gray-100">
                                 <FileText className="h-4 w-4 text-gray-500" />
                                 {translate('Document Details')}
                             </div>
@@ -503,7 +503,7 @@ export default function DocumentShow() {
                         </div>
                         {document.description && (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
+                                <p className="mb-1 text-sm font-extrabold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
                                 <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-gray-500 dark:text-gray-400">
                                     {document.description}
                                 </p>
@@ -511,7 +511,7 @@ export default function DocumentShow() {
                         )}
                         {document.opportunity?.name && (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Opportunity')}</p>
+                                <p className="mb-1 text-sm font-extrabold text-gray-800 dark:text-gray-100">{translate('Opportunity')}</p>
                                 <p className="text-sm leading-relaxed break-words text-gray-500 dark:text-gray-400">{document.opportunity.name}</p>
                             </div>
                         )}
@@ -521,7 +521,7 @@ export default function DocumentShow() {
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.account.avatar} alt={document.account.name} />
-                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                             {getInitials(document.account.name || '')}
                                         </AvatarFallback>
                                     </Avatar>
@@ -538,7 +538,7 @@ export default function DocumentShow() {
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.assigned_user.avatar} alt={document.assigned_user.name} />
-                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                             {getInitials(document.assigned_user.name || '')}
                                         </AvatarFallback>
                                     </Avatar>
@@ -617,7 +617,7 @@ function DetailRow({
 
     return (
         <div className="flex w-full min-w-0 flex-col justify-between gap-1 py-2.5 pr-3 pl-4 xl:flex-row xl:items-center xl:gap-4">
-            <p className="shrink-0 text-sm font-bold text-gray-700 dark:text-gray-300">{label}</p>
+            <p className="shrink-0 text-sm font-extrabold text-gray-700 dark:text-gray-300">{label}</p>
             <div className="min-w-0 text-left xl:text-right">
                 {badge ? (
                     <span

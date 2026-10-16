@@ -175,7 +175,7 @@ export default function ProductShow() {
                                     <div className="flex items-start justify-between">
                                         <div className="min-w-0 pe-1">
                                             <p className="text-muted-foreground mb-1 text-xs font-medium">{label}</p>
-                                            <p className="text-foreground truncate font-mono text-sm leading-snug font-bold">{value}</p>
+                                            <p className="text-foreground truncate font-mono text-sm leading-snug font-extrabold">{value}</p>
                                         </div>
                                         <div className={`relative z-10 p-2 ${blobCls} mt-0.5 flex-shrink-0 rounded-lg`}>
                                             <Icon className={`h-4 w-4 ${iconCls}`} />
@@ -245,7 +245,7 @@ export default function ProductShow() {
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
                                                 <AvatarImage src={product.assigned_user.avatar} alt={product.assigned_user.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(product.assigned_user.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -266,7 +266,7 @@ export default function ProductShow() {
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
                                                 <AvatarImage src={product.creator.avatar} alt={product.creator.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(product.creator.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>

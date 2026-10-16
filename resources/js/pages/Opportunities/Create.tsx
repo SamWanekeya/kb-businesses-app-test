@@ -685,8 +685,8 @@ export default function OpportunityCreate() {
                                     <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
-                                    <span className="font-mono text-base font-bold text-green-600 dark:text-green-400">{fmt(grandTotal)}</span>
+                                    <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
+                                    <span className="font-mono text-base font-extrabold text-green-600 dark:text-green-400">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>

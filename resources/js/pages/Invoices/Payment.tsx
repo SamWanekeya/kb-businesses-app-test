@@ -184,7 +184,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                                     <CreditCard className="h-6 w-6 text-blue-600" />
                                 </div>
                                 <div>
-                                    <h1 className="text-2xl font-bold">
+                                    <h1 className="text-2xl font-extrabold">
                                         {translate('Payment for Invoice #{{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}
                                     </h1>
                                     <p className="text-gray-600">{invoice.name}</p>

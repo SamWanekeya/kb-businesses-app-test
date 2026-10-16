@@ -249,7 +249,7 @@ export default function AnnouncementDashboard() {
                                         <span className={`h-2 w-2 rounded-full ${s.color}`} />
                                         <span className="text-sm text-gray-600 dark:text-gray-300">{s.label}</span>
                                     </div>
-                                    <span className="text-sm font-bold text-gray-900 dark:text-gray-100">{s.count}</span>
+                                    <span className="text-sm font-extrabold text-gray-900 dark:text-gray-100">{s.count}</span>
                                 </div>
                             ))}
                         </div>

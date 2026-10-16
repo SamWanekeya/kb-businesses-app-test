@@ -70,7 +70,7 @@ export default function CampaignShow() {
                 <div className="rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-900">
                     <div className="flex items-start justify-between">
                         <div>
-                            <h1 className="text-lg font-bold text-gray-900 dark:text-white">{campaign.name}</h1>
+                            <h1 className="text-lg font-extrabold text-gray-900 dark:text-white">{campaign.name}</h1>
                             {campaign.description && <p className="mt-1 max-w-2xl text-sm text-gray-500">{campaign.description}</p>}
                             <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                                 {/* <span className="flex items-center gap-1"><Tag className="h-3 w-3" />{campaign.campaign_type?.name || '-'}</span>
@@ -139,7 +139,7 @@ export default function CampaignShow() {
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
                                         <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-bold">{value}</p>
+                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -250,13 +250,13 @@ export default function CampaignShow() {
                             <div className="grid grid-cols-3 gap-1.5 min-[450px]:gap-3">
                                 <div className="rounded-lg border border-green-200 bg-green-50 p-1.5 text-center min-[400px]:p-3">
                                     <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Budget')}</p>
-                                    <p className="truncate font-mono text-xs font-bold text-green-600 min-[400px]:text-sm sm:text-base">
+                                    <p className="truncate font-mono text-xs font-extrabold text-green-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.budget)}
                                     </p>
                                 </div>
                                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-1.5 text-center min-[400px]:p-3">
                                     <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Spent')}</p>
-                                    <p className="truncate font-mono text-xs font-bold text-blue-600 min-[400px]:text-sm sm:text-base">
+                                    <p className="truncate font-mono text-xs font-extrabold text-blue-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.actual_cost)}
                                     </p>
                                 </div>
@@ -265,7 +265,7 @@ export default function CampaignShow() {
                                 >
                                     <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Remaining')}</p>
                                     <p
-                                        className={`truncate font-mono text-xs font-bold min-[400px]:text-sm sm:text-base ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}
+                                        className={`truncate font-mono text-xs font-extrabold min-[400px]:text-sm sm:text-base ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}
                                     >
                                         {formatCurrency(remaining)}
                                     </p>

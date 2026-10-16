@@ -178,7 +178,7 @@ export default function ProductReports() {
                                             </div>
                                         </div>
 
-                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-extrabold text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
                                             {product.stock_quantity}
                                         </div>
                                     </div>
@@ -253,7 +253,7 @@ export default function ProductReports() {
                                             </div>
                                         </div>
 
-                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-extrabold text-red-700 dark:bg-red-900/30 dark:text-red-400">
                                             {product.stock_quantity}
                                         </div>
                                     </div>
@@ -323,7 +323,7 @@ export default function ProductReports() {
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
-                                            <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
+                                            <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
                                                 {window.kbSettings.formatCurrency(product.revenue) || `$${product.revenue.toLocaleString()}`}
                                             </span>
                                         </div>

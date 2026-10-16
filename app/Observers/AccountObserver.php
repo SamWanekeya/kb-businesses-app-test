@@ -172,24 +172,24 @@ class AccountObserver
 
                 return $oldPart . ' into ' . $newPart;
             case 'name':
-                return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
+                return '<span class="font-extrabold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-extrabold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
                 $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
                 $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
-                return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldUser . '</span> into <span class="font-extrabold text-base">' . $newUser . '</span>';
             default:
                 // Handle date fields
                 if (str_contains($field, '_date') || str_contains($field, '_at') || in_array($field, ['valid_until'])) {
                     $oldDate = $oldValue ? date('Y-m-d', strtotime($oldValue)) : 'None';
                     $newDate = $newValue ? date('Y-m-d', strtotime($newValue)) : 'None';
 
-                    return '<span class="font-bold text-base">' . $oldDate . '</span> into <span class="font-bold text-base">' . $newDate . '</span>';
+                    return '<span class="font-extrabold text-base">' . $oldDate . '</span> into <span class="font-extrabold text-base">' . $newDate . '</span>';
                 }
                 $oldVal = $oldValue ?? 'None';
                 $newVal = $newValue ?? 'None';
 
-                return '<span class="font-bold text-base">' . $oldVal . '</span> into <span class="font-bold text-base">' . $newVal . '</span>';
+                return '<span class="font-extrabold text-base">' . $oldVal . '</span> into <span class="font-extrabold text-base">' . $newVal . '</span>';
         }
     }
 }

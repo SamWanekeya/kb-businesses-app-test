@@ -117,7 +117,7 @@ export default function ProjectShow() {
                 <Card>
                     <div className="flex flex-wrap items-start justify-between gap-3 border-b px-6 py-4">
                         <div>
-                            <h1 className="max-w-[280px] truncate text-lg font-bold sm:max-w-none">{project.name}</h1>
+                            <h1 className="max-w-[280px] truncate text-lg font-extrabold sm:max-w-none">{project.name}</h1>
                             {project.code && (
                                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                     {translate('Code')}: {project.code}
@@ -171,7 +171,7 @@ export default function ProjectShow() {
                         <div className="space-y-4 p-6">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600 dark:text-gray-400">{translate('Overall Progress')}</span>
-                                <span className="text-primary text-lg font-bold">{progressPercentage}%</span>
+                                <span className="text-primary text-lg font-extrabold">{progressPercentage}%</span>
                             </div>
                             <div className="h-3 w-full rounded-full bg-gray-200">
                                 <div
@@ -191,7 +191,7 @@ export default function ProjectShow() {
                                             border: `1px solid ${status.color}40`,
                                         }}
                                     >
-                                        <div className="text-lg font-bold" style={{ color: status.color }}>
+                                        <div className="text-lg font-extrabold" style={{ color: status.color }}>
                                             {taskStats[status.name] || 0}
                                         </div>
                                         <div className="text-xs text-gray-500">{status.name}</div>
@@ -303,7 +303,7 @@ export default function ProjectShow() {
                                         <>
                                             <Avatar className="h-7 w-7 flex-shrink-0">
                                                 <AvatarImage src={project.assigned_user.avatar} alt={project.assigned_user.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(project.assigned_user.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -326,7 +326,7 @@ export default function ProjectShow() {
                                         <>
                                             <Avatar className="h-7 w-7 flex-shrink-0">
                                                 <AvatarImage src={project.creator.avatar} alt={project.creator.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(project.creator.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>

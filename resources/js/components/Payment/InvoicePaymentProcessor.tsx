@@ -743,7 +743,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                             <p className="text-muted-foreground text-sm">{invoice.name}</p>
                         </div>
                         <div className="text-right">
-                            <div className="text-lg font-bold">{formatCurrency(invoice.total_amount)}</div>
+                            <div className="text-lg font-extrabold">{formatCurrency(invoice.total_amount)}</div>
                             <div className="text-muted-foreground text-sm">Total</div>
                         </div>
                     </div>

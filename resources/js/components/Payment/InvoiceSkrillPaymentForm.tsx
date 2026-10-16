@@ -96,7 +96,7 @@ export function InvoiceSkrillPaymentForm({
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Payment Amount')}:</span>
-                            <span className="font-bold">{formatCurrency(amount)}</span>
+                            <span className="font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
                             <span className="text-muted-foreground text-sm">{translate('Payment Type')}:</span>

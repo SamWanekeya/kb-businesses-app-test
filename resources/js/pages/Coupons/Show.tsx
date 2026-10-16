@@ -115,7 +115,7 @@ export default function CouponDetailsPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div>
-                            <p className="text-l font-bold">{translate('Coupon Details & Usage History')}</p>
+                            <p className="text-l font-extrabold">{translate('Coupon Details & Usage History')}</p>
                         </div>
                     </div>
                     {getStatusBadge(coupon.status)}
@@ -194,18 +194,18 @@ export default function CouponDetailsPage() {
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-bold">{translate('Coupon Code')}</label>
+                                <label className="text-sm font-extrabold">{translate('Coupon Code')}</label>
                                 <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{coupon.code}</p>
                             </div>
                             <div>
-                                <label className="text-sm font-bold">{translate('Type')}</label>
+                                <label className="text-sm font-extrabold">{translate('Type')}</label>
                                 <div className="mt-1 py-2">{getTypeBadge(coupon.type)}</div>
                             </div>
                         </div>
                         <div className="space-y-4">
                             {coupon.minimum_spend && (
                                 <div>
-                                    <label className="text-sm font-bold">{translate('Minimum Spend')}</label>
+                                    <label className="text-sm font-extrabold">{translate('Minimum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.kbSettings.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
                                     </p>
@@ -213,7 +213,7 @@ export default function CouponDetailsPage() {
                             )}
                             {coupon.maximum_spend && (
                                 <div>
-                                    <label className="text-sm font-bold">{translate('Maximum Spend')}</label>
+                                    <label className="text-sm font-extrabold">{translate('Maximum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.kbSettings.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
                                     </p>

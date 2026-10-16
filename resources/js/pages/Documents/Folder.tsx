@@ -541,7 +541,7 @@ export default function DocumentFolderView() {
                     <div className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
                         {/* Header */}
                         <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-700">
-                            <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100">
+                            <div className="flex items-center gap-2 text-sm font-extrabold text-gray-800 dark:text-gray-100">
                                 <Folder className="text-grey h-4 w-4" strokeWidth={1.5} />
                                 {translate('Folder Details')}
                             </div>
@@ -609,7 +609,7 @@ export default function DocumentFolderView() {
                         </div>
                         {folder.description && (
                             <div className="border-t border-gray-100 px-4 py-3 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
+                                <p className="mb-1 text-sm font-extrabold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
                                 <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-gray-500 dark:text-gray-400">
                                     {folder.description}
                                 </p>
@@ -782,7 +782,7 @@ function PanelRow({ label, value, badge = false, badgeColor = 'blue' }: { label:
     };
     return (
         <div className="flex items-center justify-between px-4 py-2.5">
-            <p className="mr-3 shrink-0 text-sm font-bold text-gray-700 dark:text-gray-300">{label}</p>
+            <p className="mr-3 shrink-0 text-sm font-extrabold text-gray-700 dark:text-gray-300">{label}</p>
             {badge ? (
                 <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium ${colors[badgeColor] || colors.blue}`}>
                     {value}

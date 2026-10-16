@@ -203,7 +203,7 @@ export function PayfastPaymentForm({
                     <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Amount')}</span>
-                            <span className="text-sm font-bold">
+                            <span className="text-sm font-extrabold">
                                 {currency} {planPrice}
                             </span>
                         </div>

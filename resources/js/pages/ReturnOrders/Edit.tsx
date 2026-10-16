@@ -302,7 +302,7 @@ export default function ReturnOrderEdit() {
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</span>
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Basic Information')}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
@@ -502,7 +502,7 @@ export default function ReturnOrderEdit() {
                                 />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">
                                 {translate('Available Product from Sales Order')}
                             </span>
                         </div>
@@ -617,7 +617,7 @@ export default function ReturnOrderEdit() {
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Return Product')}</span>
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Return Product')}</span>
                             {errors.products && <span className="ml-1 text-xs font-normal text-red-500">{errors.products}</span>}
                         </div>
                         {returnItems.length === 0 ? (
@@ -701,7 +701,7 @@ export default function ReturnOrderEdit() {
                         {returnItems.length > 0 && (
                             <div className="mt-8 flex justify-end">
                                 <div className="w-80">
-                                    <p className="mb-3 text-base font-bold text-gray-900 dark:text-white">{translate('Return Summary')}</p>
+                                    <p className="mb-3 text-base font-extrabold text-gray-900 dark:text-white">{translate('Return Summary')}</p>
                                     <div className="space-y-1.5 text-sm">
                                         <div className="flex justify-between">
                                             <span className="text-gray-500 dark:text-gray-400">{translate('Subtotal')}</span>
@@ -711,7 +711,7 @@ export default function ReturnOrderEdit() {
                                             <span className="text-gray-500 dark:text-gray-400">{translate('Tax')}</span>
                                             <span className="font-mono text-gray-900 dark:text-gray-100">{fmt(totals.tax)}</span>
                                         </div>
-                                        <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-bold dark:border-gray-700">
+                                        <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-extrabold dark:border-gray-700">
                                             <span className="text-gray-900 dark:text-white">{translate('Total Return Amount')}</span>
                                             <span className="font-mono text-green-600 dark:text-green-400">{fmt(totals.subtotal + totals.tax)}</span>
                                         </div>
@@ -740,7 +740,7 @@ export default function ReturnOrderEdit() {
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Additional Notes')}</span>
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Additional Notes')}</span>
                         </div>
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{translate('Notes')}</Label>

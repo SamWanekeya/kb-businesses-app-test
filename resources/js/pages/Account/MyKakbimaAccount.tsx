@@ -45,7 +45,7 @@ const sidebarNavItems = [
         icon: User,
     },
     {
-        title: 'Password',
+        title: 'Your password',
         href: '#password',
         icon: Lock,
     },
@@ -510,7 +510,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">{translate('Work email')}</Label>
+                                        <Label htmlFor="email">{translate('Your work email')}</Label>
 
                                         <Input
                                             inputIdentifier="email"
@@ -570,7 +570,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                         <Card className="shadow-sm">
                             <CardHeader>
                                 <CardTitle id="password-title" className="text-lg font-semibold">
-                                    {translate('Password')}
+                                    {translate('Your password')}
                                 </CardTitle>
 
                                 <CardDescription>

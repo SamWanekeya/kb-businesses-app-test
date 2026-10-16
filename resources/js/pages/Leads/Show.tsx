@@ -129,7 +129,7 @@ export default function LeadShow() {
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
                                         <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-bold">{value}</p>
+                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -192,7 +192,7 @@ export default function LeadShow() {
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
                                                 <AvatarImage src={lead.assigned_user.avatar} alt={lead.assigned_user.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(lead.assigned_user.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -213,7 +213,7 @@ export default function LeadShow() {
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
                                                 <AvatarImage src={lead.creator.avatar} alt={lead.creator.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(lead.creator.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -554,7 +554,7 @@ export default function LeadShow() {
                                                                                             src={meeting.assigned_user?.avatar}
                                                                                             alt={meeting.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
@@ -641,7 +641,7 @@ export default function LeadShow() {
                                                                                             src={call.assigned_user?.avatar}
                                                                                             alt={call.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
@@ -713,7 +713,7 @@ export default function LeadShow() {
                                                     <TooltipTrigger asChild>
                                                         <Avatar className="mt-1 h-8 w-8 flex-shrink-0">
                                                             <AvatarImage src={auth?.user?.avatar} alt={auth?.user?.name || 'User'} />
-                                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                                 {getInitials(auth?.user?.name || 'U')}
                                                             </AvatarFallback>
                                                         </Avatar>
@@ -790,7 +790,7 @@ export default function LeadShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold">
+                                                                            <AvatarFallback className="bg-muted text-muted-foreground flex h-9 w-9 items-center justify-center rounded-full text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </span>
@@ -823,7 +823,7 @@ export default function LeadShow() {
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
                                                                 <span className="text-muted-foreground text-xs">
-                                                                    {formatRelativeTime(activity.created_at)}
+                                                                    {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                 </span>
                                                             </div>
                                                             {!isEditing && (

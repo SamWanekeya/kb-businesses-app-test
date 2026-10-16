@@ -43,7 +43,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Total Referral Users')}</p>
-                                    <h3 className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.totalReferralUsers}</h3>
+                                    <h3 className="mt-1 text-2xl font-extrabold text-blue-600 dark:text-blue-400">{stats.totalReferralUsers}</h3>
                                     <p className="text-muted-foreground mt-1 text-xs">{translate('Registered users')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
@@ -58,7 +58,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Pending Payouts')}</p>
-                                    <h3 className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">{stats.pendingPayouts}</h3>
+                                    <h3 className="mt-1 text-2xl font-extrabold text-amber-600 dark:text-amber-400">{stats.pendingPayouts}</h3>
                                     <p className="text-muted-foreground mt-1 text-xs">{translate('Awaiting approval')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
@@ -73,7 +73,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Paid')}</p>
-                                    <h3 className="mt-1 font-mono text-2xl font-bold text-green-600 dark:text-green-400">
+                                    <h3 className="mt-1 font-mono text-2xl font-extrabold text-green-600 dark:text-green-400">
                                         {currency_symbol}
                                         {stats.totalCommissionPaid}
                                     </h3>
@@ -91,7 +91,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Active Organizations')}</p>
-                                    <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400">
+                                    <h3 className="mt-1 text-2xl font-extrabold text-purple-600 dark:text-purple-400">
                                         {stats.topOrganizations?.length || 0}
                                     </h3>
                                     <p className="text-muted-foreground mt-1 text-xs">{translate('Referring organizations')}</p>
@@ -181,7 +181,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                         <p className="text-sm font-medium text-blue-900 dark:text-blue-100">{translate('Referral Signups')}</p>
                                         <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                     </div>
-                                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                    <p className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">
                                         {typeof stats.monthlyReferrals === 'object'
                                             ? Object.values(stats.monthlyReferrals || {}).reduce((a: any, b: any) => a + b, 0)
                                             : stats.monthlyReferrals || 0}
@@ -196,7 +196,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                         <p className="text-sm font-medium text-green-900 dark:text-green-100">{translate('Payouts Processed')}</p>
                                         <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
                                     </div>
-                                    <p className="font-mono text-2xl font-bold text-green-600 dark:text-green-400">
+                                    <p className="font-mono text-2xl font-extrabold text-green-600 dark:text-green-400">
                                         {currency_symbol}
                                         {typeof stats.monthlyPayouts === 'object'
                                             ? Object.values(stats.monthlyPayouts || {}).reduce((a: any, b: any) => a + b, 0)
@@ -224,7 +224,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Total Referrals')}</p>
-                                <h3 className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalReferrals}</h3>
+                                <h3 className="mt-1 text-2xl font-extrabold text-green-600 dark:text-green-400">{stats.totalReferrals}</h3>
                                 <p className="text-muted-foreground mt-1 text-xs">{translate('All referrals')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
@@ -239,7 +239,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Referred Users')}</p>
-                                <h3 className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.referredUsersCount || 0}</h3>
+                                <h3 className="mt-1 text-2xl font-extrabold text-blue-600 dark:text-blue-400">{stats.referredUsersCount || 0}</h3>
                                 <p className="text-muted-foreground mt-1 text-xs">{translate('Active users')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
@@ -254,7 +254,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Total Earned')}</p>
-                                <h3 className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">
+                                <h3 className="mt-1 font-mono text-2xl font-extrabold text-amber-600 dark:text-amber-400">
                                     {currency_symbol}
                                     {stats.totalEarned}
                                 </h3>
@@ -272,7 +272,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Available Balance')}</p>
-                                <h3 className="mt-1 font-mono text-2xl font-bold text-purple-600 dark:text-purple-400">
+                                <h3 className="mt-1 font-mono text-2xl font-extrabold text-purple-600 dark:text-purple-400">
                                     {currency_symbol}
                                     {stats.availableBalance.toFixed(2)}
                                 </h3>

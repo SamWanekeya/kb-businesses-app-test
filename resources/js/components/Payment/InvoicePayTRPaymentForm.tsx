@@ -142,7 +142,7 @@ export function InvoicePayTRPaymentForm({
                         </div>
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
-                            <span className="text-lg font-bold text-gray-900">
+                            <span className="text-lg font-extrabold text-gray-900">
                                 {currency} {amount}
                             </span>
                         </div>

@@ -861,7 +861,7 @@ export default function Organizations() {
                         },
                         {
                             name: 'password',
-                            label: translate('Password'),
+                            label: translate('Your password'),
                             type: 'password',
                             required: (mode) => mode === 'create',
                             conditional: (mode, data) => {

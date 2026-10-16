@@ -104,7 +104,7 @@ export default function ContactShow() {
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
                                         <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                        <p className="text-foreground truncate text-lg leading-snug font-bold">{value}</p>
+                                        <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -142,7 +142,7 @@ export default function ContactShow() {
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={contact.assigned_user.avatar} alt={contact.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(contact.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -439,7 +439,7 @@ export default function ContactShow() {
                                                                                             src={meeting.assigned_user?.avatar}
                                                                                             alt={meeting.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
@@ -525,7 +525,7 @@ export default function ContactShow() {
                                                                                             src={call.assigned_user?.avatar}
                                                                                             alt={call.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>

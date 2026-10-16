@@ -197,7 +197,7 @@ export function InvoicePayfastPaymentForm({
                     <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Payment Amount')}</span>
-                            <span className="text-sm font-bold">{formatCurrency(amount)}</span>
+                            <span className="text-sm font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
                             <span className="text-muted-foreground text-xs">{translate('Payment Type')}</span>

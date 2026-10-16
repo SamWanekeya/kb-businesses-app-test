@@ -875,7 +875,7 @@ export default function InvoiceCreate() {
                                     <span>{translate('Tax')}</span>
                                     <span className="font-mono">{fmt(totals.tax)}</span>
                                 </div>
-                                <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
+                                <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                     <span>{translate('Total')}</span>
                                     <span className="font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>

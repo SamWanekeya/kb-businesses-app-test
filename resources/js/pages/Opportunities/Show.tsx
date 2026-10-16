@@ -149,7 +149,7 @@ export default function OpportunityShow() {
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
                                         <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-bold">{value}</p>
+                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -187,7 +187,7 @@ export default function OpportunityShow() {
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={opportunity.assigned_user.avatar} alt={opportunity.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(opportunity.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -399,7 +399,7 @@ export default function OpportunityShow() {
                                                                                             src={meeting.assigned_user?.avatar}
                                                                                             alt={meeting.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
@@ -485,7 +485,7 @@ export default function OpportunityShow() {
                                                                                             src={call.assigned_user?.avatar}
                                                                                             alt={call.assigned_user?.name || 'User'}
                                                                                         />
-                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">
+                                                                                        <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-extrabold">
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
@@ -578,7 +578,7 @@ export default function OpportunityShow() {
                                                                 </div>
                                                             )}
                                                             <div className="min-w-0">
-                                                                <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                 {product.sku && (
                                                                     <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                 )}
@@ -613,7 +613,7 @@ export default function OpportunityShow() {
                                                         )}
                                                     </TableCell>
                                                     <TableCell className="py-3 text-right">
-                                                        <p className="font-mono text-sm font-bold text-emerald-600">
+                                                        <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                             {formatCurrency(lineTotal + taxAmount)}
                                                         </p>
                                                     </TableCell>
@@ -634,8 +634,8 @@ export default function OpportunityShow() {
                                             <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                         </div>
                                         <div className="flex items-center justify-between px-4 py-3">
-                                            <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
-                                            <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                            <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                            <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -716,7 +716,7 @@ export default function OpportunityShow() {
                                                     <TooltipTrigger asChild>
                                                         <Avatar className="mt-1 h-8 w-8 flex-shrink-0">
                                                             <AvatarImage src={auth?.user?.avatar} alt={auth?.user?.name || 'User'} />
-                                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                                 {getInitials(auth?.user?.name || 'U')}
                                                             </AvatarFallback>
                                                         </Avatar>
@@ -784,7 +784,7 @@ export default function OpportunityShow() {
                                                                 <TooltipTrigger asChild>
                                                                     <Avatar className="relative z-10 h-9 w-9 flex-shrink-0">
                                                                         <AvatarImage src={activity.user?.avatar} alt={activity.user?.name || 'U'} />
-                                                                        <AvatarFallback className="bg-muted text-muted-foreground text-xs font-bold">
+                                                                        <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
                                                                             {getInitials(activity.user?.name || 'U')}
                                                                         </AvatarFallback>
                                                                     </Avatar>
@@ -814,7 +814,7 @@ export default function OpportunityShow() {
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
                                                                 <span className="text-muted-foreground text-xs">
-                                                                    {formatRelativeTime(activity.created_at)}
+                                                                    {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                 </span>
                                                             </div>
                                                             {!isEditing && (

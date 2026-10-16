@@ -88,7 +88,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
                         </div>
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Amount')}</span>
-                            <span className="text-lg font-bold">
+                            <span className="text-lg font-extrabold">
                                 {currency} {planPrice}
                             </span>
                         </div>

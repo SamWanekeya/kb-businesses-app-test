@@ -460,7 +460,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                             </p>
                         </div>
                         <div className="text-right">
-                            <div className="text-lg font-bold">
+                            <div className="text-lg font-extrabold">
                                 {currency_symbol} {plan.price}
                             </div>
                             <div className="text-muted-foreground text-sm">/{translate(billingCycle)}</div>

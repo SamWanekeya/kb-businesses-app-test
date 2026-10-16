@@ -18,7 +18,6 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
-import Recaptcha from '@components/Recaptcha';
 import TextLink from '@components/TextLink';
 import { Checkbox } from '@components/UserInterface/Checkbox';
 import { Input } from '@components/UserInterface/Input';
@@ -213,23 +212,23 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
     /**
      * Stores a successful reCAPTCHA token.
      */
-    const handleRecaptchaVerify = useCallback((token: string) => {
-        setRecaptchaToken(token);
-    }, []);
+    // const handleRecaptchaVerify = useCallback((token: string) => {
+    //     setRecaptchaToken(token);
+    // }, []);
 
     /**
      * Clears the reCAPTCHA token after it expires.
      */
-    const handleRecaptchaExpired = useCallback(() => {
-        setRecaptchaToken('');
-    }, []);
+    // const handleRecaptchaExpired = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
 
     /**
      * Clears the reCAPTCHA token when verification fails.
      */
-    const handleRecaptchaError = useCallback(() => {
-        setRecaptchaToken('');
-    }, []);
+    // const handleRecaptchaError = useCallback(() => {
+    //     setRecaptchaToken('');
+    // }, []);
 
     /**
      * Performs the final client-side checks and submits the registration
@@ -276,10 +275,10 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
         <AuthLayout title={translate('Create your Kakbima account')}>
             <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                 <div className="space-y-3">
-                    {/* Full name */}
+                    {/* Your full name */}
                     <div className="space-y-2">
                         <Label htmlFor="name">
-                            {translate('Full name')}{' '}
+                            {translate('Your full name')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -307,10 +306,10 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                         )}
                     </div>
 
-                    {/* Work email */}
+                    {/* Your work email */}
                     <div className="space-y-2">
                         <Label htmlFor="email">
-                            {translate('Work email')}{' '}
+                            {translate('Your work email')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -341,7 +340,7 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                     {/* Password */}
                     <div className="space-y-2">
                         <Label htmlFor="password">
-                            {translate('Password')}{' '}
+                            {translate('Your password')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -371,7 +370,7 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                     {/* Password confirmation */}
                     <div className="space-y-2">
                         <Label htmlFor="password_confirmation">
-                            {translate('Confirm password')}{' '}
+                            {translate('Confirm your password')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -442,7 +441,7 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                     </div>
                 </div>
 
-                <Recaptcha onVerify={handleRecaptchaVerify} onExpired={handleRecaptchaExpired} onError={handleRecaptchaError} />
+                {/*<Recaptcha onVerify={handleRecaptchaVerify} onExpired={handleRecaptchaExpired} onError={handleRecaptchaError} />*/}
 
                 <AccountButton processing={processing} disabled={isSubmitDisabled}>
                     {translate('Create account')}

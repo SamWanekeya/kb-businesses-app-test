@@ -107,7 +107,7 @@ export function InvoiceTapPaymentForm({ invoiceId, amount, paymentType, tapSecre
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
                         <span className="font-medium">{translate('Payment Amount')}</span>
-                        <span className="text-lg font-bold">{formatCurrency(amount)}</span>
+                        <span className="text-lg font-extrabold">{formatCurrency(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
                         {translate('Payment Type')}: {translate(paymentType)}

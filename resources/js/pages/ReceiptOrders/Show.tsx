@@ -127,7 +127,7 @@ export default function ShowReceiptOrder() {
                                     <div className="flex items-start justify-between">
                                         <div className="min-w-0 pr-2">
                                             <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                            <p className="text-foreground truncate text-lg leading-snug font-bold">{value}</p>
+                                            <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                         </div>
                                         <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                             <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -205,7 +205,7 @@ export default function ShowReceiptOrder() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
@@ -267,12 +267,12 @@ export default function ShowReceiptOrder() {
                                                                         <p className="text-muted-foreground font-mono text-xs line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </p>
-                                                                        <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                        <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                             {formatCurrency(afterDisc + taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                    <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                         {formatCurrency(lineTotal + taxAmount)}
                                                                     </p>
                                                                 )}
@@ -305,8 +305,8 @@ export default function ShowReceiptOrder() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
-                                                <span className="font-mono text-lg font-bold text-emerald-600">
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(receiptOrder.total_amount ?? grandTotal)}
                                                 </span>
                                             </div>
@@ -380,7 +380,7 @@ export default function ShowReceiptOrder() {
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
                                     <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
-                                    <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(receiptOrder.total_amount)}</p>
+                                    <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(receiptOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(receiptOrder.status)}</div>
                             </div>
@@ -504,7 +504,7 @@ export default function ShowReceiptOrder() {
                                         <div className="flex min-w-0 items-center gap-2">
                                             <Avatar className="h-9 w-9 flex-shrink-0">
                                                 <AvatarImage src={receiptOrder.assigned_user.avatar} alt={receiptOrder.assigned_user.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(receiptOrder.assigned_user.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -524,7 +524,7 @@ export default function ShowReceiptOrder() {
                                         <div className="flex min-w-0 items-center gap-2">
                                             <Avatar className="h-9 w-9 flex-shrink-0">
                                                 <AvatarImage src={receiptOrder.creator.avatar} alt={receiptOrder.creator.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(receiptOrder.creator.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>

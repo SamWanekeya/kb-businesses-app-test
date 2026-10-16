@@ -1028,11 +1028,11 @@ export default function Leads() {
                                 <div className="p-6">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-start space-x-4">
-                                            <div className="h-16 w-16 rounded-full bg-primary/15 text-primary ring-1 ring-primary flex items-center justify-center text-lg font-bold">
+                                            <div className="h-16 w-16 rounded-full bg-primary/15 text-primary ring-1 ring-primary flex items-center justify-center text-lg font-extrabold">
                                                 {getInitials(lead.name)}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{lead.name}</h3>
+                                                <h3 className="text-lg font-extrabold text-gray-900 dark:text-white mb-2">{lead.name}</h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{lead.email || translate('No email')}</p>
                                                 <div className="flex items-center">
                                                     <div className={`h-2 w-2 rounded-full mr-2 ${lead.status === 'active' ? 'bg-green-500' : 'bg-gray-400'

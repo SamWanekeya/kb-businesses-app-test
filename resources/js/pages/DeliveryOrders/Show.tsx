@@ -115,7 +115,7 @@ export default function DeliveryOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <CardTitle className="text-lg font-bold">{deliveryOrder.name}</CardTitle>
+                                    <CardTitle className="text-lg font-extrabold">{deliveryOrder.name}</CardTitle>
                                 </div>
                             </div>
                         </CardHeader>
@@ -248,7 +248,7 @@ export default function DeliveryOrderShow() {
                                                                     </div>
                                                                 )}
                                                                 <div className="min-w-0">
-                                                                    <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                    <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                     {product.sku && (
                                                                         <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                     )}
@@ -269,7 +269,7 @@ export default function DeliveryOrderShow() {
                                                             </p>
                                                         </TableCell>
                                                         <TableCell className="py-3 text-end">
-                                                            <p className="text-sm font-bold text-emerald-600">
+                                                            <p className="text-sm font-extrabold text-emerald-600">
                                                                 {product.pivot?.total_weight ?? 0} kg
                                                             </p>
                                                         </TableCell>
@@ -281,8 +281,8 @@ export default function DeliveryOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{translate('Total Weight')}</span>
-                                                <span className="text-lg font-bold text-emerald-600">{deliveryOrder.total_weight ?? 0} kg</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Total Weight')}</span>
+                                                <span className="text-lg font-extrabold text-emerald-600">{deliveryOrder.total_weight ?? 0} kg</span>
                                             </div>
                                         </div>
                                     </div>
@@ -316,7 +316,7 @@ export default function DeliveryOrderShow() {
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
                                     <p className="text-muted-foreground mb-1 text-xs">{translate('Shipping Cost')}</p>
-                                    <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(deliveryOrder.shipping_cost)}</p>
+                                    <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(deliveryOrder.shipping_cost)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
                                     <span
@@ -477,7 +477,7 @@ export default function DeliveryOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.assigned_user.avatar} alt={deliveryOrder.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(deliveryOrder.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -496,7 +496,7 @@ export default function DeliveryOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.creator.avatar} alt={deliveryOrder.creator.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(deliveryOrder.creator.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

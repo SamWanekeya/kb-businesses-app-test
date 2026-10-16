@@ -173,7 +173,7 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <CardTitle className="text-lg font-bold">{purchaseOrder.name}</CardTitle>
+                                    <CardTitle className="text-lg font-extrabold">{purchaseOrder.name}</CardTitle>
                                 </div>
                             </div>
                         </CardHeader>
@@ -357,7 +357,7 @@ export default function PurchaseOrderShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
@@ -414,7 +414,7 @@ export default function PurchaseOrderShow() {
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-end">
-                                                                <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                     {formatCurrency(afterDisc + taxAmount)}
                                                                 </p>
                                                             </TableCell>
@@ -446,8 +446,8 @@ export default function PurchaseOrderShow() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
-                                                <span className="font-mono text-lg font-bold text-emerald-600">
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(purchaseOrder.total_amount ?? grandTotal)}
                                                 </span>
                                             </div>
@@ -517,7 +517,7 @@ export default function PurchaseOrderShow() {
                                                         <TooltipTrigger asChild>
                                                             <Avatar className="mt-1 h-9 w-9 flex-shrink-0 cursor-default">
                                                                 <AvatarImage src={auth?.user?.avatar} alt={auth?.user?.name || 'User'} />
-                                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                                     {getInitials(auth?.user?.name || 'U')}
                                                                 </AvatarFallback>
                                                             </Avatar>
@@ -593,7 +593,7 @@ export default function PurchaseOrderShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-bold">
+                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -624,7 +624,7 @@ export default function PurchaseOrderShow() {
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
                                                                     <span className="text-muted-foreground text-xs">
-                                                                        {formatRelativeTime(activity.created_at)}
+                                                                        {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
                                                                 {!isEditing && (
@@ -768,7 +768,7 @@ export default function PurchaseOrderShow() {
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
                                     <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
-                                    <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(purchaseOrder.total_amount)}</p>
+                                    <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(purchaseOrder.total_amount)}</p>
                                 </div>
                             </div>
                             <div className="space-y-2">
@@ -962,7 +962,7 @@ export default function PurchaseOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.assigned_user.avatar} alt={purchaseOrder.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(purchaseOrder.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -981,7 +981,7 @@ export default function PurchaseOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.creator.avatar} alt={purchaseOrder.creator.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(purchaseOrder.creator.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

@@ -122,7 +122,7 @@ export default function CallShow() {
                                                         target.src = resolveImageUrl('avatars/avatar.png');
                                                     }}
                                                 />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {attendee?.attendee?.name?.charAt(0)?.toUpperCase() || 'U'}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -157,7 +157,7 @@ export default function CallShow() {
                                         <>
                                             <Avatar className="h-7 w-7 flex-shrink-0">
                                                 <AvatarImage src={call.creator.avatar} alt={call.creator.name} />
-                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                     {getInitials(call.creator.name || '')}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -178,7 +178,7 @@ export default function CallShow() {
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={call.assigned_user.avatar} alt={call.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(call.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

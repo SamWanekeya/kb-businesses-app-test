@@ -34,7 +34,7 @@ export default function ShowDocumentType() {
                         <FileIcon className="h-8 w-8" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{documentType.type_name}</h1>
+                        <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">{documentType.type_name}</h1>
                         <p className="text-gray-600 dark:text-gray-400">{translate('Document Type Details')}</p>
                     </div>
                 </div>

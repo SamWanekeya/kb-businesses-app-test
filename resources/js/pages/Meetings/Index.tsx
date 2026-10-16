@@ -330,7 +330,7 @@ export default function Meetings() {
                                 onClick={() => {
                                     navigateToDate(date);
                                 }}
-                                className={`relative mx-auto flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xs font-medium transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : isTodayDate ? 'text-primary font-bold' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+                                className={`relative mx-auto flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xs font-medium transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : isTodayDate ? 'text-primary font-extrabold' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}`}
                             >
                                 {day}
                                 {hasMeeting && !isSelected && (
@@ -368,7 +368,7 @@ export default function Meetings() {
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 dark:border-gray-700">
                 <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Total Meetings')}</span>
-                <span className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                <span className="text-sm font-extrabold text-gray-900 dark:text-gray-100">
                     {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)}
                 </span>
             </div>
@@ -442,7 +442,7 @@ export default function Meetings() {
                             <CalendarDays className="text-muted-foreground h-4 w-4" />
                             <span className="font-semibold text-gray-800 dark:text-gray-100">
                                 {formatSelectedDate(selectedDateObj)}
-                                {isToday(selectedDateObj) && <span className="ms-1 font-bold">({translate('Today')})</span>}
+                                {isToday(selectedDateObj) && <span className="ms-1 font-extrabold">({translate('Today')})</span>}
                             </span>
                             {!isToday(selectedDateObj) && (
                                 <Button

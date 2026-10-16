@@ -121,7 +121,7 @@ export default function ReturnOrderShow() {
                                     <div className="flex items-start justify-between">
                                         <div className="min-w-0 pe-2">
                                             <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
-                                            <p className="text-foreground truncate text-lg leading-snug font-bold">{value}</p>
+                                            <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                         </div>
                                         <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                             <Icon className={`h-5 w-5 ${iconCls}`} />
@@ -191,7 +191,7 @@ export default function ReturnOrderShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
@@ -226,7 +226,7 @@ export default function ReturnOrderShow() {
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
-                                                                <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                     {formatCurrency(finalTotal + taxAmount)}
                                                                 </p>
                                                             </TableCell>
@@ -252,8 +252,8 @@ export default function ReturnOrderShow() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
-                                                <span className="font-mono text-lg font-bold text-emerald-600">
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(returnOrder.total_amount)}
                                                 </span>
                                             </div>
@@ -344,7 +344,7 @@ export default function ReturnOrderShow() {
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
                                     <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
-                                    <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(returnOrder.total_amount)}</p>
+                                    <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(returnOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(returnOrder.status)}</div>
                             </div>
@@ -477,7 +477,7 @@ export default function ReturnOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.assigned_user.avatar} alt={returnOrder.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(returnOrder.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -496,7 +496,7 @@ export default function ReturnOrderShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.creator.avatar} alt={returnOrder.creator.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(returnOrder.creator.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

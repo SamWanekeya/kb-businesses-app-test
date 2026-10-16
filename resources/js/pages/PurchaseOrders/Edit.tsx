@@ -231,7 +231,7 @@ export default function PurchaseOrderEdit() {
                 <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     {/* ── PURCHASE ORDER DETAILS ── */}
                     <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                        <p className="text-base font-bold text-gray-900 dark:text-white">{translate('Purchase Order Details')}</p>
+                        <p className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Purchase Order Details')}</p>
                     </div>
 
                     <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
@@ -422,7 +422,7 @@ export default function PurchaseOrderEdit() {
 
                     {/* ── PRODUCTS ── */}
                     <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                        <p className="text-base font-bold text-gray-900 dark:text-white">{translate('Products')}</p>
+                        <p className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Products')}</p>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
                             {translate('Add Product')}
@@ -631,7 +631,7 @@ export default function PurchaseOrderEdit() {
                                         <span>{translate('Tax')}</span>
                                         <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                     </div>
-                                    <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900">
+                                    <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900">
                                         <span>{translate('Grand Total')}</span>
                                         <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
                                     </div>

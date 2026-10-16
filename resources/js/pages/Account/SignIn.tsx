@@ -177,7 +177,7 @@ export default function SignIn() {
 
     return (
         <AuthLayout
-            title={isDemo ? translate('Demo account') : translate('Sign in to your account')}
+            title={isDemo ? translate('Demo account') : translate('Sign in to manage your account')}
             description={isDemo ? translate('A great way to look at real business data and experiment with Kakbima features') : ''}
         >
             {isDemo ? (
@@ -212,7 +212,7 @@ export default function SignIn() {
                 <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                     <div className="space-y-2">
                         <Label htmlFor="email">
-                            {translate('Work email')}{' '}
+                            {translate('Your work email')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -244,7 +244,7 @@ export default function SignIn() {
 
                     <div className="space-y-2">
                         <Label htmlFor="password">
-                            {translate('Password')}{' '}
+                            {translate('Your password')}{' '}
                             <span aria-hidden="true" className="text-destructive">
                                 *
                             </span>
@@ -290,7 +290,7 @@ export default function SignIn() {
                         </div>
 
                         <TextLink href={route('account-recovery-request')} className="text-sm font-medium transition-colors duration-200">
-                            {translate('Forgot password?')}
+                            {translate('Can’t access my account')}
                         </TextLink>
                     </div>
 
@@ -305,7 +305,7 @@ export default function SignIn() {
                     </AccountButton>
 
                     <p className="text-muted-foreground text-center text-sm">
-                        {translate('Don’t have an account?')}{' '}
+                        {translate('Don’t have an account yet?')}{' '}
                         <TextLink href={route('sign-up')} className="font-medium transition-colors duration-200">
                             {translate('Sign up')}
                         </TextLink>

@@ -227,7 +227,7 @@ export default function SalesReports() {
                                             <p className="text-muted-foreground mt-0.5 truncate text-xs">{sale.order_number}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
-                                            <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
+                                            <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
                                                 {window.kbSettings.formatCurrency(sale.total_amount) || `$${sale.total_amount}`}
                                             </span>
                                             <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
@@ -313,7 +313,7 @@ export default function SalesReports() {
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
-                                            <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
+                                            <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
                                                 {window.kbSettings.formatCurrency(product.total_revenue) || `$${product.total_revenue}`}
                                             </span>
                                         </div>

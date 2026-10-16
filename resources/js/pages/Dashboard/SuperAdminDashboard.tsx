@@ -229,7 +229,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     <div className="min-w-0 transition-transform duration-300 group-hover:translate-x-2">
                         <p className="mb-0.5 text-sm text-slate-400 transition-colors duration-300">{greeting()},</p>
                         <div className="flex items-center gap-2">
-                            <h2 className="group-hover:text-primary truncate text-xl font-bold text-white transition-colors duration-300 sm:text-2xl">
+                            <h2 className="group-hover:text-primary truncate text-xl font-extrabold text-white transition-colors duration-300 sm:text-2xl">
                                 {auth?.user?.name ?? 'Super Admin'}
                             </h2>
                             <span className="animate-hand-wave text-2xl select-none sm:text-3xl">👋</span>
@@ -259,11 +259,11 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     </div>
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
                         <div className="min-w-[80px] rounded-xl bg-white/10 px-4 py-2.5 text-center transition-all duration-300 hover:scale-105 hover:bg-white/15">
-                            <p className="text-lg leading-tight font-bold text-white">{stats.totalOrganizations}</p>
+                            <p className="text-lg leading-tight font-extrabold text-white">{stats.totalOrganizations}</p>
                             <p className="text-[11px] text-slate-400">{translate('Organizations')}</p>
                         </div>
                         <div className="min-w-[80px] rounded-xl bg-white/10 px-4 py-2.5 text-center transition-all duration-300 hover:scale-105 hover:bg-white/15">
-                            <p className="text-lg leading-tight font-bold text-emerald-400">{stats.monthlyGrowth}%</p>
+                            <p className="text-lg leading-tight font-extrabold text-emerald-400">{stats.monthlyGrowth}%</p>
                             <p className="text-[11px] text-slate-400">{translate('Growth')}</p>
                         </div>
                         <div className="hidden h-10 w-px bg-white/10 sm:block" />
@@ -329,7 +329,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <ArrowUpRight className="h-4 w-4 text-emerald-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-emerald-600" />
                                 </div>
                                 <p className="mb-1 text-xs text-emerald-700 dark:text-emerald-400">{translate('Total Revenue')}</p>
-                                <p className="font-mono text-2xl font-bold tracking-tight text-emerald-900 dark:text-emerald-100">
+                                <p className="font-mono text-2xl font-extrabold tracking-tight text-emerald-900 dark:text-emerald-100">
                                     {formatCurrency(stats.totalRevenue)}
                                 </p>
                                 <p className="mt-1.5 text-[11px] text-emerald-600 dark:text-emerald-500">{translate('from approved orders')}</p>
@@ -360,7 +360,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <ArrowUpRight className="h-4 w-4 text-blue-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-blue-500" />
                                 </div>
                                 <p className="mb-1 text-xs text-blue-700 dark:text-blue-400">{translate('Total Organizations')}</p>
-                                <p className="text-2xl font-bold tracking-tight text-blue-900 dark:text-blue-100">
+                                <p className="text-2xl font-extrabold tracking-tight text-blue-900 dark:text-blue-100">
                                     {stats.totalOrganizations.toLocaleString()}
                                 </p>
                                 <p className="mt-1.5 flex items-center gap-0.5 text-[11px] text-emerald-600">
@@ -393,7 +393,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <ArrowUpRight className="h-4 w-4 text-violet-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-violet-500" />
                                 </div>
                                 <p className="mb-1 text-xs text-violet-700 dark:text-violet-400">{translate('Active Plans')}</p>
-                                <p className="text-2xl font-bold tracking-tight text-violet-900 dark:text-violet-100">
+                                <p className="text-2xl font-extrabold tracking-tight text-violet-900 dark:text-violet-100">
                                     {stats.activePlans.toLocaleString()}
                                 </p>
                                 <p className="mt-1.5 text-[11px] text-violet-500 dark:text-violet-400">{translate('subscription plans')}</p>
@@ -423,7 +423,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     </div>
                                 </div>
                                 <p className="mb-1 text-xs text-indigo-700 dark:text-indigo-400">{translate('Total Users')}</p>
-                                <p className="text-2xl font-bold tracking-tight text-indigo-900 dark:text-indigo-100">
+                                <p className="text-2xl font-extrabold tracking-tight text-indigo-900 dark:text-indigo-100">
                                     {stats.totalUsers.toLocaleString()}
                                 </p>
                                 <p className="mt-1.5 text-[11px] text-indigo-500 dark:text-indigo-400">{translate('registered users')}</p>
@@ -469,7 +469,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                 </div>
                                 <p className="mb-1 text-xs text-amber-700 dark:text-amber-400">{translate('Pending Requests')}</p>
                                 <p
-                                    className={`text-2xl font-bold tracking-tight ${stats.pendingRequests > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-slate-700 dark:text-slate-300'}`}
+                                    className={`text-2xl font-extrabold tracking-tight ${stats.pendingRequests > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-slate-700 dark:text-slate-300'}`}
                                 >
                                     {stats.pendingRequests.toLocaleString()}
                                 </p>
@@ -589,7 +589,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                     </p>
                                                 </div>
                                                 <div className="shrink-0 text-right">
-                                                    <p className="font-mono text-sm font-bold">{formatCurrency(plan.revenue)}</p>
+                                                    <p className="font-mono text-sm font-extrabold">{formatCurrency(plan.revenue)}</p>
                                                     <p className="text-muted-foreground text-[11px]">{translate('revenue')}</p>
                                                 </div>
                                             </div>

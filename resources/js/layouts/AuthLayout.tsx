@@ -213,7 +213,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
 
                     {/* Authentication Card */}
                     <div
-                        className={`flex max-h-full min-h-0 w-full max-w-md flex-col transition-all duration-700 ${
+                        className={`flex max-h-[80vh] min-h-0 w-full max-w-md flex-col transition-all duration-700 ${
                             mounted
                                 ? 'translate-y-0 opacity-100'
                                 : 'translate-y-4 opacity-0'
@@ -231,7 +231,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
                                         />
                                     </div>
 
-                                    <h1 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-neutral-400">
+                                    <h1 className="mb-2 text-2xl font-extrabold text-neutral-900 dark:text-neutral-400">
                                         {title}
                                     </h1>
 

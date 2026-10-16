@@ -642,14 +642,14 @@ export default function Products() {
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 dark:border-green-700 dark:bg-green-900/20">
                                                     <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('Price')}</p>
-                                                    <p className="font-mono text-sm font-bold text-green-600">
+                                                    <p className="font-mono text-sm font-extrabold text-green-600">
                                                         {window.kbSettings.formatCurrency(parseFloat(product.price || 0)) ||
                                                             `$${parseFloat(product.price || 0).toFixed(2)}`}
                                                     </p>
                                                 </div>
                                                 <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 dark:border-red-700 dark:bg-red-900/20">
                                                     <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('In Stock')}</p>
-                                                    <p className="text-sm font-bold text-orange-500">
+                                                    <p className="text-sm font-extrabold text-orange-500">
                                                         {product.stock_quantity} {translate('units')}
                                                     </p>
                                                 </div>

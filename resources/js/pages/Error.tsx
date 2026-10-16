@@ -80,11 +80,11 @@ export default function Error({ status, message }: ErrorProps) {
                 </div>
 
                 <h1 className="mb-2 text-6xl font-extrabold text-neutral-500 dark:text-neutral-400">{status}</h1>
-                <h2 className="mb-4 text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200">{currentConfig.title}</h2>
+                <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">{currentConfig.title}</h2>
                 <p className="mb-8 leading-relaxed text-neutral-600 dark:text-neutral-400">{currentConfig.description}</p>
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <Link href="/">
-                        <Button className="btn-primary kb-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white">
+                        <Button className="btn-primary kb-bg-primary h-12 w-full rounded-md py-2.5 font-extrabold text-white">
                             {translate('Go back home')}
                         </Button>
                     </Link>

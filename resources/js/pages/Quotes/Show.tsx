@@ -113,7 +113,7 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <CardTitle className="text-lg font-bold">{quote.name}</CardTitle>
+                                    <CardTitle className="text-lg font-extrabold">{quote.name}</CardTitle>
                                 </div>
                             </div>
                         </CardHeader>
@@ -246,7 +246,7 @@ export default function QuoteShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-bold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
@@ -303,7 +303,7 @@ export default function QuoteShow() {
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
-                                                                <p className="font-mono text-sm font-bold text-emerald-600">
+                                                                <p className="font-mono text-sm font-extrabold text-emerald-600">
                                                                     {formatCurrency(finalTotal)}
                                                                 </p>
                                                             </TableCell>
@@ -329,8 +329,8 @@ export default function QuoteShow() {
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
-                                                <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -396,7 +396,7 @@ export default function QuoteShow() {
                                                         <TooltipTrigger asChild>
                                                             <Avatar className="mt-1 h-8 w-8 flex-shrink-0">
                                                                 <AvatarImage src={auth?.user?.avatar} alt={auth?.user?.name || 'User'} />
-                                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                                     {getInitials(auth?.user?.name || 'U')}
                                                                 </AvatarFallback>
                                                             </Avatar>
@@ -472,7 +472,7 @@ export default function QuoteShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-bold">
+                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -503,7 +503,7 @@ export default function QuoteShow() {
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
                                                                     <span className="text-muted-foreground shrink-0 text-xs">
-                                                                        {formatRelativeTime(activity.created_at)}
+                                                                        {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
                                                                 {!isEditing && (
@@ -647,7 +647,7 @@ export default function QuoteShow() {
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
                                     <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
-                                    <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(quote.total_amount)}</p>
+                                    <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(quote.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(quote.status)}</div>
                             </div>
@@ -828,7 +828,7 @@ export default function QuoteShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.assigned_user.avatar} alt={quote.assigned_user.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(quote.assigned_user.name || '')}
                                             </AvatarFallback>
                                         </Avatar>
@@ -847,7 +847,7 @@ export default function QuoteShow() {
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.creator.avatar} alt={quote.creator.name} />
-                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-extrabold">
                                                 {getInitials(quote.creator.name || '')}
                                             </AvatarFallback>
                                         </Avatar>

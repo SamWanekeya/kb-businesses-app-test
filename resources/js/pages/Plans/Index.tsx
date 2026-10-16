@@ -666,7 +666,7 @@ export default function Plans({
                 {/* Header with controls */}
                 <div className="mb-12 flex flex-col items-center text-center">
                     <div className="mx-auto mb-8 max-w-3xl">
-                        <h1 className="mb-4 text-3xl font-bold text-gray-900">
+                        <h1 className="mb-4 text-3xl font-extrabold text-gray-900">
                             {isAdmin ? translate('Subscription Plans') : translate('Choose Your Plan')}
                         </h1>
                         <p className="text-lg text-gray-600">
@@ -769,10 +769,10 @@ export default function Plans({
 
                                 {/* Card Header */}
                                 <div className="border-b border-gray-100 p-6 text-center">
-                                    <h3 className="mb-2 text-xl font-bold text-gray-900">{plan.name}</h3>
+                                    <h3 className="mb-2 text-xl font-extrabold text-gray-900">{plan.name}</h3>
                                     <div className="mb-4">
                                         <div className="flex items-center justify-center">
-                                            <span className="font-mono text-4xl font-bold text-gray-900">
+                                            <span className="font-mono text-4xl font-extrabold text-gray-900">
                                                 {currency_symbol}
                                                 {plan.price}
                                             </span>
