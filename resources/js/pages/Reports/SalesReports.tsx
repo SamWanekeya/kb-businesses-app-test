@@ -76,7 +76,7 @@ export default function SalesReports() {
 
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="col-span-full">
-                    <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
@@ -150,7 +150,7 @@ export default function SalesReports() {
                 </div>
 
                 <div className="col-span-full">
-                    <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <CardTitle className="text-base font-semibold">{translate('Sales by Status')}</CardTitle>
                         </CardHeader>
@@ -194,7 +194,7 @@ export default function SalesReports() {
                     </Card>
                 </div>
 
-                <Card className="border-border col-span-full flex h-full flex-col overflow-hidden border shadow-sm lg:col-span-1 dark:bg-slate-900">
+                <Card className="border-border col-span-full flex h-full flex-col overflow-hidden border shadow-sm lg:col-span-1">
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
@@ -247,7 +247,7 @@ export default function SalesReports() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-border col-span-full flex h-full flex-col overflow-hidden border shadow-sm lg:col-span-1 dark:bg-slate-900">
+                <Card className="border-border col-span-full flex h-full flex-col overflow-hidden border shadow-sm lg:col-span-1">
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>

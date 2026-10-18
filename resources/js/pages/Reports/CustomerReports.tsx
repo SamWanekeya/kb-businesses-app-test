@@ -86,7 +86,7 @@ export default function CustomerReports() {
 
             <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="col-span-full">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
                             <CardTitle className="text-base font-semibold">{translate('Contact Growth')}</CardTitle>
                             <div className="flex gap-2">
@@ -154,7 +154,7 @@ export default function CustomerReports() {
                 </div>
 
                 <div className="col-span-full lg:col-span-1">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader
                             className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3"
                             style={{ minHeight: '72px' }}
@@ -205,7 +205,7 @@ export default function CustomerReports() {
                 </div>
 
                 <div className="col-span-full lg:col-span-1">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <div className="flex shrink-0 items-center justify-between border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
                                 <h3 className="text-base font-semibold">{translate('Recent Interactions')}</h3>
@@ -253,7 +253,7 @@ export default function CustomerReports() {
                 </div>
             </div>
 
-            <Card className="border-border col-span-full overflow-hidden border shadow-sm dark:bg-slate-900">
+            <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                 <div className="border-b px-5 py-5">
                     <h3 className="text-base font-semibold">{translate('Top Contacts')}</h3>
                     <p className="text-muted-foreground mt-0.5 text-xs">{translate('Contacts by order volume and spending')}</p>

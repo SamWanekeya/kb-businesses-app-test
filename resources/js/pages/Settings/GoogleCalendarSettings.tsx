@@ -77,8 +77,8 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
             description={translate('Configure Google Calendar integration for appointment synchronization')}
             action={
                 <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
-                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save Changes')}</span>
+
+                    <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }
         >

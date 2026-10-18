@@ -283,8 +283,8 @@ export default function SalesOrderTemplateSettings() {
             description={translate('Configure sales orders template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="sales-orders-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
-                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save Changes')}</span>
+
+                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }
         >

@@ -109,7 +109,7 @@ export default function LeadReports() {
 
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="col-span-full">
-                    <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
@@ -179,7 +179,7 @@ export default function LeadReports() {
                     </Card>
                 </div>
 
-                <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                <Card className="border-border overflow-hidden border shadow-sm">
                     <CardHeader className="border-border flex shrink-0 flex-row items-center border-b px-5" style={{ minHeight: '64px' }}>
                         <CardTitle className="text-base font-semibold">{translate('Leads by Source')}</CardTitle>
                     </CardHeader>
@@ -215,7 +215,7 @@ export default function LeadReports() {
                     </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40 dark:bg-slate-900">
+                <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 py-3.5">
                         <div className="flex w-full items-center justify-between">
                             <div>

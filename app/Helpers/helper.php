@@ -334,7 +334,7 @@ if (!function_exists('defaultRoleAndSetting')) {
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
         } elseif ($user->type === 'organization') {
-            copySettingsFromSuperAdmin($user->id);
+            copySettingsFromSuperAdministrator($user->id);
             createDefaultNotificationTemplates($user->id);
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
@@ -1334,7 +1334,7 @@ if (!function_exists('createDefaultSettings')) {
     }
 }
 
-if (!function_exists('copySettingsFromSuperAdmin')) {
+if (!function_exists('copySettingsFromSuperAdministrator')) {
     /**
      * Copy selected system-level settings from super_admin to an organization.
      *
@@ -1353,7 +1353,7 @@ if (!function_exists('copySettingsFromSuperAdmin')) {
      * - If no super_admin exists, falls back to createDefaultSettings()
      *
      */
-    function copySettingsFromSuperAdmin(int $organizationUserId): void
+    function copySettingsFromSuperAdministrator(int $organizationUserId): void
     {
         $superAdmin = User::where('type', 'super_admin')?->first();
         if (!$superAdmin) {

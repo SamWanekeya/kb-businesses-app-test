@@ -123,7 +123,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     className="w-full sm:w-auto"
                                 >
                                     <Save className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                                    {translate('Save Changes')}
+                                    {translate('Save changes')}
                                 </Button>
                             </div>
                         </CardHeader>

@@ -79,7 +79,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
             action={
                 <Button type="submit" disabled={processing} form="recaptcha-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save changes')}
                 </Button>
             }
         >

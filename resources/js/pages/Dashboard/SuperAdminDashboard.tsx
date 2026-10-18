@@ -167,7 +167,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         `}</style>
                 {/* ── Greeting Banner ── */}
                 <div
-                    className={`group relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-slate-800 px-6 py-5 lg:flex-row lg:items-center lg:justify-between dark:bg-slate-900 ${fadeUp(0)}`}
+                    className={`group relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-slate-800 px-6 py-5 lg:flex-row lg:items-center lg:justify-between ${fadeUp(0)}`}
                 >
                     {/* flowing gradient orbs */}
                     <span
@@ -339,7 +339,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
                     {/* Total Organizations */}
                     <Link href={route('organizations.index')} className={`group ${fadeUp(150)}`}>
-                        <Card className="h-full cursor-pointer border border-blue-200 bg-blue-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-blue-900/50 dark:bg-blue-950/30 dark:bg-slate-900">
+                        <Card className="h-full cursor-pointer border border-blue-200 bg-blue-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-blue-900/50 dark:bg-blue-950/30">
                             <CardContent className="relative overflow-hidden p-4 sm:p-5">
                                 <span
                                     className="pointer-events-none absolute -top-3 right-4 h-10 w-10 animate-ping rounded-full bg-blue-300/40 dark:bg-blue-500/10"
@@ -437,7 +437,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             className={`h-full cursor-pointer border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                                 stats.pendingRequests > 0
                                     ? 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30'
-                                    : 'border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900'
+                                    : 'border-slate-200 bg-slate-50 dark:border-slate-700'
                             }`}
                         >
                             <CardContent className="relative overflow-hidden p-4 sm:p-5">
@@ -482,7 +482,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                 {/* ── Main Content ── */}
                 <div className={`grid gap-4 lg:grid-cols-5 ${fadeUp(300)}`}>
                     {/* Recently Registered Organizations */}
-                    <Card className="overflow-hidden border border-blue-100 shadow-sm lg:col-span-3 dark:border-blue-900/40 dark:bg-slate-900">
+                    <Card className="overflow-hidden border border-blue-100 shadow-sm lg:col-span-3 dark:border-blue-900/40">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -548,7 +548,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     </Card>
 
                     {/* Top Plans */}
-                    <Card className="overflow-hidden border border-violet-100 shadow-sm lg:col-span-2 dark:border-violet-900/40 dark:bg-slate-900">
+                    <Card className="overflow-hidden border shadow-sm lg:col-span-2">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -610,7 +610,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
                 {/* ── Monthly Organizations Chart ── */}
                 <div className={fadeUp(375)}>
-                    <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
@@ -705,7 +705,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
                 {/* ── Monthly Revenue Chart ── */}
                 <div className={fadeUp(350)}>
-                    <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>

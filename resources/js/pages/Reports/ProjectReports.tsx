@@ -82,7 +82,7 @@ export default function ProjectReports() {
 
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="col-span-full">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
                             <CardTitle className="text-base font-semibold">{translate('Project Trend')}</CardTitle>
                             <div className="flex gap-2">
@@ -150,7 +150,7 @@ export default function ProjectReports() {
                 </div>
 
                 <div className="col-span-full lg:col-span-1">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader
                             className="border-border bg-muted/30 flex shrink-0 flex-row items-center border-b px-5"
                             style={{ minHeight: '72px' }}
@@ -223,7 +223,7 @@ export default function ProjectReports() {
                 </div>
 
                 <div className="col-span-full lg:col-span-1">
-                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <div className="border-border bg-muted/30 flex shrink-0 items-center border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
                                 <h3 className="text-foreground text-base font-semibold">{translate('Overdue Projects')}</h3>

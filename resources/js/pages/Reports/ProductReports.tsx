@@ -69,7 +69,7 @@ export default function ProductReports() {
             <ReportFilters filters={filters} />
 
             <div className="mb-6 grid grid-cols-1 gap-6">
-                <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
+                <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
                         <CardTitle className="text-base font-semibold">{translate('Top Products by Revenue')}</CardTitle>
                     </CardHeader>
@@ -118,7 +118,7 @@ export default function ProductReports() {
             </div>
 
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Low Stock Products')}</h3>
 
@@ -192,7 +192,7 @@ export default function ProductReports() {
                     </div>
                 </Card>
 
-                <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Out of Stock Products')}</h3>
 
@@ -267,7 +267,7 @@ export default function ProductReports() {
                     </div>
                 </Card>
 
-                <Card className="border-border col-span-full overflow-hidden border shadow-sm dark:bg-slate-900">
+                <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Top 5 Products by Quantity Sold')}</h3>
                         <p className="text-muted-foreground mt-0.5 text-xs">{translate('Highest moving inventory')}</p>

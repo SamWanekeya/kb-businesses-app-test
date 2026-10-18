@@ -338,8 +338,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
             description={translate('Configure payment gateway for subscription plans')}
             action={
                 <Button type="submit" form="payment-settings-form" size="sm" disabled={processing} className="max-[1300px]:px-2.5">
-                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
+
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }
         >

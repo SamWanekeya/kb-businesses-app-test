@@ -218,7 +218,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
             <div className="space-y-6">
                 {/* ── Header strip ── */}
                 <div
-                    className="group dash-anim relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-slate-800 px-6 py-5 sm:flex-row sm:items-center sm:justify-between dark:bg-slate-900"
+                    className="group dash-anim relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-slate-800 px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
                     style={{ animationDelay: '0ms' }}
                 >
                     <span
@@ -521,7 +521,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── Storage Usage ── */}
                 {/* {useHasPermission('manage-dashboard') && (
                     <div className="dash-anim" style={{ animationDelay: '220ms' }}>
-                        <Card className="border border-purple-100 dark:border-purple-900/40 shadow-sm dark:bg-slate-900 overflow-hidden">
+                        <Card className="border border-purple-100 dark:border-purple-900/40 shadow-sm overflow-hidden">
                             <CardHeader className="pb-3 pt-5 px-5 border-b">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
@@ -577,7 +577,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 <div className="dash-anim grid gap-4 lg:grid-cols-2" style={{ animationDelay: '240ms' }}>
                     {/* Latest Leads */}
                     {useHasPermission('manage-leads') && (
-                        <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40 dark:bg-slate-900">
+                        <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -640,7 +640,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
 
                     {/* Recent Sales */}
                     {useHasPermission('manage-sales-orders') && (
-                        <Card className="overflow-hidden border border-violet-100 shadow-sm dark:border-violet-900/40 dark:bg-slate-900">
+                        <Card className="overflow-hidden border shadow-sm">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -709,7 +709,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {useHasPermission('manage-announcements') && (
                     <div className="dash-anim grid gap-4 lg:grid-cols-12" style={{ animationDelay: '320ms' }}>
                         {/* Announcements — col-span-8 */}
-                        <Card className="border-border overflow-hidden border shadow-sm lg:col-span-8 dark:bg-slate-900">
+                        <Card className="border-border overflow-hidden border shadow-sm lg:col-span-8">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -781,7 +781,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
 
                         {/* Storage — donut + 3 summary cards inside */}
                         <div className="lg:col-span-4">
-                            <Card className="h-full overflow-hidden border border-purple-100 shadow-sm dark:border-purple-900/40 dark:bg-slate-900">
+                            <Card className="h-full overflow-hidden border border-purple-100 shadow-sm dark:border-purple-900/40">
                                 <CardHeader className="border-b px-5 pt-5 pb-3">
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -911,7 +911,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── Sales Trends + Revenue Chart ── */}
                 {useHasPermission('view-sales-orders') && (
                     <div className="dash-anim" style={{ animationDelay: '160ms' }}>
-                        <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                        <Card className="border-border overflow-hidden border shadow-sm">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                     <div>
@@ -1084,7 +1084,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── Lead Conversions Chart ── */}
                 {useHasPermission('view-leads') && (
                     <div className="dash-anim" style={{ animationDelay: '200ms' }}>
-                        <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                        <Card className="border-border overflow-hidden border shadow-sm">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                     <div>
@@ -1195,7 +1195,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 <div className="dash-anim grid gap-4 lg:grid-cols-2" style={{ animationDelay: '280ms' }}>
                     {/* Active Projects */}
                     {useHasPermission('manage-projects') && (
-                        <Card className="overflow-hidden border border-indigo-100 shadow-sm dark:border-indigo-900/40 dark:bg-slate-900">
+                        <Card className="overflow-hidden border border-indigo-100 shadow-sm dark:border-indigo-900/40">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -1258,7 +1258,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
 
                     {/* New Customers */}
                     {useHasPermission('manage-accounts') && (
-                        <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
+                        <Card className="border-border overflow-hidden border shadow-sm">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
                                     <div>

@@ -111,7 +111,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
             action={
                 <Button type="submit" disabled={processing} form="cookie-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save changes')}
                 </Button>
             }
         >

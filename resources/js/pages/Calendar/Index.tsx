@@ -408,7 +408,7 @@ export default function CalendarIndex() {
                 </div>
 
                 <div className="space-y-6 lg:col-span-1">
-                    <Card className="border-border flex flex-col overflow-hidden border p-0 shadow-sm dark:bg-slate-900">
+                    <Card className="border-border flex flex-col overflow-hidden border p-0 shadow-sm">
                         <div className="bg-muted/30 shrink-0 border-b px-5 py-4">
                             <h3 className="text-base font-semibold">{translate('Upcoming Events')}</h3>
                         </div>
@@ -468,7 +468,7 @@ export default function CalendarIndex() {
                         </div>
                     </Card>
 
-                    <Card className="border-border overflow-hidden border p-0 shadow-sm dark:bg-slate-900">
+                    <Card className="border-border overflow-hidden border p-0 shadow-sm">
                         {/* Header */}
                         <div className="border-border border-b px-4 py-4">
                             <h3 className="text-foreground text-sm font-semibold">{translate('This Month')}</h3>

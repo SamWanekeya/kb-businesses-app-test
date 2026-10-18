@@ -70,55 +70,55 @@ export default function Settings() {
     // Define all possible sidebar navigation items
     const allSidebarNavItems: (NavItem & { permission?: string; role?: string })[] = [
         {
-            title: translate('System Settings'),
+            title: translate('System'),
             href: '#system-settings',
             icon: <SettingsIcon className="mr-2 h-4 w-4" />,
             permission: 'manage-system-settings',
         },
         {
-            title: translate('Brand Settings'),
+            title: translate('Brand'),
             href: '#brand-settings',
             icon: <Palette className="mr-2 h-4 w-4" />,
             permission: 'manage-brand-settings',
         },
         {
-            title: translate('Currency Settings'),
+            title: translate('Currency'),
             href: '#currency-settings',
             icon: <DollarSign className="mr-2 h-4 w-4" />,
             permission: 'manage-currency-settings',
         },
         {
-            title: translate('Email Settings'),
+            title: translate('Email'),
             href: '#email-settings',
             icon: <Mail className="mr-2 h-4 w-4" />,
             permission: 'manage-email-settings',
         },
         {
-            title: translate('Email Notification Settings'),
+            title: translate('Email Notification'),
             href: '#email-notification-settings',
             icon: <Bell className="mr-2 h-4 w-4" />,
             permission: 'manage-email-notifications',
         },
         {
-            title: translate('Twilio Settings'),
+            title: translate('Twilio'),
             href: '#twilio-notification-settings',
             icon: <MessageSquare className="mr-2 h-4 w-4" />,
             permission: 'manage-twilio-notifications',
         },
         {
-            title: translate('Slack Settings'),
+            title: translate('Slack'),
             href: '#slack-notification-settings',
             icon: <MessagesCircle className="mr-2 h-4 w-4" />,
             permission: 'manage-twilio-notifications',
         },
         {
-            title: translate('Payment Settings'),
+            title: translate('Payment'),
             href: '#payment-settings',
             icon: <CreditCard className="mr-2 h-4 w-4" />,
             permission: 'manage-payment-settings',
         },
         {
-            title: translate('Payment Settings'),
+            title: translate('Payment'),
             href: '#organization-payment-settings',
             icon: <CreditCard className="mr-2 h-4 w-4" />,
             permission: 'settings',
@@ -146,37 +146,37 @@ export default function Settings() {
         },
 
         {
-            title: translate('reCAPTCHA Settings'),
+            title: translate('reCAPTCHA'),
             href: '#recaptcha-settings',
             icon: <Shield className="mr-2 h-4 w-4" />,
             permission: 'manage-recaptcha-settings',
         },
         {
-            title: translate('Kakbima Intelligence Settings'),
+            title: translate('Kakbima Intelligence'),
             href: '#kakbima-intelligence-settings',
             icon: <Bot className="mr-2 h-4 w-4" />,
             permission: 'manage-kakbima-intelligence-settings',
         },
         {
-            title: translate('Cookie Settings'),
+            title: translate('Cookie'),
             href: '#cookie-settings',
             icon: <Cookie className="mr-2 h-4 w-4" />,
             permission: 'manage-cookie-settings',
         },
         {
-            title: translate('Storage Settings'),
+            title: translate('Storage'),
             href: '#storage-settings',
             icon: <HardDrive className="mr-2 h-4 w-4" />,
             permission: 'manage-storage-settings',
         },
         {
-            title: translate('Cache Settings'),
+            title: translate('Cache'),
             href: '#cache-settings',
             icon: <HardDrive className="mr-2 h-4 w-4" />,
             permission: 'manage-cache-settings',
         },
         {
-            title: translate('Google Calendar Settings'),
+            title: translate('Google Calendar'),
             href: '#google-calendar-settings',
             icon: <Calendar className="mr-2 h-4 w-4" />,
             permission: 'settings',
@@ -185,7 +185,7 @@ export default function Settings() {
 
     if (auth?.user?.type !== 'super_admin') {
         allSidebarNavItems.push({
-            title: translate('Webhook Settings'),
+            title: translate('Webhook'),
             href: '#webhook-settings',
             icon: <Webhook className="mr-2 h-4 w-4" />,
             permission: 'manage-webhook-settings',

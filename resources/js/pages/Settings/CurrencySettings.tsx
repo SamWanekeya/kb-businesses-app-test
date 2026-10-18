@@ -146,7 +146,7 @@ export default function CurrencySettings() {
             action={
                 <Button type="submit" disabled={processing} form="currency-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save changes')}
                 </Button>
             }
         >
