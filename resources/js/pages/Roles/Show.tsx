@@ -49,20 +49,20 @@ export default function RolesShow() {
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Role Name')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Role Name')}</p>
                                 <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{role.label || '-'}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Slug')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Slug')}</p>
                                 <p className="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400">{role.name || '-'}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Total Permissions')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Total Permissions')}</p>
                                 <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{assignedPermissionNames.length}</p>
                             </div>
                             {role.description && (
                                 <div className="sm:col-span-2 md:col-span-3">
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Description')}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Description')}</p>
                                     <p className="mt-1 text-sm leading-relaxed text-gray-700 dark:text-gray-300">{role.description}</p>
                                 </div>
                             )}

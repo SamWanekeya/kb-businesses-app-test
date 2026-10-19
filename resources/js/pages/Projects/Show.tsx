@@ -126,7 +126,7 @@ export default function ProjectShow() {
                         </div>
                         <div className="flex gap-2">
                             <span
-                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                     project.priority === 'urgent'
                                         ? 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                         : project.priority === 'high'
@@ -140,7 +140,7 @@ export default function ProjectShow() {
                                 {translate(project.priority.charAt(0).toUpperCase() + project.priority.slice(1))}
                             </span>
                             <span
-                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                     project.status === 'active'
                                         ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                         : project.status === 'completed'
@@ -218,8 +218,8 @@ export default function ProjectShow() {
                                 <div className="flex items-center gap-3">
                                     <UserInitials name={project.account.name} />
                                     <div>
-                                        <p className="text-sm font-medium">{project.account.name}</p>
-                                        <p className="text-muted-foreground text-xs">{project.account.email || '-'}</p>
+                                        <p className="text-sm">{project.account.name}</p>
+                                        <p className="text-foreground/75 text-xs">{project.account.email || '-'}</p>
                                     </div>
                                 </div>
                             ) : (
@@ -227,7 +227,7 @@ export default function ProjectShow() {
                             )}
                             {project.account?.phone && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Phone')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Phone')}</p>
                                     <p className="mt-1 text-sm">{project.account.phone}</p>
                                 </div>
                             )}
@@ -242,9 +242,9 @@ export default function ProjectShow() {
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Start Date')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Start Date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
-                                    <Calendar className="text-muted-foreground h-3.5 w-3.5" />
+                                    <Calendar className="text-foreground/75 h-3.5 w-3.5" />
                                     <p className="text-sm">
                                         {project.start_date
                                             ? window.kbSettings.formatDateTime(project.start_date, false) ||
@@ -254,9 +254,9 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('End Date')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('End Date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
-                                    <Calendar className="text-muted-foreground h-3.5 w-3.5" />
+                                    <Calendar className="text-foreground/75 h-3.5 w-3.5" />
                                     <p className="text-sm">
                                         {project.end_date
                                             ? window.kbSettings.formatDateTime(project.end_date, false) ||
@@ -266,9 +266,9 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Created')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
-                                    <Calendar className="text-muted-foreground h-3.5 w-3.5" />
+                                    <Calendar className="text-foreground/75 h-3.5 w-3.5" />
                                     <p className="text-sm">
                                         {window.kbSettings.formatDateTime(project.created_at, false) ||
                                             new Date(project.created_at).toLocaleDateString()}
@@ -286,9 +286,9 @@ export default function ProjectShow() {
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Budget')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Budget')}</p>
                                 <div className="mt-1 flex items-center">
-                                    <BanknoteIcon className="text-muted-foreground mr-2 h-4 w-4" />
+                                    <BanknoteIcon className="text-foreground/75 mr-2 h-4 w-4" />
                                     <p className="mt-1 font-mono text-sm">
                                         {project.budget
                                             ? window.kbSettings.formatCurrency(project.budget) || `$${project.budget.toLocaleString()}`
@@ -297,7 +297,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.assigned_user ? (
                                         <>
@@ -308,19 +308,19 @@ export default function ProjectShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{project.assigned_user.name}</p>
+                                                <p className="text-foreground truncate text-sm">{project.assigned_user.name}</p>
                                                 {project.assigned_user.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{project.assigned_user.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{project.assigned_user.email}</p>
                                                 )}
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                     )}
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Created By')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created By')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.creator ? (
                                         <>
@@ -331,14 +331,14 @@ export default function ProjectShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{project.creator.name}</p>
+                                                <p className="text-foreground truncate text-sm">{project.creator.name}</p>
                                                 {project.creator.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{project.creator.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{project.creator.email}</p>
                                                 )}
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </div>
@@ -364,7 +364,7 @@ export default function ProjectShow() {
                                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                                         />
                                     </svg>
-                                    <h4 className="text-muted-foreground text-sm font-medium">
+                                    <h4 className="text-foreground/75 text-sm">
                                         {translate('Meetings')} ({meetings.filter((m: any) => m.type !== 'call').length})
                                     </h4>
                                 </div>
@@ -389,7 +389,7 @@ export default function ProjectShow() {
                                                         </svg>
                                                     </div>
                                                     <div className="min-w-0 flex-1">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{meeting.title}</p>
+                                                        <p className="truncate text-sm text-gray-900">{meeting.title}</p>
                                                         <p className="text-xs text-gray-500">
                                                             {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                 new Date(meeting.start_date).toLocaleDateString()}
@@ -428,7 +428,7 @@ export default function ProjectShow() {
                                             d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                                         />
                                     </svg>
-                                    <h4 className="text-muted-foreground text-sm font-medium">
+                                    <h4 className="text-foreground/75 text-sm">
                                         {translate('Calls')} ({meetings.filter((m: any) => m.type === 'call').length})
                                     </h4>
                                 </div>
@@ -453,7 +453,7 @@ export default function ProjectShow() {
                                                         </svg>
                                                     </div>
                                                     <div className="min-w-0 flex-1">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{call.title}</p>
+                                                        <p className="truncate text-sm text-gray-900">{call.title}</p>
                                                         <p className="text-xs text-gray-500">
                                                             {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                 new Date(call.start_date).toLocaleDateString()}

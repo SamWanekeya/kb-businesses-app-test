@@ -380,7 +380,7 @@ export default function ProjectTasks() {
                             </div>
                             <div className="space-y-1.5">
                                 <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
-                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                <p className="text-foreground/75 text-sm leading-relaxed">
                                     {translate('Set up task statuses to start organizing your work in a Kanban board.')}
                                 </p>
                             </div>
@@ -389,7 +389,7 @@ export default function ProjectTasks() {
                                     onClick={() => {
                                         router.visit(route('task-statuses.index'));
                                     }}
-                                    className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+                                    className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
                                     {translate('Add Task Status')}
@@ -568,7 +568,7 @@ export default function ProjectTasks() {
                                                         {/* Priority badge */}
                                                         <div className="mb-2.5 flex flex-wrap gap-1">
                                                             <span
-                                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${priorityColors[task.priority] || priorityColors.medium}`}
+                                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${priorityColors[task.priority] || priorityColors.medium}`}
                                                             >
                                                                 {translate(task.priority.charAt(0).toUpperCase() + task.priority.slice(1))}
                                                             </span>

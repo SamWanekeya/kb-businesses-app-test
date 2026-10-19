@@ -346,7 +346,7 @@ export default function BrandSettings() {
                 {/* Appearance */}
                 <div className="space-y-6">
                     <div className="flex items-center">
-                        <SunMoon className="text-muted-foreground mr-2 h-5 w-5" />
+                        <SunMoon className="text-foreground/75 mr-2 h-5 w-5" />
 
                         <h3 className="text-base font-medium">{translate('Appearance')}</h3>
                     </div>
@@ -372,7 +372,7 @@ export default function BrandSettings() {
                 {userType === 'organization' && (
                     <div className="space-y-6">
                         <div className="flex items-center pt-4">
-                            <TabletSmartphone className="text-muted-foreground mr-2 h-5 w-5" />
+                            <TabletSmartphone className="text-foreground/75 mr-2 h-5 w-5" />
 
                             <h3 className="text-base font-medium">{translate('Logo')}</h3>
                         </div>

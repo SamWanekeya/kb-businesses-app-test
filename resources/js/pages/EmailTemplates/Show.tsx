@@ -131,7 +131,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                             <div className="grid gap-2">
                                 <Label>{translate('Template Name')}</Label>
                                 <Input value={template.name} disabled className="bg-muted" />
-                                <p className="text-muted-foreground text-xs">{translate('Template name cannot be changed')}</p>
+                                <p className="text-foreground/75 text-xs">{translate('Template name cannot be changed')}</p>
                             </div>
 
                             <div className="grid gap-2">
@@ -155,7 +155,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
                                     <CardTitle className="text-base sm:text-lg">{translate('Email Content')}</CardTitle>
-                                    <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+                                    <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                         {translate('Customize email content for different languages')}
                                     </p>
                                 </div>
@@ -204,13 +204,13 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                             </Badge>
                                             <div>
                                                 <span className="font-medium">{language.name}</span>
-                                                <p className="text-muted-foreground text-xs">{translate('Edit email content for this language')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Edit email content for this language')}</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
-                                                <Label htmlFor={`subject-${language.code}`} className="text-sm font-medium" required>
+                                                <Label htmlFor={`subject-${language.code}`} className="text-sm" required>
                                                     {translate('Email Subject')}
                                                 </Label>
                                                 <Input
@@ -235,7 +235,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                     )}
                                                     className="min-h-[300px]"
                                                 />
-                                                <p className="text-muted-foreground text-xs">
+                                                <p className="text-foreground/75 text-xs">
                                                     💡 {translate('Tip: Use the variables from the sidebar to personalize your emails')}
                                                 </p>
                                             </div>
@@ -256,7 +256,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     {Object.keys(variables).length}
                                 </Badge>
                             </CardTitle>
-                            <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+                            <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                 {translate('Click to copy variables to use in your email content')}
                             </p>
                         </CardHeader>
@@ -271,7 +271,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                         }}
                                     >
                                         <div className="flex flex-wrap items-center justify-between gap-2">
-                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-xs font-medium break-all sm:text-sm">
+                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-xs break-all sm:text-sm">
                                                 {variable}
                                             </code>
                                             <div className="opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
@@ -280,7 +280,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                 </Badge>
                                             </div>
                                         </div>
-                                        <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{description}</p>
+                                        <p className="text-foreground/75 mt-2 text-xs leading-relaxed">{description}</p>
                                     </div>
                                 ))}
                             </div>

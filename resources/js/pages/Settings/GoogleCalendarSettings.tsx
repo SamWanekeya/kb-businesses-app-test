@@ -87,7 +87,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
                                 <Label htmlFor="googleCalendarEnabled">{translate('Enable Google Calendar')}</Label>
-                                <p className="text-muted-foreground text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
                             </div>
                             <Switch
                                 id="googleCalendarEnabled"
@@ -132,7 +132,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                         {translate('Selected file')}: {jsonFile.name}
                                     </p>
                                 )}
-                                <p className="text-muted-foreground text-xs">{translate('Upload your Google service account JSON credentials')}</p>
+                                <p className="text-foreground/75 text-xs">{translate('Upload your Google service account JSON credentials')}</p>
                             </div>
 
                             <div className="flex justify-end">

@@ -117,7 +117,7 @@ export function InvoicePayTRPaymentForm({
                     <div className="h-[600px] w-full overflow-hidden rounded-lg border">
                         <iframe ref={iframeRef} src={iframeUrl} width="100%" height="100%" frameBorder="0" scrolling="auto" title="PayTR Payment" />
                     </div>
-                    <p className="text-muted-foreground mt-2 text-center text-xs">
+                    <p className="text-foreground/75 mt-2 text-center text-xs">
                         {translate('Complete your payment in the secure PayTR iframe above')}
                     </p>
                 </CardContent>
@@ -137,11 +137,11 @@ export function InvoicePayTRPaymentForm({
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted mb-4 rounded-lg p-3">
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Payment Type')}:</span>
                             <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Amount')}:</span>
                             <span className="text-lg font-extrabold text-gray-900">
                                 {currency} {amount}
                             </span>
@@ -186,7 +186,7 @@ export function InvoicePayTRPaymentForm({
                             }}
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
                     </div>
 
                     <div className="space-y-2">
@@ -201,7 +201,7 @@ export function InvoicePayTRPaymentForm({
                     </div>
 
                     <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-                        <p className="text-sm font-medium text-blue-900">{translate('Secure Payment via PayTR')}</p>
+                        <p className="text-sm text-blue-900">{translate('Secure Payment via PayTR')}</p>
                         <p className="mt-1 text-xs text-blue-700">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
                     </div>
 

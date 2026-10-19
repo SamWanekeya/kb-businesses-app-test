@@ -150,8 +150,8 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                         </CardHeader>
                         <CardContent className="p-0">
                             {(streams ?? []).length === 0 ? (
-                                <div className="text-muted-foreground flex flex-col items-center justify-center py-12">
-                                    <MessageCircle className="text-muted-foreground/30 mb-3 h-10 w-10" />
+                                <div className="text-foreground/75 flex flex-col items-center justify-center py-12">
+                                    <MessageCircle className="text-foreground/75/30 mb-3 h-10 w-10" />
                                     <p className="text-sm">{translate('No activities found')}</p>
                                 </div>
                             ) : (
@@ -166,7 +166,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                             <TooltipTrigger asChild>
                                                                 <span className="h-full w-full">
                                                                     <AvatarImage src={activity.user?.avatar} alt={activity.user?.name || 'U'} />
-                                                                    <AvatarFallback className="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-full text-xs font-extrabold sm:h-9 sm:w-9">
+                                                                    <AvatarFallback className="bg-muted text-foreground/75 flex h-8 w-8 items-center justify-center rounded-full text-xs font-extrabold sm:h-9 sm:w-9">
                                                                         {getInitials(activity.user?.name || 'U')}
                                                                     </AvatarFallback>
                                                                 </span>
@@ -190,7 +190,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                             {activity.user?.name || translate('System')}
                                                         </span>
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset sm:px-2 sm:py-1 ${getActivityBadgeColor(activity.activity_type)}`}
+                                                            className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-xs ring-1 ring-inset sm:px-2 sm:py-1 ${getActivityBadgeColor(activity.activity_type)}`}
                                                         >
                                                             {formatTitleCase(activity.activity_type || 'Activity')}
                                                         </span>
@@ -206,7 +206,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                                 </Link>
                                                             ) : null;
                                                         })()}
-                                                        <span className="text-muted-foreground text-xs whitespace-nowrap">
+                                                        <span className="text-foreground/75 text-xs whitespace-nowrap">
                                                             {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                         </span>
                                                     </div>
@@ -217,7 +217,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        className="text-muted-foreground h-6 w-6 flex-shrink-0 p-0"
+                                                                        className="text-foreground/75 h-6 w-6 flex-shrink-0 p-0"
                                                                         onClick={() => {
                                                                             setCurrentActivity(activity);
                                                                             setIsDeleteModalOpen(true);
@@ -242,7 +242,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                             const badgeColor = getStatusBadgeColor(activity.description);
                                                             return badgeColor ? (
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeColor}`}
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeColor}`}
                                                                 >
                                                                     {activity.description?.replace('_', ' ')}
                                                                 </span>
@@ -251,17 +251,17 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                               activity.field_changed === 'assigned_to' ||
                                                               activity.description?.includes('into') ? (
                                                                 <p
-                                                                    className="text-muted-foreground text-sm break-words"
+                                                                    className="text-foreground/75 text-sm break-words"
                                                                     dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                 />
                                                             ) : activity.title ? (
                                                                 <p
-                                                                    className="text-muted-foreground text-sm break-words"
+                                                                    className="text-foreground/75 text-sm break-words"
                                                                     dangerouslySetInnerHTML={{ __html: activity.title }}
                                                                 />
                                                             ) : (
                                                                 <p
-                                                                    className="text-muted-foreground text-sm break-words"
+                                                                    className="text-foreground/75 text-sm break-words"
                                                                     dangerouslySetInnerHTML={{ __html: activity.description || '' }}
                                                                 />
                                                             );

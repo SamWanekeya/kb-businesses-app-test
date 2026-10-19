@@ -254,7 +254,7 @@ export default function QuoteCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-3">
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Quote Name')}
                             </Label>
                             <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
@@ -262,7 +262,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Opportunity')}
                             </Label>
                             <Select value={data.opportunity_id} onValueChange={handleOpportunityChange}>
@@ -289,7 +289,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Account')}
                             </Label>
                             <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
@@ -316,7 +316,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Billing Contact')}
                             </Label>
                             <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
@@ -343,7 +343,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Shipping Contact')}
                             </Label>
                             <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
@@ -362,7 +362,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Shipping Provider')}
                             </Label>
                             <Select value={data.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
@@ -389,7 +389,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Status')}</Label>
+                            <Label className="text-sm">{translate('Status')}</Label>
                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -405,7 +405,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Valid Until')}</Label>
+                            <Label className="text-sm">{translate('Valid Until')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -428,7 +428,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Assign To')}
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -455,7 +455,7 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                            <Label className="text-sm font-medium">{translate('Description')}</Label>
+                            <Label className="text-sm">{translate('Description')}</Label>
                             <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
                     </CardContent>
@@ -506,7 +506,7 @@ export default function QuoteCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -546,7 +546,7 @@ export default function QuoteCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -564,7 +564,7 @@ export default function QuoteCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -583,7 +583,7 @@ export default function QuoteCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -603,7 +603,7 @@ export default function QuoteCreate() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
@@ -620,13 +620,13 @@ export default function QuoteCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     {(() => {
                                                         const p = productOptions.find((p: any) => String(p.id) === row.product_id);
                                                         return (
-                                                            <span className="text-muted-foreground text-sm font-medium">
+                                                            <span className="text-foreground/75 text-sm">
                                                                 {p?.tax
                                                                     ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)`
                                                                     : translate('No Tax')}
@@ -635,7 +635,7 @@ export default function QuoteCreate() {
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(total)}</span>
@@ -699,7 +699,7 @@ export default function QuoteCreate() {
                             <div className="space-y-4">
                                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{translate('Billing Address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm font-medium" required>
+                                    <Label className="text-sm" required>
                                         {translate('Address')}
                                     </Label>
                                     <Textarea
@@ -715,7 +715,7 @@ export default function QuoteCreate() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>
+                                        <Label className="text-sm" required>
                                             {translate('City')}
                                         </Label>
                                         <Input
@@ -729,7 +729,7 @@ export default function QuoteCreate() {
                                         {errors.billing_city && <p className="text-xs text-red-500">{errors.billing_city}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>
+                                        <Label className="text-sm" required>
                                             {translate('State')}
                                         </Label>
                                         <Input
@@ -743,7 +743,7 @@ export default function QuoteCreate() {
                                         {errors.billing_state && <p className="text-xs text-red-500">{errors.billing_state}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>
+                                        <Label className="text-sm" required>
                                             {translate('Country')}
                                         </Label>
                                         <Input
@@ -757,7 +757,7 @@ export default function QuoteCreate() {
                                         {errors.billing_country && <p className="text-xs text-red-500">{errors.billing_country}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>
+                                        <Label className="text-sm" required>
                                             {translate('Postal Code')}
                                         </Label>
                                         <Input
@@ -777,24 +777,24 @@ export default function QuoteCreate() {
                             <div className="space-y-4">
                                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{translate('Shipping Address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm font-medium">{translate('Address')}</Label>
+                                    <Label className="text-sm">{translate('Address')}</Label>
                                     <Textarea value={data.shipping_address} onChange={(e) => set('shipping_address', e.target.value)} rows={2} />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{translate('City')}</Label>
+                                        <Label className="text-sm">{translate('City')}</Label>
                                         <Input value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{translate('State')}</Label>
+                                        <Label className="text-sm">{translate('State')}</Label>
                                         <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{translate('Country')}</Label>
+                                        <Label className="text-sm">{translate('Country')}</Label>
                                         <Input value={data.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{translate('Postal Code')}</Label>
+                                        <Label className="text-sm">{translate('Postal Code')}</Label>
                                         <Input value={data.shipping_postal_code} onChange={(e) => set('shipping_postal_code', e.target.value)} />
                                     </div>
                                 </div>

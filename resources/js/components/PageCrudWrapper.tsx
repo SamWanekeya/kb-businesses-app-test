@@ -464,7 +464,7 @@ export default function PageCrudWrapper({ config, title, url, buttons = [], brea
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <Label className="text-muted-foreground text-xs">{translate('Per page')}:</Label>
+                            <Label className="text-foreground/75 text-xs">{translate('Per page')}:</Label>
                             <Select
                                 value={pageFilters.per_page?.toString() || '10'}
                                 onValueChange={(value) => {

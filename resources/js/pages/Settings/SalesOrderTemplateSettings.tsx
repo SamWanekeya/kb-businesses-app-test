@@ -314,7 +314,7 @@ export default function SalesOrderTemplateSettings() {
                                 </div>
 
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="sales_order_qr_enabled" className="text-sm font-medium">
+                                    <Label htmlFor="sales_order_qr_enabled" className="text-sm">
                                         {translate('QR Display?')}
                                     </Label>
                                     <Switch

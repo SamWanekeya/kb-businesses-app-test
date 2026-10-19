@@ -354,7 +354,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Search and Filter Controls */}
                             <div className="flex flex-col gap-4 sm:flex-row">
                                 <div className="relative flex-1">
-                                    <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+                                    <Search className="text-foreground/75 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
                                         value={searchTerm}
                                         onChange={(e) => {
@@ -396,7 +396,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Active Filters */}
                             {(searchTerm || statusFilter !== 'all') && (
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <span className="text-muted-foreground text-sm">{translate('Active filters:')} </span>
+                                    <span className="text-foreground/75 text-sm">{translate('Active filters:')} </span>
                                     {searchTerm && (
                                         <Badge variant="secondary" className="text-xs">
                                             {translate('Search:')} "{searchTerm}"
@@ -434,7 +434,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
 
                             {/* Results Summary & No Results */}
                             {(searchTerm || statusFilter !== 'all') && (
-                                <div className="text-muted-foreground flex items-center justify-between text-sm">
+                                <div className="text-foreground/75 flex items-center justify-between text-sm">
                                     <span>
                                         {filteredMethods.length > 0
                                             ? translate('Showing {{count}} of {{total}} payment methods', {
@@ -449,10 +449,10 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {(searchTerm || statusFilter !== 'all') && filteredMethods.length === 0 && (
                                 <div className="border-muted rounded-lg border-2 border-dashed py-12 text-center">
                                     <div className="bg-muted mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                        <Search className="text-muted-foreground h-5 w-5" />
+                                        <Search className="text-foreground/75 h-5 w-5" />
                                     </div>
                                     <h3 className="mb-2 text-lg font-medium">{translate('No results found')}</h3>
-                                    <p className="text-muted-foreground mb-4">{translate('Try adjusting your search or filter criteria')}</p>
+                                    <p className="text-foreground/75 mb-4">{translate('Try adjusting your search or filter criteria')}</p>
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -487,7 +487,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             }}
                                             rows={6}
                                         />
-                                        <p className="text-muted-foreground text-xs">
+                                        <p className="text-foreground/75 text-xs">
                                             {translate('Enter your bank details that customers will use for manual transfers')}
                                         </p>
                                         {errors.bank_details && <p className="text-destructive text-sm">{errors.bank_details}</p>}
@@ -617,7 +617,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                isSecret*/}
                             {/*                error={errors.mercadopago_access_token}*/}
                             {/*            />*/}
-                            {/*            <p className="text-muted-foreground text-xs">*/}
+                            {/*            <p className="text-foreground/75 text-xs">*/}
                             {/*                {translate(*/}
                             {/*                    'For server-side API integration, use your Private Access Token (NOT your public key). You can find this in your Mercado Pago Developer Dashboard under Credentials > Production/Test Credentials > Access token.',*/}
                             {/*                )}*/}

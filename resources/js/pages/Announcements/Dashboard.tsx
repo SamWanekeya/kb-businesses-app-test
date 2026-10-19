@@ -60,7 +60,7 @@ export default function AnnouncementDashboard() {
         };
         const cls = map[status] ?? map.inactive;
         return (
-            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${cls}`}>
+            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${cls}`}>
                 {status?.charAt(0).toUpperCase() + status?.slice(1)}
             </span>
         );
@@ -106,7 +106,7 @@ export default function AnnouncementDashboard() {
                                     onClick={() => {
                                         handleTabChange(tab.value as any);
                                     }}
-                                    className={`flex cursor-pointer items-center gap-1.5 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+                                    className={`flex cursor-pointer items-center gap-1.5 border-b-2 px-4 py-3 text-sm transition-colors ${
                                         activeTab === tab.value
                                             ? 'border-primary text-primary'
                                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -132,7 +132,7 @@ export default function AnnouncementDashboard() {
                                 {sorted.length === 0 ? (
                                     <div className="flex flex-col items-center py-14 text-center">
                                         <Megaphone className="mb-2 h-10 w-10 text-gray-200 dark:text-gray-700" />
-                                        <p className="text-muted-foreground text-sm">{translate('No announcements')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No announcements')}</p>
                                     </div>
                                 ) : (
                                     sorted.map((a: any) => (
@@ -150,13 +150,13 @@ export default function AnnouncementDashboard() {
                                                     <div className="flex min-w-0 flex-wrap items-center gap-1.5">
                                                         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{a.title}</h3>
                                                         {a.is_featured && (
-                                                            <span className="inline-flex items-center gap-0.5 rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
+                                                            <span className="inline-flex items-center gap-0.5 rounded-md bg-yellow-50 px-2 py-1 text-xs text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
                                                                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
                                                                 {translate('Featured')}
                                                             </span>
                                                         )}
                                                         {a.category?.name && (
-                                                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                                                            <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                                                                 <Tag className="h-3 w-3" />
                                                                 {a.category.name}
                                                             </span>
@@ -184,7 +184,7 @@ export default function AnnouncementDashboard() {
                                                     className="mb-2 line-clamp-2 text-xs text-gray-500 dark:text-gray-400"
                                                     dangerouslySetInnerHTML={{ __html: a.content }}
                                                 />
-                                                <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-2 text-xs">
+                                                <div className="text-foreground/75 flex flex-wrap items-center justify-between gap-2 text-xs">
                                                     <div className="flex items-center gap-1">
                                                         <Calendar className="h-3 w-3 shrink-0" />
                                                         {a.start_date && <span>{window.kbSettings.formatDateTime(a.start_date, false)}</span>}
@@ -233,7 +233,7 @@ export default function AnnouncementDashboard() {
                     {/* Stats */}
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                         <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                            <BarChart2 className="text-muted-foreground h-4 w-4" />
+                            <BarChart2 className="text-foreground/75 h-4 w-4" />
                             <span className="text-sm font-semibold">{translate('Overview')}</span>
                         </div>
                         <div className="space-y-3 p-4">
@@ -259,7 +259,7 @@ export default function AnnouncementDashboard() {
                     {categoryBreakdown.length > 0 && (
                         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                                <TrendingUp className="text-muted-foreground h-4 w-4" />
+                                <TrendingUp className="text-foreground/75 h-4 w-4" />
                                 <span className="text-sm font-semibold">{translate('By Category')}</span>
                             </div>
                             <div className="overflow-y-auto" style={{ maxHeight: categoryBreakdown.length > 5 ? '205px' : 'none' }}>

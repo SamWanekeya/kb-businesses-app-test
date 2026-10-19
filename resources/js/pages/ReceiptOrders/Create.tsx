@@ -527,7 +527,7 @@ export default function ReceiptOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -565,7 +565,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -580,7 +580,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -596,7 +596,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -617,7 +617,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Value')}
                                                     </span>
                                                     <Input
@@ -635,13 +635,13 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     {(() => {
                                                         const prod = products.find((p: any) => String(p.id) === String(row.product_id));
                                                         return (
-                                                            <span className="text-muted-foreground text-sm font-medium">
+                                                            <span className="text-foreground/75 text-sm">
                                                                 {prod?.tax
                                                                     ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
                                                                     : translate('No Tax')}
@@ -651,7 +651,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(c.net + c.tax)}</span>

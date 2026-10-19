@@ -43,7 +43,7 @@ export default function ReturnOrderShow() {
         };
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status] || statusColors.pending}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status] || statusColors.pending}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Pending')}
             </span>
@@ -94,7 +94,7 @@ export default function ReturnOrderShow() {
                             [
                                 {
                                     label: translate('Return Number'),
-                                    value: returnOrder.return_number || '—',
+                                    value: returnOrder.return_number || '',
                                     icon: FileText,
                                     iconCls: 'text-blue-600',
                                     blobCls: 'bg-blue-50 dark:bg-blue-900/30',
@@ -108,7 +108,7 @@ export default function ReturnOrderShow() {
                                 },
                                 {
                                     label: translate('Return Reason'),
-                                    value: returnOrder.reason ? getReasonLabel(returnOrder.reason) : '—',
+                                    value: returnOrder.reason ? getReasonLabel(returnOrder.reason) : '',
                                     icon: FileText,
                                     iconCls: 'text-emerald-600',
                                     blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
@@ -120,7 +120,7 @@ export default function ReturnOrderShow() {
                                 <CardContent className="relative p-4">
                                     <div className="flex items-start justify-between">
                                         <div className="min-w-0 pe-2">
-                                            <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                            <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                             <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                         </div>
                                         <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -136,7 +136,7 @@ export default function ReturnOrderShow() {
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Package className="text-muted-foreground me-3 h-5 w-5" />
+                                <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </CardHeader>
@@ -187,7 +187,7 @@ export default function ReturnOrderShow() {
                                                                         </a>
                                                                     ) : (
                                                                         <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                            <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                            <Package className="text-foreground/75/40 h-4 w-4" />
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
@@ -195,10 +195,10 @@ export default function ReturnOrderShow() {
                                                                             {product.name}
                                                                         </p>
                                                                         {product.sku && (
-                                                                            <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                            <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
                                                                         {product.category?.name && (
-                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                                 {product.category.name}
                                                                             </span>
                                                                         )}
@@ -219,12 +219,12 @@ export default function ReturnOrderShow() {
                                                                         <p className="text-foreground text-sm font-semibold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
-                                                                        <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                        <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                             {formatCurrency(taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
@@ -242,13 +242,13 @@ export default function ReturnOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(returnOrder.subtotal)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(returnOrder.tax_amount)}
                                                 </span>
@@ -265,9 +265,9 @@ export default function ReturnOrderShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this return order')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this return order')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -277,7 +277,7 @@ export default function ReturnOrderShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
                         </CardHeader>
@@ -296,7 +296,7 @@ export default function ReturnOrderShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Reason Description')}
                             </CardTitle>
                         </CardHeader>
@@ -316,7 +316,7 @@ export default function ReturnOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Notes')}
                                 </CardTitle>
                             </CardHeader>
@@ -345,7 +345,7 @@ export default function ReturnOrderShow() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(returnOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(returnOrder.status)}</div>
@@ -379,7 +379,7 @@ export default function ReturnOrderShow() {
                             <CardContent className="p-0">
                                 {returnOrder.contact && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             {translate('Contact')}
                                         </p>
@@ -389,7 +389,7 @@ export default function ReturnOrderShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{returnOrder.contact.name}</p>
                                                     {returnOrder.contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{returnOrder.contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{returnOrder.contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -416,7 +416,7 @@ export default function ReturnOrderShow() {
                                 {returnOrder.contact && returnOrder.account && <div className="mx-0 border-t" />}
                                 {returnOrder.account && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             {translate('Account')}
                                         </p>
@@ -426,7 +426,7 @@ export default function ReturnOrderShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{returnOrder.account.name}</p>
                                                     {returnOrder.account.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{returnOrder.account.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{returnOrder.account.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -465,17 +465,17 @@ export default function ReturnOrderShow() {
                         <CardContent className="space-y-3 p-5">
                             {returnOrder.tracking_number && (
                                 <div className="flex items-start gap-3">
-                                    <Hash className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                    <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                     <div>
-                                        <p className="text-muted-foreground text-xs">{translate('Tracking Number')}</p>
-                                        <p className="text-foreground font-mono text-sm font-medium">{returnOrder.tracking_number}</p>
+                                        <p className="text-foreground/75 text-xs">{translate('Tracking Number')}</p>
+                                        <p className="text-foreground font-mono text-sm">{returnOrder.tracking_number}</p>
                                     </div>
                                 </div>
                             )}
                             {returnOrder.tracking_number && returnOrder.assigned_user && <div className="border-t" />}
                             {returnOrder.assigned_user && (
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.assigned_user.avatar} alt={returnOrder.assigned_user.name} />
@@ -484,9 +484,9 @@ export default function ReturnOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{returnOrder.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{returnOrder.assigned_user.name}</p>
                                             {returnOrder.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{returnOrder.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{returnOrder.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -494,7 +494,7 @@ export default function ReturnOrderShow() {
                             )}
                             {returnOrder.creator && (
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.creator.avatar} alt={returnOrder.creator.name} />
@@ -503,9 +503,9 @@ export default function ReturnOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{returnOrder.creator.name}</p>
+                                            <p className="text-foreground truncate text-sm">{returnOrder.creator.name}</p>
                                             {returnOrder.creator.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{returnOrder.creator.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{returnOrder.creator.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -527,8 +527,8 @@ export default function ReturnOrderShow() {
                                 {returnOrder.sales_order && useHasPermission('view-sales-orders') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{returnOrder.sales_order.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground truncate text-sm">{returnOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
@@ -550,8 +550,8 @@ export default function ReturnOrderShow() {
                                 {returnOrder.shipping_provider_type && useHasPermission('view-shipping-provider-types') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider Type')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{returnOrder.shipping_provider_type.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider Type')}</p>
+                                            <p className="text-foreground truncate text-sm">{returnOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>

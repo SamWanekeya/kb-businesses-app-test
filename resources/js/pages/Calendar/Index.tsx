@@ -322,15 +322,15 @@ export default function CalendarIndex() {
                             <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#A12582' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{translate('Meetings')}</span>
+                                    <span className="text-foreground text-xs">{translate('Meetings')}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{translate('Calls')}</span>
+                                    <span className="text-foreground text-xs">{translate('Calls')}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{translate('Tasks')}</span>
+                                    <span className="text-foreground text-xs">{translate('Tasks')}</span>
                                 </div>
                             </div>
                         </div>
@@ -392,7 +392,7 @@ export default function CalendarIndex() {
                                         }}
                                         className="w-full cursor-pointer overflow-hidden px-1.5 py-0.5 hover:opacity-80"
                                     >
-                                        <div className={`truncate text-xs font-medium ${isNotHeld ? 'line-through' : ''}`}>
+                                        <div className={`truncate text-xs ${isNotHeld ? 'line-through' : ''}`}>
                                             {eventInfo.event.title}
                                         </div>
                                         {eventInfo.view.type !== 'dayGridMonth' && eventInfo.event.extendedProps.parent_name && (
@@ -447,7 +447,7 @@ export default function CalendarIndex() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-foreground truncate text-sm font-semibold">{event.title}</p>
 
-                                                <div className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
+                                                <div className="text-foreground/75 mt-1 flex items-center gap-1 text-xs">
                                                     <Calendar className="h-3 w-3 shrink-0" />
 
                                                     <span className="truncate">
@@ -461,8 +461,8 @@ export default function CalendarIndex() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center gap-3 p-8 text-center">
-                                    <Calendar className="text-muted-foreground/30 h-10 w-10" />
-                                    <p className="text-muted-foreground text-sm">{translate('No upcoming events this month')}</p>
+                                    <Calendar className="text-foreground/75/30 h-10 w-10" />
+                                    <p className="text-foreground/75 text-sm">{translate('No upcoming events this month')}</p>
                                 </div>
                             )}
                         </div>
@@ -478,25 +478,25 @@ export default function CalendarIndex() {
                         <div className="space-y-2 px-4 py-3">
                             {/* Meetings */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{translate('Meetings')}</span>
-                                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{summaryStats.meetings}</span>
+                                <span className="text-foreground/75 text-sm">{translate('Meetings')}</span>
+                                <span className="text-sm text-blue-600 dark:text-blue-400">{summaryStats.meetings}</span>
                             </div>
 
                             {/* Calls */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{translate('Calls')}</span>
-                                <span className="text-sm font-medium text-green-600 dark:text-green-400">{summaryStats.calls}</span>
+                                <span className="text-foreground/75 text-sm">{translate('Calls')}</span>
+                                <span className="text-sm text-green-600 dark:text-green-400">{summaryStats.calls}</span>
                             </div>
 
                             {/* Leaves */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{translate('Tasks')}</span>
-                                <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{summaryStats.tasks}</span>
+                                <span className="text-foreground/75 text-sm">{translate('Tasks')}</span>
+                                <span className="text-sm text-amber-600 dark:text-amber-400">{summaryStats.tasks}</span>
                             </div>
                             {/* Total */}
                             <div className="border-border -mx-4 border-t px-4 pt-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-muted-foreground text-sm">{translate('Total Events')}</span>
+                                    <span className="text-foreground/75 text-sm">{translate('Total Events')}</span>
                                     <span className="text-foreground text-sm font-semibold">{summaryStats.total}</span>
                                 </div>
                             </div>
@@ -520,7 +520,7 @@ export default function CalendarIndex() {
                             <div className="flex items-center gap-2">
                                 <span
                                     className={
-                                        'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ' +
+                                        'inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ' +
                                         getEventColor(selectedEvent.type || 'event')
                                     }
                                 >
@@ -553,7 +553,7 @@ export default function CalendarIndex() {
                                     <div className="flex items-center gap-2 text-sm">
                                         <strong>{translate('Status')}:</strong>
                                         <span
-                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusClasses(selectedEvent.status, selectedEvent.type)}`}
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusClasses(selectedEvent.status, selectedEvent.type)}`}
                                         >
                                             {selectedEvent.type === 'meeting' || selectedEvent.type === 'call'
                                                 ? selectedEvent.status === 'planned'

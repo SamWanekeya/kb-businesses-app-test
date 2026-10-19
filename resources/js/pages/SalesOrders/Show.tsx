@@ -52,7 +52,7 @@ export default function SalesOrderShow() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
@@ -122,64 +122,64 @@ export default function SalesOrderShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_address || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.billing_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.billing_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_state || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {salesOrder.billing_postal_code || translate('-')}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{salesOrder.billing_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{salesOrder.billing_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="border-t pt-6 xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0">
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_address || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.shipping_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.shipping_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_state || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {salesOrder.shipping_postal_code || translate('-')}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{salesOrder.shipping_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{salesOrder.shipping_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@ export default function SalesOrderShow() {
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <ShoppingCart className="text-muted-foreground mr-3 h-5 w-5" />
+                                <ShoppingCart className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </CardHeader>
@@ -248,7 +248,7 @@ export default function SalesOrderShow() {
                                                                         </a>
                                                                     ) : (
                                                                         <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                            <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                            <Package className="text-foreground/75/40 h-4 w-4" />
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
@@ -256,10 +256,10 @@ export default function SalesOrderShow() {
                                                                             {product.name}
                                                                         </p>
                                                                         {product.sku && (
-                                                                            <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                            <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
                                                                         {product.category?.name && (
-                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                                 {product.category.name}
                                                                             </span>
                                                                         )}
@@ -293,7 +293,7 @@ export default function SalesOrderShow() {
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
@@ -302,18 +302,18 @@ export default function SalesOrderShow() {
                                                                         <p className="text-foreground text-sm font-semibold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
-                                                                        <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                        <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                             {formatCurrency(taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
                                                                 {discountAmount > 0 ? (
                                                                     <>
-                                                                        <p className="text-muted-foreground font-mono text-xs line-through">
+                                                                        <p className="text-foreground/75 font-mono text-xs line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </p>
                                                                         <p className="font-mono text-sm font-extrabold text-emerald-600">
@@ -336,17 +336,17 @@ export default function SalesOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(subtotal + totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
@@ -361,9 +361,9 @@ export default function SalesOrderShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this sales order')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this sales order')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -374,7 +374,7 @@ export default function SalesOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>
                             </CardHeader>
@@ -395,7 +395,7 @@ export default function SalesOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Activity Stream')}
                                 </CardTitle>{' '}
                             </CardHeader>
@@ -498,7 +498,7 @@ export default function SalesOrderShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
+                                                                            <AvatarFallback className="bg-muted text-foreground/75 text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -523,12 +523,12 @@ export default function SalesOrderShow() {
                                                                         {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
-                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                     >
                                                                         {activity.activity_type.charAt(0).toUpperCase() +
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
-                                                                    <span className="text-muted-foreground text-xs">
+                                                                    <span className="text-foreground/75 text-xs">
                                                                         {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
@@ -543,7 +543,7 @@ export default function SalesOrderShow() {
                                                                                             <Button
                                                                                                 variant="ghost"
                                                                                                 size="sm"
-                                                                                                className="text-muted-foreground h-6 w-6 p-0"
+                                                                                                className="text-foreground/75 h-6 w-6 p-0"
                                                                                                 onClick={() => {
                                                                                                     setEditingComment(activity.id);
                                                                                                     setEditCommentText(activity.description);
@@ -565,7 +565,7 @@ export default function SalesOrderShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setCurrentActivity(activity);
                                                                                                 setIsDeleteModalOpen(true);
@@ -630,13 +630,13 @@ export default function SalesOrderShow() {
                                                                     )
                                                                 ) : activity.description?.includes('into') ? (
                                                                     <p
-                                                                        className="text-muted-foreground text-sm break-words"
+                                                                        className="text-foreground/75 text-sm break-words"
                                                                         dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                     />
                                                                 ) : activity.title ? (
-                                                                    <p className="text-muted-foreground text-sm break-words">{activity.title}</p>
+                                                                    <p className="text-foreground/75 text-sm break-words">{activity.title}</p>
                                                                 ) : (
-                                                                    <p className="text-muted-foreground text-sm break-words">
+                                                                    <p className="text-foreground/75 text-sm break-words">
                                                                         {activity.description}
                                                                     </p>
                                                                 )}
@@ -647,8 +647,8 @@ export default function SalesOrderShow() {
                                             })}
                                         </div>
                                     ) : (
-                                        <div className="text-muted-foreground py-12 text-center">
-                                            <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                        <div className="text-foreground/75 py-12 text-center">
+                                            <Calendar className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                             <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
@@ -672,7 +672,7 @@ export default function SalesOrderShow() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(salesOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(salesOrder.status)}</div>
@@ -706,7 +706,7 @@ export default function SalesOrderShow() {
                             {salesOrder.contact && salesOrder.account && <div className="mx-0 border-t" />}
                             {salesOrder.account && (
                                 <div className="px-4 pt-3 pb-3">
-                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
+                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
                                         <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                         {translate('Account')}
                                     </p>
@@ -716,7 +716,7 @@ export default function SalesOrderShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{salesOrder.account.name}</p>
                                                 {salesOrder.account.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{salesOrder.account.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{salesOrder.account.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -740,7 +740,7 @@ export default function SalesOrderShow() {
                             {(salesOrder.contact || salesOrder.account) && salesOrder.billing_contact && <div className="mx-0 border-t" />}
                             {salesOrder.billing_contact && (
                                 <div className="px-4 pt-3 pb-3">
-                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
+                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                         {translate('Billing Contact')}
                                     </p>
@@ -750,7 +750,7 @@ export default function SalesOrderShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{salesOrder.billing_contact.name}</p>
                                                 {salesOrder.billing_contact.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{salesOrder.billing_contact.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{salesOrder.billing_contact.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -777,7 +777,7 @@ export default function SalesOrderShow() {
                             {salesOrder.billing_contact && salesOrder.shipping_contact && <div className="mx-0 border-t" />}
                             {salesOrder.shipping_contact && (
                                 <div className="px-4 pt-3 pb-3">
-                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
+                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                         {translate('Shipping Contact')}
                                     </p>
@@ -787,7 +787,7 @@ export default function SalesOrderShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{salesOrder.shipping_contact.name}</p>
                                                 {salesOrder.shipping_contact.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{salesOrder.shipping_contact.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{salesOrder.shipping_contact.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -824,33 +824,33 @@ export default function SalesOrderShow() {
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
-                                <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Order Number')}</p>
-                                    <p className="text-foreground text-sm font-medium">{salesOrder.order_number}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Order Number')}</p>
+                                    <p className="text-foreground text-sm">{salesOrder.order_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Order Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Delivery Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}
                                     </p>
                                 </div>
                             </div>
                             {salesOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={salesOrder.assigned_user.avatar} alt={salesOrder.assigned_user.name} />
@@ -859,9 +859,9 @@ export default function SalesOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{salesOrder.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{salesOrder.assigned_user.name}</p>
                                             {salesOrder.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{salesOrder.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{salesOrder.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -869,7 +869,7 @@ export default function SalesOrderShow() {
                             )}
                             {salesOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={salesOrder.creator.avatar} alt={salesOrder.creator.name} />
@@ -878,9 +878,9 @@ export default function SalesOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{salesOrder.creator.name}</p>
+                                            <p className="text-foreground truncate text-sm">{salesOrder.creator.name}</p>
                                             {salesOrder.creator.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{salesOrder.creator.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{salesOrder.creator.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -905,13 +905,13 @@ export default function SalesOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Quote')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{salesOrder.quote.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Quote')}</p>
+                                            <p className="text-foreground truncate text-sm">{salesOrder.quote.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>
@@ -926,13 +926,13 @@ export default function SalesOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{salesOrder.shipping_provider_type.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground truncate text-sm">{salesOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>

@@ -68,7 +68,7 @@ const SelectTrigger = React.forwardRef<
             'text-foreground text-sm',
 
             // Placeholder.
-            'placeholder:text-muted-foreground',
+            'placeholder:text-foreground/75',
 
             // Interaction.
             'transition-colors duration-150 ease-out',
@@ -95,7 +95,7 @@ const SelectTrigger = React.forwardRef<
         {children}
 
         <SelectPrimitive.Icon asChild>
-            <ChevronDown aria-hidden="true" className="text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-150" />
+            <ChevronDown aria-hidden="true" className="text-foreground/75 h-4 w-4 shrink-0 transition-transform duration-150" />
         </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
 ));
@@ -115,7 +115,7 @@ const SelectScrollUpButton = React.forwardRef<
         className={cn(
             'flex cursor-pointer items-center justify-center',
             'py-1.5',
-            'text-muted-foreground',
+            'text-foreground/75',
             'transition-colors duration-150',
             'hover:text-foreground',
             className,
@@ -141,7 +141,7 @@ const SelectScrollDownButton = React.forwardRef<
         className={cn(
             'flex cursor-pointer items-center justify-center',
             'py-1.5',
-            'text-muted-foreground',
+            'text-foreground/75',
             'transition-colors duration-150',
             'hover:text-foreground',
             className,
@@ -235,7 +235,7 @@ const SelectContent = React.forwardRef<
                         <div className="relative">
                             <Search
                                 aria-hidden="true"
-                                className={cn('absolute top-1/2 left-2', 'h-4 w-4', '-translate-y-1/2', 'text-muted-foreground')}
+                                className={cn('absolute top-1/2 left-2', 'h-4 w-4', '-translate-y-1/2', 'text-foreground/75')}
                             />
 
                             <Input

@@ -44,20 +44,20 @@ export default function DocumentFolderShow() {
                     <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Folder Name')}</label>
+                                <label className="text-sm text-gray-500">{translate('Folder Name')}</label>
                                 <p className="mt-1 text-sm text-gray-900">{documentFolder.name}</p>
                             </div>
 
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Parent Folder')}</label>
+                                <label className="text-sm text-gray-500">{translate('Parent Folder')}</label>
                                 <p className="mt-1 text-sm text-gray-900">{documentFolder.parent_folder?.name || translate('Root Folder')}</p>
                             </div>
 
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Status')}</label>
+                                <label className="text-sm text-gray-500">{translate('Status')}</label>
                                 <div className="mt-1">
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${documentFolder.status === 'active' ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset' : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'}`}
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${documentFolder.status === 'active' ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset' : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'}`}
                                     >
                                         {documentFolder.status === 'active' ? translate('Active') : translate('Inactive')}
                                     </span>
@@ -65,7 +65,7 @@ export default function DocumentFolderShow() {
                             </div>
 
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Description')}</label>
+                                <label className="text-sm text-gray-500">{translate('Description')}</label>
                                 <p className="mt-1 text-sm text-gray-900">{documentFolder.description || translate('No description provided')}</p>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ export default function DocumentFolderShow() {
                                             <Folder className="h-5 w-5" />
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-medium text-gray-900">{subFolder.name}</p>
+                                            <p className="truncate text-sm text-gray-900">{subFolder.name}</p>
                                             <p className="truncate text-xs text-gray-500">{subFolder.description || translate('No description')}</p>
                                         </div>
                                         <Badge variant={subFolder.status === 'active' ? 'default' : 'secondary'} className="text-xs">
@@ -116,7 +116,7 @@ export default function DocumentFolderShow() {
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Created At')}</label>
+                                <label className="text-sm text-gray-500">{translate('Created At')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
                                     {window.kbSettings.formatDateTime(documentFolder.created_at, false) ||
                                         new Date(documentFolder.created_at).toLocaleString()}
@@ -124,7 +124,7 @@ export default function DocumentFolderShow() {
                             </div>
 
                             <div>
-                                <label className="text-sm font-medium text-gray-500">{translate('Last Updated')}</label>
+                                <label className="text-sm text-gray-500">{translate('Last Updated')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
                                     {window.kbSettings.formatDateTime(documentFolder.updated_at, false) ||
                                         new Date(documentFolder.updated_at).toLocaleString()}

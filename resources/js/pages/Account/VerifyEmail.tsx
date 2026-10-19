@@ -95,7 +95,7 @@ export default function VerifyEmail() {
     return (
         <AuthLayout title={translate('Verify your email')}>
             <div className="space-y-6">
-                <div className="text-muted-foreground space-y-4 text-sm leading-6" aria-live="polite">
+                <div className="text-foreground/75 space-y-4 text-sm leading-6" aria-live="polite">
                     <p>
                         <strong className="text-foreground font-semibold">{translate('Check your inbox!')}</strong>{' '}
                         {translate('We’ve sent a verification link to')} <span className="text-foreground font-medium">{email}</span>.{' '}

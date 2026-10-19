@@ -6,13 +6,12 @@
  */
 
 import { useForm } from '@inertiajs/react';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
 import TextLink from '@components/TextLink';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { route } from '@utils/Routes';
 
@@ -148,17 +147,11 @@ export default function ForgotPassword() {
         >
             <form autoComplete="off" onSubmit={handleSubmit} noValidate className="space-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="font-medium text-neutral-700 dark:text-neutral-300">
-                        {translate('Your work email')}
-                        <span aria-hidden="true" className="ml-1 text-red-600 dark:text-red-400">
-                            *
-                        </span>
-                    </Label>
-
                     <Input
                         inputIdentifier="email"
                         inputType="email"
                         inputMode="email"
+                        label={translate('Your work email')}
                         required
                         autoComplete="email"
                         value={data.email}
@@ -167,12 +160,6 @@ export default function ForgotPassword() {
                         aria-invalid={emailError !== null}
                         aria-describedby={emailError ? 'email-error' : undefined}
                     />
-
-                    {emailError && (
-                        <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                            {emailError}
-                        </p>
-                    )}
                 </div>
 
                 {/*<div className="space-y-2">*/}

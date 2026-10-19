@@ -119,7 +119,7 @@ export function PayTRPaymentForm({
                     <div className="h-[600px] w-full overflow-hidden rounded-lg border">
                         <iframe ref={iframeRef} src={iframeUrl} width="100%" height="100%" frameBorder="0" scrolling="auto" title="PayTR Payment" />
                     </div>
-                    <p className="text-muted-foreground mt-2 text-center text-xs">
+                    <p className="text-foreground/75 mt-2 text-center text-xs">
                         {translate('Complete your payment in the secure PayTR iframe above')}
                     </p>
                 </CardContent>
@@ -175,7 +175,7 @@ export function PayTRPaymentForm({
                             }}
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
                     </div>
 
                     <div className="space-y-2">
@@ -190,8 +190,8 @@ export function PayTRPaymentForm({
                     </div>
 
                     <div className="bg-muted rounded-lg p-3">
-                        <p className="text-sm font-medium">{translate('Secure Payment via PayTR')}</p>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
+                        <p className="text-sm">{translate('Secure Payment via PayTR')}</p>
+                        <p className="text-foreground/75 mt-1 text-xs">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

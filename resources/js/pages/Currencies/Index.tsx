@@ -203,7 +203,7 @@ export default function Currencies() {
             label: translate('Default'),
             render: (value: boolean) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'

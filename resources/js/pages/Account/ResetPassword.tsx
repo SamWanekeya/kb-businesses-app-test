@@ -247,7 +247,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     {translate('Change password')}
                 </AccountButton>
 
-                <div className="text-muted-foreground text-center text-sm">
+                <div className="text-foreground/75 text-center text-sm">
                     {translate('Back to')}{' '}
                     <TextLink href={route('sign-in')} className="font-medium transition-colors duration-200">
                         {translate('Sign in')}

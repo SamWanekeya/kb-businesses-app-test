@@ -161,7 +161,7 @@ export default function PlanRequestsPage() {
                 return (
                     <span
                         className={
-                            'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset'
+                            'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm text-blue-700 ring-1 ring-blue-600/20 ring-inset'
                         }
                     >
                         {formatTitleCase(planName)}
@@ -189,7 +189,7 @@ export default function PlanRequestsPage() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                     >
                         {translate(value)}
                     </span>

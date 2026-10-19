@@ -370,7 +370,7 @@ export default function Input({
                             // Position and appearance
                             'pointer-events-none absolute start-3.5 z-10',
                             'origin-start bg-background px-1',
-                            'text-foreground/75 text-sm font-medium',
+                            'text-foreground/75 text-sm',
 
                             // Default: floated label
                             'top-0 -translate-y-1/2',
@@ -417,7 +417,7 @@ export default function Input({
             </div>
 
             {(isInvalid && errorMessage) || (!isInvalid && helperText) ? (
-                <p id={helperId} className={cn('mt-1.5 px-1 text-xs leading-5', isInvalid ? 'text-destructive' : 'text-muted-foreground')}>
+                <p id={helperId} className={cn('mt-1.5 px-1 text-xs leading-5', isInvalid ? 'text-destructive' : 'text-foreground/75')}>
                     {isInvalid ? errorMessage : helperText}
                 </p>
             ) : null}

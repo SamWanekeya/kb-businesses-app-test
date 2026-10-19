@@ -143,7 +143,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <form ref={formRef} onSubmit={handleSearch}>
                             <div className="relative w-64">
-                                <Search className="text-muted-foreground absolute top-2 left-2.5 h-4 w-4" />
+                                <Search className="text-foreground/75 absolute top-2 left-2.5 h-4 w-4" />
                                 <Input
                                     value={searchTerm}
                                     onChange={(e) => {
@@ -153,7 +153,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                                 />
                                 {searchTerm && (
                                     <X
-                                        className="text-muted-foreground absolute top-2 right-2.5 h-4 w-4 cursor-pointer"
+                                        className="text-foreground/75 absolute top-2 right-2.5 h-4 w-4 cursor-pointer"
                                         onClick={() => {
                                             setSearchTerm('');
                                         }}

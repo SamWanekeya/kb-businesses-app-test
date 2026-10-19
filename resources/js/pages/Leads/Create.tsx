@@ -115,7 +115,7 @@ export default function LeadCreate() {
                         <div className="space-y-4 p-6">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="name" className="text-sm font-medium" required>
+                                    <Label htmlFor="name" className="text-sm" required>
                                         {translate('Lead Name')}
                                     </Label>
                                     <Input
@@ -131,7 +131,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="email" className="text-sm font-medium" required>
+                                    <Label htmlFor="email" className="text-sm" required>
                                         {translate('Email')}
                                     </Label>
                                     <Input
@@ -148,7 +148,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="phone" className="text-sm font-medium" required>
+                                    <Label htmlFor="phone" className="text-sm" required>
                                         {translate('Phone')}
                                     </Label>
                                     <Input
@@ -163,7 +163,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="position" className="text-sm font-medium">
+                                    <Label htmlFor="position" className="text-sm">
                                         {translate('Position')}
                                     </Label>
                                     <Input
@@ -178,7 +178,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="organization" className="text-sm font-medium" required>
+                                    <Label htmlFor="organization" className="text-sm" required>
                                         {translate('Organization')}
                                     </Label>
                                     <Input
@@ -193,7 +193,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="account_name" className="text-sm font-medium">
+                                    <Label htmlFor="account_name" className="text-sm">
                                         {translate('Account Name')}
                                     </Label>
                                     <Input
@@ -208,7 +208,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="website" className="text-sm font-medium">
+                                    <Label htmlFor="website" className="text-sm">
                                         {translate('Website')}
                                     </Label>
                                     <Input
@@ -223,7 +223,7 @@ export default function LeadCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="value" className="text-sm font-medium" required>
+                                    <Label htmlFor="value" className="text-sm" required>
                                         {translate('Lead Value')}
                                     </Label>
                                     <Input
@@ -251,7 +251,7 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Account Industry')}
                                 </Label>
                                 <Select
@@ -283,7 +283,7 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Lead Status')}
                                 </Label>
                                 <Select
@@ -315,7 +315,7 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Lead Source')}
                                 </Label>
                                 <Select
@@ -347,7 +347,7 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Campaign')}
                                 </Label>
                                 <Select
@@ -390,7 +390,7 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="address" className="text-sm font-medium" required>
+                                <Label htmlFor="address" className="text-sm" required>
                                     {translate('Address')}
                                 </Label>
                                 <Textarea
@@ -406,7 +406,7 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="notes" className="text-sm font-medium">
+                                <Label htmlFor="notes" className="text-sm">
                                     {translate('Notes')}
                                 </Label>
                                 <Textarea
@@ -430,7 +430,7 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Assign To')}
                                 </Label>
                                 <Select
@@ -462,7 +462,7 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select
                                     value={data.status}
                                     onValueChange={(value) => {

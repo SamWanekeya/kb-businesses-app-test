@@ -201,23 +201,23 @@ export function ToyyibPayPaymentForm({
                             maxLength={12}
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{translate('Malaysian format: 60123456789 (numbers only)')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('Malaysian format: 60123456789 (numbers only)')}</p>
                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                     </div>
 
                     <div className="bg-muted rounded-lg p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <CreditCard className="text-primary h-4 w-4" />
-                            <p className="text-sm font-medium">{translate('Payment Method: FPX (Online Banking)')}</p>
+                            <p className="text-sm">{translate('Payment Method: FPX (Online Banking)')}</p>
                         </div>
-                        <p className="text-muted-foreground text-xs">
+                        <p className="text-foreground/75 text-xs">
                             {translate('Secure payment via Malaysian banks including Maybank, CIMB, Public Bank, RHB, and more')}
                         </p>
                     </div>
 
                     <div className="border-t pt-4">
                         <div className="mb-4 flex items-center justify-between">
-                            <span className="text-muted-foreground text-sm">{translate('Total Amount')}:</span>
+                            <span className="text-foreground/75 text-sm">{translate('Total Amount')}:</span>
                             <span className="text-lg font-extrabold">
                                 {currency} {planPrice.toFixed(2)}
                             </span>

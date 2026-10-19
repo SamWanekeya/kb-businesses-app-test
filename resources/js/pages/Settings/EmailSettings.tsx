@@ -109,7 +109,7 @@ export default function EmailSettings() {
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Mail className="text-muted-foreground h-4 w-4" />
+                                            <Mail className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="provider" className="font-medium">
                                                 {translate('Email Provider')}
                                             </Label>
@@ -142,7 +142,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Server className="text-muted-foreground h-4 w-4" />
+                                            <Server className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="driver" className="font-medium" required>
                                                 {translate('Mail Driver')}
                                             </Label>
@@ -158,7 +158,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Server className="text-muted-foreground h-4 w-4" />
+                                            <Server className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="host" className="font-medium" required>
                                                 {translate('SMTP Host')}
                                             </Label>
@@ -174,14 +174,14 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Server className="text-muted-foreground h-4 w-4" />
+                                            <Server className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="port" className="font-medium" required>
                                                 {translate('SMTP Port')}
                                             </Label>
                                             <TooltipProvider>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <AlertCircle className="text-muted-foreground h-4 w-4" />
+                                                        <AlertCircle className="text-foreground/75 h-4 w-4" />
                                                     </TooltipTrigger>
                                                     <TooltipContent>
                                                         <p>{translate('Common ports: 25, 465, 587, 2525')}</p>
@@ -200,7 +200,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <User className="text-muted-foreground h-4 w-4" />
+                                            <User className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="username" className="font-medium" required>
                                                 {translate('SMTP Username')}
                                             </Label>
@@ -216,7 +216,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Lock className="text-muted-foreground h-4 w-4" />
+                                            <Lock className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="password" className="font-medium">
                                                 {translate('SMTP Password')}
                                             </Label>
@@ -233,7 +233,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Lock className="text-muted-foreground h-4 w-4" />
+                                            <Lock className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="encryption" className="font-medium">
                                                 {translate('Mail Encryption')}
                                             </Label>
@@ -257,7 +257,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Mail className="text-muted-foreground h-4 w-4" />
+                                            <Mail className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="fromAddress" className="font-medium" required>
                                                 {translate('From Address')}
                                             </Label>
@@ -273,7 +273,7 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <User className="text-muted-foreground h-4 w-4" />
+                                            <User className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="fromName" className="font-medium" required>
                                                 {translate('From Name')}
                                             </Label>
@@ -316,7 +316,7 @@ export default function EmailSettings() {
                                         }}
                                         required
                                     />
-                                    <p className="text-muted-foreground text-xs">{translate('Enter an email address to send a test message')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Enter an email address to send a test message')}</p>
                                 </div>
 
                                 <Button type="submit" className="w-full" disabled={isSending || !testEmail}>

@@ -288,7 +288,7 @@ export default function Products() {
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value > 10
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : value > 0
@@ -312,7 +312,7 @@ export default function Products() {
         //             </Avatar>
         //             <div>
         //                 <div className="font-medium whitespace-nowrap">{value.name}</div>
-        //                 <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+        //                 <div className="text-sm text-foreground/75 whitespace-nowrap">{value.email}</div>
         //             </div>
         //         </div>
         //     ) : <span className="whitespace-nowrap">{translate('Unassigned')}</span>
@@ -323,7 +323,7 @@ export default function Products() {
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value?.name ? (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                         {value.name}
                     </span>
                 ) : (
@@ -342,7 +342,7 @@ export default function Products() {
             className: 'whitespace-nowrap',
             render: (value: string) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value === 'active'
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -587,7 +587,7 @@ export default function Products() {
                                         {/* Status badge */}
                                         <div className="absolute top-3 left-3">
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                                     product.status === 'active'
                                                         ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                                         : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -599,7 +599,7 @@ export default function Products() {
                                         {/* Out of stock badge */}
                                         {product.stock_quantity === 0 && (
                                             <div className="absolute bottom-3 left-3">
-                                                <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs text-red-700 ring-1 ring-red-600/20 ring-inset">
                                                     {translate('Out of Stock')}
                                                 </span>
                                             </div>
@@ -626,12 +626,12 @@ export default function Products() {
                                         {/* Category & Brand */}
                                         <div className="flex flex-wrap gap-1.5">
                                             {product.category && (
-                                                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                                                     {product.category.name}
                                                 </span>
                                             )}
                                             {product.brand && (
-                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-purple-700 ring-1 ring-purple-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs whitespace-nowrap text-purple-700 ring-1 ring-purple-600/20 ring-inset">
                                                     {product.brand.name}
                                                 </span>
                                             )}

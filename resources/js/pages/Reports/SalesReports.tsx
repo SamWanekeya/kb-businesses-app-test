@@ -108,13 +108,13 @@ export default function SalesReports() {
                                     <XAxis
                                         dataKey="period"
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
                                     <YAxis
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                         allowDecimals={false}
@@ -161,13 +161,13 @@ export default function SalesReports() {
                                     <XAxis
                                         dataKey="status"
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
                                     <YAxis
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
@@ -199,11 +199,11 @@ export default function SalesReports() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <CardTitle className="text-base font-semibold">{translate('Recent Sales')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest sales orders')}</p>
+                                <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest sales orders')}</p>
                             </div>
                             <Link
                                 href={route('sales-orders.index')}
-                                className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                             >
                                 {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
@@ -224,7 +224,7 @@ export default function SalesReports() {
                                             <p className="truncate text-sm leading-tight font-semibold">
                                                 {sale.account?.name || sale.name || 'Unknown'}
                                             </p>
-                                            <p className="text-muted-foreground mt-0.5 truncate text-xs">{sale.order_number}</p>
+                                            <p className="text-foreground/75 mt-0.5 truncate text-xs">{sale.order_number}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
                                             <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
@@ -241,7 +241,7 @@ export default function SalesReports() {
                             </div>
                         ) : (
                             <div className="flex min-h-[160px] flex-1 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{translate('No recent sales found')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No recent sales found')}</p>
                             </div>
                         )}
                     </CardContent>
@@ -252,11 +252,11 @@ export default function SalesReports() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <CardTitle className="text-base font-semibold">{translate('Top Selling Products')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Highest revenue products')}</p>
+                                <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest revenue products')}</p>
                             </div>
                             <Link
                                 href={route('products.index')}
-                                className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                             >
                                 {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
@@ -308,7 +308,7 @@ export default function SalesReports() {
 
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
-                                            <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                            <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                 {product.total_quantity} {translate('units sold')}
                                             </p>
                                         </div>
@@ -322,7 +322,7 @@ export default function SalesReports() {
                             </div>
                         ) : (
                             <div className="flex min-h-[160px] flex-1 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{translate('No products sold yet')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No products sold yet')}</p>
                             </div>
                         )}
                     </CardContent>

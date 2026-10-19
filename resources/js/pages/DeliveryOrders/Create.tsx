@@ -494,7 +494,7 @@ export default function DeliveryOrderCreate() {
                                                     className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:text-gray-100 dark:hover:bg-gray-800/50"
                                                 >
                                                     <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[220px] xl:px-4 xl:py-3">
-                                                        <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                             {translate('Product')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Select
@@ -531,7 +531,7 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                        <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Input
@@ -549,7 +549,7 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                        <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                             {translate('Unit Weight (kg)')}
                                                         </span>
                                                         <Input
@@ -568,10 +568,10 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                        <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                             {translate('Total Weight (kg)')}
                                                         </span>
-                                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        <span className="text-sm text-gray-700 dark:text-gray-200">
                                                             {lineWeight.toFixed(2)} kg
                                                         </span>
                                                     </td>

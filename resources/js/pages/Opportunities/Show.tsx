@@ -59,7 +59,7 @@ export default function OpportunityShow() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
                 {status?.charAt(0).toUpperCase() + status?.slice(1) || 'Active'}
             </span>
@@ -121,7 +121,7 @@ export default function OpportunityShow() {
                             },
                             {
                                 label: translate('Stage'),
-                                value: opportunity.opportunity_stage?.name || '—',
+                                value: opportunity.opportunity_stage?.name || '',
                                 icon: TrendingUp,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
@@ -147,7 +147,7 @@ export default function OpportunityShow() {
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                         <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -165,23 +165,23 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Opportunity Summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Status')}</p>
                                     <div>{getStatusBadge(opportunity.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Source')}</p>
-                                    <p className="text-foreground text-sm font-medium">{opportunity.opportunity_source?.name || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Source')}</p>
+                                    <p className="text-foreground text-sm">{opportunity.opportunity_source?.name || ''}</p>
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
                                 {opportunity.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -191,14 +191,14 @@ export default function OpportunityShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{opportunity.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{opportunity.assigned_user.name}</p>
                                             {opportunity.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{opportunity.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{opportunity.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -208,7 +208,7 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Building className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Records')}
                             </CardTitle>
                         </CardHeader>
@@ -218,10 +218,10 @@ export default function OpportunityShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={opportunity.account.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Account')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Account')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{opportunity.account.name}</p>
                                             {opportunity.account.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{opportunity.account.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{opportunity.account.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -242,7 +242,7 @@ export default function OpportunityShow() {
                                 </div>
                             ) : (
                                 <div className="border-border bg-muted/20 flex items-center rounded-xl border p-3.5">
-                                    <p className="text-muted-foreground text-xs">{translate('No account linked')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('No account linked')}</p>
                                 </div>
                             )}
                             {opportunity.contact ? (
@@ -250,10 +250,10 @@ export default function OpportunityShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={opportunity.contact.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Contact')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Contact')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{opportunity.contact.name}</p>
                                             {opportunity.contact.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{opportunity.contact.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{opportunity.contact.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -274,7 +274,7 @@ export default function OpportunityShow() {
                                 </div>
                             ) : (
                                 <div className="border-border bg-muted/20 flex items-center rounded-xl border p-3.5">
-                                    <p className="text-muted-foreground text-xs">{translate('No contact linked')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('No contact linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -286,7 +286,7 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Notes')}
                             </CardTitle>
                         </CardHeader>
@@ -294,11 +294,11 @@ export default function OpportunityShow() {
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
                                     {opportunity.notes ? (
-                                        <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{opportunity.notes}</p>
+                                        <p className="text-foreground/75 text-sm leading-relaxed whitespace-pre-line">{opportunity.notes}</p>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
-                                            <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{translate('No notes available')}</p>
+                                            <FileText className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                            <p className="text-foreground/75 text-sm">{translate('No notes available')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -309,7 +309,7 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
                         </CardHeader>
@@ -317,11 +317,11 @@ export default function OpportunityShow() {
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
                                     {opportunity.description ? (
-                                        <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{opportunity.description}</p>
+                                        <p className="text-foreground/75 text-sm leading-relaxed whitespace-pre-line">{opportunity.description}</p>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
-                                            <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{translate('No description available')}</p>
+                                            <FileText className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                            <p className="text-foreground/75 text-sm">{translate('No description available')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -339,9 +339,9 @@ export default function OpportunityShow() {
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-semibold">
-                                        <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
+                                        <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -350,19 +350,19 @@ export default function OpportunityShow() {
                                     <div className="grid grid-cols-1 gap-4 min-[992px]:grid-cols-2">
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {meetingItems.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {meetingItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No meetings found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -381,18 +381,18 @@ export default function OpportunityShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">
+                                                                        <p className="text-foreground truncate text-sm">
                                                                             {meeting.title}
                                                                         </p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={meeting.assigned_user?.avatar}
@@ -402,7 +402,7 @@ export default function OpportunityShow() {
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {meeting.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -419,7 +419,7 @@ export default function OpportunityShow() {
                                                                                     className="flex-shrink-0"
                                                                                 >
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>
@@ -438,19 +438,19 @@ export default function OpportunityShow() {
 
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {callItems.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {callItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No calls found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -469,16 +469,16 @@ export default function OpportunityShow() {
                                                                         <Phone className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">{call.title}</p>
+                                                                        <p className="text-foreground truncate text-sm">{call.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={call.assigned_user?.avatar}
@@ -488,7 +488,7 @@ export default function OpportunityShow() {
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {call.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -502,7 +502,7 @@ export default function OpportunityShow() {
                                                                             <TooltipTrigger asChild>
                                                                                 <Link href={route('calls.show', call.id)} className="flex-shrink-0">
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>
@@ -530,7 +530,7 @@ export default function OpportunityShow() {
                     <CardHeader className="border-b px-5 py-3.5">
                         <div className="flex items-center justify-between">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <ShoppingCart className="text-muted-foreground mr-3 h-5 w-5" />
+                                <ShoppingCart className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </div>
@@ -573,16 +573,16 @@ export default function OpportunityShow() {
                                                                 </a>
                                                             ) : (
                                                                 <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                    <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                    <Package className="text-foreground/75/40 h-4 w-4" />
                                                                 </div>
                                                             )}
                                                             <div className="min-w-0">
                                                                 <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                 {product.sku && (
-                                                                    <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                    <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                 )}
                                                                 {product.category?.name && (
-                                                                    <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                    <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                         {product.category.name}
                                                                     </span>
                                                                 )}
@@ -603,12 +603,12 @@ export default function OpportunityShow() {
                                                                 <p className="text-foreground text-sm font-semibold">
                                                                     {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                 </p>
-                                                                <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                     {formatCurrency(taxAmount)}
                                                                 </p>
                                                             </>
                                                         ) : (
-                                                            <span className="text-muted-foreground text-xs">—</span>
+                                                            <span className="text-foreground/75 text-xs">—</span>
                                                         )}
                                                     </TableCell>
                                                     <TableCell className="py-3 text-right">
@@ -625,11 +625,11 @@ export default function OpportunityShow() {
                                 <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                     <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                         <div className="flex items-center justify-between border-b px-4 py-3">
-                                            <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                            <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                             <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
                                         </div>
                                         <div className="flex items-center justify-between border-b px-4 py-3">
-                                            <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                            <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                             <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                         </div>
                                         <div className="flex items-center justify-between px-4 py-3">
@@ -642,9 +642,9 @@ export default function OpportunityShow() {
                         ) : (
                             <div className="flex flex-col items-center justify-center py-16 text-center">
                                 <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                    <Package className="text-muted-foreground/40 h-8 w-8" />
+                                    <Package className="text-foreground/75/40 h-8 w-8" />
                                 </div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this opportunity')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No products added to this opportunity')}</p>
                             </div>
                         )}
                     </CardContent>
@@ -655,7 +655,7 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Quotes')} ({opportunity.quotes.length})
                             </CardTitle>
                         </CardHeader>
@@ -668,7 +668,7 @@ export default function OpportunityShow() {
                                     >
                                         <div>
                                             <p className="text-foreground text-sm font-semibold">{quote.quote_number}</p>
-                                            <p className="text-muted-foreground mt-0.5 text-xs">{quote.name}</p>
+                                            <p className="text-foreground/75 mt-0.5 text-xs">{quote.name}</p>
                                         </div>
                                         {useHasPermission('view-quotes') && (
                                             <Link href={route('quotes.show', quote.id)}>
@@ -689,7 +689,7 @@ export default function OpportunityShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
+                                <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Activity Stream')}
                             </CardTitle>
                         </CardHeader>
@@ -783,7 +783,7 @@ export default function OpportunityShow() {
                                                                 <TooltipTrigger asChild>
                                                                     <Avatar className="relative z-10 h-9 w-9 flex-shrink-0">
                                                                         <AvatarImage src={activity.user?.avatar} alt={activity.user?.name || 'U'} />
-                                                                        <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
+                                                                        <AvatarFallback className="bg-muted text-foreground/75 text-xs font-extrabold">
                                                                             {getInitials(activity.user?.name || 'U')}
                                                                         </AvatarFallback>
                                                                     </Avatar>
@@ -808,11 +808,11 @@ export default function OpportunityShow() {
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                 >
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
-                                                                <span className="text-muted-foreground text-xs">
+                                                                <span className="text-foreground/75 text-xs">
                                                                     {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                 </span>
                                                             </div>
@@ -827,7 +827,7 @@ export default function OpportunityShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setEditingComment(activity.id);
                                                                                                 setEditCommentText(activity.description);
@@ -849,7 +849,7 @@ export default function OpportunityShow() {
                                                                                     <Button
                                                                                         variant="ghost"
                                                                                         size="sm"
-                                                                                        className="text-muted-foreground h-6 w-6 p-0"
+                                                                                        className="text-foreground/75 h-6 w-6 p-0"
                                                                                         onClick={() => {
                                                                                             setCurrentActivity(activity);
                                                                                             setIsDeleteModalOpen(true);
@@ -914,13 +914,13 @@ export default function OpportunityShow() {
                                                                 )
                                                             ) : activity.description?.includes('into') ? (
                                                                 <p
-                                                                    className="text-muted-foreground text-sm"
+                                                                    className="text-foreground/75 text-sm"
                                                                     dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                 />
                                                             ) : activity.title ? (
-                                                                <p className="text-muted-foreground text-sm">{activity.title}</p>
+                                                                <p className="text-foreground/75 text-sm">{activity.title}</p>
                                                             ) : (
-                                                                <p className="text-muted-foreground text-sm">{activity.description}</p>
+                                                                <p className="text-foreground/75 text-sm">{activity.description}</p>
                                                             )}
                                                         </div>
                                                     </div>
@@ -929,8 +929,8 @@ export default function OpportunityShow() {
                                         })}
                                     </div>
                                 ) : (
-                                    <div className="text-muted-foreground py-12 text-center">
-                                        <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                    <div className="text-foreground/75 py-12 text-center">
+                                        <Calendar className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                         <p className="text-sm">{translate('No activities found')}</p>
                                     </div>
                                 )}

@@ -141,13 +141,13 @@ export default function LeadReports() {
                                     <XAxis
                                         dataKey="period"
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
                                     <YAxis
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                         allowDecimals={false}
@@ -220,11 +220,11 @@ export default function LeadReports() {
                         <div className="flex w-full items-center justify-between">
                             <div>
                                 <CardTitle className="text-base font-semibold">{translate('Recent Leads')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Most recently created leads')}</p>
+                                <p className="text-foreground/75 mt-0.5 text-xs">{translate('Most recently created leads')}</p>
                             </div>
                             <Link
                                 href={route('leads.index')}
-                                className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                             >
                                 {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
@@ -243,11 +243,11 @@ export default function LeadReports() {
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-semibold">{lead.name}</p>
-                                            <p className="text-muted-foreground mt-0.5 truncate text-xs">{lead.email || lead.organization || ''}</p>
+                                            <p className="text-foreground/75 mt-0.5 truncate text-xs">{lead.email || lead.organization || ''}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(lead.status)}`}
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusColor(lead.status)}`}
                                             >
                                                 {lead.status?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) || 'New'}
                                             </span>
@@ -263,9 +263,9 @@ export default function LeadReports() {
                         ) : (
                             <div className="flex h-40 flex-col items-center justify-center gap-3">
                                 <div className="bg-muted animate-pulse rounded-full p-4">
-                                    <Target className="text-muted-foreground/50 h-6 w-6" />
+                                    <Target className="text-foreground/75/50 h-6 w-6" />
                                 </div>
-                                <p className="text-muted-foreground text-sm">{translate('No leads yet')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No leads yet')}</p>
                             </div>
                         )}
                     </CardContent>

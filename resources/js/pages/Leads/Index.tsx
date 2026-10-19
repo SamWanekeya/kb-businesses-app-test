@@ -375,7 +375,7 @@ export default function Leads() {
                         <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
-                            <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
+                            <div className="text-foreground/75 text-sm">{row.email || translate('No email')}</div>
                         </div>
                     </div>
                 );
@@ -393,11 +393,11 @@ export default function Leads() {
                         </Avatar>
                         <div>
                             <div className="font-medium">{value.name}</div>
-                            <div className="text-muted-foreground text-sm">{value.email}</div>
+                            <div className="text-foreground/75 text-sm">{value.email}</div>
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
+                    <span className="text-foreground/75">{translate('Unassigned')}</span>
                 ),
         },
         {
@@ -417,7 +417,7 @@ export default function Leads() {
             render: (value: any) =>
                 value ? (
                     <span
-                        className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                        className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                         style={{
                             backgroundColor: value.color + '20',
                             color: value.color,
@@ -435,7 +435,7 @@ export default function Leads() {
             label: translate('Status'),
             render: (value: string) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value === 'active'
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -450,7 +450,7 @@ export default function Leads() {
             label: translate('Converted'),
             render: (value: boolean) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
@@ -718,7 +718,7 @@ export default function Leads() {
                                     </div>
                                     <div className="space-y-1.5">
                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Lead Status Yet')}</h3>
-                                        <p className="text-muted-foreground text-sm leading-relaxed">
+                                        <p className="text-foreground/75 text-sm leading-relaxed">
                                             {translate('Set up lead statuses to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
@@ -727,7 +727,7 @@ export default function Leads() {
                                             onClick={() => {
                                                 router.visit(route('lead-statuses.index'));
                                             }}
-                                            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+                                            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
                                             {translate('Add Lead Status')}
@@ -960,12 +960,12 @@ export default function Leads() {
                                                                 {(lead.lead_source || lead.is_converted) && (
                                                                     <div className="mb-2.5 flex flex-wrap gap-1">
                                                                         {lead.lead_source && (
-                                                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-gray-600/20 ring-inset">
+                                                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-gray-600/20 ring-inset">
                                                                                 {lead.lead_source.name}
                                                                             </span>
                                                                         )}
                                                                         {lead.is_converted && (
-                                                                            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                                                            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
                                                                                 {translate('Converted')}
                                                                             </span>
                                                                         )}
@@ -1037,7 +1037,7 @@ export default function Leads() {
                                                 <div className="flex items-center">
                                                     <div className={`h-2 w-2 rounded-full mr-2 ${lead.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
                                                         }`}></div>
-                                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                    <span className="text-sm text-gray-700 dark:text-gray-300">
                                                         {lead.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
@@ -1108,7 +1108,7 @@ export default function Leads() {
                                         </div>
                                         <div className="flex flex-wrap gap-1">
                                             {lead.lead_status && (
-                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset " style={{
+                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset " style={{
                                                     backgroundColor: `${lead.lead_status.color}20`,
                                                     color: lead.lead_status.color,
                                                     borderColor: `${lead.lead_status.color}40`
@@ -1117,7 +1117,7 @@ export default function Leads() {
                                                 </span>
                                             )}
                                             {lead.is_converted && (
-                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-green-50 text-green-700 ring-green-600/20">
+                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset bg-green-50 text-green-700 ring-green-600/20">
                                                     {translate('Converted')}
                                                 </span>
                                             )}

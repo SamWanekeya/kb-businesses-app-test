@@ -740,11 +740,11 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                     <div className="flex items-center justify-between">
                         <div>
                             <h3 className="font-medium">Invoice #{invoice.invoice_number}</h3>
-                            <p className="text-muted-foreground text-sm">{invoice.name}</p>
+                            <p className="text-foreground/75 text-sm">{invoice.name}</p>
                         </div>
                         <div className="text-right">
                             <div className="text-lg font-extrabold">{formatCurrency(invoice.total_amount)}</div>
-                            <div className="text-muted-foreground text-sm">Total</div>
+                            <div className="text-foreground/75 text-sm">Total</div>
                         </div>
                     </div>
                 </CardContent>
@@ -765,7 +765,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                     min="0.01"
                     step="0.01"
                 />
-                <div className="text-muted-foreground space-y-1 text-sm">
+                <div className="text-foreground/75 space-y-1 text-sm">
                     <p>Total: {formatCurrency(invoice.total_amount)}</p>
                     <p>Paid: {formatCurrency(paidAmount)}</p>
                     <p className="font-medium">Due: {formatCurrency(dueAmount)}</p>
@@ -777,8 +777,8 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                 <Label>{translate('Select Payment Method')}</Label>
                 {paymentMethods.length === 0 ? (
                     <div className="bg-muted/50 rounded-md border p-4 text-center">
-                        <p className="text-muted-foreground mb-2 text-sm">{translate('No payment methods configured')}</p>
-                        <p className="text-muted-foreground text-xs">{translate('Please contact the organization to set up payment methods.')}</p>
+                        <p className="text-foreground/75 mb-2 text-sm">{translate('No payment methods configured')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('Please contact the organization to set up payment methods.')}</p>
                     </div>
                 ) : (
                     <div className="space-y-2">

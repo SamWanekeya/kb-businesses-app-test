@@ -85,15 +85,15 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-3 rounded-lg bg-neutral-50 px-4 py-2">
-                    <span className={`text-sm font-medium transition-colors ${!isYearly ? 'text-primary' : 'text-neutral-600'}`}>
+                    <span className={`text-sm transition-colors ${!isYearly ? 'text-primary' : 'text-neutral-600'}`}>
                         {translate('Monthly')}
                     </span>
                     <Switch checked={isYearly} onCheckedChange={setIsYearly} className="data-[state=checked]:bg-primary" />
-                    <span className={`text-sm font-medium transition-colors ${isYearly ? 'text-primary' : 'text-neutral-600'}`}>
+                    <span className={`text-sm transition-colors ${isYearly ? 'text-primary' : 'text-neutral-600'}`}>
                         {translate('Yearly')}
                     </span>
                     {isYearly && (
-                        <Badge variant="secondary" className="ml-2 border-0 bg-green-100 text-xs font-medium text-green-700">
+                        <Badge variant="secondary" className="ml-2 border-0 bg-green-100 text-xs text-green-700">
                             {translate('Save up to 20%')}
                         </Badge>
                     )}

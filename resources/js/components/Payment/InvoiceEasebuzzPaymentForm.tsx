@@ -96,7 +96,7 @@ export function InvoiceEasebuzzPaymentForm({
                         <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(amount)}</span>
                     </div>
-                    <div className="text-muted-foreground mt-1 text-sm">
+                    <div className="text-foreground/75 mt-1 text-sm">
                         {translate('Payment Type')}: {translate(paymentType)}
                     </div>
                 </div>
@@ -136,7 +136,7 @@ export function InvoiceEasebuzzPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{translate('Powered by Easebuzz - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by Easebuzz - Secure payment processing')}</div>
             </CardContent>
         </Card>
     );

@@ -172,17 +172,17 @@ export default function ProductCreate() {
                                                             ? 'border-primary bg-primary/10 text-primary'
                                                             : isDone
                                                               ? 'border-primary bg-primary text-primary-foreground'
-                                                              : 'border-border bg-muted text-muted-foreground'
+                                                              : 'border-border bg-muted text-foreground/75'
                                                     }`}
                                                 >
                                                     <s.Icon className="h-4 w-4" />
                                                 </span>
                                                 <span className="hidden text-start sm:block">
-                                                    <span className="text-muted-foreground block text-[10px] tracking-wide uppercase">
+                                                    <span className="text-foreground/75 block text-[10px] tracking-wide uppercase">
                                                         STEP {s.number}
                                                     </span>
                                                     <span
-                                                        className={`block text-xs font-semibold ${isActive ? 'text-primary' : isDone ? 'text-primary' : 'text-muted-foreground'}`}
+                                                        className={`block text-xs font-semibold ${isActive ? 'text-primary' : isDone ? 'text-primary' : 'text-foreground/75'}`}
                                                     >
                                                         {translate(s.label)}
                                                     </span>
@@ -433,7 +433,7 @@ export default function ProductCreate() {
                     <div className="hidden w-72 shrink-0 xl:block">
                         <div className="bg-card border-border sticky top-4 overflow-hidden rounded-xl border">
                             <div className="border-border flex items-center justify-between border-b px-4 py-3">
-                                <span className="text-muted-foreground text-xs font-semibold tracking-wide">{translate('Live  Preview')}</span>
+                                <span className="text-foreground/75 text-xs font-semibold tracking-wide">{translate('Live  Preview')}</span>
                                 {/* <span className="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 font-medium">{translate('Draft')}</span> */}
                             </div>
 
@@ -443,8 +443,8 @@ export default function ProductCreate() {
                                     <img src={mainImageUrl} alt="preview" className="h-full w-full object-cover" />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
-                                        <Box className="text-muted-foreground/30 h-12 w-12" strokeWidth={1} />
-                                        <span className="text-muted-foreground text-xs">{translate('No image uploaded')}</span>
+                                        <Box className="text-foreground/75/30 h-12 w-12" strokeWidth={1} />
+                                        <span className="text-foreground/75 text-xs">{translate('No image uploaded')}</span>
                                     </div>
                                 )}
                             </div>
@@ -453,7 +453,7 @@ export default function ProductCreate() {
                             <div className="space-y-3 p-4">
                                 <div>
                                     <p className="text-foreground text-sm font-semibold">{data.name || translate('Untitled Item')}</p>
-                                    <p className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
+                                    <p className="text-foreground/75 mt-0.5 flex items-center gap-1 text-xs">
                                         <Tag className="h-3 w-3 shrink-0" />
                                         {data.sku || 'SKU-XXXXXXXX'}
                                     </p>
@@ -461,13 +461,13 @@ export default function ProductCreate() {
 
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="bg-muted border-border rounded-lg border p-2">
-                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
+                                        <p className="text-foreground/75 text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
                                         <p className="text-foreground mt-0.5 font-mono text-sm font-extrabold">
                                             {data.price ? `${currency_symbol}${parseFloat(data.price).toFixed(2)}` : `${currency_symbol}0.00`}
                                         </p>
                                     </div>
                                     <div className="rounded-lg border border-orange-200 bg-orange-50 p-2 dark:border-orange-800/40 dark:bg-orange-900/20">
-                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Stock')}</p>
+                                        <p className="text-foreground/75 text-[10px] font-medium tracking-wide">{translate('Stock')}</p>
                                         <p className="mt-0.5 text-sm font-extrabold text-orange-500">{data.stock_quantity || '0'}</p>
                                     </div>
                                 </div>

@@ -193,7 +193,7 @@ export default function Announcements() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
                 {formatTitleCase(status) || 'Inactive'}
             </span>
@@ -222,11 +222,11 @@ export default function Announcements() {
             label: translate('Featured'),
             render: (value: boolean) =>
                 value ? (
-                    <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
                         {translate('Yes')}
                     </span>
                 ) : (
-                    <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-700 ring-1 ring-gray-600/20 ring-inset">
                         {translate('No')}
                     </span>
                 ),
@@ -384,7 +384,7 @@ export default function Announcements() {
                             onClick={() => {
                                 handleTabChange(tab.value);
                             }}
-                            className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+                            className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm whitespace-nowrap transition-colors ${
                                 selectedStatus === tab.value
                                     ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'

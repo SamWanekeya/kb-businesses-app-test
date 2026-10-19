@@ -468,7 +468,7 @@ export default function ProjectGantt() {
                                     onClick={() => {
                                         setTimeScale(scale.value);
                                     }}
-                                    className={`cursor-pointer rounded px-3 py-1 text-xs font-medium transition-colors ${
+                                    className={`cursor-pointer rounded px-3 py-1 text-xs transition-colors ${
                                         timeScale === scale.value ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                     }`}
                                 >
@@ -606,7 +606,7 @@ export default function ProjectGantt() {
                             <div className="flex justify-between">
                                 <span className="text-gray-600 dark:text-gray-400">{translate('Status')}:</span>
                                 <span
-                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                                     style={{
                                         backgroundColor: `${selectedTask.task_status?.color}20`,
                                         color: selectedTask.task_status?.color,
@@ -620,7 +620,7 @@ export default function ProjectGantt() {
                             <div className="flex justify-between">
                                 <span className="text-gray-600 dark:text-gray-400">{translate('Priority')}:</span>
                                 <span
-                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                         selectedTask.priority === 'urgent'
                                             ? 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                             : selectedTask.priority === 'high'

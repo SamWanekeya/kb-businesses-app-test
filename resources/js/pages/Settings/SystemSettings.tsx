@@ -165,7 +165,7 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                                 <SelectItem key={format} value={format}>
                                                     <div className="flex w-full min-w-0 items-center justify-between">
                                                         <span className="shrink-0 whitespace-nowrap">{format}</span>
-                                                        <span className="text-muted-foreground ml-4 truncate text-sm">({example})</span>
+                                                        <span className="text-foreground/75 ml-4 truncate text-sm">({example})</span>
                                                     </div>
                                                 </SelectItem>
                                             ))
@@ -198,7 +198,7 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                                 <SelectItem key={format} value={format}>
                                                     <div className="flex w-full min-w-0 items-center justify-between">
                                                         <span className="shrink-0 whitespace-nowrap">{format}</span>
-                                                        <span className="text-muted-foreground ml-4 truncate text-sm">({example})</span>
+                                                        <span className="text-foreground/75 ml-4 truncate text-sm">({example})</span>
                                                     </div>
                                                 </SelectItem>
                                             ))

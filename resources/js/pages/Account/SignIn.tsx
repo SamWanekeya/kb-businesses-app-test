@@ -279,7 +279,7 @@ export default function SignIn() {
                             </Label>
                         </div>
 
-                        <TextLink href={route('account-recovery-request')} className="text-sm font-medium transition-colors duration-200">
+                        <TextLink href={route('account-recovery-request')} className="text-sm transition-colors duration-200">
                             {translate('Can’t access my account')}
                         </TextLink>
                     </div>

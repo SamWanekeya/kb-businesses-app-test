@@ -530,7 +530,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         </div>
                                         <CardTitle className="text-base font-semibold">{translate('Storage Usage')}</CardTitle>
                                     </div>
-                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${(stats.storageUsagePercent || 0) > 80 ? 'bg-red-50 text-red-700 ring-red-600/20' :
+                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${(stats.storageUsagePercent || 0) > 80 ? 'bg-red-50 text-red-700 ring-red-600/20' :
                                             (stats.storageUsagePercent || 0) > 60 ? 'bg-yellow-50 text-yellow-700 ring-yellow-600/20' :
                                                 'bg-purple-50 text-purple-700 ring-purple-600/20'
                                         }`}>
@@ -558,11 +558,11 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </PieChart>
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                                                     <span className="text-xl font-extrabold" style={{ color }}>{usedPct}%</span>
-                                                    <span className="text-xs text-muted-foreground">{translate('Used')}</span>
+                                                    <span className="text-xs text-foreground/75">{translate('Used')}</span>
                                                 </div>
                                             </div>
                                             <div className="text-center space-y-1">
-                                                <p className="text-sm text-muted-foreground">{fmtUsed} {translate('of')} {limitGB.toFixed(1)} GB {translate('used')}</p>
+                                                <p className="text-sm text-foreground/75">{fmtUsed} {translate('of')} {limitGB.toFixed(1)} GB {translate('used')}</p>
                                                 {usedPct > 80 && <p className="text-xs text-destructive">{translate('Storage limit nearly reached')}</p>}
                                             </div>
                                         </div>
@@ -582,12 +582,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('Latest Leads')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Most recently created leads')}</p>
+                                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Most recently created leads')}</p>
                                     </div>
                                     {useHasPermission('view-leads') && (
                                         <Link
                                             href={route('leads.index')}
-                                            className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                            className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                         >
                                             {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                                         </Link>
@@ -607,13 +607,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm leading-tight font-semibold">{lead.name}</p>
-                                                    <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                    <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                         {lead.email || lead.organization || ''}
                                                     </p>
                                                 </div>
                                                 <div className="flex shrink-0 flex-col items-end gap-1">
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(lead.status)}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusColor(lead.status)}`}
                                                     >
                                                         {lead.status?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) || 'New'}
                                                     </span>
@@ -629,9 +629,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <Target className="text-muted-foreground/50 h-6 w-6" />
+                                            <Target className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No leads yet')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No leads yet')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -645,12 +645,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('Recent Sales')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest sales orders')}</p>
+                                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest sales orders')}</p>
                                     </div>
                                     {useHasPermission('view-sales-orders') && (
                                         <Link
                                             href={route('sales-orders.index')}
-                                            className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                            className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                         >
                                             {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                                         </Link>
@@ -672,7 +672,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm leading-tight font-semibold">{sale.customer}</p>
-                                                    <p className="text-muted-foreground mt-0.5 truncate font-mono text-xs">
+                                                    <p className="text-foreground/75 mt-0.5 truncate font-mono text-xs">
                                                         {sale.amount
                                                             ? (window.kbSettings.formatCurrency(sale.amount) ?? `$${sale.amount.toLocaleString()}`)
                                                             : ''}
@@ -680,7 +680,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
                                                 <div className="flex shrink-0 flex-col items-end gap-1">
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(sale.status)}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusColor(sale.status)}`}
                                                     >
                                                         {sale.status?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) || 'Draft'}
                                                     </span>
@@ -696,9 +696,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <DollarSign className="text-muted-foreground/50 h-6 w-6" />
+                                            <DollarSign className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No sales yet')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No sales yet')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -714,12 +714,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('Announcements')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest organization announcements')}</p>
+                                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest organization announcements')}</p>
                                     </div>
                                     {useHasPermission('view-announcements') && (
                                         <Link
                                             href={route('announcements.index')}
-                                            className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                            className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                         >
                                             {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                                         </Link>
@@ -761,7 +761,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     </p>
                                                 </div>
                                                 {a.category && (
-                                                    <span className="inline-flex shrink-0 items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-600/20 ring-inset">
+                                                    <span className="inline-flex shrink-0 items-center rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-700 ring-1 ring-indigo-600/20 ring-inset">
                                                         {a.category}
                                                     </span>
                                                 )}
@@ -771,9 +771,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <Megaphone className="text-muted-foreground/50 h-6 w-6" />
+                                            <Megaphone className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No announcements yet')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No announcements yet')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -786,7 +786,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <CardTitle className="text-base font-semibold">{translate('Storage Usage')}</CardTitle>
-                                            <p className="text-muted-foreground mt-0.5 text-xs">{translate('Plan storage consumption')}</p>
+                                            <p className="text-foreground/75 mt-0.5 text-xs">{translate('Plan storage consumption')}</p>
                                         </div>
                                     </div>
                                 </CardHeader>
@@ -855,16 +855,16 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                         <span className="text-lg leading-tight font-extrabold" style={{ color }}>
                                                             {usedPct}%
                                                         </span>
-                                                        <span className="text-muted-foreground text-[10px]">{translate('Used')}</span>
+                                                        <span className="text-foreground/75 text-[10px]">{translate('Used')}</span>
                                                     </div>
                                                 </div>
                                                 {/* scale labels aligned to arc edges */}
                                                 <div className="relative -mt-1" style={{ width: W }}>
-                                                    <span className="text-muted-foreground absolute text-xs" style={{ left: W / 2 - R, bottom: 0 }}>
+                                                    <span className="text-foreground/75 absolute text-xs" style={{ left: W / 2 - R, bottom: 0 }}>
                                                         0 GB
                                                     </span>
                                                     <span
-                                                        className="text-muted-foreground absolute text-xs"
+                                                        className="text-foreground/75 absolute text-xs"
                                                         style={{ right: W / 2 - R - 16, bottom: 0 }}
                                                     >
                                                         {limitGB.toFixed(1)} GB
@@ -895,7 +895,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
 
                                                 {usedPct > 80 && (
-                                                    <p className="text-center text-xs font-medium text-red-500">
+                                                    <p className="text-center text-xs text-red-500">
                                                         {translate('Storage limit nearly reached')}
                                                     </p>
                                                 )}
@@ -918,7 +918,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">
                                             {salesTab === 'sales' ? translate('Sales Trends') : translate('Revenue')}
                                         </CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">
+                                        <p className="text-foreground/75 mt-0.5 text-xs">
                                             {salesTab === 'sales' ? translate('Monthly sales performance') : translate('Monthly invoice revenue')} —{' '}
                                             {chartYear}
                                         </p>
@@ -942,12 +942,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                             </Tabs>
                                         )}
                                         {salesTab === 'sales' && (
-                                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
+                                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                                 {charts.salesTrends?.reduce((s, m) => s + m.sales, 0) || 0} {translate('total')}
                                             </span>
                                         )}
                                         {salesTab === 'revenue' && useHasPermission('view-managemanagemanage') && (
-                                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
+                                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                                 {window.kbSettings.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
                                             </span>
                                         )}
@@ -980,13 +980,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 <XAxis
                                                     dataKey="short"
                                                     tick={{ fontSize: 11, fill: 'currentColor' }}
-                                                    className="text-muted-foreground"
+                                                    className="text-foreground/75"
                                                     axisLine={{ stroke: primaryColor }}
                                                     tickLine={{ stroke: primaryColor }}
                                                 />
                                                 <YAxis
                                                     tick={{ fontSize: 11, fill: 'currentColor' }}
-                                                    className="text-muted-foreground"
+                                                    className="text-foreground/75"
                                                     axisLine={{ stroke: primaryColor }}
                                                     tickLine={{ stroke: primaryColor }}
                                                     allowDecimals={false}
@@ -1019,9 +1019,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                     ) : (
                                         <div className="flex h-40 flex-col items-center justify-center gap-3">
                                             <div className="bg-muted animate-pulse rounded-full p-4">
-                                                <BarChart3 className="text-muted-foreground/50 h-6 w-6" />
+                                                <BarChart3 className="text-foreground/75/50 h-6 w-6" />
                                             </div>
-                                            <p className="text-muted-foreground text-sm">{translate('No sales data available')}</p>
+                                            <p className="text-foreground/75 text-sm">{translate('No sales data available')}</p>
                                         </div>
                                     )
                                 ) : charts.revenueChart && charts.revenueChart.length > 0 ? (
@@ -1031,13 +1031,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                             <XAxis
                                                 dataKey="short"
                                                 tick={{ fontSize: 11, fill: 'currentColor' }}
-                                                className="text-muted-foreground"
+                                                className="text-foreground/75"
                                                 axisLine={{ stroke: primaryColor }}
                                                 tickLine={{ stroke: primaryColor }}
                                             />
                                             <YAxis
                                                 tick={{ fontSize: 11, fill: 'currentColor', fontFamily: 'monospace' }}
-                                                className="text-muted-foreground"
+                                                className="text-foreground/75"
                                                 axisLine={{ stroke: primaryColor }}
                                                 tickLine={{ stroke: primaryColor }}
                                                 tickFormatter={(v) => (v === 0 ? '$0' : (window.kbSettings.formatCurrency(v) ?? `$${v}`))}
@@ -1071,9 +1071,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <BarChart3 className="text-muted-foreground/50 h-6 w-6" />
+                                            <BarChart3 className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No revenue data available')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No revenue data available')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -1089,12 +1089,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('Lead Conversions')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">
+                                        <p className="text-foreground/75 mt-0.5 text-xs">
                                             {translate('Leads vs conversions per month')} — {chartYear}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
+                                        <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                             {charts.leadConversions?.reduce((s, m) => s + (m.conversions || 0), 0) || 0} {translate('conversions')}
                                         </span>
                                         <Select
@@ -1125,13 +1125,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                             <XAxis
                                                 dataKey="short"
                                                 tick={{ fontSize: 11, fill: 'currentColor' }}
-                                                className="text-muted-foreground"
+                                                className="text-foreground/75"
                                                 axisLine={{ stroke: primaryColor }}
                                                 tickLine={{ stroke: primaryColor }}
                                             />
                                             <YAxis
                                                 tick={{ fontSize: 11, fill: 'currentColor' }}
-                                                className="text-muted-foreground"
+                                                className="text-foreground/75"
                                                 axisLine={{ stroke: primaryColor }}
                                                 tickLine={{ stroke: primaryColor }}
                                                 allowDecimals={false}
@@ -1182,9 +1182,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <Target className="text-muted-foreground/50 h-6 w-6" />
+                                            <Target className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No conversion data available')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No conversion data available')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -1200,12 +1200,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('Active Projects')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('All active and ongoing projects')}</p>
+                                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('All active and ongoing projects')}</p>
                                     </div>
                                     {useHasPermission('view-projects') && (
                                         <Link
                                             href={route('projects.index')}
-                                            className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                            className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                         >
                                             {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                                         </Link>
@@ -1235,7 +1235,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
                                                 <div className="flex shrink-0 flex-col items-end gap-1">
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(project.status)}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusColor(project.status)}`}
                                                     >
                                                         {project.status?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) ||
                                                             'Planning'}
@@ -1247,9 +1247,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <Briefcase className="text-muted-foreground/50 h-6 w-6" />
+                                            <Briefcase className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No projects yet')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No projects yet')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -1263,12 +1263,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{translate('New Accounts')}</CardTitle>
-                                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Recently added customers')}</p>
+                                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Recently added customers')}</p>
                                     </div>
                                     {useHasPermission('view-accounts') && (
                                         <Link
                                             href={route('contacts.index')}
-                                            className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                            className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                         >
                                             {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                                         </Link>
@@ -1288,10 +1288,10 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm leading-tight font-semibold">{customer.name}</p>
-                                                    <p className="text-muted-foreground mt-0.5 truncate text-xs">{customer.email}</p>
+                                                    <p className="text-foreground/75 mt-0.5 truncate text-xs">{customer.email}</p>
                                                 </div>
                                                 <span
-                                                    className={`inline-flex shrink-0 items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(customer.type)}`}
+                                                    className={`inline-flex shrink-0 items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${getStatusColor(customer.type)}`}
                                                 >
                                                     {customer.type?.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) || 'Customer'}
                                                 </span>
@@ -1301,9 +1301,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 ) : (
                                     <div className="flex h-40 flex-col items-center justify-center gap-3">
                                         <div className="bg-muted animate-pulse rounded-full p-4">
-                                            <Building2 className="text-muted-foreground/50 h-6 w-6" />
+                                            <Building2 className="text-foreground/75/50 h-6 w-6" />
                                         </div>
-                                        <p className="text-muted-foreground text-sm">{translate('No customers yet')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('No customers yet')}</p>
                                     </div>
                                 )}
                             </CardContent>

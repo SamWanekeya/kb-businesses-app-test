@@ -49,7 +49,7 @@ export const LanguageSelector: React.FC = () => {
             <DropdownMenuTrigger asChild>
                 <Button variant="link">
                     <Languages className="h-4 w-4" />
-                    <span className="hidden text-sm font-medium md:inline-block">{currentLanguage.name}</span>
+                    <span className="hidden text-sm md:inline-block">{currentLanguage.name}</span>
                 </Button>
             </DropdownMenuTrigger>
 

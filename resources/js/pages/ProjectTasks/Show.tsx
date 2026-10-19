@@ -91,7 +91,7 @@ export default function ProjectTaskShow() {
                                     const taskStatus = getTaskStatus(task.task_status_id);
                                     return taskStatus ? (
                                         <span
-                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${getStatusBadgeClass(taskStatus.name)}`}
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${getStatusBadgeClass(taskStatus.name)}`}
                                         >
                                             {taskStatus.name}
                                         </span>
@@ -100,7 +100,7 @@ export default function ProjectTaskShow() {
                                     );
                                 })()}
                                 <span
-                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                         task.priority === 'urgent'
                                             ? 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                             : task.priority === 'high'
@@ -120,12 +120,12 @@ export default function ProjectTaskShow() {
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div className="space-y-4">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Description')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Description')}</label>
                                     <p className="mt-1 text-gray-900 dark:text-white">{task.description || translate('No description provided')}</p>
                                 </div>
 
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Project')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Project')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         <Briefcase className="h-4 w-4 text-gray-400" />
                                         <span className="text-gray-900 dark:text-white">
@@ -136,7 +136,7 @@ export default function ProjectTaskShow() {
 
                                 {task.parent && (
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Parent Task')}</label>
+                                        <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Parent Task')}</label>
                                         <div className="mt-1 flex items-center gap-2">
                                             <FileText className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">{task.parent.title}</span>
@@ -145,7 +145,7 @@ export default function ProjectTaskShow() {
                                 )}
 
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Assigned To')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Assigned To')}</label>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         {task.assigned_user ? (
                                             <>
@@ -156,14 +156,14 @@ export default function ProjectTaskShow() {
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{task.assigned_user.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{task.assigned_user.name}</p>
                                                     {task.assigned_user.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{task.assigned_user.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{task.assigned_user.email}</p>
                                                     )}
                                                 </div>
                                             </>
                                         ) : (
-                                            <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                            <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                         )}
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@ export default function ProjectTaskShow() {
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Progress')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Progress')}</label>
                                     <div className="mt-1">
                                         <div className="mb-1 flex items-center justify-between">
                                             <span className="text-sm text-gray-600 dark:text-gray-300">{task.progress}%</span>
@@ -187,7 +187,7 @@ export default function ProjectTaskShow() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Start Date')}</label>
+                                        <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Start Date')}</label>
                                         <div className="mt-1 flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
@@ -199,7 +199,7 @@ export default function ProjectTaskShow() {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Due Date')}</label>
+                                        <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Due Date')}</label>
                                         <div className="mt-1 flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
@@ -214,7 +214,7 @@ export default function ProjectTaskShow() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Estimated Hours')}</label>
+                                        <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Estimated Hours')}</label>
                                         <div className="mt-1 flex items-center gap-2">
                                             <Clock className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
@@ -223,7 +223,7 @@ export default function ProjectTaskShow() {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Actual Hours')}</label>
+                                        <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Actual Hours')}</label>
                                         <div className="mt-1 flex items-center gap-2">
                                             <BarChart3 className="h-4 w-4 text-gray-400" />
                                             <span className="text-gray-900 dark:text-white">
@@ -234,7 +234,7 @@ export default function ProjectTaskShow() {
                                 </div>
 
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Created By')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Created By')}</label>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         {task.creator ? (
                                             <>
@@ -245,20 +245,20 @@ export default function ProjectTaskShow() {
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{task.creator.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{task.creator.name}</p>
                                                     {task.creator.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{task.creator.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{task.creator.email}</p>
                                                     )}
                                                 </div>
                                             </>
                                         ) : (
-                                            <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
+                                            <p className="text-foreground/75 text-sm">{translate('Unknown')}</p>
                                         )}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Created At')}</label>
+                                    <label className="text-sm text-gray-500 dark:text-gray-400">{translate('Created At')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         <Calendar className="h-4 w-4 text-gray-400" />
                                         <span className="text-gray-900 dark:text-white">
@@ -306,7 +306,7 @@ export default function ProjectTaskShow() {
                                                 const subtaskStatus = getTaskStatus(subtask.task_status_id);
                                                 return subtaskStatus ? (
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${getStatusBadgeClass(subtaskStatus.name)}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${getStatusBadgeClass(subtaskStatus.name)}`}
                                                     >
                                                         {subtaskStatus.name}
                                                     </span>
@@ -315,7 +315,7 @@ export default function ProjectTaskShow() {
                                                 );
                                             })()}
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                                     subtask.priority === 'urgent'
                                                         ? 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                                         : subtask.priority === 'high'

@@ -317,7 +317,7 @@ export default function QuoteTemplateSettings() {
                                 </div>
 
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="quote_qr_enabled" className="text-sm font-medium">
+                                    <Label htmlFor="quote_qr_enabled" className="text-sm">
                                         {translate('QR Display?')}
                                     </Label>
                                     <Switch

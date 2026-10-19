@@ -55,7 +55,7 @@ export default function ProductShow() {
                     {/* Main Image — always fixed */}
                     <Card className="shadow-sm">
                         <CardHeader className="px-4 pt-4 pb-2">
-                            <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
+                            <CardTitle className="text-foreground/75 flex items-center gap-2 text-sm">
                                 <Package className="h-4 w-4" />
                                 {translate('Product Image')}
                             </CardTitle>
@@ -65,7 +65,7 @@ export default function ProductShow() {
                                 {mainImage ? (
                                     <img src={mainImage} alt={product.name} className="max-h-[220px] max-w-full rounded-lg object-contain" />
                                 ) : (
-                                    <Package className="text-muted-foreground/30 h-20 w-20" />
+                                    <Package className="text-foreground/75/30 h-20 w-20" />
                                 )}
                             </div>
                         </CardContent>
@@ -76,19 +76,19 @@ export default function ProductShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="px-4 pt-4 pb-2">
                                 <div className="flex items-center justify-between">
-                                    <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
+                                    <CardTitle className="text-foreground/75 flex items-center gap-2 text-sm">
                                         <Package className="h-4 w-4" />
                                         {translate('Additional Images')}
                                     </CardTitle>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-muted-foreground text-xs">
+                                        <span className="text-foreground/75 text-xs">
                                             {adIndex + 1}/{images.length}
                                         </span>
                                         <a href={images[adIndex]?.url} target="_blank" rel="noreferrer" className="hover:bg-muted rounded p-1">
-                                            <ZoomIn className="text-muted-foreground h-4 w-4" />
+                                            <ZoomIn className="text-foreground/75 h-4 w-4" />
                                         </a>
                                         <a href={images[adIndex]?.url} download className="hover:bg-muted rounded p-1">
-                                            <Download className="text-muted-foreground h-4 w-4" />
+                                            <Download className="text-foreground/75 h-4 w-4" />
                                         </a>
                                     </div>
                                 </div>
@@ -148,21 +148,21 @@ export default function ProductShow() {
                                 },
                                 {
                                     label: translate('Brand'),
-                                    value: product.brand?.name || '—',
+                                    value: product.brand?.name || '',
                                     icon: Bookmark,
                                     iconCls: 'text-blue-600',
                                     blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                                 },
                                 {
                                     label: translate('Stock'),
-                                    value: product.stock_quantity ?? '—',
+                                    value: product.stock_quantity ?? '',
                                     icon: Layers,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                                 },
                                 {
                                     label: translate('Category'),
-                                    value: product.category?.name || '—',
+                                    value: product.category?.name || '',
                                     icon: Tag,
                                     iconCls: 'text-purple-600',
                                     blobCls: 'bg-purple-50 dark:bg-purple-900/30',
@@ -174,7 +174,7 @@ export default function ProductShow() {
                                 <CardContent className="relative p-3">
                                     <div className="flex items-start justify-between">
                                         <div className="min-w-0 pe-1">
-                                            <p className="text-muted-foreground mb-1 text-xs font-medium">{label}</p>
+                                            <p className="text-foreground/75 mb-1 text-xs">{label}</p>
                                             <p className="text-foreground truncate font-mono text-sm leading-snug font-extrabold">{value}</p>
                                         </div>
                                         <div className={`relative z-10 p-2 ${blobCls} mt-0.5 flex-shrink-0 rounded-lg`}>
@@ -191,16 +191,16 @@ export default function ProductShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
-                                    <FileText className="text-muted-foreground me-2 h-4 w-4" />
+                                    <FileText className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Basic Information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Status')}</p>
                                     <div>
                                         <span
-                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                 product.status === 'active'
                                                     ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400'
                                                     : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400'
@@ -211,14 +211,14 @@ export default function ProductShow() {
                                     </div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('SKU')}</p>
-                                    <p className="text-foreground font-mono text-sm font-medium">{product.sku || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('SKU')}</p>
+                                    <p className="text-foreground font-mono text-sm">{product.sku || ''}</p>
                                 </div>
 
                                 {product.tax && (
                                     <div className="space-y-0.5">
-                                        <p className="text-muted-foreground text-xs font-medium">{translate('Tax')}</p>
-                                        <p className="text-foreground text-sm font-medium">
+                                        <p className="text-foreground/75 text-xs">{translate('Tax')}</p>
+                                        <p className="text-foreground text-sm">
                                             {product.tax.name}
                                             {product.tax.type === 'percentage' ? ` (${product.tax.rate}%)` : ` (`}
                                             <span className="font-mono">
@@ -234,13 +234,13 @@ export default function ProductShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
-                                    <Users className="text-muted-foreground me-2 h-4 w-4" />
+                                    <Users className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Additional Information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     {product.assigned_user ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
@@ -250,18 +250,18 @@ export default function ProductShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{product.assigned_user.name}</p>
+                                                <p className="text-foreground truncate text-sm">{product.assigned_user.name}</p>
                                                 {product.assigned_user.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{product.assigned_user.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{product.assigned_user.email}</p>
                                                 )}
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     {product.creator ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
@@ -271,14 +271,14 @@ export default function ProductShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{product.creator.name}</p>
+                                                <p className="text-foreground truncate text-sm">{product.creator.name}</p>
                                                 {product.creator.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{product.creator.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{product.creator.email}</p>
                                                 )}
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </CardContent>
@@ -290,13 +290,13 @@ export default function ProductShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto px-5 py-4" style={{ scrollbarGutter: 'stable' }}>
-                                    <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{product.description}</p>
+                                    <p className="text-foreground/75 text-sm leading-relaxed whitespace-pre-line">{product.description}</p>
                                 </div>
                             </CardContent>
                         </Card>

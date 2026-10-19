@@ -85,11 +85,11 @@ export function InvoiceCoingatePaymentForm({
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{translate('Payment Amount')}:</span>
+                            <span className="text-sm">{translate('Payment Amount')}:</span>
                             <span className="font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-muted-foreground text-sm">{translate('Payment Type')}:</span>
+                            <span className="text-foreground/75 text-sm">{translate('Payment Type')}:</span>
                             <span className="text-sm capitalize">
                                 {paymentType} {translate('Payment')}
                             </span>

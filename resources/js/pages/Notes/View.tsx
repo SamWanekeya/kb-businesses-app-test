@@ -29,25 +29,25 @@ export default function View({ record }: ViewProps) {
                 {/* Title & Created By */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                        <label className="flex items-center gap-2 text-sm text-gray-500">
                             <NotebookPen className="h-4 w-4" />
                             {translate('Title')}
                         </label>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.title || '-'}</p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.title || '-'}</p>
                     </div>
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                        <label className="flex items-center gap-2 text-sm text-gray-500">
                             <User className="h-4 w-4" />
                             {translate('Created By')}
                         </label>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.creator?.name || '-'}</p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.creator?.name || '-'}</p>
                     </div>
                 </div>
 
                 {/* Shared With */}
                 {record.shared_users?.length > 0 && (
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                        <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Share2 className="h-4 w-4" />
                             {translate('Shared With')}
                         </label>
@@ -55,7 +55,7 @@ export default function View({ record }: ViewProps) {
                             {record.shared_users.map((user: any) => (
                                 <span
                                     key={user.id}
-                                    className="inline-flex items-center gap-1 rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/20 ring-inset"
+                                    className="inline-flex items-center gap-1 rounded-md bg-purple-50 px-2 py-1 text-xs text-purple-700 ring-1 ring-purple-600/20 ring-inset"
                                 >
                                     <Users className="h-3 w-3" />
                                     {user.name}
@@ -67,7 +67,7 @@ export default function View({ record }: ViewProps) {
 
                 {/* Content */}
                 <div>
-                    <label className="text-sm font-medium text-gray-500">{translate('Content')}</label>
+                    <label className="text-sm text-gray-500">{translate('Content')}</label>
                     <div
                         className="prose prose-sm mt-2 max-w-none text-sm text-gray-900 dark:text-white"
                         dangerouslySetInnerHTML={{ __html: record.content || translate('No content') }}

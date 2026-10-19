@@ -184,7 +184,7 @@ export function ImportModal({
                         </div>
 
                         <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-                            <h4 className="mb-2 text-sm font-medium text-blue-800">{translate('Import notes:')}</h4>
+                            <h4 className="mb-2 text-sm text-blue-800">{translate('Import notes:')}</h4>
                             <p className="text-xs text-blue-700">{importNotes}</p>
                         </div>
                     </div>

@@ -151,7 +151,7 @@ export default function TwilioNotificationSettings() {
                         <div className="rounded-lg border border-gray-200 bg-white p-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
                                         <Key className="h-4 w-4" />
                                         {translate('Account SID')}
                                     </Label>
@@ -164,7 +164,7 @@ export default function TwilioNotificationSettings() {
                                     />
                                 </div>
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
                                         <Key className="h-4 w-4" />
                                         {translate('Auth Token')}
                                     </Label>
@@ -179,7 +179,7 @@ export default function TwilioNotificationSettings() {
                                     />
                                 </div>
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
                                         <Phone className="h-4 w-4" />
                                         {translate('From Phone Number')}
                                     </Label>
@@ -202,7 +202,7 @@ export default function TwilioNotificationSettings() {
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
                                     {availableNotifications.map((item) => (
                                         <div key={item.name} className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
-                                            <Label htmlFor={item.name} className="text-sm font-medium">
+                                            <Label htmlFor={item.name} className="text-sm">
                                                 {translate(item.label)}
                                             </Label>
                                             <Switch
@@ -229,7 +229,7 @@ export default function TwilioNotificationSettings() {
                         </div>
                         <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
                             <div>
-                                <Label className="block text-sm font-medium text-gray-700">{translate('Send Test To')}</Label>
+                                <Label className="block text-sm text-gray-700">{translate('Send Test To')}</Label>
                                 <Input
                                     value={testPhone}
                                     onChange={(e) => {

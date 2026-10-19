@@ -54,7 +54,7 @@ export default function MeetingShow() {
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
                                         <p className="font-medium">{translate('Date & Time')}</p>
-                                        <p className="text-muted-foreground text-sm">
+                                        <p className="text-foreground/75 text-sm">
                                             {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                 new Date(meeting.start_date).toLocaleDateString()}{' '}
                                             {window.kbSettings.formatTime(meeting.start_time) || meeting.start_time} -{' '}
@@ -67,10 +67,10 @@ export default function MeetingShow() {
 
                                 {meeting.location && (
                                     <div className="flex items-start gap-3">
-                                        <MapPin className="text-muted-foreground mt-0.5 h-5 w-5" />
+                                        <MapPin className="text-foreground/75 mt-0.5 h-5 w-5" />
                                         <div>
                                             <p className="font-medium">{translate('Location')}</p>
-                                            <p className="text-muted-foreground text-sm">{meeting.location}</p>
+                                            <p className="text-foreground/75 text-sm">{meeting.location}</p>
                                         </div>
                                     </div>
                                 )}
@@ -78,14 +78,14 @@ export default function MeetingShow() {
                                 {meeting.description && (
                                     <div>
                                         <p className="mb-2 font-medium">{translate('Description')}</p>
-                                        <p className="text-muted-foreground text-sm whitespace-pre-wrap">{meeting.description}</p>
+                                        <p className="text-foreground/75 text-sm whitespace-pre-wrap">{meeting.description}</p>
                                     </div>
                                 )}
 
                                 <div className="flex items-center gap-2">
                                     <span className="font-medium">{translate('Status')}:</span>
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                             meeting.status === 'planned'
                                                 ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
                                                 : meeting.status === 'held'
@@ -137,7 +137,7 @@ export default function MeetingShow() {
                                         )}
                                         <div>
                                             <p className="font-medium">{attendee.attendee?.name || translate('Unknown')}</p>
-                                            <p className="text-muted-foreground text-sm capitalize">
+                                            <p className="text-foreground/75 text-sm capitalize">
                                                 {attendee.attendee_type} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
                                             </p>
                                         </div>
@@ -158,7 +158,7 @@ export default function MeetingShow() {
                         <div className="space-y-3 p-6">
                             {meeting.assigned_user && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={meeting.assigned_user.avatar} alt={meeting.assigned_user.name} />
@@ -167,9 +167,9 @@ export default function MeetingShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{meeting.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{meeting.assigned_user.name}</p>
                                             {meeting.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{meeting.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{meeting.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -177,7 +177,7 @@ export default function MeetingShow() {
                             )}
 
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Created At')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created At')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -189,7 +189,7 @@ export default function MeetingShow() {
 
                             {meeting.updated_at !== meeting.created_at && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Last Updated')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Last Updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -214,10 +214,10 @@ export default function MeetingShow() {
                                 <div className="flex min-w-0 items-center gap-2">
                                     {isPerson && <UserInitials name={recordName} />}
                                     <div className="min-w-0">
-                                        <p className="text-muted-foreground text-xs capitalize">{translate(meeting.parent_module)}</p>
-                                        <p className="text-foreground truncate text-sm font-medium">{recordName}</p>
+                                        <p className="text-foreground/75 text-xs capitalize">{translate(meeting.parent_module)}</p>
+                                        <p className="text-foreground truncate text-sm">{recordName}</p>
                                         {isPerson && meeting.parent_record.email && (
-                                            <p className="text-muted-foreground truncate text-xs">{meeting.parent_record.email}</p>
+                                            <p className="text-foreground/75 truncate text-xs">{meeting.parent_record.email}</p>
                                         )}
                                     </div>
                                 </div>
@@ -225,7 +225,7 @@ export default function MeetingShow() {
                             return (
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
-                                        <Building2 className="text-muted-foreground h-4 w-4" />
+                                        <Building2 className="text-foreground/75 h-4 w-4" />
                                         <h3 className="text-base font-semibold">{translate('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
@@ -238,7 +238,7 @@ export default function MeetingShow() {
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                            <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
                                                             <p>{translate('View')}</p>

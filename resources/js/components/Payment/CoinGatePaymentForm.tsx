@@ -81,18 +81,18 @@ export function CoinGatePaymentForm({ planId, discountCode, billingCycle, planPr
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted rounded-lg p-4">
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium">{translate('Plan')}</span>
+                            <span className="text-sm">{translate('Plan')}</span>
                             <span className="text-sm">
                                 {translate(billingCycle)} {translate('billing')}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{translate('Amount')}</span>
+                            <span className="text-sm">{translate('Amount')}</span>
                             <span className="text-lg font-extrabold">
                                 {currency} {planPrice}
                             </span>
                         </div>
-                        <p className="text-muted-foreground mt-2 text-xs">
+                        <p className="text-foreground/75 mt-2 text-xs">
                             {translate('Final cryptocurrency amount will be calculated at checkout based on current exchange rates')}
                         </p>
                     </div>

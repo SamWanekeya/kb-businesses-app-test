@@ -112,13 +112,13 @@ export default function ProjectReports() {
                                     <XAxis
                                         dataKey="period"
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
                                     <YAxis
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                         allowDecimals={false}
@@ -227,7 +227,7 @@ export default function ProjectReports() {
                         <div className="border-border bg-muted/30 flex shrink-0 items-center border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
                                 <h3 className="text-foreground text-base font-semibold">{translate('Overdue Projects')}</h3>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Active projects past their deadline')}</p>
+                                <p className="text-foreground/75 mt-0.5 text-xs">{translate('Active projects past their deadline')}</p>
                             </div>
                         </div>
 
@@ -247,7 +247,7 @@ export default function ProjectReports() {
                                                 <div className="min-w-0 flex-1">
                                                     <p className="text-foreground truncate text-sm leading-tight font-semibold">{project.name}</p>
 
-                                                    <p className="text-muted-foreground mt-0.5 truncate text-xs">{project.code}</p>
+                                                    <p className="text-foreground/75 mt-0.5 truncate text-xs">{project.code}</p>
                                                 </div>
                                             </div>
 
@@ -267,7 +267,7 @@ export default function ProjectReports() {
                                 <div className="flex h-full min-h-[200px] flex-col items-center justify-center gap-3">
                                     <CheckCircle className="h-10 w-10 text-emerald-500/50" />
 
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-500">{translate('No overdue projects')}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-500">{translate('No overdue projects')}</p>
                                 </div>
                             )}
                         </div>

@@ -275,7 +275,7 @@ export default function PublicInvoice({
                             {useHasPermission('view-invoices') && (
                                 <button
                                     onClick={copyInvoiceLink}
-                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"
+                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? translate('Copied!') : translate('Copy Link')}
@@ -283,7 +283,7 @@ export default function PublicInvoice({
                             )}
                             <button
                                 onClick={handlePrint}
-                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
+                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm text-white shadow-sm transition-all duration-200 hover:shadow-md"
                                 style={{
                                     backgroundColor: currentThemeColor,
                                     ':hover': { filter: 'brightness(0.9)' },
@@ -336,7 +336,7 @@ export default function PublicInvoice({
                                 </div>
                                 <div className="ml-6 text-right">
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                             invoice.status === 'paid'
                                                 ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                 : invoice.status === 'partially_paid'
@@ -354,7 +354,7 @@ export default function PublicInvoice({
                                             ? translate('Partially Paid')
                                             : invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                                     </span>
-                                    <p className="mt-2 font-mono text-sm font-medium text-gray-700">{invoice.invoice_number}</p>
+                                    <p className="mt-2 font-mono text-sm text-gray-700">{invoice.invoice_number}</p>
                                 </div>
                             </div>
                         </div>
@@ -605,7 +605,7 @@ export default function PublicInvoice({
                                                             <td className="px-4 py-4 text-right text-base">
                                                                 {product.tax ? (
                                                                     <div>
-                                                                        <span className="text-muted-foreground text-sm font-medium">
+                                                                        <span className="text-foreground/75 text-sm">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </span>
                                                                         <div className="text-sm font-semibold text-gray-900">
@@ -619,7 +619,7 @@ export default function PublicInvoice({
                                                             <td className="px-4 py-4 text-right text-base font-extrabold">
                                                                 {discountAmount > 0 ? (
                                                                     <div>
-                                                                        <div className="text-sm font-medium text-gray-400 line-through">
+                                                                        <div className="text-sm text-gray-400 line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </div>
                                                                         <div className="font-semibold text-green-600">
@@ -753,7 +753,7 @@ export default function PublicInvoice({
                                                     <td className="px-4 py-4 text-right font-semibold">{formatCurrency(payment.amount)}</td>
                                                     <td className="px-4 py-4 capitalize">
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                                 payment.status === 'completed'
                                                                     ? 'bg-green-50 text-green-800 ring-green-600/20'
                                                                     : payment.status === 'pending'

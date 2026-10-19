@@ -180,7 +180,7 @@ const DialogContent = React.forwardRef<
 
                         // Appearance.
                         'cursor-pointer rounded-lg',
-                        'text-muted-foreground',
+                        'text-foreground/75',
                         'opacity-70',
 
                         // Interaction.
@@ -251,7 +251,7 @@ DialogTitle.displayName = DialogPrimitive.Title.displayName;
 const DialogDescription = React.forwardRef<
     React.ComponentRef<typeof DialogPrimitive.Description>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => <DialogPrimitive.Description ref={ref} className={cn('text-muted-foreground text-sm', className)} {...props} />);
+>(({ className, ...props }, ref) => <DialogPrimitive.Description ref={ref} className={cn('text-foreground/75 text-sm', className)} {...props} />);
 
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 

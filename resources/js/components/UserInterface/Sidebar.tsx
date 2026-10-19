@@ -311,7 +311,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
                     variant="ghost"
                     size="icon"
                     className={cn(
-                        'text-muted-foreground size-8 rounded-md border border-transparent transition-all duration-200',
+                        'text-foreground/75 size-8 rounded-md border border-transparent transition-all duration-200',
                         'hover:border-border hover:bg-muted hover:text-foreground',
                         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2',
                         'active:scale-[0.98]',
@@ -332,7 +332,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
                     {actionText}
 
                     {shortcutLabel && (
-                        <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center rounded border px-1.5 font-mono text-[10px] font-medium select-none">
+                        <kbd className="bg-muted text-foreground/75 pointer-events-none inline-flex h-5 items-center rounded border px-1.5 font-mono text-[10px] font-medium select-none">
                             {shortcutLabel}
                         </kbd>
                     )}

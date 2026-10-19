@@ -46,7 +46,7 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
             >
                 <div className="flex w-full flex-1 flex-col items-stretch gap-3 min-[1070px]:flex-row min-[1070px]:items-center">
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{translate('From Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('From Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_from"
@@ -60,7 +60,7 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                         </div>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{translate('To Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('To Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_to"

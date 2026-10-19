@@ -164,7 +164,7 @@ export default function OrganizationSystemSettings({
                                                 <SelectItem key={format} value={format}>
                                                     <div className="flex w-full items-center justify-between">
                                                         <span>{format}</span>
-                                                        <span className="text-muted-foreground ml-4 text-sm">({example})</span>
+                                                        <span className="text-foreground/75 ml-4 text-sm">({example})</span>
                                                     </div>
                                                 </SelectItem>
                                             ))
@@ -197,7 +197,7 @@ export default function OrganizationSystemSettings({
                                                 <SelectItem key={format} value={format}>
                                                     <div className="flex w-full items-center justify-between">
                                                         <span>{format}</span>
-                                                        <span className="text-muted-foreground ml-4 text-sm">({example})</span>
+                                                        <span className="text-foreground/75 ml-4 text-sm">({example})</span>
                                                     </div>
                                                 </SelectItem>
                                             ))

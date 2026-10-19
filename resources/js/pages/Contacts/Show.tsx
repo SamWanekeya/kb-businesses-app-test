@@ -35,7 +35,7 @@ export default function ContactShow() {
         };
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
                 {status?.charAt(0).toUpperCase() + status?.slice(1) || 'Active'}
             </span>
@@ -70,14 +70,14 @@ export default function ContactShow() {
                         [
                             {
                                 label: translate('Position'),
-                                value: contact.position || '—',
+                                value: contact.position || '',
                                 icon: Briefcase,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
                                 label: translate('Account'),
-                                value: contact.account?.name || '—',
+                                value: contact.account?.name || '',
                                 icon: Building,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
@@ -103,7 +103,7 @@ export default function ContactShow() {
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                         <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -121,23 +121,23 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact Summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Status')}</p>
                                     <div>{getStatusBadge(contact.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Position')}</p>
-                                    <p className="text-foreground text-sm font-medium">{contact.position || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Position')}</p>
+                                    <p className="text-foreground text-sm">{contact.position || ''}</p>
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
                                 {contact.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -147,14 +147,14 @@ export default function ContactShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{contact.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{contact.assigned_user.name}</p>
                                             {contact.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{contact.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{contact.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -164,19 +164,19 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <User className="text-muted-foreground mr-3 h-5 w-5" />
+                                <User className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact Info')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Email')}</p>
-                                    <p className="text-foreground truncate text-sm font-medium">{contact.email || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Email')}</p>
+                                    <p className="text-foreground truncate text-sm">{contact.email || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Phone')}</p>
-                                    <p className="text-foreground text-sm font-medium">{contact.phone || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Phone')}</p>
+                                    <p className="text-foreground text-sm">{contact.phone || ''}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -189,7 +189,7 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <MapPin className="text-muted-foreground mr-3 h-5 w-5" />
+                                <MapPin className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Address')}
                             </CardTitle>
                         </CardHeader>
@@ -199,8 +199,8 @@ export default function ContactShow() {
                                     <p className="text-foreground text-sm">{contact.address}</p>
                                 ) : (
                                     <div className="flex h-full flex-col items-center justify-center text-center">
-                                        <MapPin className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{translate('No address')}</p>
+                                        <MapPin className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                        <p className="text-foreground/75 text-sm">{translate('No address')}</p>
                                     </div>
                                 )}
                             </div>
@@ -211,7 +211,7 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Building className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Account')}
                             </CardTitle>
                         </CardHeader>
@@ -221,10 +221,10 @@ export default function ContactShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={contact.account.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Account')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Account')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{contact.account.name}</p>
                                             {contact.account.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{contact.account.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{contact.account.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -245,8 +245,8 @@ export default function ContactShow() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-8 text-center">
-                                    <Building className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{translate('No account linked')}</p>
+                                    <Building className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                    <p className="text-foreground/75 text-sm">{translate('No account linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -259,10 +259,10 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Quotes')}
                                 {contact.quotes?.length > 0 && (
-                                    <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                         {contact.quotes.length}
                                     </span>
                                 )}
@@ -286,7 +286,7 @@ export default function ContactShow() {
                                                 <UserInitials name={quote.quote_number} />
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{quote.quote_number}</p>
-                                                    {quote.name && <p className="text-muted-foreground truncate text-xs">{quote.name}</p>}
+                                                    {quote.name && <p className="text-foreground/75 truncate text-xs">{quote.name}</p>}
                                                 </div>
                                             </div>
                                             {useHasPermission('view-quotes') && (
@@ -308,8 +308,8 @@ export default function ContactShow() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{translate('No quotes linked')}</p>
+                                    <FileText className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                    <p className="text-foreground/75 text-sm">{translate('No quotes linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -319,10 +319,10 @@ export default function ContactShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Tag className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Tag className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Cases')}
                                 {contact.cases?.length > 0 && (
-                                    <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                         {contact.cases.length}
                                     </span>
                                 )}
@@ -343,7 +343,7 @@ export default function ContactShow() {
                                                 <UserInitials name={caseItem.subject} />
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{caseItem.subject}</p>
-                                                    {caseItem.status && <p className="text-muted-foreground truncate text-xs">{caseItem.status}</p>}
+                                                    {caseItem.status && <p className="text-foreground/75 truncate text-xs">{caseItem.status}</p>}
                                                 </div>
                                             </div>
                                             {useHasPermission('view-cases') && (
@@ -365,8 +365,8 @@ export default function ContactShow() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <Tag className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{translate('No cases linked')}</p>
+                                    <Tag className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                    <p className="text-foreground/75 text-sm">{translate('No cases linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -380,9 +380,9 @@ export default function ContactShow() {
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-semibold">
-                                        <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
+                                        <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -391,19 +391,19 @@ export default function ContactShow() {
                                     <div className="grid grid-cols-1 gap-4 min-[992px]:grid-cols-2">
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {filteredMeetings.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {filteredMeetings.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No meetings found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -422,18 +422,18 @@ export default function ContactShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">
+                                                                        <p className="text-foreground truncate text-sm">
                                                                             {meeting.title}
                                                                         </p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={meeting.assigned_user?.avatar}
@@ -443,7 +443,7 @@ export default function ContactShow() {
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {meeting.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -460,7 +460,7 @@ export default function ContactShow() {
                                                                                     className="flex-shrink-0"
                                                                                 >
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>
@@ -479,19 +479,19 @@ export default function ContactShow() {
 
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {filteredCalls.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {filteredCalls.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No calls found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -510,16 +510,16 @@ export default function ContactShow() {
                                                                         <Phone className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">{call.title}</p>
+                                                                        <p className="text-foreground truncate text-sm">{call.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={call.assigned_user?.avatar}
@@ -529,7 +529,7 @@ export default function ContactShow() {
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {call.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -543,7 +543,7 @@ export default function ContactShow() {
                                                                             <TooltipTrigger asChild>
                                                                                 <Link href={route('calls.show', call.id)} className="flex-shrink-0">
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>

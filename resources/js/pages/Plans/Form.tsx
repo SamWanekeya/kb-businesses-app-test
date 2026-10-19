@@ -140,7 +140,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="yearly_price">
-                                    {translate('Yearly Price')} <span className="text-muted-foreground text-sm">({translate('Optional')})</span>
+                                    {translate('Yearly Price')} <span className="text-foreground/75 text-sm">({translate('Optional')})</span>
                                 </Label>
                                 <Input
                                     inputIdentifier="yearly_price"
@@ -152,7 +152,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     onChange={handleChange}
                                     className={errors.yearly_price ? 'border-red-500' : ''}
                                 />
-                                <p className="text-muted-foreground mt-1 text-xs">
+                                <p className="text-foreground/75 mt-1 text-xs">
                                     {translate('If left empty, yearly price will be calculated as 80% of monthly price × 12')}
                                 </p>
                             </div>

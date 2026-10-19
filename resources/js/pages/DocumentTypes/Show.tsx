@@ -44,14 +44,14 @@ export default function ShowDocumentType() {
                         <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('Basic Information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Type Name')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Type Name')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">{documentType.type_name}</dd>
                             </div>
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Status')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Status')}</dt>
                                 <dd className="mt-1">
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                             documentType.status === 'active'
                                                 ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -68,14 +68,14 @@ export default function ShowDocumentType() {
                         <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('System Information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Created At')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Created At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.kbSettings.formatDateTime(documentType.created_at, false) ||
                                         new Date(documentType.created_at).toLocaleDateString()}
                                 </dd>
                             </div>
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Updated At')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Updated At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.kbSettings.formatDateTime(documentType.updated_at, false) ||
                                         new Date(documentType.updated_at).toLocaleDateString()}

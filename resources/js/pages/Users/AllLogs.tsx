@@ -182,22 +182,22 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-50 dark:bg-gray-800">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('User')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('IP Address')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('Location & Device')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('Role')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('Time')}
                                 </th>
-                                <th className="px-6 py-3 text-center text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
+                                <th className="px-6 py-3 text-center text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('Actions')}
                                 </th>
                             </tr>
@@ -208,7 +208,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                                 return (
                                     <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                            <div className="text-sm text-gray-900 dark:text-white">
                                                 {log.user?.name || 'Unknown User'}
                                             </div>
                                             <div className="text-sm text-gray-500 dark:text-gray-400">{log.user?.email || '-'}</div>

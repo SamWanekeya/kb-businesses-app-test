@@ -170,22 +170,22 @@ export default function CaseShow() {
                     <Icon className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0">
-                    <p className="text-foreground truncate text-sm font-medium">{item.title}</p>
+                    <p className="text-foreground truncate text-sm">{item.title}</p>
                     <div className="mt-0.5 flex items-center gap-2">
-                        <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                        <span className="text-muted-foreground truncate text-xs">
+                        <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                        <span className="text-foreground/75 truncate text-xs">
                             {window.kbSettings.formatDateTime(item.start_date, false) || new Date(item.start_date).toLocaleDateString()}
                         </span>
                         {item.assigned_user?.name && (
                             <span className="flex flex-shrink-0 items-center gap-1">
-                                <span className="text-muted-foreground/40">·</span>
+                                <span className="text-foreground/75/40">·</span>
                                 <Avatar className="h-4 w-4">
                                     <AvatarImage src={item.assigned_user?.avatar} alt={item.assigned_user?.name} />
                                     <AvatarFallback className="bg-primary/15 text-primary text-[8px] font-extrabold">
                                         {getInitials(item.assigned_user?.name || 'U')}
                                     </AvatarFallback>
                                 </Avatar>
-                                <span className="text-muted-foreground truncate text-xs">{item.assigned_user.name}</span>
+                                <span className="text-foreground/75 truncate text-xs">{item.assigned_user.name}</span>
                             </span>
                         )}
                     </div>
@@ -197,7 +197,7 @@ export default function CaseShow() {
                         <TooltipTrigger asChild>
                             <Link href={route(viewRoute, item.id)} className="flex-shrink-0">
                                 <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                    <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                 </Button>
                             </Link>
                         </TooltipTrigger>
@@ -261,7 +261,7 @@ export default function CaseShow() {
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                         <p className="text-foreground truncate text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -277,7 +277,7 @@ export default function CaseShow() {
                 <Card className="shadow-sm">
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-semibold">
-                            <Loader className="text-muted-foreground mr-3 h-5 w-5" />
+                            <Loader className="text-foreground/75 mr-3 h-5 w-5" />
                             {translate('Case Progress')}
                         </CardTitle>
                     </CardHeader>
@@ -298,13 +298,13 @@ export default function CaseShow() {
                                                         ? `${s.bg} border-current ${s.color}`
                                                         : isDone
                                                           ? 'bg-primary/10 border-primary text-primary'
-                                                          : 'bg-muted border-border text-muted-foreground'
+                                                          : 'bg-muted border-border text-foreground/75'
                                                 }`}
                                             >
                                                 <StepIcon className="h-4 w-4" />
                                             </div>
                                             <span
-                                                className={`text-[10px] font-medium whitespace-nowrap ${isActive ? s.color : isDone ? 'text-primary' : 'text-muted-foreground'}`}
+                                                className={`text-[10px] font-medium whitespace-nowrap ${isActive ? s.color : isDone ? 'text-primary' : 'text-foreground/75'}`}
                                             >
                                                 {s.label}
                                             </span>
@@ -325,13 +325,13 @@ export default function CaseShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <UserCheck className="text-muted-foreground mr-3 h-5 w-5" />
+                                <UserCheck className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Assignment')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex items-center justify-center p-5" style={{ minHeight: '100px' }}>
                             <div className="w-full">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
                                 {caseData.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -341,14 +341,14 @@ export default function CaseShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{caseData.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{caseData.assigned_user.name}</p>
                                             {caseData.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{caseData.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{caseData.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -358,7 +358,7 @@ export default function CaseShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
                         </CardHeader>
@@ -366,11 +366,11 @@ export default function CaseShow() {
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
                                     {caseData.description ? (
-                                        <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{caseData.description}</p>
+                                        <p className="text-foreground/75 text-sm leading-relaxed whitespace-pre-line">{caseData.description}</p>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
-                                            <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{translate('No description provided')}</p>
+                                            <FileText className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                            <p className="text-foreground/75 text-sm">{translate('No description provided')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -385,7 +385,7 @@ export default function CaseShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Building className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Account')}
                             </CardTitle>
                         </CardHeader>
@@ -398,7 +398,7 @@ export default function CaseShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{caseData.account.name}</p>
                                                 {caseData.account.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{caseData.account.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{caseData.account.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -420,8 +420,8 @@ export default function CaseShow() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <Building className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{translate('No account linked')}</p>
+                                    <Building className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                    <p className="text-foreground/75 text-sm">{translate('No account linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -431,7 +431,7 @@ export default function CaseShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <User className="text-muted-foreground mr-3 h-5 w-5" />
+                                <User className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Contact')}
                             </CardTitle>
                         </CardHeader>
@@ -444,7 +444,7 @@ export default function CaseShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{caseData.contact.name}</p>
                                                 {caseData.contact.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{caseData.contact.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{caseData.contact.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -466,8 +466,8 @@ export default function CaseShow() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <User className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{translate('No contact linked')}</p>
+                                    <User className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                    <p className="text-foreground/75 text-sm">{translate('No contact linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -479,9 +479,9 @@ export default function CaseShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Meetings & Calls')}
-                                <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                     {meetings.length}
                                 </span>
                             </CardTitle>
@@ -490,19 +490,19 @@ export default function CaseShow() {
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <Card className="border shadow-none">
                                     <CardHeader className="border-b px-4 py-3">
-                                        <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                        <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                             <div className="flex items-center gap-2">
                                                 <UserCheck className="h-3.5 w-3.5" />
                                                 {translate('Meetings')}
                                             </div>
-                                            <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                            <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                 {filteredMeetings.length}
                                             </span>
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-0">
                                         {filteredMeetings.length === 0 ? (
-                                            <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
+                                            <p className="text-foreground/75 py-6 text-center text-sm">{translate('No meetings found')}</p>
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"
@@ -527,19 +527,19 @@ export default function CaseShow() {
 
                                 <Card className="border shadow-none">
                                     <CardHeader className="border-b px-4 py-3">
-                                        <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                        <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                             <div className="flex items-center gap-2">
                                                 <Phone className="h-3.5 w-3.5" />
                                                 {translate('Calls')}
                                             </div>
-                                            <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                            <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                 {filteredCalls.length}
                                             </span>
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-0">
                                         {filteredCalls.length === 0 ? (
-                                            <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
+                                            <p className="text-foreground/75 py-6 text-center text-sm">{translate('No calls found')}</p>
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"

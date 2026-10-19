@@ -185,7 +185,7 @@ export function PayfastPaymentForm({
                             required
                         />
                         {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to PayFast to complete the payment')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('You will be redirected to PayFast to complete the payment')}</p>
                     </div>
 
                     {planPrice < 5 && (
@@ -202,12 +202,12 @@ export function PayfastPaymentForm({
 
                     <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{translate('Amount')}</span>
+                            <span className="text-sm">{translate('Amount')}</span>
                             <span className="text-sm font-extrabold">
                                 {currency} {planPrice}
                             </span>
                         </div>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('Secure payment processing via PayFast')}</p>
+                        <p className="text-foreground/75 mt-1 text-xs">{translate('Secure payment processing via PayFast')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

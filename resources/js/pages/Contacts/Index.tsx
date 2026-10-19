@@ -263,7 +263,7 @@ export default function Contacts() {
                         <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
-                            <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
+                            <div className="text-foreground/75 text-sm">{row.email || translate('No email')}</div>
                         </div>
                     </div>
                 );
@@ -284,11 +284,11 @@ export default function Contacts() {
             label: translate('Account'),
             render: (value: any) =>
                 value?.name ? (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                         {value.name}
                     </span>
                 ) : (
-                    <span className="text-muted-foreground">-</span>
+                    <span className="text-foreground/75">-</span>
                 ),
         },
         {
@@ -297,7 +297,7 @@ export default function Contacts() {
             render: (value: string) => {
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                             value === 'active'
                                 ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -561,7 +561,7 @@ export default function Contacts() {
                                                 </p>
                                             </div>
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                     contact.status === 'active'
                                                         ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                         : 'bg-red-50 text-red-700 ring-red-600/20'
@@ -585,7 +585,7 @@ export default function Contacts() {
                                         {contact.account && (
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                <span className="inline-flex max-w-full items-center overflow-hidden rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                                                <span className="inline-flex max-w-full items-center overflow-hidden rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                                                     <span className="truncate">{contact.account.name}</span>
                                                 </span>
                                             </div>
@@ -594,7 +594,7 @@ export default function Contacts() {
 
                                     {/* Footer: date left, assigned avatar right */}
                                     <div className="border-border mt-auto flex items-center justify-between border-t pt-3">
-                                        <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
+                                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                                             <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             <span>
                                                 {window.kbSettings.formatDateTime(contact.created_at, false) ||
@@ -609,7 +609,7 @@ export default function Contacts() {
                                                         <TooltipTrigger asChild>
                                                             <Avatar className="h-7 w-7 shrink-0 cursor-pointer">
                                                                 <AvatarImage src={contact.assigned_user.avatar} alt={contact.assigned_user.name} />
-                                                                <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                <AvatarFallback className="bg-purple-100 text-xs text-purple-700">
                                                                     {getInitials(contact.assigned_user.name)}
                                                                 </AvatarFallback>
                                                             </Avatar>

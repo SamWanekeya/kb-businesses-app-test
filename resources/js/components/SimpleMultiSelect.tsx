@@ -74,7 +74,7 @@ export default function SimpleMultiSelect({ options, selected, onChange, classNa
                                     handleRemove(value);
                                 }}
                             >
-                                <X className="text-muted-foreground hover:text-foreground h-3 w-3" />
+                                <X className="text-foreground/75 hover:text-foreground h-3 w-3" />
                             </button>
                         </Badge>
                     );

@@ -143,7 +143,7 @@ export function RazorpayPaymentForm({
 
     return (
         <div className="space-y-4">
-            <p className="text-muted-foreground text-sm">{translate('You will be redirected to Razorpay to complete your payment.')}</p>
+            <p className="text-foreground/75 text-sm">{translate('You will be redirected to Razorpay to complete your payment.')}</p>
 
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">

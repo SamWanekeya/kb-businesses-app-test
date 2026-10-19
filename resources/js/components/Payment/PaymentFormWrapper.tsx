@@ -158,7 +158,7 @@ export function PaymentFormWrapper({ planId, planPrice, discountCode = '', billi
         return (
             <Card>
                 <CardContent className="p-6 text-center">
-                    <p className="text-muted-foreground">{translate('No payment methods available')}</p>
+                    <p className="text-foreground/75">{translate('No payment methods available')}</p>
                     <Button variant="outline" onClick={onCancel} className="mt-4">
                         {translate('Cancel')}
                     </Button>

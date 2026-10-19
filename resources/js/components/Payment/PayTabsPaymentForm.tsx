@@ -107,23 +107,23 @@ export function PayTabsPaymentForm({
 
                     <div className="rounded-lg border bg-gray-50 p-4">
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">{translate('Plan')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Plan')}:</span>
                             <span className="text-sm text-gray-900">{translate('Subscription Plan')}</span>
                         </div>
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">{translate('Billing Cycle')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Billing Cycle')}:</span>
                             <span className="text-sm text-gray-900 capitalize">{billingCycle}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Amount')}:</span>
                             <span className="text-lg font-extrabold text-gray-900">
                                 {currency} {planPrice}
                             </span>
                         </div>
                         {discountCode && (
                             <div className="mt-2 flex items-center justify-between border-t pt-2">
-                                <span className="text-sm font-medium text-green-600">{translate('Discount Applied')}:</span>
-                                <span className="text-sm font-medium text-green-700">{discountCode}</span>
+                                <span className="text-sm text-green-600">{translate('Discount Applied')}:</span>
+                                <span className="text-sm text-green-700">{discountCode}</span>
                             </div>
                         )}
                     </div>

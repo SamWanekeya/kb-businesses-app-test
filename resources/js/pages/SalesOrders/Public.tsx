@@ -238,7 +238,7 @@ export default function PublicSalesOrder({
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
@@ -264,7 +264,7 @@ export default function PublicSalesOrder({
                             {useHasPermission('view-sales-orders') && (
                                 <button
                                     onClick={copySalesOrderLink}
-                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
+                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? translate('Copied!') : translate('Copy Link')}
@@ -272,7 +272,7 @@ export default function PublicSalesOrder({
                             )}
                             <button
                                 onClick={handlePrint}
-                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
+                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm text-white shadow-sm transition-all duration-200 hover:shadow-md"
                                 style={{
                                     backgroundColor: currentThemeColor,
                                     ':hover': { filter: 'brightness(0.9)' },
@@ -310,7 +310,7 @@ export default function PublicSalesOrder({
                                 </div>
                                 <div className="ml-6 text-right">
                                     {getStatusBadge(salesOrder.status)}
-                                    <p className="mt-2 font-mono text-sm font-medium text-gray-700">{salesOrder.order_number}</p>
+                                    <p className="mt-2 font-mono text-sm text-gray-700">{salesOrder.order_number}</p>
                                 </div>
                             </div>
                         </div>
@@ -378,15 +378,15 @@ export default function PublicSalesOrder({
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Order Number')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Order Number')}</label>
                                             <p className="mt-1 text-sm">{salesOrder.order_number}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Status')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Status')}</label>
                                             <div className="mt-1">{getStatusBadge(salesOrder.status)}</div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created By')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Created By')}</label>
                                             {salesOrder.creator ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -396,7 +396,7 @@ export default function PublicSalesOrder({
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{salesOrder.creator.name}</p>
+                                                        <p className="truncate text-sm text-gray-900">{salesOrder.creator.name}</p>
                                                         {salesOrder.creator.email && (
                                                             <p className="truncate text-xs text-gray-500">{salesOrder.creator.email}</p>
                                                         )}
@@ -407,7 +407,7 @@ export default function PublicSalesOrder({
                                             )}
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Assigned To')}</label>
                                             {salesOrder.assigned_user ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -417,7 +417,7 @@ export default function PublicSalesOrder({
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{salesOrder.assigned_user.name}</p>
+                                                        <p className="truncate text-sm text-gray-900">{salesOrder.assigned_user.name}</p>
                                                         {salesOrder.assigned_user.email && (
                                                             <p className="truncate text-xs text-gray-500">{salesOrder.assigned_user.email}</p>
                                                         )}
@@ -430,29 +430,29 @@ export default function PublicSalesOrder({
                                     </div>
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Subtotal')}</label>
                                             <p className="mt-1 text-sm">{formatCurrency(salesOrder.subtotal)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Discount Amount')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Discount Amount')}</label>
                                             <p className="mt-1 text-sm">-{formatCurrency(totalDiscount)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Order Date')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Order Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Delivery Date')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Delivery Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Created At')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.created_at)}</p>
@@ -476,7 +476,7 @@ export default function PublicSalesOrder({
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                         {salesOrder.account && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Account')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Account')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={salesOrder.account.name} />
                                                     <div className="min-w-0">
@@ -490,7 +490,7 @@ export default function PublicSalesOrder({
                                         )}
                                         {salesOrder.quote && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Quote')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Quote')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="min-w-0">
                                                         <p className="truncate text-sm font-semibold text-gray-900">{salesOrder.quote.name}</p>
@@ -500,7 +500,7 @@ export default function PublicSalesOrder({
                                         )}
                                         {salesOrder.shipping_provider_type && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Shipping Provider')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Shipping Provider')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50">
                                                         <Truck className="h-4 w-4 text-orange-500" />
@@ -522,7 +522,7 @@ export default function PublicSalesOrder({
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
                                 <h3 className="flex items-center text-lg font-semibold">
-                                    <svg className="text-muted-foreground mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="text-foreground/75 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -537,14 +537,14 @@ export default function PublicSalesOrder({
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     {/* Billing */}
                                     <div>
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                         {salesOrder.billing_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={salesOrder.billing_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{salesOrder.billing_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{salesOrder.billing_contact.name}</p>
                                                     {salesOrder.billing_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{salesOrder.billing_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{salesOrder.billing_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -552,46 +552,46 @@ export default function PublicSalesOrder({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.billing_address || translate('-')}
                                                     </p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_city || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm">{salesOrder.billing_city || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.billing_state || translate('-')}
                                                     </p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.billing_postal_code || translate('-')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_country || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.billing_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
                                     {/* Shipping */}
                                     <div className="sm:border-s sm:ps-6">
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                         {salesOrder.shipping_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={salesOrder.shipping_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{salesOrder.shipping_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{salesOrder.shipping_contact.name}</p>
                                                     {salesOrder.shipping_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{salesOrder.shipping_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{salesOrder.shipping_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -599,35 +599,35 @@ export default function PublicSalesOrder({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.shipping_address || translate('-')}
                                                     </p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.shipping_city || translate('-')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.shipping_state || translate('-')}
                                                     </p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {salesOrder.shipping_postal_code || translate('-')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_country || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm">{salesOrder.shipping_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -695,7 +695,7 @@ export default function PublicSalesOrder({
                                                                                 <p className="mt-0.5 text-xs text-gray-500">SKU: {product.sku}</p>
                                                                             )}
                                                                             {product.category?.name && (
-                                                                                <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600">
+                                                                                <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600">
                                                                                     {product.category.name}
                                                                                 </span>
                                                                             )}
@@ -761,17 +761,17 @@ export default function PublicSalesOrder({
                                         <div className="flex justify-end border-t bg-gray-50/50 px-6 py-5">
                                             <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Subtotal')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Subtotal')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(subtotal)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Discount')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Discount')}</span>
                                                     <span className="font-mono text-sm font-semibold text-red-500">
                                                         -{formatCurrency(totalDiscount)}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Total Tax')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Total Tax')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
@@ -860,7 +860,7 @@ export default function PublicSalesOrder({
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                 >
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>

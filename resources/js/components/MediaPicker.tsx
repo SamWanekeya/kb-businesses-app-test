@@ -175,7 +175,7 @@ export default function MediaPicker({
                                 ) : (
                                     <div className="bg-muted flex h-20 w-full flex-col items-center justify-center gap-1 rounded border">
                                         {getFileIcon(mime)}
-                                        <span className="text-muted-foreground max-w-full truncate px-1 text-xs">
+                                        <span className="text-foreground/75 max-w-full truncate px-1 text-xs">
                                             {mime.split('/')[1]?.toUpperCase() || 'FILE'}
                                         </span>
                                     </div>

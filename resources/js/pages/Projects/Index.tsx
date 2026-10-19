@@ -297,7 +297,7 @@ export default function Projects() {
         {
             label: translate('Active'),
             value: stats.ongoing ?? 0,
-            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
             icon: <Play className="h-6 w-6" />,
             color: 'text-green-700',
             cardBg: 'bg-green-50 dark:bg-green-900/30',
@@ -306,7 +306,7 @@ export default function Projects() {
         {
             label: translate('On Hold'),
             value: stats.on_hold ?? 0,
-            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
             icon: <PauseCircle className="h-6 w-6" />,
             color: 'text-yellow-600',
             cardBg: 'bg-yellow-50 dark:bg-yellow-900/30',
@@ -315,7 +315,7 @@ export default function Projects() {
         {
             label: translate('Completed'),
             value: stats.completed ?? 0,
-            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
             icon: <CheckCircle2 className="h-6 w-6" />,
             color: 'text-violet-700',
             cardBg: 'bg-violet-50 dark:bg-violet-900/30',
@@ -324,7 +324,7 @@ export default function Projects() {
         {
             label: translate('Overdue'),
             value: stats.overdue ?? 0,
-            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
             icon: <AlertCircle className="h-6 w-6" />,
             color: 'text-red-600',
             cardBg: 'bg-red-50 dark:bg-red-900/30',
@@ -349,7 +349,7 @@ export default function Projects() {
                         style={{ border: `1.5px solid ${s.borderColor}` }}
                     >
                         <div className="flex items-center justify-between">
-                            <p className={`text-sm font-medium ${s.color}`}>{s.label}</p>
+                            <p className={`text-sm ${s.color}`}>{s.label}</p>
                             <span className={s.color}>{React.cloneElement(s.icon, { className: 'h-5 w-5' })}</span>
                         </div>
                         <p className={`text-xl font-extrabold ${s.color}`}>{s.value}</p>
@@ -455,7 +455,7 @@ export default function Projects() {
                             onClick={() => {
                                 handleTabChange(tab.value);
                             }}
-                            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+                            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2 text-sm whitespace-nowrap transition-colors ${
                                 selectedStatus === tab.value
                                     ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -595,7 +595,7 @@ export default function Projects() {
                                                 <div className="text-right">
                                                     <p className="mb-1 text-xs text-gray-400">{translate('Deadline')}</p>
                                                     <p
-                                                        className={`flex items-center justify-end gap-1 text-xs font-medium ${new Date(project.end_date) < new Date() && project.status !== 'completed' ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}
+                                                        className={`flex items-center justify-end gap-1 text-xs ${new Date(project.end_date) < new Date() && project.status !== 'completed' ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}
                                                     >
                                                         <Calendar className="h-3 w-3" />
                                                         <span className="text-xs">
@@ -608,18 +608,18 @@ export default function Projects() {
 
                                         {/* Footer: status badge + priority + budget */}
                                         <div className="flex flex-wrap items-center gap-1.5">
-                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${sCfg.className}`}>
+                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${sCfg.className}`}>
                                                 {translate(sCfg.label)}
                                             </span>
                                             {project.priority && (
                                                 <span
-                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${pCfg.className}`}
+                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${pCfg.className}`}
                                                 >
                                                     {translate(pCfg.label)}
                                                 </span>
                                             )}
                                             {project.budget && (
-                                                <span className="ml-auto font-mono text-xs font-medium text-gray-600 dark:text-gray-300">
+                                                <span className="ml-auto font-mono text-xs text-gray-600 dark:text-gray-300">
                                                     {window.kbSettings.formatCurrency(project.budget) ||
                                                         `$${Number(project.budget).toLocaleString()}`}
                                                 </span>

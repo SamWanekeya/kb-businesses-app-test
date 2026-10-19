@@ -397,8 +397,8 @@ button:disabled,
     color: var(--foreground);
 }
 
-.dark [role='cell'] .text-muted-foreground,
-.dark td .text-muted-foreground {
+.dark [role='cell'] .text-foreground-75,
+.dark td .text-foreground-75 {
     color: var(--muted-foreground);
 }
 

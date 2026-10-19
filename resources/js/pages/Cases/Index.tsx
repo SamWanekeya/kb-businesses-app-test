@@ -277,7 +277,7 @@ export default function Cases() {
                 return (
                     <div>
                         <div className="font-medium">{row.subject}</div>
-                        <div className="text-muted-foreground text-sm whitespace-nowrap">
+                        <div className="text-foreground/75 text-sm whitespace-nowrap">
                             {row.case_type
                                 ? row.case_type.replace(/_/g, ' ').charAt(0).toUpperCase() + row.case_type.replace(/_/g, ' ').slice(1)
                                 : ''}
@@ -299,11 +299,11 @@ export default function Cases() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{value.name}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{value.email}</div>
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground whitespace-nowrap">{translate('Unassigned')}</span>
+                    <span className="text-foreground/75 whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
@@ -324,7 +324,7 @@ export default function Cases() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
                     >
                         {value.charAt(0).toUpperCase() + value.slice(1)}
                     </span>
@@ -345,7 +345,7 @@ export default function Cases() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
                     >
                         {value.replace('_', ' ').charAt(0).toUpperCase() + value.replace('_', ' ').slice(1)}
                     </span>
@@ -680,7 +680,7 @@ export default function Cases() {
                                             <div className="mt-2 flex items-center gap-2">
                                                 <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}:</span>
                                                 <span
-                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${sc.cls}`}
+                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${sc.cls}`}
                                                 >
                                                     {fmt(caseItem.status)}
                                                 </span>
@@ -692,7 +692,7 @@ export default function Cases() {
                                                         {translate('Priority')}:
                                                     </span>
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}
                                                     >
                                                         {fmt(caseItem.priority)}
                                                     </span>
@@ -700,7 +700,7 @@ export default function Cases() {
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Type')}:</span>
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${typeColors[caseItem.case_type] ?? 'bg-purple-50 text-purple-700 ring-purple-600/20'}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${typeColors[caseItem.case_type] ?? 'bg-purple-50 text-purple-700 ring-purple-600/20'}`}
                                                     >
                                                         {fmt(caseItem.case_type)}
                                                     </span>
@@ -742,7 +742,7 @@ export default function Cases() {
                                                                         src={caseItem.assigned_user.avatar}
                                                                         alt={caseItem.assigned_user.name}
                                                                     />
-                                                                    <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                    <AvatarFallback className="bg-purple-100 text-xs text-purple-700">
                                                                         {getInitials(caseItem.assigned_user.name)}
                                                                     </AvatarFallback>
                                                                 </Avatar>

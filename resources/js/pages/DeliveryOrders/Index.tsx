@@ -228,7 +228,7 @@ export default function DeliveryOrders() {
             render: (value: string, item: any) => (
                 <Link
                     href={route('delivery-orders.show', item.id)}
-                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
                     style={{ color: '#1d4ed8' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
                     onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
@@ -256,7 +256,7 @@ export default function DeliveryOrders() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{value.name}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{value.email}</div>
                         </div>
                     </div>
                 ) : (
@@ -289,7 +289,7 @@ export default function DeliveryOrders() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
                     >
                         {translate(value.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()))}
                     </span>

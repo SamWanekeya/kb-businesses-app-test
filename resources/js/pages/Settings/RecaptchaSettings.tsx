@@ -102,7 +102,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                             <div className="flex items-center justify-between">
                                 <div className="space-y-0.5">
                                     <Label htmlFor="recaptchaEnabled">{translate('Enable reCAPTCHA')}</Label>
-                                    <p className="text-muted-foreground text-sm">{translate('Show reCAPTCHA on authentication pages')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Show reCAPTCHA on authentication pages')}</p>
                                 </div>
                                 <Switch
                                     id="recaptchaEnabled"

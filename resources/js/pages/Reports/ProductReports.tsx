@@ -81,7 +81,7 @@ export default function ProductReports() {
                                     inputType="number"
                                     inputMode="decimal"
                                     tick={{ fontSize: 11, fill: 'currentColor' }}
-                                    className="text-muted-foreground"
+                                    className="text-foreground/75"
                                     axisLine={{ stroke: primaryColor }}
                                     tickLine={{ stroke: primaryColor }}
                                 />
@@ -90,7 +90,7 @@ export default function ProductReports() {
                                     type="category"
                                     width={150}
                                     tick={{ fontSize: 11, fill: 'currentColor' }}
-                                    className="text-muted-foreground"
+                                    className="text-foreground/75"
                                     axisLine={{ stroke: primaryColor }}
                                     tickLine={{ stroke: primaryColor }}
                                 />
@@ -122,7 +122,7 @@ export default function ProductReports() {
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Low Stock Products')}</h3>
 
-                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Inventory between 1 and 10')}</p>
+                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory between 1 and 10')}</p>
                     </div>
 
                     <div className="custom-scrollbar max-h-[340px] overflow-y-auto">
@@ -163,16 +163,16 @@ export default function ProductReports() {
                                                             }}
                                                         />
 
-                                                        <Package className="text-muted-foreground hidden h-5 w-5" />
+                                                        <Package className="text-foreground/75 hidden h-5 w-5" />
                                                     </a>
                                                 ) : (
-                                                    <Package className="text-muted-foreground h-5 w-5" />
+                                                    <Package className="text-foreground/75 h-5 w-5" />
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                     SKU: {product.sku || translate('N/A')}
                                                 </p>
                                             </div>
@@ -186,7 +186,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-[200px] flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{translate('No low stock products')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No low stock products')}</p>
                             </div>
                         )}
                     </div>
@@ -196,7 +196,7 @@ export default function ProductReports() {
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Out of Stock Products')}</h3>
 
-                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Inventory at 0')}</p>
+                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory at 0')}</p>
                     </div>
 
                     <div className="custom-scrollbar max-h-[340px] overflow-y-auto">
@@ -237,17 +237,17 @@ export default function ProductReports() {
                                                             }}
                                                         />
 
-                                                        <Package className="text-muted-foreground hidden h-5 w-5" />
+                                                        <Package className="text-foreground/75 hidden h-5 w-5" />
                                                     </a>
                                                 ) : (
-                                                    <Package className="text-muted-foreground h-5 w-5" />
+                                                    <Package className="text-foreground/75 h-5 w-5" />
                                                 )}
                                             </div>
 
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                     SKU: {product.sku || translate('N/A')}
                                                 </p>
                                             </div>
@@ -261,7 +261,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-40 items-center justify-center">
-                                <p className="text-muted-foreground text-sm">{translate('No out of stock products')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No out of stock products')}</p>
                             </div>
                         )}
                     </div>
@@ -270,7 +270,7 @@ export default function ProductReports() {
                 <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
                         <h3 className="text-base font-semibold">{translate('Top 5 Products by Quantity Sold')}</h3>
-                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Highest moving inventory')}</p>
+                        <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest moving inventory')}</p>
                     </div>
                     <div className="p-0">
                         {topProductsByQuantity && topProductsByQuantity.length > 0 ? (
@@ -309,16 +309,16 @@ export default function ProductReports() {
                                                         }}
                                                     />
 
-                                                    <Package className="text-muted-foreground hidden h-5 w-5" />
+                                                    <Package className="text-foreground/75 hidden h-5 w-5" />
                                                 </a>
                                             ) : (
-                                                <Package className="text-muted-foreground h-5 w-5" />
+                                                <Package className="text-foreground/75 h-5 w-5" />
                                             )}
                                         </div>
 
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
-                                            <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                            <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                 {product.quantity} {translate('units sold')}
                                             </p>
                                         </div>
@@ -332,7 +332,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{translate('No product performance data available')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('No product performance data available')}</p>
                             </div>
                         )}
                     </div>

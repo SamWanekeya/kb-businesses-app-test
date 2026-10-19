@@ -40,7 +40,7 @@ export default function Pagination({
 
     return (
         <div className={cn('flex items-center justify-between border-t p-4', className)}>
-            <div className="text-muted-foreground text-sm dark:text-neutral-300">
+            <div className="text-foreground/75 text-sm dark:text-neutral-300">
                 {translate('Showing')} <span className="font-medium dark:text-neutral-400">{from}</span> {translate('To')}{' '}
                 <span className="font-medium dark:text-neutral-400">{to}</span> {translate('Of')}{' '}
                 <span className="font-medium dark:text-neutral-400">{total}</span> {entityName}

@@ -182,11 +182,11 @@ export default function DependentDropdown({ fields, values, onChange, disabled =
                             value={values[field.name] || ''}
                             onChange={(e) => handleFieldChange(field.name, e.target.value, index)}
                             disabled={isDisabled || isLoading || field.disabled}
-                            className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-12 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                            className="border-input bg-background ring-offset-background placeholder:text-foreground/75 focus:ring-ring flex h-12 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             <option
                                 value=""
-                                className="text-muted-foreground relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none"
+                                className="text-foreground/75 relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none"
                             >
                                 {isLoading ? translate('Loading...') : translate('Select...')}
                             </option>

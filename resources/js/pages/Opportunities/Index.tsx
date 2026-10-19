@@ -299,7 +299,7 @@ export default function Opportunities() {
                 <div className="flex min-w-0 items-center gap-3">
                     <div className="min-w-0">
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-muted-foreground text-sm">{row.account?.name || translate('No account')}</div>
+                        <div className="text-foreground/75 text-sm">{row.account?.name || translate('No account')}</div>
                     </div>
                 </div>
             ),
@@ -316,11 +316,11 @@ export default function Opportunities() {
                         </Avatar>
                         <div>
                             <div className="font-medium">{value.name}</div>
-                            <div className="text-muted-foreground text-sm">{value.email}</div>
+                            <div className="text-foreground/75 text-sm">{value.email}</div>
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
+                    <span className="text-foreground/75">{translate('Unassigned')}</span>
                 ),
         },
         {
@@ -329,7 +329,7 @@ export default function Opportunities() {
             render: (value: any) =>
                 value ? (
                     <span
-                        className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                        className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                         style={{
                             backgroundColor: value.color ? `${value.color}18` : undefined,
                             color: value.color,
@@ -352,7 +352,7 @@ export default function Opportunities() {
             label: translate('Status'),
             render: (value: string) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value === 'active'
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -633,7 +633,7 @@ export default function Opportunities() {
                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                                             {translate('No Opportunity Stage Yet')}
                                         </h3>
-                                        <p className="text-muted-foreground text-sm leading-relaxed">
+                                        <p className="text-foreground/75 text-sm leading-relaxed">
                                             {translate('Set up opportunity stages to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
@@ -642,7 +642,7 @@ export default function Opportunities() {
                                             onClick={() => {
                                                 router.visit(route('opportunity-stages.index'));
                                             }}
-                                            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+                                            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
                                             {translate('Add Opportunity Stage')}
@@ -887,7 +887,7 @@ export default function Opportunities() {
                                                                         )}
 
                                                                         {opportunity.opportunity_source && (
-                                                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-gray-600/20 ring-inset">
+                                                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-gray-600/20 ring-inset">
                                                                                 {opportunity.opportunity_source.name}
                                                                             </span>
                                                                         )}
@@ -968,7 +968,7 @@ export default function Opportunities() {
                                                 </p>
                                                 <div className="flex items-center">
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${opportunity.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${opportunity.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
                                                         {opportunity.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
@@ -1066,7 +1066,7 @@ export default function Opportunities() {
                                         <div className="flex flex-wrap gap-1">
                                             {opportunity.opportunity_stage && (
                                                 <span
-                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                                                     style={{
                                                         backgroundColor: `${opportunity.opportunity_stage.color}20`,
                                                         color: opportunity.opportunity_stage.color,
@@ -1077,7 +1077,7 @@ export default function Opportunities() {
                                                 </span>
                                             )}
                                             {opportunity.opportunity_source && (
-                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-green-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs text-purple-700 ring-1 ring-green-600/20 ring-inset">
                                                     {opportunity.opportunity_source.name}
                                                 </span>
                                             )}

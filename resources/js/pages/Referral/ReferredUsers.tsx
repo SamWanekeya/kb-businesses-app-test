@@ -110,7 +110,7 @@ export default function ReferredUsers() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Total Referred Users')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Total Referred Users')}</p>
                                     <p className="mt-2 text-2xl font-extrabold">{referredUsers.total}</p>
                                 </div>
                                 <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
@@ -124,7 +124,7 @@ export default function ReferredUsers() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Users with Plans')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Users with Plans')}</p>
                                     <p className="mt-2 text-2xl font-extrabold">{referredUsers.data.filter((user) => user.plan).length}</p>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -138,7 +138,7 @@ export default function ReferredUsers() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Earned')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Total Commission Earned')}</p>
                                     <p className="mt-2 text-2xl font-extrabold">
                                         {currency_symbol}
                                         {(referredUsers.data.reduce((total, user) => total + getTotalCommission(user), 0) || 0).toFixed(2)}
@@ -159,9 +159,9 @@ export default function ReferredUsers() {
                     <CardContent>
                         {referredUsers.data.length === 0 ? (
                             <div className="py-12 text-center">
-                                <Users className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                                <p className="text-muted-foreground mb-2 text-base font-semibold">{translate('No referred users yet')}</p>
-                                <p className="text-muted-foreground text-sm">
+                                <Users className="text-foreground/75 mx-auto mb-4 h-12 w-12" />
+                                <p className="text-foreground/75 mb-2 text-base font-semibold">{translate('No referred users yet')}</p>
+                                <p className="text-foreground/75 text-sm">
                                     {userType === 'super_admin'
                                         ? translate('No users have registered using referral codes yet.')
                                         : translate('Share your referral link to start earning commissions.')}
@@ -174,18 +174,18 @@ export default function ReferredUsers() {
                                         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
                                             <div className="flex min-w-0 flex-1 items-start space-x-3 rtl:space-x-reverse">
                                                 <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full">
-                                                    <span className="text-primary text-sm font-medium">{user.name.charAt(0).toUpperCase()}</span>
+                                                    <span className="text-primary text-sm">{user.name.charAt(0).toUpperCase()}</span>
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm font-semibold" title={user.name}>
                                                         {user.name}
                                                     </p>
-                                                    <p className="text-muted-foreground mb-2 truncate text-sm" title={user.email}>
+                                                    <p className="text-foreground/75 mb-2 truncate text-sm" title={user.email}>
                                                         {user.email}
                                                     </p>
                                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                                        <Calendar className="text-muted-foreground h-4 w-4" />
-                                                        <span className="text-muted-foreground truncate text-xs">
+                                                        <Calendar className="text-foreground/75 h-4 w-4" />
+                                                        <span className="text-foreground/75 truncate text-xs">
                                                             {translate('Registered')}{' '}
                                                             {window.kbSettings.formatDateTimeSimple(user.created_at, false) ||
                                                                 new Date(user.created_at).toLocaleDateString()}
@@ -203,7 +203,7 @@ export default function ReferredUsers() {
                                                                 <Badge variant="default" className="mb-1.5">
                                                                     {planInfo.name}
                                                                 </Badge>
-                                                                <p className="text-muted-foreground text-sm">
+                                                                <p className="text-foreground/75 text-sm">
                                                                     {currency_symbol}
                                                                     {planInfo.price}/{translate(planInfo.cycle)}
                                                                 </p>
@@ -220,7 +220,7 @@ export default function ReferredUsers() {
                                                             +{currency_symbol}
                                                             {getTotalCommission(user)?.toFixed(2)}
                                                         </p>
-                                                        <p className="text-muted-foreground mt-1 text-xs">{translate('Commission')}</p>
+                                                        <p className="text-foreground/75 mt-1 text-xs">{translate('Commission')}</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -232,7 +232,7 @@ export default function ReferredUsers() {
                                                 <div className="space-y-2">
                                                     {user.referrals.map((referral) => (
                                                         <div key={referral.id} className="flex items-center justify-between">
-                                                            <span className="text-muted-foreground text-sm">
+                                                            <span className="text-foreground/75 text-sm">
                                                                 {referral.commission_percentage}% {translate('commission')}
                                                             </span>
                                                             <span className="text-sm font-semibold text-green-600">

@@ -784,7 +784,7 @@ function PanelRow({ label, value, badge = false, badgeColor = 'blue' }: { label:
         <div className="flex items-center justify-between px-4 py-2.5">
             <p className="mr-3 shrink-0 text-sm font-extrabold text-gray-700 dark:text-gray-300">{label}</p>
             {badge ? (
-                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium ${colors[badgeColor] || colors.blue}`}>
+                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs ${colors[badgeColor] || colors.blue}`}>
                     {value}
                 </span>
             ) : (

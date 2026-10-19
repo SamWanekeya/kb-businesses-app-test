@@ -94,7 +94,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                       render: (_, row) => (
                           <div>
                               <p className="text-sm font-semibold">{row.organization?.name}</p>
-                              <p className="text-muted-foreground text-xs">{row.organization?.email}</p>
+                              <p className="text-foreground/75 text-xs">{row.organization?.email}</p>
                           </div>
                       ),
                   },
@@ -121,7 +121,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                     >
                         {translate(value)}
                     </span>
@@ -192,7 +192,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         />
                                         {errors.amount && <p className="text-sm text-red-500">{errors.amount}</p>}
                                     </div>
-                                    <div className="text-muted-foreground text-sm">
+                                    <div className="text-foreground/75 text-sm">
                                         <p>
                                             {translate('Available Balance')}:{' '}
                                             <span className="font-mono">
@@ -227,7 +227,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         </Dialog>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-foreground/75 text-sm">
                             {stats.availableBalance < settings.threshold_amount
                                 ? translate('You need at least {{amount}} to request a payout', {
                                       amount: `${currency_symbol}${settings.threshold_amount}`,

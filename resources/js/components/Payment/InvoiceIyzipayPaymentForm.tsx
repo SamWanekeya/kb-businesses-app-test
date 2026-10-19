@@ -102,7 +102,7 @@ export function InvoiceIyzipayPaymentForm({
                         <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(amount)}</span>
                     </div>
-                    <div className="text-muted-foreground mt-1 text-sm">
+                    <div className="text-foreground/75 mt-1 text-sm">
                         {translate('Payment Type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
@@ -142,7 +142,7 @@ export function InvoiceIyzipayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-muted-foreground text-center text-xs">{translate('Powered by IyziPay - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by IyziPay - Secure payment processing')}</div>
             </CardContent>
         </Card>
     );

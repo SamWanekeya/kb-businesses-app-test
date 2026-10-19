@@ -318,7 +318,7 @@ export default function Notes() {
                                 {myNotesData.map((note: any) => (
                                     <Card key={note.id} className="bg-white p-3 hover:shadow-md md:p-4">
                                         <div className="mb-2 flex items-start justify-between">
-                                            <h4 className="flex-1 cursor-pointer truncate text-sm font-medium md:text-base">{note.title}</h4>
+                                            <h4 className="flex-1 cursor-pointer truncate text-sm md:text-base">{note.title}</h4>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" size="sm" className="h-6 w-6 flex-shrink-0 p-0">
@@ -384,7 +384,7 @@ export default function Notes() {
                                 {sharedNotesData.map((note: any) => (
                                     <Card key={note.id} className="cursor-pointer bg-white p-3 hover:shadow-md md:p-4">
                                         <div className="mb-2 flex items-start justify-between">
-                                            <h4 className="flex-1 cursor-pointer truncate text-sm font-medium md:text-base">{note.title}</h4>
+                                            <h4 className="flex-1 cursor-pointer truncate text-sm md:text-base">{note.title}</h4>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" size="sm" className="h-6 w-6 flex-shrink-0 p-0">

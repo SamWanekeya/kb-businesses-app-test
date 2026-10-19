@@ -228,7 +228,7 @@ export default function Campaigns() {
             render: (value: any, row: any) => (
                 <div>
                     <div className="font-medium whitespace-nowrap">{row.name}</div>
-                    <div className="text-muted-foreground text-sm whitespace-nowrap">{row.campaign_type?.name}</div>
+                    <div className="text-foreground/75 text-sm whitespace-nowrap">{row.campaign_type?.name}</div>
                 </div>
             ),
         },
@@ -245,7 +245,7 @@ export default function Campaigns() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{value.name}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{value.email}</div>
                         </div>
                     </div>
                 ) : (
@@ -304,7 +304,7 @@ export default function Campaigns() {
             className: 'whitespace-nowrap',
             render: (value: string) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ${
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value === 'active'
                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -624,7 +624,7 @@ export default function Campaigns() {
                                             </h3>
                                             <div className="mt-1.5 flex flex-wrap gap-1">
                                                 <span
-                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                         campaign.status === 'active'
                                                             ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                             : 'bg-red-50 text-red-700 ring-red-600/20'
@@ -634,7 +634,7 @@ export default function Campaigns() {
                                                 </span>
                                                 {campaign.campaign_type && (
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${typeColor}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${typeColor}`}
                                                     >
                                                         {campaign.campaign_type.name}
                                                     </span>
@@ -660,7 +660,7 @@ export default function Campaigns() {
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <Wallet className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                                                 <span className="truncate">
-                                                    {translate('Budget')}: <span className="font-mono">{budget > 0 ? fmtCur(budget) : '—'}</span>
+                                                    {translate('Budget')}: <span className="font-mono">{budget > 0 ? fmtCur(budget) : ''}</span>
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
@@ -727,7 +727,7 @@ export default function Campaigns() {
                                                                         src={campaign.assigned_user.avatar}
                                                                         alt={campaign.assigned_user.name}
                                                                     />
-                                                                    <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                    <AvatarFallback className="bg-purple-100 text-xs text-purple-700">
                                                                         {getInitials(campaign.assigned_user.name)}
                                                                     </AvatarFallback>
                                                                 </Avatar>

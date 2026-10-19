@@ -123,7 +123,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
                                     <Label htmlFor="enable_logging">{translate('Enable Logging')}</Label>
-                                    <p className="text-muted-foreground text-sm">{translate('Enable cookie activity logging')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Enable cookie activity logging')}</p>
                                 </div>
                                 <Switch
                                     id="enable_logging"
@@ -138,7 +138,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
                                     <Label htmlFor="strictlyNecessaryCookies">{translate('Strictly Necessary Cookies')}</Label>
-                                    <p className="text-muted-foreground text-sm">{translate('Enable strictly necessary cookies')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Enable strictly necessary cookies')}</p>
                                 </div>
                                 <Switch
                                     id="strictlyNecessaryCookies"
@@ -252,8 +252,8 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         <div className="border-t pt-4">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h4 className="text-sm font-medium">{translate('Download Accepted Cookies')}</h4>
-                                    <p className="text-muted-foreground text-sm">Download a CSV file of accepted cookie preferences</p>
+                                    <h4 className="text-sm">{translate('Download Accepted Cookies')}</h4>
+                                    <p className="text-foreground/75 text-sm">Download a CSV file of accepted cookie preferences</p>
                                 </div>
                                 <TooltipProvider>
                                     <Tooltip>

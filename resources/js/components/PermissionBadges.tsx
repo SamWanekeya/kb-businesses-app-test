@@ -22,12 +22,12 @@ export default function PermissionBadges({ permissions, maxDisplay = 3 }: Permis
     return (
         <div className="flex flex-wrap gap-1">
             {permissions.slice(0, maxDisplay).map((permission, index) => (
-                <span key={index} className="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                <span key={index} className="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
                     {permission.label || permission.name}
                 </span>
             ))}
             {permissions.length > maxDisplay && (
-                <span className="inline-flex items-center rounded bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-800">
+                <span className="inline-flex items-center rounded bg-neutral-100 px-2 py-0.5 text-xs text-neutral-800">
                     +{permissions.length - maxDisplay} {translate('More')}
                 </span>
             )}

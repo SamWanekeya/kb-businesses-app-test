@@ -259,7 +259,7 @@ export default function Calls() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{value.name}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{value.email}</div>
                         </div>
                     </div>
                 ) : (
@@ -291,7 +291,7 @@ export default function Calls() {
             className: 'whitespace-nowrap',
             render: (value: string, row: any) =>
                 value ? (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                         {formatTitleCase(value)}
                     </span>
                 ) : (
@@ -348,7 +348,7 @@ export default function Calls() {
                         )}
                     </div>
                 ) : (
-                    <span className="text-muted-foreground text-xs">-</span>
+                    <span className="text-foreground/75 text-xs">-</span>
                 );
             },
         },
@@ -383,7 +383,7 @@ export default function Calls() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${getStatusColor(value)}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${getStatusColor(value)}`}
                     >
                         {getStatusLabel(value)}
                     </span>

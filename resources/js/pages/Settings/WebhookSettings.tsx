@@ -175,7 +175,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                             <TableBody>
                                 {webhookList.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="text-muted-foreground h-24 text-center dark:text-gray-400">
+                                        <TableCell colSpan={4} className="text-foreground/75 h-24 text-center dark:text-gray-400">
                                             {translate('No webhooks configured')}
                                         </TableCell>
                                     </TableRow>
@@ -187,13 +187,13 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                         >
                                             <TableCell className="py-2.5">
                                                 <div className="flex items-center">
-                                                    <Link2 className="text-muted-foreground mr-2 h-4 w-4" />
-                                                    <span className="text-sm font-medium">{webhook.module}</span>
+                                                    <Link2 className="text-foreground/75 mr-2 h-4 w-4" />
+                                                    <span className="text-sm">{webhook.module}</span>
                                                 </div>
                                             </TableCell>
                                             <TableCell className="py-2.5">
                                                 <span
-                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                         webhook.method === 'GET'
                                                             ? 'bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-400/30'
                                                             : 'bg-green-50 text-green-700 ring-green-700/10 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-400/30'
@@ -203,7 +203,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                 </span>
                                             </TableCell>
                                             <TableCell className="py-2.5">
-                                                <div className="text-muted-foreground max-w-xs truncate font-mono text-sm dark:text-gray-400">
+                                                <div className="text-foreground/75 max-w-xs truncate font-mono text-sm dark:text-gray-400">
                                                     {webhook.url}
                                                 </div>
                                             </TableCell>

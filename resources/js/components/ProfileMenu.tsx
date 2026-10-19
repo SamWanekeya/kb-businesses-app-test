@@ -35,7 +35,7 @@ export default function ProfileMenu() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="link">
-                    <span className="hidden text-sm font-medium md:inline-block">{user?.name}</span>
+                    <span className="hidden text-sm md:inline-block">{user?.name}</span>
                     <Avatar className="h-8 w-8">
                         <AvatarImage src={user?.avatar || ''} />
                         <AvatarFallback>{initials}</AvatarFallback>
@@ -46,7 +46,7 @@ export default function ProfileMenu() {
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                         <p className="text-sm leading-none font-medium">{user?.name}</p>
-                        <p className="text-muted-foreground text-xs leading-none">{user?.email}</p>
+                        <p className="text-foreground/75 text-xs leading-none">{user?.email}</p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

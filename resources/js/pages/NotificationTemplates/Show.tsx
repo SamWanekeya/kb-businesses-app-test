@@ -114,7 +114,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
                                     <CardTitle>{translate('Notification Content')}</CardTitle>
-                                    <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+                                    <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                         {translate('Customize notification content for different languages')}
                                     </p>
                                 </div>
@@ -163,7 +163,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </Badge>
                                             <div>
                                                 <span className="font-medium">{name}</span>
-                                                <p className="text-muted-foreground text-xs">
+                                                <p className="text-foreground/75 text-xs">
                                                     {translate('Edit notification content for this language')}
                                                 </p>
                                             </div>
@@ -171,7 +171,7 @@ export default function NotificationTemplateShow({ template, languages, variable
 
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
-                                                <Label htmlFor={`title-${code}`} className="text-sm font-medium" required>
+                                                <Label htmlFor={`title-${code}`} className="text-sm" required>
                                                     {translate('Notification Title')}
                                                 </Label>
                                                 <Input
@@ -188,7 +188,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </div>
 
                                             <div className="space-y-3">
-                                                <Label htmlFor={`content-${code}`} className="text-sm font-medium" required>
+                                                <Label htmlFor={`content-${code}`} className="text-sm" required>
                                                     {translate('Notification Content')}
                                                 </Label>
                                                 <Textarea
@@ -200,7 +200,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                     className="focus:ring-primary min-h-[200px] focus:ring-2"
                                                     rows={8}
                                                 />
-                                                <p className="text-muted-foreground text-xs">
+                                                <p className="text-foreground/75 text-xs">
                                                     💡 {translate('Tip: Use the variables from the sidebar to personalize your notifications')}
                                                 </p>
                                             </div>
@@ -221,7 +221,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                     {Object.keys(variables).length}
                                 </Badge>
                             </CardTitle>
-                            <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
+                            <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                 {translate('Click to copy variables to use in your notification content')}
                             </p>
                         </CardHeader>
@@ -237,7 +237,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                         }}
                                     >
                                         <div className="flex items-center justify-between">
-                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-sm font-medium">
+                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-sm">
                                                 {variable}
                                             </code>
                                             <div className="opacity-0 transition-opacity group-hover:opacity-100">
@@ -246,7 +246,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                 </Badge>
                                             </div>
                                         </div>
-                                        <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{description}</p>
+                                        <p className="text-foreground/75 mt-2 text-xs leading-relaxed">{description}</p>
                                     </div>
                                 ))}
                             </div>

@@ -94,7 +94,7 @@ export default function CampaignEdit() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Campaign Name')}
                             </Label>
                             <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
@@ -102,7 +102,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Campaign Type')}
                             </Label>
                             <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
@@ -121,7 +121,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Target List')}
                             </Label>
                             <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
@@ -140,7 +140,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Start Date')}
                             </Label>
                             <div
@@ -165,7 +165,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('End Date')}
                             </Label>
                             <div
@@ -190,7 +190,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Status')}</Label>
+                            <Label className="text-sm">{translate('Status')}</Label>
                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -203,7 +203,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Assign To')}
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -222,7 +222,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1 md:col-span-2">
-                            <Label className="text-sm font-medium">{translate('Description')}</Label>
+                            <Label className="text-sm">{translate('Description')}</Label>
                             <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={3} />
                         </div>
                     </CardContent>
@@ -235,7 +235,7 @@ export default function CampaignEdit() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Budget')}</Label>
+                            <Label className="text-sm">{translate('Budget')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
@@ -251,7 +251,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Actual Cost')}</Label>
+                            <Label className="text-sm">{translate('Actual Cost')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
@@ -267,7 +267,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Expected Response')}</Label>
+                            <Label className="text-sm">{translate('Expected Response')}</Label>
                             <Input
                                 inputType="number"
                                 inputMode="decimal"

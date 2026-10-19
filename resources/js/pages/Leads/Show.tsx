@@ -58,7 +58,7 @@ export default function LeadShow() {
     const getStatusBadge = (status: string) => {
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                     status === 'active'
                         ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                         : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -101,14 +101,14 @@ export default function LeadShow() {
                             },
                             {
                                 label: translate('Pipeline Stage'),
-                                value: lead.lead_status?.name || '—',
+                                value: lead.lead_status?.name || '',
                                 icon: TrendingUp,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
                                 label: translate('Source'),
-                                value: lead.lead_source?.name || '—',
+                                value: lead.lead_source?.name || '',
                                 icon: Tag,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
@@ -127,7 +127,7 @@ export default function LeadShow() {
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                         <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -145,48 +145,48 @@ export default function LeadShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Lead Summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Status')}</p>
                                     <div>{getStatusBadge(lead.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Pipeline Stage')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.lead_status?.name || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Pipeline Stage')}</p>
+                                    <p className="text-foreground text-sm">{lead.lead_status?.name || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Source')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.lead_source?.name || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Source')}</p>
+                                    <p className="text-foreground text-sm">{lead.lead_source?.name || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Conversion')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Conversion')}</p>
                                     <div>
                                         {lead.is_converted ? (
-                                            <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                            <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
                                                 <TrendingUp className="h-3 w-3" />
                                                 {translate('Converted')}
                                             </span>
                                         ) : (
-                                            <span className="bg-muted text-muted-foreground ring-border inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                                            <span className="bg-muted text-foreground/75 ring-border inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset">
                                                 {translate('Not Converted')}
                                             </span>
                                         )}
                                     </div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Account Name')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.account_name || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Account Name')}</p>
+                                    <p className="text-foreground text-sm">{lead.account_name || ''}</p>
                                 </div>
                             </div>
                             {/* Assigned To + Created By — footer */}
                             <div className="border-border mt-4 grid grid-cols-2 gap-4 border-t pt-4">
                                 <div>
-                                    <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
                                     {lead.assigned_user ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
@@ -196,18 +196,18 @@ export default function LeadShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{lead.assigned_user.name}</p>
+                                                <p className="text-foreground truncate text-sm">{lead.assigned_user.name}</p>
                                                 {lead.assigned_user.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{lead.assigned_user.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{lead.assigned_user.email}</p>
                                                 )}
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unassigned')}</p>
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Created By')}</p>
                                     {lead.creator ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
@@ -217,12 +217,12 @@ export default function LeadShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{lead.creator.name}</p>
-                                                {lead.creator.email && <p className="text-muted-foreground truncate text-xs">{lead.creator.email}</p>}
+                                                <p className="text-foreground truncate text-sm">{lead.creator.name}</p>
+                                                {lead.creator.email && <p className="text-foreground/75 truncate text-xs">{lead.creator.email}</p>}
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </div>
@@ -233,57 +233,57 @@ export default function LeadShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <User className="text-muted-foreground mr-3 h-5 w-5" />
+                                <User className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact & Address')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Email')}</p>
-                                    <p className="text-foreground truncate text-sm font-medium">{lead.email || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Email')}</p>
+                                    <p className="text-foreground truncate text-sm">{lead.email || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Phone')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.phone || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Phone')}</p>
+                                    <p className="text-foreground text-sm">{lead.phone || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Organization')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.organization || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Organization')}</p>
+                                    <p className="text-foreground text-sm">{lead.organization || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Position')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.position || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Position')}</p>
+                                    <p className="text-foreground text-sm">{lead.position || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Website')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Website')}</p>
                                     {lead.website ? (
                                         <a
                                             href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="block truncate text-sm font-medium text-blue-600 hover:!text-blue-600 hover:underline"
+                                            className="block truncate text-sm text-blue-600 hover:!text-blue-600 hover:underline"
                                         >
                                             {lead.website}
                                         </a>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">—</p>
+                                        <p className="text-foreground/75 text-sm">—</p>
                                     )}
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Industry')}</p>
-                                    <p className="text-foreground text-sm font-medium">{lead.account_industry?.name || '—'}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Industry')}</p>
+                                    <p className="text-foreground text-sm">{lead.account_industry?.name || ''}</p>
                                 </div>
                                 {lead.address && <div className="space-y-0.5 sm:col-span-2"></div>}
                             </div>
                             {lead.address && (
                                 // <div className="pt-4 border-t border-border">
                                 <div className="border-border mt-4 border-t pt-4">
-                                    <p className="text-muted-foreground flex items-center gap-1 text-xs font-medium">
+                                    <p className="text-foreground/75 flex items-center gap-1 text-xs">
                                         <MapPin className="h-3 w-3" />
                                         {translate('Address')}
                                     </p>
-                                    <p className="text-foreground text-sm font-medium whitespace-pre-line">{lead.address}</p>
+                                    <p className="text-foreground text-sm whitespace-pre-line">{lead.address}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -295,18 +295,18 @@ export default function LeadShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Notes')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto scroll-smooth px-5 py-4" style={{ scrollbarGutter: 'stable' }}>
                                 {lead.notes ? (
-                                    <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">{lead.notes}</p>
+                                    <p className="text-foreground/75 text-sm leading-relaxed whitespace-pre-line">{lead.notes}</p>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-6 text-center">
-                                        <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{translate('No notes available')}</p>
+                                        <FileText className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                        <p className="text-foreground/75 text-sm">{translate('No notes available')}</p>
                                     </div>
                                 )}
                             </div>
@@ -316,7 +316,7 @@ export default function LeadShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Target className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Target className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Campaign')}
                             </CardTitle>
                         </CardHeader>
@@ -326,10 +326,10 @@ export default function LeadShow() {
                                     <div className="border-border bg-muted/20 hover:bg-muted/40 flex w-full items-center justify-between rounded-xl border p-4 transition-colors">
                                         <div>
                                             <p className="text-foreground text-sm font-semibold">{lead.campaign.name}</p>
-                                            <p className="text-muted-foreground mt-0.5 text-xs">
+                                            <p className="text-foreground/75 mt-0.5 text-xs">
                                                 {lead.campaign.campaign_type?.name || translate('Campaign')}
                                             </p>
-                                            <p className="text-muted-foreground mt-0.5 text-xs">
+                                            <p className="text-foreground/75 mt-0.5 text-xs">
                                                 {translate('Budget')}:{' '}
                                                 <span className="font-mono">
                                                     {window.kbSettings.formatCurrency(Number(lead.campaign.budget || 0)) ||
@@ -343,7 +343,7 @@ export default function LeadShow() {
                                                     <TooltipTrigger asChild>
                                                         <Link href={route('campaigns.show', lead.campaign.id)}>
                                                             <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                             </Button>
                                                         </Link>
                                                     </TooltipTrigger>
@@ -356,8 +356,8 @@ export default function LeadShow() {
                                     </div>
                                 ) : (
                                     <div className="flex w-full flex-col items-center justify-center text-center">
-                                        <Target className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{translate('No campaign linked')}</p>
+                                        <Target className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                        <p className="text-foreground/75 text-sm">{translate('No campaign linked')}</p>
                                     </div>
                                 )}
                             </div>
@@ -372,10 +372,10 @@ export default function LeadShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <Building className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Related Accounts')}
                                     {relatedAccounts?.length > 0 && (
-                                        <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {relatedAccounts.length}
                                         </span>
                                     )}
@@ -392,11 +392,11 @@ export default function LeadShow() {
                                                 <div className="flex min-w-0 items-center gap-2.5">
                                                     {account.name && <UserInitials name={account.name} />}
                                                     <div className="min-w-0">
-                                                        <p className="text-muted-foreground text-xs font-medium">
+                                                        <p className="text-foreground/75 text-xs">
                                                             {account.account_type?.name || translate('Account')}
                                                         </p>
                                                         <p className="text-foreground truncate text-sm font-semibold">{account.name}</p>
-                                                        {account.email && <p className="text-muted-foreground truncate text-xs">{account.email}</p>}
+                                                        {account.email && <p className="text-foreground/75 truncate text-xs">{account.email}</p>}
                                                     </div>
                                                 </div>
                                                 {useHasPermission('view-accounts') && (
@@ -418,8 +418,8 @@ export default function LeadShow() {
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-10 text-center">
-                                        <Building className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{translate('No accounts linked')}</p>
+                                        <Building className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                        <p className="text-foreground/75 text-sm">{translate('No accounts linked')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -429,10 +429,10 @@ export default function LeadShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <Users className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <Users className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Related Contacts')}
                                     {relatedContacts?.length > 0 && (
-                                        <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {relatedContacts.length}
                                         </span>
                                     )}
@@ -449,11 +449,11 @@ export default function LeadShow() {
                                                 <div className="flex min-w-0 items-center gap-2.5">
                                                     {contact.name && <UserInitials name={contact.name} />}
                                                     <div className="min-w-0">
-                                                        <p className="text-muted-foreground text-xs font-medium">
+                                                        <p className="text-foreground/75 text-xs">
                                                             {contact.account?.name || translate('No account')}
                                                         </p>
                                                         <p className="text-foreground truncate text-sm font-semibold">{contact.name}</p>
-                                                        {contact.email && <p className="text-muted-foreground truncate text-xs">{contact.email}</p>}
+                                                        {contact.email && <p className="text-foreground/75 truncate text-xs">{contact.email}</p>}
                                                     </div>
                                                 </div>
                                                 {useHasPermission('view-contacts') && (
@@ -475,8 +475,8 @@ export default function LeadShow() {
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-10 text-center">
-                                        <User className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{translate('No contacts linked')}</p>
+                                        <User className="text-foreground/75/20 mb-2 h-8 w-8" />
+                                        <p className="text-foreground/75 text-sm">{translate('No contacts linked')}</p>
                                     </div>
                                 )}
                             </CardContent>
@@ -493,9 +493,9 @@ export default function LeadShow() {
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-semibold">
-                                        <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
+                                        <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -505,19 +505,19 @@ export default function LeadShow() {
                                         {/* Meetings sub-card */}
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {meetingItems.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {meetingItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No meetings found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -536,18 +536,18 @@ export default function LeadShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">
+                                                                        <p className="text-foreground truncate text-sm">
                                                                             {meeting.title}
                                                                         </p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                                                     new Date(meeting.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {meeting.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={meeting.assigned_user?.avatar}
@@ -557,7 +557,7 @@ export default function LeadShow() {
                                                                                             {getInitials(meeting.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {meeting.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -574,7 +574,7 @@ export default function LeadShow() {
                                                                                     className="flex-shrink-0"
                                                                                 >
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>
@@ -594,19 +594,19 @@ export default function LeadShow() {
                                         {/* Calls sub-card */}
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}
                                                     </div>
-                                                    <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                                    <span className="bg-muted text-foreground/75 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                                         {callItems.length}
                                                     </span>
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {callItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
+                                                    <p className="text-foreground/75 py-6 text-center text-sm">{translate('No calls found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -625,16 +625,16 @@ export default function LeadShow() {
                                                                         <Phone className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-medium">{call.title}</p>
+                                                                        <p className="text-foreground truncate text-sm">{call.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
-                                                                            <Clock className="text-muted-foreground h-3 w-3 flex-shrink-0" />
-                                                                            <span className="text-muted-foreground truncate text-xs">
+                                                                            <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
+                                                                            <span className="text-foreground/75 truncate text-xs">
                                                                                 {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                                                     new Date(call.start_date).toLocaleDateString()}
                                                                             </span>
                                                                             {call.assigned_user?.name && (
                                                                                 <span className="flex flex-shrink-0 items-center gap-1">
-                                                                                    <span className="text-muted-foreground/40">·</span>
+                                                                                    <span className="text-foreground/75/40">·</span>
                                                                                     <Avatar className="h-6 w-6 flex-shrink-0">
                                                                                         <AvatarImage
                                                                                             src={call.assigned_user?.avatar}
@@ -644,7 +644,7 @@ export default function LeadShow() {
                                                                                             {getInitials(call.assigned_user?.name || 'U')}
                                                                                         </AvatarFallback>
                                                                                     </Avatar>
-                                                                                    <span className="text-muted-foreground truncate text-xs">
+                                                                                    <span className="text-foreground/75 truncate text-xs">
                                                                                         {call.assigned_user.name}
                                                                                     </span>
                                                                                 </span>
@@ -658,7 +658,7 @@ export default function LeadShow() {
                                                                             <TooltipTrigger asChild>
                                                                                 <Link href={route('calls.show', call.id)} className="flex-shrink-0">
                                                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                                                                        <Eye className="text-muted-foreground h-3.5 w-3.5" />
+                                                                                        <Eye className="text-foreground/75 h-3.5 w-3.5" />
                                                                                     </Button>
                                                                                 </Link>
                                                                             </TooltipTrigger>
@@ -685,7 +685,7 @@ export default function LeadShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
+                                <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Activity Stream')}
                             </CardTitle>
                         </CardHeader>
@@ -789,7 +789,7 @@ export default function LeadShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground flex h-9 w-9 items-center justify-center rounded-full text-xs font-extrabold">
+                                                                            <AvatarFallback className="bg-muted text-foreground/75 flex h-9 w-9 items-center justify-center rounded-full text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </span>
@@ -817,11 +817,11 @@ export default function LeadShow() {
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                 >
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
-                                                                <span className="text-muted-foreground text-xs">
+                                                                <span className="text-foreground/75 text-xs">
                                                                     {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                 </span>
                                                             </div>
@@ -836,7 +836,7 @@ export default function LeadShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setEditingComment(activity.id);
                                                                                                 setEditCommentText(activity.description);
@@ -858,7 +858,7 @@ export default function LeadShow() {
                                                                                     <Button
                                                                                         variant="ghost"
                                                                                         size="sm"
-                                                                                        className="text-muted-foreground h-6 w-6 p-0"
+                                                                                        className="text-foreground/75 h-6 w-6 p-0"
                                                                                         onClick={() => {
                                                                                             setCurrentActivity(activity);
                                                                                             setIsDeleteModalOpen(true);
@@ -925,7 +925,7 @@ export default function LeadShow() {
                                                             ) : activity.field_changed === 'status' &&
                                                               (activity.description === 'Active' || activity.description === 'Inactive') ? (
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                                                         activity.description === 'Active'
                                                                             ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                                                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -938,13 +938,13 @@ export default function LeadShow() {
                                                               activity.field_changed === 'assigned_to' ||
                                                               activity.description?.includes('into') ? (
                                                                 <p
-                                                                    className="text-muted-foreground text-sm"
+                                                                    className="text-foreground/75 text-sm"
                                                                     dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                 />
                                                             ) : activity.title ? (
-                                                                <p className="text-muted-foreground text-sm">{activity.title}</p>
+                                                                <p className="text-foreground/75 text-sm">{activity.title}</p>
                                                             ) : (
-                                                                <p className="text-muted-foreground text-sm">{activity.description}</p>
+                                                                <p className="text-foreground/75 text-sm">{activity.description}</p>
                                                             )}
                                                         </div>
                                                     </div>
@@ -953,8 +953,8 @@ export default function LeadShow() {
                                         })}
                                     </div>
                                 ) : (
-                                    <div className="text-muted-foreground py-12 text-center">
-                                        <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                    <div className="text-foreground/75 py-12 text-center">
+                                        <Calendar className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                         <p className="text-sm">{translate('No activities found')}</p>
                                     </div>
                                 )}

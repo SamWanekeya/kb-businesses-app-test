@@ -116,13 +116,13 @@ export default function CustomerReports() {
                                     <XAxis
                                         dataKey="period"
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                     />
                                     <YAxis
                                         tick={{ fontSize: 11, fill: 'currentColor' }}
-                                        className="text-muted-foreground"
+                                        className="text-foreground/75"
                                         axisLine={{ stroke: primaryColor }}
                                         tickLine={{ stroke: primaryColor }}
                                         allowDecimals={false}
@@ -195,7 +195,7 @@ export default function CustomerReports() {
                                         )}
                                     </PieChart>
                                 ) : (
-                                    <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-3">
+                                    <div className="text-foreground/75 flex h-full flex-col items-center justify-center gap-3">
                                         <p>{translate('No industry data available')}</p>
                                     </div>
                                 )}
@@ -209,7 +209,7 @@ export default function CustomerReports() {
                         <div className="flex shrink-0 items-center justify-between border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
                                 <h3 className="text-base font-semibold">{translate('Recent Interactions')}</h3>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest calls and meetings')}</p>
+                                <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest calls and meetings')}</p>
                             </div>
                         </div>
                         <div className="custom-scrollbar max-h-[340px] overflow-y-auto p-0">
@@ -229,11 +229,11 @@ export default function CustomerReports() {
                                                         <div className="truncate text-sm font-extrabold text-slate-900 dark:text-slate-100">
                                                             {interaction.title}
                                                         </div>
-                                                        <time className="text-muted-foreground shrink-0 text-[11px] font-medium">
+                                                        <time className="text-foreground/75 shrink-0 text-[11px] font-medium">
                                                             {interaction.date_formatted}
                                                         </time>
                                                     </div>
-                                                    <div className="text-muted-foreground text-xs">
+                                                    <div className="text-foreground/75 text-xs">
                                                         {translate('With:')}{' '}
                                                         <span className="text-foreground font-medium">{interaction.contact_name}</span>
                                                     </div>
@@ -244,8 +244,8 @@ export default function CustomerReports() {
                                 </div>
                             ) : (
                                 <div className="flex h-full min-h-[200px] flex-col items-center justify-center gap-3">
-                                    <MessageSquare className="text-muted-foreground/50 h-10 w-10" />
-                                    <p className="text-muted-foreground text-sm">{translate('No recent interactions')}</p>
+                                    <MessageSquare className="text-foreground/75/50 h-10 w-10" />
+                                    <p className="text-foreground/75 text-sm">{translate('No recent interactions')}</p>
                                 </div>
                             )}
                         </div>
@@ -256,7 +256,7 @@ export default function CustomerReports() {
             <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                 <div className="border-b px-5 py-5">
                     <h3 className="text-base font-semibold">{translate('Top Contacts')}</h3>
-                    <p className="text-muted-foreground mt-0.5 text-xs">{translate('Contacts by order volume and spending')}</p>
+                    <p className="text-foreground/75 mt-0.5 text-xs">{translate('Contacts by order volume and spending')}</p>
                 </div>
                 <div className="p-0">
                     {topContacts && topContacts.length > 0 ? (
@@ -271,7 +271,7 @@ export default function CustomerReports() {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-sm leading-tight font-semibold">{contact.name}</p>
-                                        <p className="text-muted-foreground mt-0.5 truncate text-xs">{contact.email || translate('No Email')}</p>
+                                        <p className="text-foreground/75 mt-0.5 truncate text-xs">{contact.email || translate('No Email')}</p>
                                     </div>
                                     <div className="flex shrink-0 flex-col items-end gap-1">
                                         <span className={`text-foreground inline-flex items-center text-sm font-extrabold`}>
@@ -286,7 +286,7 @@ export default function CustomerReports() {
                         </div>
                     ) : (
                         <div className="flex h-40 flex-col items-center justify-center gap-3">
-                            <p className="text-muted-foreground text-sm">{translate('No contacts found')}</p>
+                            <p className="text-foreground/75 text-sm">{translate('No contacts found')}</p>
                         </div>
                     )}
                 </div>

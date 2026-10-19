@@ -235,7 +235,7 @@ export default function Accounts() {
                     <UserInitials name={row.name} />
                     <div>
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
+                        <div className="text-foreground/75 text-sm">{row.email || translate('No email')}</div>
                     </div>
                 </div>
             ),
@@ -252,11 +252,11 @@ export default function Accounts() {
                         </Avatar>
                         <div>
                             <div className="font-medium">{value.name}</div>
-                            <div className="text-muted-foreground text-sm">{value.email}</div>
+                            <div className="text-foreground/75 text-sm">{value.email}</div>
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
+                    <span className="text-foreground/75">{translate('Unassigned')}</span>
                 ),
         },
         {
@@ -266,7 +266,7 @@ export default function Accounts() {
                 if (!value) return '-';
                 return (
                     <span
-                        className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                        className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                         style={{
                             backgroundColor: `${value.color}20`,
                             color: value.color,
@@ -285,7 +285,7 @@ export default function Accounts() {
                 if (!value) return '-';
                 return (
                     <span
-                        className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                        className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                         style={{
                             backgroundColor: `${value.color}20`,
                             color: value.color,
@@ -303,7 +303,7 @@ export default function Accounts() {
             render: (value: string) => {
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                             value === 'active'
                                 ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -583,7 +583,7 @@ export default function Accounts() {
                                                 </p>
                                             </div>
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                     account.status === 'active'
                                                         ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20'
                                                         : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20'
@@ -618,7 +618,7 @@ export default function Accounts() {
                                         <div className="flex flex-wrap items-center gap-2">
                                             {account.account_type && (
                                                 <span
-                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                                                     style={{
                                                         backgroundColor: `${account.account_type.color}20`,
                                                         color: account.account_type.color,
@@ -630,7 +630,7 @@ export default function Accounts() {
                                             )}
                                             {account.account_industry && (
                                                 <span
-                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                                                     style={{
                                                         backgroundColor: `${account.account_industry.color}20`,
                                                         color: account.account_industry.color,
@@ -645,7 +645,7 @@ export default function Accounts() {
 
                                     {/* Footer: date left, assigned avatar right */}
                                     <div className="border-border mt-auto flex items-center justify-between border-t pt-3">
-                                        <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
+                                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                                             <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             <span>
                                                 {window.kbSettings.formatDateTime(account.created_at, false) ||
@@ -660,7 +660,7 @@ export default function Accounts() {
                                                         <TooltipTrigger asChild>
                                                             <Avatar className="h-7 w-7 shrink-0 cursor-pointer">
                                                                 <AvatarImage src={account.assigned_user.avatar} alt={account.assigned_user.name} />
-                                                                <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                <AvatarFallback className="bg-purple-100 text-xs text-purple-700">
                                                                     {getInitials(account.assigned_user.name)}
                                                                 </AvatarFallback>
                                                             </Avatar>

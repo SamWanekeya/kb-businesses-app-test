@@ -169,7 +169,7 @@ export default function CurrencySettings() {
                                     <div className="bg-muted/30 flex flex-col items-center justify-between gap-4 rounded-md border p-4 xl:flex-row">
                                         <div className="mb-3 flex flex-col items-center xl:mb-0 xl:items-start">
                                             <div className="mb-1 font-mono text-2xl font-semibold">{formattedPreview()}</div>
-                                            <div className="text-muted-foreground text-xs">
+                                            <div className="text-foreground/75 text-xs">
                                                 {currencySettings.currency_name} ({currencySettings.default_currency})
                                             </div>
                                         </div>
@@ -231,7 +231,7 @@ export default function CurrencySettings() {
                                                                 </SelectItem>
                                                             ))
                                                         ) : (
-                                                            <div className="text-muted-foreground p-2 text-center">
+                                                            <div className="text-foreground/75 p-2 text-center">
                                                                 {translate('No currencies found')}
                                                             </div>
                                                         )}
@@ -248,7 +248,7 @@ export default function CurrencySettings() {
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Info className="text-muted-foreground h-4 w-4" />
+                                                            <Info className="text-foreground/75 h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
                                                             <p>{translate('Number of digits after decimal point')}</p>
@@ -283,7 +283,7 @@ export default function CurrencySettings() {
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Info className="text-muted-foreground h-4 w-4" />
+                                                            <Info className="text-foreground/75 h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
                                                             <p>{translate('Where to place the currency symbol')}</p>
@@ -325,7 +325,7 @@ export default function CurrencySettings() {
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Info className="text-muted-foreground h-4 w-4" />
+                                                            <Info className="text-foreground/75 h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
                                                             <p>{translate('Character used to separate decimal places')}</p>
@@ -367,7 +367,7 @@ export default function CurrencySettings() {
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Info className="text-muted-foreground h-4 w-4" />
+                                                            <Info className="text-foreground/75 h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
                                                             <p>{translate('Character used to group thousands')}</p>
@@ -399,7 +399,7 @@ export default function CurrencySettings() {
                                                     <Label htmlFor="float_number" className="font-medium">
                                                         {translate('Show Decimals')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">
+                                                    <p className="text-foreground/75 mt-1 text-xs">
                                                         {translate('Display decimal places in amounts')}
                                                     </p>
                                                 </div>
@@ -419,7 +419,7 @@ export default function CurrencySettings() {
                                                     <Label htmlFor="currency_symbol_space" className="font-medium">
                                                         {translate('Add Space')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">
+                                                    <p className="text-foreground/75 mt-1 text-xs">
                                                         {translate('Space between amount and symbol')}
                                                     </p>
                                                 </div>

@@ -95,7 +95,7 @@ export function SkrillPaymentForm({
                             }}
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to Skrill to complete the payment')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('You will be redirected to Skrill to complete the payment')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

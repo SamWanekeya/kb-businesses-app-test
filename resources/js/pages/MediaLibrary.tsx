@@ -312,7 +312,7 @@ export default function MediaLibraryDemo() {
                     <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
                         <FileText className="text-destructive h-8 w-8" />
                     </div>
-                    <span className="text-destructive text-xs font-medium">PDF</span>
+                    <span className="text-destructive text-xs">PDF</span>
                 </div>
             );
         }
@@ -322,7 +322,7 @@ export default function MediaLibraryDemo() {
                     <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                         <FileText className="h-8 w-8 text-blue-600" />
                     </div>
-                    <span className="text-xs font-medium text-blue-600">DOC</span>
+                    <span className="text-xs text-blue-600">DOC</span>
                 </div>
             );
         }
@@ -417,7 +417,7 @@ export default function MediaLibraryDemo() {
                             {/* Search Section */}
                             <div className="flex-1">
                                 <div className="relative max-w-sm">
-                                    <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+                                    <Search className="text-foreground/75 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
                                         value={searchTerm}
                                         onChange={(e) => {
@@ -427,7 +427,7 @@ export default function MediaLibraryDemo() {
                                     />
                                 </div>
                                 {searchTerm && (
-                                    <p className="text-muted-foreground mt-1 text-xs">
+                                    <p className="text-foreground/75 mt-1 text-xs">
                                         {translate('Showing results for "{{term}}"', { term: searchTerm })}
                                     </p>
                                 )}
@@ -472,15 +472,15 @@ export default function MediaLibraryDemo() {
                         {loading ? (
                             <div className="py-12 text-center">
                                 <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
-                                <p className="text-muted-foreground">{translate('Loading media...')}</p>
+                                <p className="text-foreground/75">{translate('Loading media...')}</p>
                             </div>
                         ) : currentMedia.length === 0 ? (
                             <div className="py-16 text-center">
                                 <div className="bg-muted mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full">
-                                    <ImageIcon className="text-muted-foreground h-10 w-10" />
+                                    <ImageIcon className="text-foreground/75 h-10 w-10" />
                                 </div>
                                 <h3 className="mb-2 text-lg font-semibold">{translate('No media files found')}</h3>
-                                <p className="text-muted-foreground mb-6">
+                                <p className="text-foreground/75 mb-6">
                                     {searchTerm
                                         ? translate('No results found for "{{term}}"', { term: searchTerm })
                                         : translate('Get started by uploading your first file')}
@@ -522,7 +522,7 @@ export default function MediaLibraryDemo() {
                                                 ) : (
                                                     <div className="flex flex-col items-center justify-center p-4">
                                                         <div className="mb-2 text-2xl">{getFileIcon(item.mime_type)}</div>
-                                                        <div className="text-muted-foreground w-full truncate text-center text-xs font-medium">
+                                                        <div className="text-foreground/75 w-full truncate text-center text-xs">
                                                             {item.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                         </div>
                                                     </div>
@@ -532,7 +532,7 @@ export default function MediaLibraryDemo() {
                                                 {useHasPermission('view-media') && (
                                                     <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/40">
                                                         <div className="opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                                            <div className="rounded-lg bg-white/90 px-4 py-2 text-sm font-medium text-gray-900 backdrop-blur-sm">
+                                                            <div className="rounded-lg bg-white/90 px-4 py-2 text-sm text-gray-900 backdrop-blur-sm">
                                                                 {translate('Click to view')}
                                                             </div>
                                                         </div>
@@ -550,16 +550,16 @@ export default function MediaLibraryDemo() {
                                             {/* Card Content */}
                                             <div className="space-y-2 p-3">
                                                 <div>
-                                                    <h3 className="truncate text-sm font-medium" title={item.name}>
+                                                    <h3 className="truncate text-sm" title={item.name}>
                                                         {item.name}
                                                     </h3>
-                                                    <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
+                                                    <p className="text-foreground/75 mt-1 flex items-center gap-1 text-xs">
                                                         <HardDrive className="h-3 w-3" />
                                                         {formatFileSize(item.size)}
                                                     </p>
                                                 </div>
 
-                                                <div className="text-muted-foreground flex items-center justify-between text-xs">
+                                                <div className="text-foreground/75 flex items-center justify-between text-xs">
                                                     <span className="flex items-center gap-1">
                                                         <Calendar className="h-3 w-3" />
                                                         {window.kbSettings.formatDateTime(item.created_at, false) || '-'}
@@ -573,7 +573,7 @@ export default function MediaLibraryDemo() {
                                 {/* Pagination */}
                                 {totalPages > 1 && (
                                     <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row">
-                                        <div className="text-muted-foreground text-sm">
+                                        <div className="text-foreground/75 text-sm">
                                             {translate('Showing')} <span className="font-semibold">{startIndex + 1}</span> {translate('to')}{' '}
                                             <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
                                             {translate('of')} <span className="font-semibold">{filteredMedia.length}</span> {translate('results')}
@@ -672,7 +672,7 @@ export default function MediaLibraryDemo() {
                                                             return (
                                                                 <span
                                                                     key={`el-${i}`}
-                                                                    className="text-muted-foreground flex h-8 w-8 items-center justify-center text-sm"
+                                                                    className="text-foreground/75 flex h-8 w-8 items-center justify-center text-sm"
                                                                 >
                                                                     ...
                                                                 </span>
@@ -741,7 +741,7 @@ export default function MediaLibraryDemo() {
                                     <h3 className="mb-2 text-lg font-medium">
                                         {dragActive ? translate('Drop files here') : translate('Upload your files')}
                                     </h3>
-                                    <p className="text-muted-foreground mb-6 text-sm">
+                                    <p className="text-foreground/75 mb-6 text-sm">
                                         {translate('Drag and drop your files here, or click to browse')}
                                     </p>
 
@@ -806,10 +806,10 @@ export default function MediaLibraryDemo() {
                                         ) : (
                                             <div className="flex h-full w-full flex-col items-center justify-center">
                                                 <div className="mb-6 text-9xl">{getFileIcon(selectedMediaInfo.mime_type)}</div>
-                                                <div className="text-muted-foreground mb-3 text-3xl font-semibold">
+                                                <div className="text-foreground/75 mb-3 text-3xl font-semibold">
                                                     {selectedMediaInfo.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                 </div>
-                                                <div className="text-muted-foreground mt-2 max-w-md px-4 text-center text-base break-all">
+                                                <div className="text-foreground/75 mt-2 max-w-md px-4 text-center text-base break-all">
                                                     {selectedMediaInfo.file_name}
                                                 </div>
                                             </div>
@@ -825,7 +825,7 @@ export default function MediaLibraryDemo() {
 
                                         <div className="space-y-2.5">
                                             <div className="space-y-0.5">
-                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                                     {translate('File Name')}
                                                 </span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
@@ -834,7 +834,7 @@ export default function MediaLibraryDemo() {
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                                     {translate('Display Name')}
                                                 </span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
@@ -843,7 +843,7 @@ export default function MediaLibraryDemo() {
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                                     {translate('File Type')}
                                                 </span>
                                                 <Badge variant="secondary" className="font-mono text-xs">
@@ -852,17 +852,17 @@ export default function MediaLibraryDemo() {
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                                     {translate('File Size')}
                                                 </span>
                                                 <p className="text-foreground text-sm font-semibold">{formatFileSize(selectedMediaInfo.size)}</p>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                                     {translate('Uploaded')}
                                                 </span>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground text-sm">
                                                     {window.kbSettings.formatDateTimeSimple(selectedMediaInfo.created_at)}
                                                 </p>
                                             </div>
@@ -871,11 +871,11 @@ export default function MediaLibraryDemo() {
 
                                     {/* URL Section */}
                                     <div className="space-y-1.5">
-                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                        <span className="text-foreground/75 text-xs tracking-wide uppercase">
                                             {translate('File URL')}
                                         </span>
                                         <div className="bg-muted/50 border-border flex items-center gap-2 rounded-lg border p-2">
-                                            <code className="text-muted-foreground flex-1 font-mono text-xs leading-tight break-all">
+                                            <code className="text-foreground/75 flex-1 font-mono text-xs leading-tight break-all">
                                                 {selectedMediaInfo.url}
                                             </code>
                                             <Button

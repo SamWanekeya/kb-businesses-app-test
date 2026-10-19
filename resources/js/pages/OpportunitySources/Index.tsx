@@ -373,7 +373,7 @@ export default function OpportunitySources() {
                                         <thead className="bg-gray-50 dark:bg-gray-700">
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
-                                                    className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
+                                                    className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
                                                     onClick={() => handleSortranslate('name')}
                                                 >
                                                     <div className="flex items-center gap-1">
@@ -389,10 +389,10 @@ export default function OpportunitySources() {
                                                         )}
                                                     </div>
                                                 </th>
-                                                <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
+                                                <th className="px-3 py-3 text-left text-xs tracking-wider text-gray-500 dark:text-gray-300">
                                                     {translate('Status')}
                                                 </th>
-                                                <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
+                                                <th className="px-4 py-3 pr-[50px] text-right text-xs tracking-wider text-gray-500 dark:text-gray-300">
                                                     {translate('Actions')}
                                                 </th>
                                             </tr>
@@ -406,7 +406,7 @@ export default function OpportunitySources() {
                                                                 <Globe className="h-5 w-5" />
                                                             </div>
                                                             <div className="ml-3">
-                                                                <div className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</div>
+                                                                <div className="text-sm text-gray-900 dark:text-white">{item.name}</div>
                                                                 {item.description && (
                                                                     <div className="mt-0.5 max-w-xs text-sm text-gray-500 dark:text-gray-400">
                                                                         <div
@@ -446,12 +446,12 @@ export default function OpportunitySources() {
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
                                                             {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-4 text-right text-sm font-medium whitespace-nowrap">
+                                                    <td className="px-4 py-4 text-right text-sm whitespace-nowrap">
                                                         <div className="flex items-center justify-end gap-2">
                                                             {canEdit && (
                                                                 <TooltipProvider>
@@ -637,7 +637,7 @@ export default function OpportunitySources() {
                                                 <div>
                                                     <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
                                                         {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>

@@ -223,7 +223,7 @@ export default function CrudTable({
                 );
 
             default:
-                return <span className="text-sm font-medium">{value || ''}</span>;
+                return <span className="text-sm">{value || ''}</span>;
         }
     };
 
@@ -275,13 +275,13 @@ export default function CrudTable({
                         <TableRow>
                             {/* <TableCell
                 colSpan={columns.length + 2}
-                className="h-24 text-center text-muted-foreground dark:text-neutral-400"
+                className="h-24 text-center text-foreground/75 dark:text-neutral-400"
               >
                 {translate('No results found')}
               </TableCell> */}
                             <TableCell
                                 colSpan={columns.length + (showActions && hasAnyActionPermission ? 2 : 1)}
-                                className="text-muted-foreground h-24 text-center dark:text-neutral-400"
+                                className="text-foreground/75 h-24 text-center dark:text-neutral-400"
                             >
                                 {translate('No results found')}
                             </TableCell>

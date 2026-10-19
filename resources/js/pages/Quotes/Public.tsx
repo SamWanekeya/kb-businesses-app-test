@@ -272,7 +272,7 @@ export default function PublicQuote({
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
@@ -299,7 +299,7 @@ export default function PublicQuote({
                             {useHasPermission('view-quotes') && (
                                 <button
                                     onClick={copyQuoteLink}
-                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
+                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? translate('Copied!') : translate('Copy Link')}
@@ -307,7 +307,7 @@ export default function PublicQuote({
                             )}
                             <button
                                 onClick={handlePrint}
-                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
+                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm text-white shadow-sm transition-all duration-200 hover:shadow-md"
                                 style={{
                                     backgroundColor: currentThemeColor,
                                     ':hover': { filter: 'brightness(0.9)' },
@@ -345,7 +345,7 @@ export default function PublicQuote({
                                 </div>
                                 <div className="ml-6 text-right">
                                     {getStatusBadge(quote.status)}
-                                    <p className="mt-2 font-mono text-sm font-medium text-gray-700">{quote.quote_number}</p>
+                                    <p className="mt-2 font-mono text-sm text-gray-700">{quote.quote_number}</p>
                                 </div>
                             </div>
                         </div>
@@ -413,15 +413,15 @@ export default function PublicQuote({
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Quote Number')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Quote Number')}</label>
                                             <p className="mt-1 text-sm">{quote.quote_number}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Status')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Status')}</label>
                                             <div className="mt-1">{getStatusBadge(quote.status)}</div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created By')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Created By')}</label>
                                             {quote.creator ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -431,7 +431,7 @@ export default function PublicQuote({
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{quote.creator.name}</p>
+                                                        <p className="truncate text-sm text-gray-900">{quote.creator.name}</p>
                                                         {quote.creator.email && (
                                                             <p className="truncate text-xs text-gray-500">{quote.creator.email}</p>
                                                         )}
@@ -442,7 +442,7 @@ export default function PublicQuote({
                                             )}
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Assigned To')}</label>
                                             {quote.assigned_user ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -452,7 +452,7 @@ export default function PublicQuote({
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-medium text-gray-900">{quote.assigned_user.name}</p>
+                                                        <p className="truncate text-sm text-gray-900">{quote.assigned_user.name}</p>
                                                         {quote.assigned_user.email && (
                                                             <p className="truncate text-xs text-gray-500">{quote.assigned_user.email}</p>
                                                         )}
@@ -465,29 +465,29 @@ export default function PublicQuote({
                                     </div>
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Valid Until')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Valid Until')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Created')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(quote.created_at)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Subtotal')}</label>
                                             <p className="mt-1 text-sm">{formatCurrency(quote.subtotal)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Discount Amount')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Discount Amount')}</label>
                                             <p className="mt-1 text-sm">-{formatCurrency(totalDiscount)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Total Tax')}</label>
                                             <p className="mt-1 text-sm">{formatCurrency(totalTax)}</p>
                                         </div>
                                     </div>
@@ -508,7 +508,7 @@ export default function PublicQuote({
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                         {quote.account && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Account')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Account')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={quote.account.name} />
                                                     <div className="min-w-0">
@@ -522,7 +522,7 @@ export default function PublicQuote({
                                         )}
                                         {quote.contact && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Contact')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Contact')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={quote.contact.name} />
                                                     <div className="min-w-0">
@@ -536,7 +536,7 @@ export default function PublicQuote({
                                         )}
                                         {quote.shipping_provider_type && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Shipping Provider')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Shipping Provider')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50">
                                                         <Truck className="h-4 w-4 text-orange-500" />
@@ -558,7 +558,7 @@ export default function PublicQuote({
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
                                 <h3 className="flex items-center text-lg font-semibold">
-                                    <svg className="text-muted-foreground mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="text-foreground/75 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -573,14 +573,14 @@ export default function PublicQuote({
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     {/* Billing */}
                                     <div>
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                         {quote.billing_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.billing_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{quote.billing_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{quote.billing_contact.name}</p>
                                                     {quote.billing_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{quote.billing_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{quote.billing_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -588,42 +588,42 @@ export default function PublicQuote({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.billing_address || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm">{quote.billing_address || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.billing_city || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm">{quote.billing_city || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.billing_state || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm">{quote.billing_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {quote.billing_postal_code || translate('-')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_country || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm">{quote.billing_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
                                     {/* Shipping */}
                                     <div className="sm:border-s sm:ps-6">
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                         {quote.shipping_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.shipping_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-medium">{quote.shipping_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm">{quote.shipping_contact.name}</p>
                                                     {quote.shipping_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{quote.shipping_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{quote.shipping_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -631,29 +631,29 @@ export default function PublicQuote({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.shipping_address || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm">{quote.shipping_address || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.shipping_city || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm">{quote.shipping_city || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.shipping_state || translate('-')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm">{quote.shipping_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm">
                                                         {quote.shipping_postal_code || translate('-')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_country || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm">{quote.shipping_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -721,7 +721,7 @@ export default function PublicQuote({
                                                                                 <p className="mt-0.5 text-xs text-gray-500">SKU: {product.sku}</p>
                                                                             )}
                                                                             {product.category?.name && (
-                                                                                <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600">
+                                                                                <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600">
                                                                                     {product.category.name}
                                                                                 </span>
                                                                             )}
@@ -787,17 +787,17 @@ export default function PublicQuote({
                                         <div className="flex justify-end border-t bg-gray-50/50 px-6 py-5">
                                             <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Subtotal')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Subtotal')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(subtotal)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Discount')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Discount')}</span>
                                                     <span className="font-mono text-sm font-semibold text-red-500">
                                                         -{formatCurrency(totalDiscount)}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{translate('Total Tax')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Total Tax')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
@@ -878,7 +878,7 @@ export default function PublicQuote({
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
-                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                 >
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>

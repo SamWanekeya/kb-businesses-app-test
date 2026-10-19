@@ -25,7 +25,7 @@ const TabsList = React.forwardRef<React.ComponentRef<typeof TabsPrimitive.List>,
 
                 // Surface.
                 'bg-muted',
-                'text-muted-foreground',
+                'text-foreground/75',
 
                 // Shape.
                 'rounded-md',
@@ -58,14 +58,14 @@ const TabsTrigger = React.forwardRef<React.ComponentRef<typeof TabsPrimitive.Tri
                 'min-h-9 px-3 py-1.5',
 
                 // Typography.
-                'text-sm font-medium',
+                'text-sm',
                 'whitespace-nowrap',
 
                 // Shape.
                 'rounded-md',
 
                 // Default state.
-                'text-muted-foreground',
+                'text-foreground/75',
 
                 // Interaction.
                 'cursor-pointer',

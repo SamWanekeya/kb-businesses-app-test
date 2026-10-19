@@ -740,7 +740,7 @@ export default function CrudFormModal({
                                             }}
                                         >
                                             {(field.type !== 'checkbox' && field.type !== 'switch') || mode === 'view' ? (
-                                                <Label htmlFor={field.name} className="text-sm font-medium">
+                                                <Label htmlFor={field.name} className="text-sm">
                                                     {field.label}{' '}
                                                     {field.required && !(field.type === 'file' && mode === 'edit') && (
                                                         <span className="text-destructive">*</span>
@@ -769,7 +769,7 @@ export default function CrudFormModal({
                                             }}
                                         >
                                             {(field.type !== 'checkbox' && field.type !== 'switch') || mode === 'view' ? (
-                                                <Label htmlFor={field.name} className="text-sm font-medium">
+                                                <Label htmlFor={field.name} className="text-sm">
                                                     {field.label}{' '}
                                                     {field.required && !(field.type === 'file' && mode === 'edit') && (
                                                         <span className="text-destructive">*</span>
@@ -793,7 +793,7 @@ export default function CrudFormModal({
                                         return (
                                             <div key={field.name} className="space-y-2" style={{ width: field.width || '100%' }}>
                                                 {field.type !== 'checkbox' || mode === 'view' ? (
-                                                    <Label htmlFor={field.name} className="text-sm font-medium">
+                                                    <Label htmlFor={field.name} className="text-sm">
                                                         {field.label}{' '}
                                                         {field.required && !(field.type === 'file' && mode === 'edit') && (
                                                             <span className="text-destructive">*</span>

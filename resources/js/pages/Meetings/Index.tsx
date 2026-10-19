@@ -250,7 +250,7 @@ export default function Meetings() {
             const mins = eh * 60 + em - (sh * 60 + sm);
             if (mins > 0) return mins >= 60 ? `${Math.floor(mins / 60)}h${mins % 60 ? ` ${mins % 60}m` : ''}` : `${mins}m`;
         }
-        return fallback ? `${fallback}m` : '—';
+        return fallback ? `${fallback}m` : '';
     };
 
     const formatSelectedDate = (d: Date) => {
@@ -304,7 +304,7 @@ export default function Meetings() {
             </div>
             <div className="grid grid-cols-7 border-b border-gray-200 px-4 py-1 text-center dark:border-gray-700">
                 {dayNames.map((d) => (
-                    <div key={d} className="text-muted-foreground py-1 text-xs font-medium">
+                    <div key={d} className="text-foreground/75 py-1 text-xs">
                         {d}
                     </div>
                 ))}
@@ -330,7 +330,7 @@ export default function Meetings() {
                                 onClick={() => {
                                     navigateToDate(date);
                                 }}
-                                className={`relative mx-auto flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xs font-medium transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : isTodayDate ? 'text-primary font-extrabold' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+                                className={`relative mx-auto flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xs transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : isTodayDate ? 'text-primary font-extrabold' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}`}
                             >
                                 {day}
                                 {hasMeeting && !isSelected && (
@@ -349,7 +349,7 @@ export default function Meetings() {
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                 <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Meeting Summary')}</p>
-                <span className="text-muted-foreground text-xs">({formatSelectedDate(selectedDateObj)})</span>
+                <span className="text-foreground/75 text-xs">({formatSelectedDate(selectedDateObj)})</span>
             </div>
             <div className="space-y-2.5 p-4">
                 {[
@@ -403,13 +403,13 @@ export default function Meetings() {
                             }`}
                         >
                             <div className="flex items-center gap-2">
-                                <CalendarDays className={`h-4 w-4 shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                                <CalendarDays className={`h-4 w-4 shrink-0 ${isActive ? 'text-primary' : 'text-foreground/75'}`} />
                                 <span>{translate(f.charAt(0).toUpperCase() + f.slice(1))}</span>
                             </div>
                             {isRtl ? (
-                                <ChevronLeft className="text-muted-foreground h-4 w-4" />
+                                <ChevronLeft className="text-foreground/75 h-4 w-4" />
                             ) : (
-                                <ChevronRight className="text-muted-foreground h-4 w-4" />
+                                <ChevronRight className="text-foreground/75 h-4 w-4" />
                             )}
                         </button>
                     );
@@ -439,7 +439,7 @@ export default function Meetings() {
                     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
                         {/* Date Header */}
                         <div className="flex flex-wrap items-center gap-3 border-b border-gray-200 px-5 py-4 dark:border-gray-700">
-                            <CalendarDays className="text-muted-foreground h-4 w-4" />
+                            <CalendarDays className="text-foreground/75 h-4 w-4" />
                             <span className="font-semibold text-gray-800 dark:text-gray-100">
                                 {formatSelectedDate(selectedDateObj)}
                                 {isToday(selectedDateObj) && <span className="ms-1 font-extrabold">({translate('Today')})</span>}
@@ -455,7 +455,7 @@ export default function Meetings() {
                                     {translate('Today')}
                                 </Button>
                             )}
-                            <span className="bg-primary/10 text-primary ring-primary/20 ms-auto inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                            <span className="bg-primary/10 text-primary ring-primary/20 ms-auto inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset">
                                 {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)} {translate('Meetings')}
                             </span>
                         </div>
@@ -463,10 +463,10 @@ export default function Meetings() {
                         {/* Meeting List */}
                         <div className="max-h-[60vh] divide-y divide-gray-200 overflow-y-auto lg:max-h-[calc(100vh-220px)] dark:divide-gray-700">
                             {(Array.isArray(meetings) ? meetings : (meetings?.data ?? [])).length === 0 ? (
-                                <div className="text-muted-foreground flex flex-col items-center justify-center gap-2 py-16">
+                                <div className="text-foreground/75 flex flex-col items-center justify-center gap-2 py-16">
                                     <CalendarDays className="h-8 w-8 text-gray-300 dark:text-gray-600" />
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{translate("That's all for today!")}</p>
-                                    <p className="text-muted-foreground text-xs">
+                                    <p className="text-sm text-gray-700 dark:text-gray-300">{translate("That's all for today!")}</p>
+                                    <p className="text-foreground/75 text-xs">
                                         {translate('You have no meetings scheduled for')}{' '}
                                         <span className="font-medium">{formatSelectedDate(selectedDateObj)}</span>
                                     </p>
@@ -509,7 +509,7 @@ export default function Meetings() {
                                                         {meeting.title}
                                                     </p>
                                                     <span
-                                                        className={`inline-flex w-fit items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-gray-600/20 ring-inset ${getStatusBadge(meeting.status)}`}
+                                                        className={`inline-flex w-fit items-center rounded-md px-2 py-1 text-xs ring-1 ring-gray-600/20 ring-inset ${getStatusBadge(meeting.status)}`}
                                                     >
                                                         {getStatusLabel(meeting.status)}
                                                     </span>
@@ -588,7 +588,7 @@ export default function Meetings() {
 
                                             {/* Row 2: assigned user */}
                                             {meeting.assigned_user && (
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                     {meeting.assigned_user.name} • {meeting.assigned_user.email}
                                                 </p>
                                             )}
@@ -597,18 +597,18 @@ export default function Meetings() {
                                             <div className="mt-2 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
                                                 <div className="flex flex-wrap items-center gap-2">
                                                     {meeting.location && (
-                                                        <span className="text-muted-foreground flex items-center gap-1 text-xs">
+                                                        <span className="text-foreground/75 flex items-center gap-1 text-xs">
                                                             <MapPin className="h-3 w-3 shrink-0" />
                                                             {meeting.location}
                                                         </span>
                                                     )}
                                                     {meeting.parent_module && (
-                                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-gray-600/20 ring-inset">
+                                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-gray-600/20 ring-inset">
                                                             {formatTitleCase(meeting.parent_module)}
                                                         </span>
                                                     )}
                                                 </div>
-                                                <div className="text-muted-foreground flex items-center gap-3 text-xs">
+                                                <div className="text-foreground/75 flex items-center gap-3 text-xs">
                                                     {(() => {
                                                         const att = resolveAttendees(meeting);
                                                         const visible = att.slice(0, 3);

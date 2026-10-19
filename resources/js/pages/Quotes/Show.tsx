@@ -52,7 +52,7 @@ export default function QuoteShow() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
@@ -119,60 +119,60 @@ export default function QuoteShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_address || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">{quote.billing_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{quote.billing_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_state || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">{quote.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_postal_code || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">{quote.billing_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{quote.billing_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{quote.billing_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="xl:border-s xl:ps-6">
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_address || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">{quote.shipping_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{quote.shipping_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_state || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">{quote.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_postal_code || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">{quote.shipping_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{quote.shipping_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{quote.shipping_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ export default function QuoteShow() {
                     <Card className="overflow-hidden shadow-sm" id="products-section">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Package className="text-muted-foreground me-3 h-5 w-5" />
+                                <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </CardHeader>
@@ -241,7 +241,7 @@ export default function QuoteShow() {
                                                                         </a>
                                                                     ) : (
                                                                         <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                            <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                            <Package className="text-foreground/75/40 h-4 w-4" />
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
@@ -249,10 +249,10 @@ export default function QuoteShow() {
                                                                             {product.name}
                                                                         </p>
                                                                         {product.sku && (
-                                                                            <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                            <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
                                                                         {product.category?.name && (
-                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                                 {product.category.name}
                                                                             </span>
                                                                         )}
@@ -286,7 +286,7 @@ export default function QuoteShow() {
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
@@ -295,12 +295,12 @@ export default function QuoteShow() {
                                                                         <p className="text-foreground text-sm font-semibold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
-                                                                        <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                        <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                             {formatCurrency(taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
@@ -318,15 +318,15 @@ export default function QuoteShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-4 py-4 sm:px-6 sm:py-5 md:flex-row md:items-end">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
@@ -341,9 +341,9 @@ export default function QuoteShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this quote')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this quote')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -353,7 +353,7 @@ export default function QuoteShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
                         </CardHeader>
@@ -373,7 +373,7 @@ export default function QuoteShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <MessageCircle className="text-muted-foreground me-3 h-5 w-5" />
+                                    <MessageCircle className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
@@ -475,7 +475,7 @@ export default function QuoteShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
+                                                                            <AvatarFallback className="bg-muted text-foreground/75 text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -500,12 +500,12 @@ export default function QuoteShow() {
                                                                         {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
-                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls} shrink-0`}
+                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls} shrink-0`}
                                                                     >
                                                                         {activity.activity_type.charAt(0).toUpperCase() +
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
-                                                                    <span className="text-muted-foreground shrink-0 text-xs">
+                                                                    <span className="text-foreground/75 shrink-0 text-xs">
                                                                         {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
@@ -520,7 +520,7 @@ export default function QuoteShow() {
                                                                                             <Button
                                                                                                 variant="ghost"
                                                                                                 size="sm"
-                                                                                                className="text-muted-foreground h-6 w-6 p-0"
+                                                                                                className="text-foreground/75 h-6 w-6 p-0"
                                                                                                 onClick={() => {
                                                                                                     setEditingComment(activity.id);
                                                                                                     setEditCommentText(activity.description);
@@ -542,7 +542,7 @@ export default function QuoteShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setCurrentActivity(activity);
                                                                                                 setIsDeleteModalOpen(true);
@@ -607,13 +607,13 @@ export default function QuoteShow() {
                                                                     )
                                                                 ) : activity.description?.includes('into') ? (
                                                                     <p
-                                                                        className="text-muted-foreground text-sm break-words"
+                                                                        className="text-foreground/75 text-sm break-words"
                                                                         dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                     />
                                                                 ) : activity.title ? (
-                                                                    <p className="text-muted-foreground text-sm break-words">{activity.title}</p>
+                                                                    <p className="text-foreground/75 text-sm break-words">{activity.title}</p>
                                                                 ) : (
-                                                                    <p className="text-muted-foreground text-sm break-words">
+                                                                    <p className="text-foreground/75 text-sm break-words">
                                                                         {activity.description}
                                                                     </p>
                                                                 )}
@@ -624,8 +624,8 @@ export default function QuoteShow() {
                                             })}
                                         </div>
                                     ) : (
-                                        <div className="text-muted-foreground py-12 text-center">
-                                            <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                        <div className="text-foreground/75 py-12 text-center">
+                                            <Calendar className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                             <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
@@ -649,7 +649,7 @@ export default function QuoteShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(quote.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(quote.status)}</div>
@@ -684,8 +684,8 @@ export default function QuoteShow() {
                                 {quote.contact && quote.account && <div className="mx-0 border-t" />}
                                 {quote.account && (
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
-                                            <Building2 className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
+                                            <Building2 className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                             {translate('Account')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
@@ -694,7 +694,7 @@ export default function QuoteShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{quote.account.name}</p>
                                                     {quote.account.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{quote.account.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{quote.account.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -703,7 +703,7 @@ export default function QuoteShow() {
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <Link href={route('accounts.show', quote.account.id)} className="ms-3 flex-shrink-0">
-                                                                <Eye className="text-muted-foreground h-4 w-4" />
+                                                                <Eye className="text-foreground/75 h-4 w-4" />
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
@@ -718,8 +718,8 @@ export default function QuoteShow() {
                                 {(quote.contact || quote.account) && quote.billing_contact && <div className="mx-0 border-t" />}
                                 {quote.billing_contact && (
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
-                                            <User className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
+                                            <User className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                             {translate('Billing Contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
@@ -728,7 +728,7 @@ export default function QuoteShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{quote.billing_contact.name}</p>
                                                     {quote.billing_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{quote.billing_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{quote.billing_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -740,7 +740,7 @@ export default function QuoteShow() {
                                                                 href={route('contacts.show', quote.billing_contact.id)}
                                                                 className="ms-3 flex-shrink-0"
                                                             >
-                                                                <Eye className="text-muted-foreground h-4 w-4" />
+                                                                <Eye className="text-foreground/75 h-4 w-4" />
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
@@ -755,8 +755,8 @@ export default function QuoteShow() {
                                 {quote.billing_contact && quote.shipping_contact && <div className="mx-0 border-t" />}
                                 {quote.shipping_contact && (
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
-                                            <User className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
+                                            <User className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                             {translate('Shipping Contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
@@ -765,7 +765,7 @@ export default function QuoteShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{quote.shipping_contact.name}</p>
                                                     {quote.shipping_contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{quote.shipping_contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{quote.shipping_contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -777,7 +777,7 @@ export default function QuoteShow() {
                                                                 href={route('contacts.show', quote.shipping_contact.id)}
                                                                 className="ms-3 flex-shrink-0"
                                                             >
-                                                                <Eye className="text-muted-foreground h-4 w-4" />
+                                                                <Eye className="text-foreground/75 h-4 w-4" />
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
@@ -803,31 +803,31 @@ export default function QuoteShow() {
                         </CardHeader>
                         <CardContent className="space-y-3 p-4 sm:p-5">
                             <div className="flex items-start gap-3">
-                                <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Quote Number')}</p>
-                                    <p className="text-foreground text-sm font-medium">{quote.quote_number}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Quote Number')}</p>
+                                    <p className="text-foreground text-sm">{quote.quote_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Quote Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Quote Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(quote.quote_date || quote.created_at)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Valid Until')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Valid Until')}</p>
+                                    <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
                                 </div>
                             </div>
                             {quote.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.assigned_user.avatar} alt={quote.assigned_user.name} />
@@ -836,9 +836,9 @@ export default function QuoteShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{quote.assigned_user.name}</p>
                                             {quote.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{quote.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{quote.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -846,7 +846,7 @@ export default function QuoteShow() {
                             )}
                             {quote.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.creator.avatar} alt={quote.creator.name} />
@@ -855,8 +855,8 @@ export default function QuoteShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.creator.name}</p>
-                                            {quote.creator.email && <p className="text-muted-foreground truncate text-xs">{quote.creator.email}</p>}
+                                            <p className="text-foreground truncate text-sm">{quote.creator.name}</p>
+                                            {quote.creator.email && <p className="text-foreground/75 truncate text-xs">{quote.creator.email}</p>}
                                         </div>
                                     </div>
                                 </div>
@@ -869,7 +869,7 @@ export default function QuoteShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
-                                    <Package className="text-muted-foreground me-2 h-4 w-4" />
+                                    <Package className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Related Records')}
                                 </CardTitle>
                             </CardHeader>
@@ -880,13 +880,13 @@ export default function QuoteShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Opportunity')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.opportunity.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Opportunity')}</p>
+                                            <p className="text-foreground truncate text-sm">{quote.opportunity.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>
@@ -898,8 +898,8 @@ export default function QuoteShow() {
                                 {quote.opportunity && !useHasPermission('view-opportunities') && (
                                     <div className="flex items-center justify-between rounded-lg border p-2.5">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Opportunity')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.opportunity.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Opportunity')}</p>
+                                            <p className="text-foreground truncate text-sm">{quote.opportunity.name}</p>
                                         </div>
                                     </div>
                                 )}
@@ -909,13 +909,13 @@ export default function QuoteShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.shipping_provider_type.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground truncate text-sm">{quote.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>
@@ -927,8 +927,8 @@ export default function QuoteShow() {
                                 {quote.shipping_provider_type && !useHasPermission('view-shipping-provider-types') && (
                                     <div className="flex items-center justify-between rounded-lg border p-2.5">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{quote.shipping_provider_type.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground truncate text-sm">{quote.shipping_provider_type.name}</p>
                                         </div>
                                     </div>
                                 )}

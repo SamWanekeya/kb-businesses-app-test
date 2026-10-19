@@ -88,7 +88,7 @@ export default function EmailNotificationSettings() {
                         {availableNotifications.map((item) => (
                             <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
                                 <div>
-                                    <Label htmlFor={item.name} className="text-sm font-medium">
+                                    <Label htmlFor={item.name} className="text-sm">
                                         {translate(item.label)}
                                     </Label>
                                 </div>

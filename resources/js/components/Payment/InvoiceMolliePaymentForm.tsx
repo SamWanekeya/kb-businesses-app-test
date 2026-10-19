@@ -81,11 +81,11 @@ export function InvoiceMolliePaymentForm({
 
             <div className="rounded-lg border bg-gray-50 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
+                    <span className="text-sm text-gray-600">{translate('Payment Type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
+                    <span className="text-sm text-gray-600">{translate('Amount')}:</span>
                     <span className="text-lg font-extrabold text-gray-900">
                         {currency} {amount}
                     </span>

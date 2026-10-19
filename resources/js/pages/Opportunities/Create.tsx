@@ -162,7 +162,7 @@ export default function OpportunityCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" className="text-sm font-medium" required>
+                                <Label htmlFor="name" className="text-sm" required>
                                     {translate('Opportunity Name')}
                                 </Label>
                                 <Input
@@ -179,7 +179,7 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="description" className="text-sm font-medium">
+                                <Label htmlFor="description" className="text-sm">
                                     {translate('Description')}
                                 </Label>
                                 <Textarea
@@ -196,7 +196,7 @@ export default function OpportunityCreate() {
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="close_date" className="text-sm font-medium">
+                                    <Label htmlFor="close_date" className="text-sm">
                                         {translate('Close Date')}
                                     </Label>
                                     <div
@@ -224,7 +224,7 @@ export default function OpportunityCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                    <Label className="text-sm">{translate('Status')}</Label>
                                     <Select
                                         value={data.status}
                                         onValueChange={(v) => {
@@ -244,7 +244,7 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="notes" className="text-sm font-medium">
+                                <Label htmlFor="notes" className="text-sm">
                                     {translate('Notes')}
                                 </Label>
                                 <Textarea
@@ -268,7 +268,7 @@ export default function OpportunityCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Account')}
                                 </Label>
                                 <Select
@@ -300,7 +300,7 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Contact')}
                                 </Label>
                                 <Select
@@ -332,7 +332,7 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Stage')}
                                 </Label>
                                 <Select
@@ -364,7 +364,7 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Source')}
                                 </Label>
                                 <Select
@@ -419,7 +419,7 @@ export default function OpportunityCreate() {
                                     <PackagePlus className="text-primary h-7 w-7" />
                                 </div>
                                 <p className="text-foreground text-sm font-semibold">{translate('No products added yet')}</p>
-                                <p className="text-muted-foreground mt-1 text-xs">{translate('Click here or use the Add Product button above')}</p>
+                                <p className="text-foreground/75 mt-1 text-xs">{translate('Click here or use the Add Product button above')}</p>
                             </div>
                         ) : (
                             <>
@@ -518,12 +518,12 @@ export default function OpportunityCreate() {
                                                             )}
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
-                                                            <span className="text-muted-foreground text-sm font-medium">
+                                                            <span className="text-foreground/75 text-sm">
                                                                 {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                             </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
-                                                            <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                                            <span className="font-mono text-sm text-gray-900 dark:text-white">
                                                                 {fmt(lineTotal + taxAmt)}
                                                             </span>
                                                         </td>
@@ -558,7 +558,7 @@ export default function OpportunityCreate() {
                                                 className="border-border relative space-y-3 rounded-lg border bg-gray-50/50 p-4 dark:bg-gray-800/30"
                                             >
                                                 <div className="flex items-center justify-between border-b pb-2">
-                                                    <span className="text-muted-foreground text-xs font-semibold">
+                                                    <span className="text-foreground/75 text-xs font-semibold">
                                                         {translate('Product #{{index}}', { index: i + 1 })}
                                                     </span>
                                                     <button
@@ -574,7 +574,7 @@ export default function OpportunityCreate() {
                                                 </div>
                                                 <div className="space-y-2">
                                                     <div>
-                                                        <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                        <label className="text-foreground/75 mb-1 block text-xs">
                                                             {translate('Product')} *
                                                         </label>
                                                         <Select
@@ -617,7 +617,7 @@ export default function OpportunityCreate() {
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
-                                                            <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                            <label className="text-foreground/75 mb-1 block text-xs">
                                                                 {translate('Quantity')} *
                                                             </label>
                                                             <Input
@@ -635,7 +635,7 @@ export default function OpportunityCreate() {
                                                             )}
                                                         </div>
                                                         <div>
-                                                            <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                            <label className="text-foreground/75 mb-1 block text-xs">
                                                                 {translate('Unit Price')} *
                                                             </label>
                                                             <Input
@@ -655,7 +655,7 @@ export default function OpportunityCreate() {
                                                         </div>
                                                     </div>
                                                     <div className="mt-2 flex items-center justify-between border-t pt-2 text-xs">
-                                                        <span className="text-muted-foreground">
+                                                        <span className="text-foreground/75">
                                                             {translate('Tax')}:{' '}
                                                             {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                         </span>
@@ -678,11 +678,11 @@ export default function OpportunityCreate() {
                             <div className="w-72 space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{translate('Subtotal')}</span>
-                                    <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(subtotal)}</span>
+                                    <span className="font-mono text-sm text-gray-900 dark:text-white">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{translate('Tax')}</span>
-                                    <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(totalTax)}</span>
+                                    <span className="font-mono text-sm text-gray-900 dark:text-white">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
                                     <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
@@ -701,7 +701,7 @@ export default function OpportunityCreate() {
                     <div className="space-y-4 p-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Assign To')}
                                 </Label>
                                 <Select

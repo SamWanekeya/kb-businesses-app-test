@@ -517,7 +517,7 @@ export default function DocumentShow() {
                         )}
                         {document.account ? (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Account')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Account')}</p>
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.account.avatar} alt={document.account.name} />
@@ -526,15 +526,15 @@ export default function DocumentShow() {
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="min-w-0">
-                                        <p className="text-foreground truncate text-sm font-medium">{document.account.name}</p>
-                                        {document.account.email && <p className="text-muted-foreground truncate text-xs">{document.account.email}</p>}
+                                        <p className="text-foreground truncate text-sm">{document.account.name}</p>
+                                        {document.account.email && <p className="text-foreground/75 truncate text-xs">{document.account.email}</p>}
                                     </div>
                                 </div>
                             </div>
                         ) : null}
                         {document.assigned_user ? (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.assigned_user.avatar} alt={document.assigned_user.name} />
@@ -543,9 +543,9 @@ export default function DocumentShow() {
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="min-w-0">
-                                        <p className="text-foreground truncate text-sm font-medium">{document.assigned_user.name}</p>
+                                        <p className="text-foreground truncate text-sm">{document.assigned_user.name}</p>
                                         {document.assigned_user.email && (
-                                            <p className="text-muted-foreground truncate text-xs">{document.assigned_user.email}</p>
+                                            <p className="text-foreground/75 truncate text-xs">{document.assigned_user.email}</p>
                                         )}
                                     </div>
                                 </div>
@@ -621,12 +621,12 @@ function DetailRow({
             <div className="min-w-0 text-left xl:text-right">
                 {badge ? (
                     <span
-                        className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium ${badgeColors[badgeColor] || badgeColors.blue} break-all`}
+                        className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs ${badgeColors[badgeColor] || badgeColors.blue} break-all`}
                     >
                         {value}
                     </span>
                 ) : expired ? (
-                    <p className="text-sm font-medium break-all text-red-500">{value}</p>
+                    <p className="text-sm break-all text-red-500">{value}</p>
                 ) : (
                     <p className="text-sm break-all text-gray-600 dark:text-gray-400">{value}</p>
                 )}

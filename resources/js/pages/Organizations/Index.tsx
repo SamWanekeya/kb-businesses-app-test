@@ -358,7 +358,7 @@ export default function Organizations() {
                     </Avatar>
                     <div>
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-muted-foreground text-sm">{row.email}</div>
+                        <div className="text-foreground/75 text-sm">{row.email}</div>
                     </div>
                 </div>
             ),
@@ -369,7 +369,7 @@ export default function Organizations() {
             render: (value: string) => (
                 <span
                     className={
-                        'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset'
+                        'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset'
                     }
                 >
                     {formatTitleCase(value)}
@@ -572,7 +572,7 @@ export default function Organizations() {
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 z-10">
                                     <div
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                             organization.status === 'active'
                                                 ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20 ring-inset'
                                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -615,7 +615,7 @@ export default function Organizations() {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center">
                                                 <CreditCard className="text-primary mr-2 h-4 w-4" />
-                                                <span className="text-sm font-medium text-gray-900 dark:text-white">{organization.plan_name}</span>
+                                                <span className="text-sm text-gray-900 dark:text-white">{organization.plan_name}</span>
                                             </div>
                                             <Button
                                                 variant="ghost"

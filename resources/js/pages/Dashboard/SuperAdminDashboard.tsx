@@ -458,11 +458,11 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                         className={`rounded-xl p-2.5 ${stats.pendingRequests > 0 ? 'bg-amber-100 dark:bg-amber-900/50' : 'bg-muted'}`}
                                     >
                                         <AlertCircle
-                                            className={`h-5 w-5 ${stats.pendingRequests > 0 ? 'animate-pulse text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}
+                                            className={`h-5 w-5 ${stats.pendingRequests > 0 ? 'animate-pulse text-amber-600 dark:text-amber-400' : 'text-foreground/75'}`}
                                         />
                                     </div>
                                     {stats.pendingRequests > 0 && (
-                                        <span className="inline-flex animate-bounce items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-600/20 ring-inset">
+                                        <span className="inline-flex animate-bounce items-center rounded-md bg-amber-50 px-2 py-1 text-xs text-amber-700 ring-1 ring-amber-600/20 ring-inset">
                                             {translate('Action needed')}
                                         </span>
                                     )}
@@ -487,13 +487,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex items-center justify-between">
                                 <div>
                                     <CardTitle className="text-base font-semibold">{translate('Recently Registered Organizations')}</CardTitle>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                    <p className="text-foreground/75 mt-0.5 text-xs">
                                         {translate('Latest organizations that joined the platform')}
                                     </p>
                                 </div>
                                 <Link
                                     href={route('organizations.index')}
-                                    className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                    className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                 >
                                     {translate('View all')} <ChevronRight className="h-3.5 w-3.5" />
                                 </Link>
@@ -525,13 +525,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{organization.name}</p>
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">{organization.email}</p>
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">{organization.email}</p>
                                             </div>
                                             <div className="flex shrink-0 flex-col items-end gap-1">
-                                                <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
                                                     {translate('Active')}
                                                 </span>
-                                                <span className="text-muted-foreground text-[11px]">{organization.registered_at}</span>
+                                                <span className="text-foreground/75 text-[11px]">{organization.registered_at}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -539,9 +539,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
                                     <div className="bg-muted animate-pulse rounded-full p-4">
-                                        <Building2 className="text-muted-foreground/50 h-6 w-6" />
+                                        <Building2 className="text-foreground/75/50 h-6 w-6" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm">{translate('No organizations registered yet')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No organizations registered yet')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -553,11 +553,11 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex items-center justify-between">
                                 <div>
                                     <CardTitle className="text-base font-semibold">{translate('Top Plans')}</CardTitle>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">{translate('By revenue generated')}</p>
+                                    <p className="text-foreground/75 mt-0.5 text-xs">{translate('By revenue generated')}</p>
                                 </div>
                                 <Link
                                     href={route('subscriptions.plans.index')}
-                                    className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
+                                    className="text-primary flex shrink-0 items-center gap-1 text-xs transition-all duration-150 hover:gap-1.5"
                                 >
                                     {translate('View all')} <ChevronRight className="h-3.5 w-3.5" />
                                 </Link>
@@ -584,13 +584,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                             style={{ width: mounted ? `${barPct}%` : '0%' }}
                                                         />
                                                     </div>
-                                                    <p className="text-muted-foreground mt-1 text-[11px]">
+                                                    <p className="text-foreground/75 mt-1 text-[11px]">
                                                         {plan.subscribers} {translate('subscribers')}
                                                     </p>
                                                 </div>
                                                 <div className="shrink-0 text-right">
                                                     <p className="font-mono text-sm font-extrabold">{formatCurrency(plan.revenue)}</p>
-                                                    <p className="text-muted-foreground text-[11px]">{translate('revenue')}</p>
+                                                    <p className="text-foreground/75 text-[11px]">{translate('revenue')}</p>
                                                 </div>
                                             </div>
                                         );
@@ -599,9 +599,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
                                     <div className="bg-muted animate-pulse rounded-full p-4">
-                                        <CreditCard className="text-muted-foreground/50 h-6 w-6" />
+                                        <CreditCard className="text-foreground/75/50 h-6 w-6" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm">{translate('No plan data available')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No plan data available')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -615,12 +615,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
                                     <CardTitle className="text-base font-semibold">{translate('New Organizations Registered')}</CardTitle>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                    <p className="text-foreground/75 mt-0.5 text-xs">
                                         {translate('Organizations joined per month')} — {selectedOrganizationsYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
+                                    <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                         {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {translate('total')}
                                     </span>
                                     <Select
@@ -655,13 +655,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                         <XAxis
                                             dataKey="short"
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
-                                            className="text-muted-foreground"
+                                            className="text-foreground/75"
                                             axisLine={{ stroke: primaryColor }}
                                             tickLine={{ stroke: primaryColor }}
                                         />
                                         <YAxis
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
-                                            className="text-muted-foreground"
+                                            className="text-foreground/75"
                                             axisLine={{ stroke: primaryColor }}
                                             tickLine={{ stroke: primaryColor }}
                                             allowDecimals={false}
@@ -694,9 +694,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
                                     <div className="bg-muted animate-pulse rounded-full p-4">
-                                        <Building2 className="text-muted-foreground/50 h-6 w-6" />
+                                        <Building2 className="text-foreground/75/50 h-6 w-6" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm">{translate('No organization data available')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No organization data available')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -710,12 +710,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
                                     <CardTitle className="text-base font-semibold">{translate('Monthly Revenue')}</CardTitle>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                    <p className="text-foreground/75 mt-0.5 text-xs">
                                         {translate('Approved plan orders')} — {selectedYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 font-mono text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30">
+                                    <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 font-mono text-xs text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30">
                                         {formatCurrency(monthlyRevenue.reduce((s, m) => s + m.revenue, 0))}
                                     </span>
                                     <Select
@@ -752,13 +752,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                         <XAxis
                                             dataKey="short"
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
-                                            className="text-muted-foreground"
+                                            className="text-foreground/75"
                                             axisLine={{ stroke: primaryColor }}
                                             tickLine={{ stroke: primaryColor }}
                                         />
                                         <YAxis
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
-                                            className="text-muted-foreground"
+                                            className="text-foreground/75"
                                             axisLine={{ stroke: primaryColor }}
                                             tickLine={{ stroke: primaryColor }}
                                             tickFormatter={(v) => formatCurrency(v)}
@@ -789,9 +789,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
                                     <div className="bg-muted animate-pulse rounded-full p-4">
-                                        <DollarSign className="text-muted-foreground/50 h-6 w-6" />
+                                        <DollarSign className="text-foreground/75/50 h-6 w-6" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm">{translate('No revenue data available')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No revenue data available')}</p>
                                 </div>
                             )}
                         </CardContent>

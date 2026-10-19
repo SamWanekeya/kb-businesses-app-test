@@ -113,7 +113,7 @@ export function AamarpayPaymentForm({
                         <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
-                    <div className="text-muted-foreground mt-1 text-sm">
+                    <div className="text-foreground/75 mt-1 text-sm">
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (

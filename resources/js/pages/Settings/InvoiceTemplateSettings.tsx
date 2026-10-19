@@ -303,7 +303,7 @@ export default function InvoiceTemplateSettings() {
                                 </div>
 
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="invoice_qr_enabled" className="text-sm font-medium">
+                                    <Label htmlFor="invoice_qr_enabled" className="text-sm">
                                         {translate('QR Display?')}
                                     </Label>
                                     <Switch

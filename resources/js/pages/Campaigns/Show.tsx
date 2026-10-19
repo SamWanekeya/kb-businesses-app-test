@@ -81,7 +81,7 @@ export default function CampaignShow() {
                             </div>
                         </div>
                         <span
-                            className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${
+                            className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs ring-1 ring-inset ${
                                 campaign.status === 'active'
                                     ? 'bg-green-50 text-green-700 ring-green-600/20'
                                     : 'bg-red-50 text-red-700 ring-red-600/20'
@@ -138,7 +138,7 @@ export default function CampaignShow() {
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground/75 mb-1 text-sm">{label}</p>
                                         <p className="text-foreground truncate font-mono text-lg leading-snug font-extrabold">{value}</p>
                                     </div>
                                     <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
@@ -156,30 +156,30 @@ export default function CampaignShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Tag className="text-muted-foreground mr-3 h-5 w-5" />
+                                <Tag className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Campaign Information')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 p-6">
                             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Campaign Type')}</label>
-                                    <p className="mt-1 text-sm font-medium">{campaign.campaign_type?.name || '-'}</p>
+                                    <label className="text-foreground/75 text-xs">{translate('Campaign Type')}</label>
+                                    <p className="mt-1 text-sm">{campaign.campaign_type?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Target List')}</label>
-                                    <p className="mt-1 text-sm font-medium">{campaign.target_list?.name || '-'}</p>
+                                    <label className="text-foreground/75 text-xs">{translate('Target List')}</label>
+                                    <p className="mt-1 text-sm">{campaign.target_list?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Start Date')}</label>
-                                    <p className="mt-1 text-sm font-medium">{window.kbSettings.formatDateTimeSimple(campaign.start_date)}</p>
+                                    <label className="text-foreground/75 text-xs">{translate('Start Date')}</label>
+                                    <p className="mt-1 text-sm">{window.kbSettings.formatDateTimeSimple(campaign.start_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('End Date')}</label>
-                                    <p className="mt-1 text-sm font-medium">{window.kbSettings.formatDateTimeSimple(campaign.end_date)}</p>
+                                    <label className="text-foreground/75 text-xs">{translate('End Date')}</label>
+                                    <p className="mt-1 text-sm">{window.kbSettings.formatDateTimeSimple(campaign.end_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Assigned To')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Assigned To')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.assigned_user ? (
                                             <>
@@ -189,15 +189,15 @@ export default function CampaignShow() {
                                                         {getInitials(campaign.assigned_user.name)}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <span className="text-sm font-medium">{campaign.assigned_user.name}</span>
+                                                <span className="text-sm">{campaign.assigned_user.name}</span>
                                             </>
                                         ) : (
-                                            <span className="text-sm font-medium">{translate('Unassigned')}</span>
+                                            <span className="text-sm">{translate('Unassigned')}</span>
                                         )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Created By')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Created By')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.creator ? (
                                             <>
@@ -205,25 +205,25 @@ export default function CampaignShow() {
                                                     <AvatarImage src={campaign.creator.avatar} />
                                                     <AvatarFallback className="text-[10px]">{getInitials(campaign.creator.name)}</AvatarFallback>
                                                 </Avatar>
-                                                <span className="text-sm font-medium">{campaign.creator.name}</span>
+                                                <span className="text-sm">{campaign.creator.name}</span>
                                             </>
                                         ) : (
-                                            <span className="text-sm font-medium">-</span>
+                                            <span className="text-sm">-</span>
                                         )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Expected Response')}</label>
-                                    <p className="mt-1 text-sm font-medium">{campaign.expected_response || 0}</p>
+                                    <label className="text-foreground/75 text-xs">{translate('Expected Response')}</label>
+                                    <p className="mt-1 text-sm">{campaign.expected_response || 0}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{translate('Actual Response')}</label>
-                                    <p className="mt-1 text-sm font-medium">
+                                    <label className="text-foreground/75 text-xs">{translate('Actual Response')}</label>
+                                    <p className="mt-1 text-sm">
                                         {campaignLeads?.length || 0} {translate('leads')}
                                     </p>
                                 </div>
                             </div>
-                            <div className="text-muted-foreground grid grid-cols-2 gap-4 border-t pt-4 text-xs">
+                            <div className="text-foreground/75 grid grid-cols-2 gap-4 border-t pt-4 text-xs">
                                 <div className="flex items-center gap-1">
                                     <span>{translate('Created')}: </span>
                                     <Calendar className="h-3 w-3" />
@@ -242,20 +242,20 @@ export default function CampaignShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <DollarSign className="text-muted-foreground mr-3 h-5 w-5" />
+                                <DollarSign className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Budget Analysis')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 p-6">
                             <div className="grid grid-cols-3 gap-1.5 min-[450px]:gap-3">
                                 <div className="rounded-lg border border-green-200 bg-green-50 p-1.5 text-center min-[400px]:p-3">
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Budget')}</p>
+                                    <p className="text-foreground/75 mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Budget')}</p>
                                     <p className="truncate font-mono text-xs font-extrabold text-green-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.budget)}
                                     </p>
                                 </div>
                                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-1.5 text-center min-[400px]:p-3">
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Spent')}</p>
+                                    <p className="text-foreground/75 mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Spent')}</p>
                                     <p className="truncate font-mono text-xs font-extrabold text-blue-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.actual_cost)}
                                     </p>
@@ -263,7 +263,7 @@ export default function CampaignShow() {
                                 <div
                                     className={`rounded-lg border p-1.5 text-center min-[400px]:p-3 ${remaining >= 0 ? 'border-purple-200 bg-purple-50' : 'border-red-200 bg-red-50'}`}
                                 >
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Remaining')}</p>
+                                    <p className="text-foreground/75 mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Remaining')}</p>
                                     <p
                                         className={`truncate font-mono text-xs font-extrabold min-[400px]:text-sm sm:text-base ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}
                                     >
@@ -274,7 +274,7 @@ export default function CampaignShow() {
 
                             {campaign.budget > 0 && (
                                 <div>
-                                    <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
+                                    <div className="text-foreground/75 mb-1.5 flex justify-between text-xs">
                                         <span>{translate('Budget Used')}</span>
                                         <span className="font-medium">{budgetUsedPct.toFixed(1)}%</span>
                                     </div>
@@ -286,7 +286,7 @@ export default function CampaignShow() {
 
                             {campaign.expected_response > 0 && (
                                 <div>
-                                    <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
+                                    <div className="text-foreground/75 mb-1.5 flex justify-between text-xs">
                                         <span>{translate('Response Progress')}</span>
                                         <span className="font-medium">
                                             {campaignLeads?.length || 0} / {campaign.expected_response}
@@ -305,9 +305,9 @@ export default function CampaignShow() {
                 <Card className="shadow-sm">
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-semibold">
-                            <Users className="text-muted-foreground mr-3 h-5 w-5" />
+                            <Users className="text-foreground/75 mr-3 h-5 w-5" />
                             {translate('Campaign Leads')}
-                            <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                            <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                 {campaignLeads?.length || 0}
                             </span>
                         </CardTitle>
@@ -318,7 +318,7 @@ export default function CampaignShow() {
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm">
                                         <thead>
-                                            <tr className="text-muted-foreground border-b bg-[#F0F0F1] text-xs dark:bg-gray-800">
+                                            <tr className="text-foreground/75 border-b bg-[#F0F0F1] text-xs dark:bg-gray-800">
                                                 <th className="px-6 py-3 text-left font-medium">{translate('Name')}</th>
                                                 <th className="px-6 py-3 text-left font-medium">{translate('Assigned To')}</th>
                                                 <th className="px-6 py-3 text-left font-medium">{translate('Status')}</th>
@@ -334,7 +334,7 @@ export default function CampaignShow() {
                                                         <div className="flex items-center gap-2">
                                                             <UserInitials name={lead.name} />
                                                             <div>
-                                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{lead.name}</p>
+                                                                <p className="text-sm text-gray-900 dark:text-white">{lead.name}</p>
                                                                 <p className="text-xs text-gray-500">{lead.email || '-'}</p>
                                                             </div>
                                                         </div>
@@ -362,7 +362,7 @@ export default function CampaignShow() {
                                                     <td className="px-6 py-3">
                                                         {lead.lead_status ? (
                                                             <span
-                                                                className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                                className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset"
                                                                 style={{
                                                                     backgroundColor: `${lead.lead_status.color}20`,
                                                                     color: lead.lead_status.color,
@@ -399,7 +399,7 @@ export default function CampaignShow() {
                                     </table>
                                 </div>
                                 {campaignLeads.length > 10 && (
-                                    <div className="text-muted-foreground border-t bg-gray-50 px-6 py-3 text-center text-sm">
+                                    <div className="text-foreground/75 border-t bg-gray-50 px-6 py-3 text-center text-sm">
                                         +{campaignLeads.length - 10} {translate('more leads')}
                                     </div>
                                 )}

@@ -59,7 +59,7 @@ export default function CallShow() {
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
                                         <p className="font-medium">{translate('Date & Time')}</p>
-                                        <p className="text-muted-foreground text-sm">
+                                        <p className="text-foreground/75 text-sm">
                                             {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                 new Date(call.start_date).toLocaleDateString()}{' '}
                                             {window.kbSettings.formatTime(call.start_time) || call.start_time} -{' '}
@@ -72,14 +72,14 @@ export default function CallShow() {
                                 {call.description && (
                                     <div>
                                         <p className="mb-2 font-medium">{translate('Description')}</p>
-                                        <p className="text-muted-foreground text-sm whitespace-pre-wrap">{call.description}</p>
+                                        <p className="text-foreground/75 text-sm whitespace-pre-wrap">{call.description}</p>
                                     </div>
                                 )}
 
                                 <div className="flex items-center gap-2">
                                     <span className="font-medium">{translate('Status')}:</span>
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                             call.status === 'planned'
                                                 ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
                                                 : call.status === 'held'
@@ -131,7 +131,7 @@ export default function CallShow() {
                                         )}
                                         <div>
                                             <p className="font-medium">{attendee.attendee?.name || translate('Unknown')}</p>
-                                            <p className="text-muted-foreground text-sm capitalize">
+                                            <p className="text-foreground/75 text-sm capitalize">
                                                 {translate(attendee.attendee_type)} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
                                             </p>
                                         </div>
@@ -151,7 +151,7 @@ export default function CallShow() {
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Created By')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created By')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {call.creator ? (
                                         <>
@@ -162,19 +162,19 @@ export default function CallShow() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-medium">{call.creator.name}</p>
-                                                {call.creator.email && <p className="text-muted-foreground truncate text-xs">{call.creator.email}</p>}
+                                                <p className="text-foreground truncate text-sm">{call.creator.name}</p>
+                                                {call.creator.email && <p className="text-foreground/75 truncate text-xs">{call.creator.email}</p>}
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
+                                        <p className="text-foreground/75 text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </div>
 
                             {call.assigned_user && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={call.assigned_user.avatar} alt={call.assigned_user.name} />
@@ -183,9 +183,9 @@ export default function CallShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{call.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{call.assigned_user.name}</p>
                                             {call.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{call.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{call.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ export default function CallShow() {
                             )}
 
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{translate('Created At')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created At')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -204,7 +204,7 @@ export default function CallShow() {
 
                             {call.updated_at !== call.created_at && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('Last Updated')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Last Updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -229,10 +229,10 @@ export default function CallShow() {
                                 <div className="flex min-w-0 items-center gap-2">
                                     {isPerson && <UserInitials name={recordName} />}
                                     <div className="min-w-0">
-                                        <p className="text-muted-foreground text-xs capitalize">{translate(call.parent_module)}</p>
-                                        <p className="text-foreground truncate text-sm font-medium">{recordName}</p>
+                                        <p className="text-foreground/75 text-xs capitalize">{translate(call.parent_module)}</p>
+                                        <p className="text-foreground truncate text-sm">{recordName}</p>
                                         {isPerson && call.parent_record.email && (
-                                            <p className="text-muted-foreground truncate text-xs">{call.parent_record.email}</p>
+                                            <p className="text-foreground/75 truncate text-xs">{call.parent_record.email}</p>
                                         )}
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@ export default function CallShow() {
                             return (
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
-                                        <Building2 className="text-muted-foreground h-4 w-4" />
+                                        <Building2 className="text-foreground/75 h-4 w-4" />
                                         <h3 className="text-base font-semibold">{translate('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
@@ -253,7 +253,7 @@ export default function CallShow() {
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                            <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
                                                             <p>{translate('View')}</p>

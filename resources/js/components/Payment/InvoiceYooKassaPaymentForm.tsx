@@ -96,7 +96,7 @@ export function InvoiceYooKassaPaymentForm({
                         <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(amount)}</span>
                     </div>
-                    <div className="text-muted-foreground mt-1 text-sm">
+                    <div className="text-foreground/75 mt-1 text-sm">
                         {translate('Payment Type')}: {translate(paymentType)}
                     </div>
                 </div>

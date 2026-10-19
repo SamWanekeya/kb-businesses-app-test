@@ -138,7 +138,7 @@ export default function SlackNotificationSettings() {
                         <div className="rounded-lg border border-gray-200 bg-white p-6">
                             <div className="grid grid-cols-1 gap-6">
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
                                         <Link className="h-4 w-4" />
                                         {translate('Webhook URL')}
                                     </Label>
@@ -162,7 +162,7 @@ export default function SlackNotificationSettings() {
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
                                     {availableNotifications.map((item) => (
                                         <div key={item.name} className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
-                                            <Label htmlFor={item.name} className="text-sm font-medium">
+                                            <Label htmlFor={item.name} className="text-sm">
                                                 {translate(item.label)}
                                             </Label>
                                             <Switch
@@ -212,7 +212,7 @@ export default function SlackNotificationSettings() {
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
                                 <MessagesCircle className="h-4 w-4 text-blue-600" />
-                                <h3 className="text-sm font-medium text-blue-900">{translate('Slack Setup Instructions')}</h3>
+                                <h3 className="text-sm text-blue-900">{translate('Slack Setup Instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">
                                 <li>{translate('1. Go to your Slack workspace')}</li>

@@ -180,7 +180,7 @@ export function InvoicePayfastPaymentForm({
                             required
                         />
                         {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to PayFast to complete the payment')}</p>
+                        <p className="text-foreground/75 text-xs">{translate('You will be redirected to PayFast to complete the payment')}</p>
                     </div>
 
                     {amount < 5 && (
@@ -196,14 +196,14 @@ export function InvoicePayfastPaymentForm({
 
                     <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{translate('Payment Amount')}</span>
+                            <span className="text-sm">{translate('Payment Amount')}</span>
                             <span className="text-sm font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-muted-foreground text-xs">{translate('Payment Type')}</span>
-                            <span className="text-xs font-medium capitalize">{paymentType}</span>
+                            <span className="text-foreground/75 text-xs">{translate('Payment Type')}</span>
+                            <span className="text-xs capitalize">{paymentType}</span>
                         </div>
-                        <p className="text-muted-foreground mt-2 text-xs">{translate('Secure payment processing via PayFast')}</p>
+                        <p className="text-foreground/75 mt-2 text-xs">{translate('Secure payment processing via PayFast')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

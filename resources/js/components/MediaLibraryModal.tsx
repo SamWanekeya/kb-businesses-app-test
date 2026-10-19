@@ -119,7 +119,7 @@ export default function MediaLibraryModal({
                     <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
                         <FileText className="text-destructive h-8 w-8" />
                     </div>
-                    <span className="text-destructive text-xs font-medium">PDF</span>
+                    <span className="text-destructive text-xs">PDF</span>
                 </div>
             );
         }
@@ -129,7 +129,7 @@ export default function MediaLibraryModal({
                     <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                         <FileText className="h-8 w-8 text-blue-600" />
                     </div>
-                    <span className="text-xs font-medium text-blue-600">DOC</span>
+                    <span className="text-xs text-blue-600">DOC</span>
                 </div>
             );
         }
@@ -260,7 +260,7 @@ export default function MediaLibraryModal({
                     {/* Header with Search and Upload */}
                     <div className="flex flex-col gap-3 sm:flex-row">
                         <div className="relative flex-1">
-                            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+                            <Search className="text-foreground/75 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                             <Input
                                 value={searchTerm}
                                 onChange={(e) => {
@@ -286,7 +286,7 @@ export default function MediaLibraryModal({
                     </div>
 
                     {/* Stats and Selection Info */}
-                    <div className="text-muted-foreground bg-muted/30 flex items-center justify-between rounded-md px-3 py-2 text-sm">
+                    <div className="text-foreground/75 bg-muted/30 flex items-center justify-between rounded-md px-3 py-2 text-sm">
                         <span>
                             {filteredMedia.length} files • Page {currentPage} of {totalPages || 1}
                         </span>
@@ -303,7 +303,7 @@ export default function MediaLibraryModal({
                             <div className="flex flex-1 items-center justify-center">
                                 <div className="text-center">
                                     <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
-                                    <p className="text-muted-foreground">Loading media...</p>
+                                    <p className="text-foreground/75">Loading media...</p>
                                 </div>
                             </div>
                         ) : filteredMedia.length === 0 ? (
@@ -318,17 +318,17 @@ export default function MediaLibraryModal({
                                         onDragOver={handleDrag}
                                         onDrop={handleDrop}
                                     >
-                                        <Upload className="text-muted-foreground h-10 w-10" />
+                                        <Upload className="text-foreground/75 h-10 w-10" />
                                     </div>
 
                                     <div className="mb-6 space-y-3">
                                         <h3 className="text-lg font-semibold">No media files found</h3>
                                         {searchTerm && (
-                                            <p className="text-muted-foreground text-sm">
+                                            <p className="text-foreground/75 text-sm">
                                                 No results for <span className="text-foreground font-medium">"${searchTerm}"</span>
                                             </p>
                                         )}
-                                        <p className="text-muted-foreground text-sm">
+                                        <p className="text-foreground/75 text-sm">
                                             {searchTerm ? 'Try a different search term or upload new images' : 'Upload images to get started'}
                                         </p>
                                     </div>
@@ -375,7 +375,7 @@ export default function MediaLibraryModal({
                                                 ) : (
                                                     <div className="flex flex-col items-center justify-center p-4">
                                                         {getFileIcon(item.mime_type)}
-                                                        <div className="text-muted-foreground mt-1 w-full truncate text-center text-xs font-medium">
+                                                        <div className="text-foreground/75 mt-1 w-full truncate text-center text-xs">
                                                             {item.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                         </div>
                                                     </div>
@@ -417,7 +417,7 @@ export default function MediaLibraryModal({
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <div className="flex flex-col items-center justify-between gap-4 border-t pt-3 sm:flex-row">
-                            <div className="text-muted-foreground text-center text-sm sm:text-left">
+                            <div className="text-foreground/75 text-center text-sm sm:text-left">
                                 Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredMedia.length)} of {filteredMedia.length}{' '}
                                 files
                             </div>
@@ -525,7 +525,7 @@ export default function MediaLibraryModal({
                                         <Upload className={`h-8 w-8 transition-colors ${dragActive ? 'text-blue-500' : 'text-gray-400'}`} />
                                     </div>
                                     <h3 className="mb-2 text-lg font-medium">{dragActive ? 'Drop files here' : 'Upload your files'}</h3>
-                                    <p className="text-muted-foreground mb-6 text-sm">Drag and drop your files here, or click to browse</p>
+                                    <p className="text-foreground/75 mb-6 text-sm">Drag and drop your files here, or click to browse</p>
                                     <Input
                                         inputType="file"
                                         multiple

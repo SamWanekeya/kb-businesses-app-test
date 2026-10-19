@@ -167,8 +167,8 @@ export function StripePaymentForm({
     if (!stripeKey) {
         return (
             <div className="bg-muted/50 rounded-md border p-4 text-center">
-                <p className="text-muted-foreground mb-2 text-sm">{translate('Stripe not configured')}</p>
-                <p className="text-muted-foreground text-xs">{translate('Please contact the organization to configure Stripe payment settings.')}</p>
+                <p className="text-foreground/75 mb-2 text-sm">{translate('Stripe not configured')}</p>
+                <p className="text-foreground/75 text-xs">{translate('Please contact the organization to configure Stripe payment settings.')}</p>
             </div>
         );
     }
@@ -177,7 +177,7 @@ export function StripePaymentForm({
         return (
             <div className="bg-destructive/10 rounded-md border p-4 text-center">
                 <p className="text-destructive mb-2 text-sm">{translate('Invalid Stripe configuration')}</p>
-                <p className="text-muted-foreground text-xs">{translate('Stripe publishable key must start with "pk_".')}</p>
+                <p className="text-foreground/75 text-xs">{translate('Stripe publishable key must start with "pk_".')}</p>
             </div>
         );
     }
@@ -185,7 +185,7 @@ export function StripePaymentForm({
     if (!stripePromise) {
         return (
             <div className="p-4 text-center">
-                <p className="text-muted-foreground text-sm">{translate('Loading Stripe...')}</p>
+                <p className="text-foreground/75 text-sm">{translate('Loading Stripe...')}</p>
             </div>
         );
     }

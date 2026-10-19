@@ -185,7 +185,7 @@ export default function PlanOrdersPage() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{row.user?.name || '-'}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{row.user?.email || ''}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{row.user?.email || ''}</div>
                         </div>
                     </div>
                 );
@@ -199,7 +199,7 @@ export default function PlanOrdersPage() {
                 const planName = row.plan?.name;
                 if (!planName) return '-';
                 return (
-                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                         {formatTitleCase(planName)}
                     </span>
                 );
@@ -230,7 +230,7 @@ export default function PlanOrdersPage() {
             className: 'whitespace-nowrap',
             render: (value) => (
                 <span
-                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                 >
                     {translate(value)}
                 </span>
@@ -420,18 +420,18 @@ export default function PlanOrdersPage() {
                             {/* Order Number | Order Date */}
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <ShoppingCart className="h-4 w-4" />
                                         {translate('Order Number')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.order_number || '-'}</p>
+                                    <p className="mt-1 text-sm text-gray-900 dark:text-white">{currentItem.order_number || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <Calendar className="h-4 w-4" />
                                         {translate('Order Date')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
                                         {window.kbSettings.formatDateTime(currentItem.ordered_at, false) || '-'}
                                     </p>
                                 </div>
@@ -440,24 +440,24 @@ export default function PlanOrdersPage() {
                             {/* Status | Payment Method */}
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <CheckCircle className="h-4 w-4" />
                                         {translate('Status')}
                                     </label>
                                     <div className="mt-1">
                                         <span
-                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[currentItem.status] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs capitalize ring-1 ring-inset ${statusColors[currentItem.status] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                                         >
                                             {translate(currentItem.status)}
                                         </span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {translate('Payment Method')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 capitalize dark:text-white">
+                                    <p className="mt-1 text-sm text-gray-900 capitalize dark:text-white">
                                         {currentItem.payment_method || '-'}
                                     </p>
                                 </div>
@@ -466,44 +466,44 @@ export default function PlanOrdersPage() {
                             {/* User | Plan */}
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <User className="h-4 w-4" />
                                         {translate('User')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.user?.name || '-'}</p>
-                                    <p className="text-muted-foreground text-xs">{currentItem.user?.email || ''}</p>
+                                    <p className="mt-1 text-sm text-gray-900 dark:text-white">{currentItem.user?.name || '-'}</p>
+                                    <p className="text-foreground/75 text-xs">{currentItem.user?.email || ''}</p>
                                 </div>
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <Tag className="h-4 w-4" />
                                         {translate('Plan')}
                                     </label>
                                     <div className="mt-1">
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
+                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
                                             {formatTitleCase(currentItem.plan?.name || '-')}
                                         </span>
                                     </div>
-                                    <p className="text-muted-foreground mt-1 text-xs capitalize">{currentItem.billing_cycle || ''}</p>
+                                    <p className="text-foreground/75 mt-1 text-xs capitalize">{currentItem.billing_cycle || ''}</p>
                                 </div>
                             </div>
 
                             {/* Original Price | Discount */}
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {translate('Original Price')}
                                     </label>
-                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white">
                                         {window.kbSettings.formatCurrency(currentItem.original_price)}
                                     </p>
                                 </div>
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <Tag className="h-4 w-4" />
                                         {translate('Discount')}
                                     </label>
-                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white">
                                         {currentItem.discount_amount > 0 ? `-${window.kbSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
                                     </p>
                                 </div>
@@ -512,17 +512,17 @@ export default function PlanOrdersPage() {
                             {/* Final Price | Payment Receipt */}
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                    <label className="flex items-center gap-2 text-sm text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {translate('Final Price')}
                                     </label>
-                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white">
                                         {window.kbSettings.formatCurrency(currentItem.final_price)}
                                     </p>
                                 </div>
                                 {currentItem.receipt_path && (
                                     <div>
-                                        <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                        <label className="flex items-center gap-2 text-sm text-gray-500">
                                             <Download className="h-4 w-4" />
                                             {translate('Payment Receipt')}
                                         </label>
@@ -550,20 +550,20 @@ export default function PlanOrdersPage() {
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     {currentItem.processedBy && (
                                         <div>
-                                            <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                            <label className="flex items-center gap-2 text-sm text-gray-500">
                                                 <UserCheck className="h-4 w-4" />
                                                 {translate('Processed By')}
                                             </label>
-                                            <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.processedBy.name}</p>
+                                            <p className="mt-1 text-sm text-gray-900 dark:text-white">{currentItem.processedBy.name}</p>
                                         </div>
                                     )}
                                     {currentItem.notes && (
                                         <div>
-                                            <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                                            <label className="flex items-center gap-2 text-sm text-gray-500">
                                                 <FileText className="h-4 w-4" />
                                                 {translate('Notes')}
                                             </label>
-                                            <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.notes}</p>
+                                            <p className="mt-1 text-sm text-gray-900 dark:text-white">{currentItem.notes}</p>
                                         </div>
                                     )}
                                 </div>

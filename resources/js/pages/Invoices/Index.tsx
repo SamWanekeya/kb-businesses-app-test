@@ -366,7 +366,7 @@ export default function Invoices() {
             render: (value: string, item: any) => (
                 <Link
                     href={route('invoices.show', item.id)}
-                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
                     style={{ color: '#1d4ed8' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
                     onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
@@ -394,7 +394,7 @@ export default function Invoices() {
                         </Avatar>
                         <div>
                             <div className="font-medium whitespace-nowrap">{value.name}</div>
-                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                            <div className="text-foreground/75 text-sm whitespace-nowrap">{value.email}</div>
                         </div>
                     </div>
                 ) : (
@@ -447,7 +447,7 @@ export default function Invoices() {
                 };
                 return (
                     <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}
                     >
                         {getStatusLabel(value)}
                     </span>
@@ -811,13 +811,13 @@ export default function Invoices() {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="sticky top-0 bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
                                                 {translate('Sent At')}
                                             </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
                                                 {translate('Type')}
                                             </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
                                                 {translate('Sent By')}
                                             </th>
                                         </tr>
@@ -830,7 +830,7 @@ export default function Invoices() {
                                                         new Date(reminder.created_at).toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/20 ring-inset">
+                                                    <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs text-purple-700 ring-1 ring-purple-600/20 ring-inset">
                                                         {formatTitleCase(reminder.type)}
                                                     </span>
                                                 </td>

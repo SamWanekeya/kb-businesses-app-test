@@ -236,7 +236,7 @@ export default function PurchaseOrderEdit() {
 
                     <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>
+                            <Label className="text-sm" required>
                                 {translate('Purchase Order Name')}
                             </Label>
                             <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
@@ -244,14 +244,14 @@ export default function PurchaseOrderEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Description')}</Label>
+                            <Label className="text-sm">{translate('Description')}</Label>
                             <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={3} />
                         </div>
 
                         {/* Sales Order + Account */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Sales Order')}
                                 </Label>
                                 <Select value={data.sales_order_id} onValueChange={handleSalesOrderChange}>
@@ -270,7 +270,7 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Account')}
                                 </Label>
                                 <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
@@ -292,7 +292,7 @@ export default function PurchaseOrderEdit() {
                         {/* Billing Contact + Shipping Contact */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Billing Contact')}
                                 </Label>
                                 <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
@@ -311,7 +311,7 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Shipping Contact')}
                                 </Label>
                                 <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
@@ -333,7 +333,7 @@ export default function PurchaseOrderEdit() {
                         {/* Status + Order Date */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select value={data.status} onValueChange={(v) => set('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
@@ -349,7 +349,7 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Order Date')}
                                 </Label>
                                 <div
@@ -377,7 +377,7 @@ export default function PurchaseOrderEdit() {
                         {/* Expected Delivery Date + Assign To */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{translate('Expected Delivery Date')}</Label>
+                                <Label className="text-sm">{translate('Expected Delivery Date')}</Label>
                                 <div
                                     className="cursor-pointer"
                                     onClick={(e) => {
@@ -400,7 +400,7 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Assign To')}
                                 </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -463,7 +463,7 @@ export default function PurchaseOrderEdit() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b border-gray-100 bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:border-gray-700 dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[180px] xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -503,7 +503,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -521,7 +521,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -541,7 +541,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -561,7 +561,7 @@ export default function PurchaseOrderEdit() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
@@ -579,10 +579,10 @@ export default function PurchaseOrderEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
-                                                    <span className="text-muted-foreground text-sm font-medium">
+                                                    <span className="text-foreground/75 text-sm">
                                                         {(() => {
                                                             const p = productOptions.find((p: any) => String(p.id) === row.product_id);
                                                             return p?.tax
@@ -592,7 +592,7 @@ export default function PurchaseOrderEdit() {
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(total)}</span>

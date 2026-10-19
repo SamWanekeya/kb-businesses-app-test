@@ -140,7 +140,7 @@ export default function PurchaseOrderShow() {
         const cfg = poStatusConfig[status] || poStatusConfig.draft;
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${cfg.bg} ${cfg.color} ${cfg.ring}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${cfg.bg} ${cfg.color} ${cfg.ring}`}
             >
                 {cfg.label}
             </span>
@@ -178,7 +178,7 @@ export default function PurchaseOrderShow() {
                         </CardHeader>
                         <CardContent className="px-6 py-5">
                             {/* Order Progress */}
-                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Order Progress')}</p>
+                            <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Order Progress')}</p>
                             <div className="flex flex-wrap items-center gap-y-2">
                                 {PO_STATUS_STEPS.map((step, i) => {
                                     const s = poStatusConfig[step];
@@ -195,14 +195,14 @@ export default function PurchaseOrderShow() {
                                                             ? `${s.bg} border-current ${s.color}`
                                                             : isDone
                                                               ? 'bg-primary/10 border-primary text-primary'
-                                                              : 'bg-muted border-border text-muted-foreground'
+                                                              : 'bg-muted border-border text-foreground/75'
                                                     }`}
                                                 >
                                                     <StepIcon className="h-4 w-4" />
                                                 </div>
                                                 <span
                                                     className={`text-[10px] font-medium whitespace-nowrap ${
-                                                        isActive ? s.color : isDone ? 'text-primary' : 'text-muted-foreground'
+                                                        isActive ? s.color : isDone ? 'text-primary' : 'text-foreground/75'
                                                     }`}
                                                 >
                                                     {s.label}
@@ -221,70 +221,70 @@ export default function PurchaseOrderShow() {
                             </div>
                             <div className="mt-5 grid grid-cols-1 gap-6 border-t pt-5 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {purchaseOrder.billing_address || translate('-')}
                                                 </p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_state || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {purchaseOrder.billing_postal_code || translate('-')}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{purchaseOrder.billing_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="border-t pt-6 xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0">
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {purchaseOrder.shipping_address || translate('-')}
                                                 </p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_city || translate('-')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {purchaseOrder.shipping_state || translate('-')}
                                                 </p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">
+                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm">
                                                     {purchaseOrder.shipping_postal_code || translate('-')}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_country || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm">{purchaseOrder.shipping_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@ export default function PurchaseOrderShow() {
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Package className="text-muted-foreground me-3 h-5 w-5" />
+                                <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </CardHeader>
@@ -352,7 +352,7 @@ export default function PurchaseOrderShow() {
                                                                         </a>
                                                                     ) : (
                                                                         <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                            <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                            <Package className="text-foreground/75/40 h-4 w-4" />
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
@@ -360,10 +360,10 @@ export default function PurchaseOrderShow() {
                                                                             {product.name}
                                                                         </p>
                                                                         {product.sku && (
-                                                                            <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                            <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
                                                                         {product.category?.name && (
-                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                                 {product.category.name}
                                                                             </span>
                                                                         )}
@@ -397,7 +397,7 @@ export default function PurchaseOrderShow() {
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
@@ -406,12 +406,12 @@ export default function PurchaseOrderShow() {
                                                                         <p className="text-foreground text-sm font-semibold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
-                                                                        <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                        <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                             {formatCurrency(taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-end">
@@ -429,19 +429,19 @@ export default function PurchaseOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start gap-4 border-t px-4 py-5 sm:items-end sm:px-6">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(purchaseOrder.subtotal ?? subtotal)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">
                                                     -{formatCurrency(purchaseOrder.discount_amount || totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(purchaseOrder.tax_amount ?? totalTax)}
                                                 </span>
@@ -458,9 +458,9 @@ export default function PurchaseOrderShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-sm">
                                         {translate('No products added to this purchase order')}
                                     </p>
                                 </div>
@@ -472,7 +472,7 @@ export default function PurchaseOrderShow() {
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
                         </CardHeader>
@@ -492,7 +492,7 @@ export default function PurchaseOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <MessageCircle className="text-muted-foreground me-3 h-5 w-5" />
+                                    <MessageCircle className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
@@ -594,7 +594,7 @@ export default function PurchaseOrderShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
+                                                                            <AvatarFallback className="bg-muted text-foreground/75 text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -619,12 +619,12 @@ export default function PurchaseOrderShow() {
                                                                         {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
-                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                     >
                                                                         {activity.activity_type.charAt(0).toUpperCase() +
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
-                                                                    <span className="text-muted-foreground text-xs">
+                                                                    <span className="text-foreground/75 text-xs">
                                                                         {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
@@ -639,7 +639,7 @@ export default function PurchaseOrderShow() {
                                                                                             <Button
                                                                                                 variant="ghost"
                                                                                                 size="sm"
-                                                                                                className="text-muted-foreground h-6 w-6 p-0"
+                                                                                                className="text-foreground/75 h-6 w-6 p-0"
                                                                                                 onClick={() => {
                                                                                                     setEditingComment(activity.id);
                                                                                                     setEditCommentText(activity.description);
@@ -661,7 +661,7 @@ export default function PurchaseOrderShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setCurrentActivity(activity);
                                                                                                 setIsDeleteModalOpen(true);
@@ -726,13 +726,13 @@ export default function PurchaseOrderShow() {
                                                                     )
                                                                 ) : activity.description?.includes('into') ? (
                                                                     <p
-                                                                        className="text-muted-foreground text-sm break-words"
+                                                                        className="text-foreground/75 text-sm break-words"
                                                                         dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                     />
                                                                 ) : activity.title ? (
-                                                                    <p className="text-muted-foreground text-sm break-words">{activity.title}</p>
+                                                                    <p className="text-foreground/75 text-sm break-words">{activity.title}</p>
                                                                 ) : (
-                                                                    <p className="text-muted-foreground text-sm break-words">
+                                                                    <p className="text-foreground/75 text-sm break-words">
                                                                         {activity.description}
                                                                     </p>
                                                                 )}
@@ -743,8 +743,8 @@ export default function PurchaseOrderShow() {
                                             })}
                                         </div>
                                     ) : (
-                                        <div className="text-muted-foreground py-12 text-center">
-                                            <MessageCircle className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                        <div className="text-foreground/75 py-12 text-center">
+                                            <MessageCircle className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                             <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
@@ -768,7 +768,7 @@ export default function PurchaseOrderShow() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(purchaseOrder.total_amount)}</p>
                                 </div>
                             </div>
@@ -800,7 +800,7 @@ export default function PurchaseOrderShow() {
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="px-4 pt-3 pb-3">
-                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                         <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                         {translate('Account')}
                                     </p>
@@ -810,7 +810,7 @@ export default function PurchaseOrderShow() {
                                             <div className="min-w-0">
                                                 <p className="text-foreground truncate text-sm font-semibold">{purchaseOrder.account.name}</p>
                                                 {purchaseOrder.account.email && (
-                                                    <p className="text-muted-foreground truncate text-xs">{purchaseOrder.account.email}</p>
+                                                    <p className="text-foreground/75 truncate text-xs">{purchaseOrder.account.email}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -836,7 +836,7 @@ export default function PurchaseOrderShow() {
                                         <div className="space-y-3 px-4 pt-3 pb-3">
                                             {purchaseOrder.billing_contact && (
                                                 <div>
-                                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                                         {translate('Billing Contact')}
                                                     </p>
@@ -848,7 +848,7 @@ export default function PurchaseOrderShow() {
                                                                     {purchaseOrder.billing_contact.name}
                                                                 </p>
                                                                 {purchaseOrder.billing_contact.email && (
-                                                                    <p className="text-muted-foreground truncate text-xs">
+                                                                    <p className="text-foreground/75 truncate text-xs">
                                                                         {purchaseOrder.billing_contact.email}
                                                                     </p>
                                                                 )}
@@ -876,7 +876,7 @@ export default function PurchaseOrderShow() {
                                             )}
                                             {purchaseOrder.shipping_contact && (
                                                 <div>
-                                                    <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                                    <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                                         {translate('Shipping Contact')}
                                                     </p>
@@ -888,7 +888,7 @@ export default function PurchaseOrderShow() {
                                                                     {purchaseOrder.shipping_contact.name}
                                                                 </p>
                                                                 {purchaseOrder.shipping_contact.email && (
-                                                                    <p className="text-muted-foreground truncate text-xs">
+                                                                    <p className="text-foreground/75 truncate text-xs">
                                                                         {purchaseOrder.shipping_contact.email}
                                                                     </p>
                                                                 )}
@@ -931,26 +931,26 @@ export default function PurchaseOrderShow() {
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
-                                <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Order Number')}</p>
-                                    <p className="text-foreground text-sm font-medium">{purchaseOrder.order_number}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Order Number')}</p>
+                                    <p className="text-foreground text-sm">{purchaseOrder.order_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Order Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(purchaseOrder.order_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Expected Delivery')}</p>
+                                    <p className="text-foreground text-sm">
                                         {purchaseOrder.expected_delivery_date
                                             ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date)
                                             : translate('-')}
@@ -959,7 +959,7 @@ export default function PurchaseOrderShow() {
                             </div>
                             {purchaseOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.assigned_user.avatar} alt={purchaseOrder.assigned_user.name} />
@@ -968,9 +968,9 @@ export default function PurchaseOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{purchaseOrder.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{purchaseOrder.assigned_user.name}</p>
                                             {purchaseOrder.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{purchaseOrder.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{purchaseOrder.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -978,7 +978,7 @@ export default function PurchaseOrderShow() {
                             )}
                             {purchaseOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.creator.avatar} alt={purchaseOrder.creator.name} />
@@ -987,9 +987,9 @@ export default function PurchaseOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{purchaseOrder.creator.name}</p>
+                                            <p className="text-foreground truncate text-sm">{purchaseOrder.creator.name}</p>
                                             {purchaseOrder.creator.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{purchaseOrder.creator.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{purchaseOrder.creator.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -1014,13 +1014,13 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{purchaseOrder.sales_order.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground truncate text-sm">{purchaseOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>
@@ -1035,15 +1035,15 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground truncate text-sm">
                                                 {purchaseOrder.shipping_provider_type.name}
                                             </p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                                    <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
                                                     <p>{translate('View')}</p>

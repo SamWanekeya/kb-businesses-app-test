@@ -66,7 +66,7 @@ export default function UserShow() {
                                     <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Role')}</label>
                                     <div className="mt-2 flex items-center">
                                         <Shield className="mr-2 h-4 w-4 text-gray-400" />
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                                             {user.roles?.[0]?.name || user.type || 'No Role'}
                                         </span>
                                     </div>
@@ -77,7 +77,7 @@ export default function UserShow() {
                                     <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Status')}</label>
                                     <div className="mt-2">
                                         <span
-                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                 user.status === 'active'
                                                     ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                     : 'bg-red-50 text-red-700 ring-red-600/20'
@@ -132,7 +132,7 @@ export default function UserShow() {
                                                 </p>
                                             </div>
                                             <span
-                                                className={`rounded-full px-2 py-1 text-xs font-medium ${
+                                                className={`rounded-full px-2 py-1 text-xs ${
                                                     meeting.status === 'completed'
                                                         ? 'bg-green-100 text-green-800'
                                                         : meeting.status === 'in_progress'

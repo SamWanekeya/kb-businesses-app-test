@@ -100,11 +100,11 @@ export function InvoiceToyyibPayPaymentForm({
 
             <div className="rounded-lg border bg-gray-50 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
+                    <span className="text-sm text-gray-600">{translate('Payment Type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
+                    <span className="text-sm text-gray-600">{translate('Amount')}:</span>
                     <span className="text-lg font-extrabold text-gray-900">
                         {currency} {amount}
                     </span>
@@ -160,7 +160,7 @@ export function InvoiceToyyibPayPaymentForm({
                         }}
                         required
                     />
-                    <p className="text-muted-foreground text-xs">{translate('Malaysian phone number format: 60123456789')}</p>
+                    <p className="text-foreground/75 text-xs">{translate('Malaysian phone number format: 60123456789')}</p>
                 </div>
 
                 <div className="flex gap-3 pt-4">

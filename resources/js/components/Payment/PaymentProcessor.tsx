@@ -455,7 +455,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                     <div className="flex items-center justify-between">
                         <div>
                             <h3 className="font-medium">{plan.name}</h3>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-foreground/75 text-sm">
                                 {translate(billingCycle)} {translate('subscription')}
                             </p>
                         </div>
@@ -463,7 +463,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                             <div className="text-lg font-extrabold">
                                 {currency_symbol} {plan.price}
                             </div>
-                            <div className="text-muted-foreground text-sm">/{translate(billingCycle)}</div>
+                            <div className="text-foreground/75 text-sm">/{translate(billingCycle)}</div>
                         </div>
                     </div>
                 </CardContent>
@@ -473,7 +473,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
             <div className="space-y-3">
                 {finalPrice != 0 && <Label>{translate('Select Payment Method')}</Label>}
                 {enabledPaymentMethods.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">{translate('No payment methods available')}</p>
+                    <p className="text-foreground/75 text-sm">{translate('No payment methods available')}</p>
                 ) : (
                     finalPrice != 0 && (
                         <div className="space-y-2">
@@ -523,7 +523,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                     className="pr-10"
                                     disabled={!!appliedDiscount}
                                 />
-                                <Tag className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
+                                <Tag className="text-foreground/75 absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
                             </div>
                             {!appliedDiscount ? (
                                 <Button

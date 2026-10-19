@@ -147,7 +147,7 @@ export default function InvoiceShow() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
                 {status === 'partially_paid' ? translate('Partially Paid') : status?.charAt(0).toUpperCase() + status?.slice(1) || translate('Draft')}
             </span>
@@ -249,34 +249,34 @@ export default function InvoiceShow() {
                             <div className="flex items-start justify-between">
                                 <div>
                                     <CardTitle className="text-lg font-extrabold">{invoice.name}</CardTitle>
-                                    <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
+                                    <p className="text-foreground/75 mt-1.5 text-sm leading-relaxed">
                                         {invoice.description || translate('No description provided')}
                                     </p>
                                 </div>
                             </div>
                         </CardHeader>
                         <CardContent className="p-4 sm:p-5">
-                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                            <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                             <div className="grid grid-cols-1 gap-x-2 gap-y-2 xl:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_address || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_address || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_city || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_city || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_state || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_state || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_postal_code || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_postal_code || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_country || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_country || translate('-')}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -286,7 +286,7 @@ export default function InvoiceShow() {
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <ShoppingCart className="text-muted-foreground mr-3 h-5 w-5" />
+                                <ShoppingCart className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
                         </CardHeader>
@@ -343,7 +343,7 @@ export default function InvoiceShow() {
                                                                         </a>
                                                                     ) : (
                                                                         <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                            <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                            <Package className="text-foreground/75/40 h-4 w-4" />
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
@@ -351,10 +351,10 @@ export default function InvoiceShow() {
                                                                             {product.name}
                                                                         </p>
                                                                         {product.sku && (
-                                                                            <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                            <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
                                                                         {product.category?.name && (
-                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                            <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                                 {product.category.name}
                                                                             </span>
                                                                         )}
@@ -388,7 +388,7 @@ export default function InvoiceShow() {
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
@@ -397,18 +397,18 @@ export default function InvoiceShow() {
                                                                         <p className="text-foreground text-sm font-semibold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
-                                                                        <p className="text-muted-foreground mt-0.5 font-mono text-xs">
+                                                                        <p className="text-foreground/75 mt-0.5 font-mono text-xs">
                                                                             {formatCurrency(taxAmount)}
                                                                         </p>
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-muted-foreground text-xs">—</span>
+                                                                    <span className="text-foreground/75 text-xs">—</span>
                                                                 )}
                                                             </TableCell>
                                                             <TableCell className="py-3 text-right">
                                                                 {discountAmount > 0 ? (
                                                                     <>
-                                                                        <p className="text-muted-foreground font-mono text-xs line-through">
+                                                                        <p className="text-foreground/75 font-mono text-xs line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </p>
                                                                         <p className="font-mono text-sm font-extrabold text-emerald-600">
@@ -431,17 +431,17 @@ export default function InvoiceShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(subtotal + totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
@@ -456,9 +456,9 @@ export default function InvoiceShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this invoice')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this invoice')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -468,7 +468,7 @@ export default function InvoiceShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Notes')}
                                 </CardTitle>
                             </CardHeader>
@@ -485,7 +485,7 @@ export default function InvoiceShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Terms')}
                                 </CardTitle>
                             </CardHeader>
@@ -624,7 +624,7 @@ export default function InvoiceShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <Bell className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <Bell className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Reminder History')} ({reminderHistory.length})
                                 </CardTitle>
                             </CardHeader>
@@ -633,13 +633,13 @@ export default function InvoiceShow() {
                                     <table className="text-foreground w-full caption-bottom text-sm">
                                         <thead className="[&_tr]:border-b">
                                             <tr className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Sent By')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Type')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Date')}
                                                 </th>
                                             </tr>
@@ -650,16 +650,16 @@ export default function InvoiceShow() {
                                                     key={i}
                                                     className="hover:bg-muted/50 border-b transition-colors dark:border-gray-700 dark:bg-gray-900"
                                                 >
-                                                    <td className="text-foreground px-4 py-3 align-middle text-sm font-medium">
+                                                    <td className="text-foreground px-4 py-3 align-middle text-sm">
                                                         {reminder.sent_by?.name || translate('-')}
                                                     </td>
                                                     <td className="px-4 py-3 align-middle capitalize">
-                                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset dark:bg-blue-900/20 dark:text-blue-400">
+                                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset dark:bg-blue-900/20 dark:text-blue-400">
                                                             {reminder.type || 'email'}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-3 align-middle">
-                                                        <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+                                                        <div className="text-foreground/75 flex items-center gap-1.5 text-sm">
                                                             <Calendar className="h-3.5 w-3.5 shrink-0" />
                                                             {window.kbSettings.formatDateTime(reminder.created_at, true) ||
                                                                 new Date(reminder.created_at).toLocaleString()}
@@ -679,7 +679,7 @@ export default function InvoiceShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <DollarSign className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <DollarSign className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Payment History')}
                                 </CardTitle>
                             </CardHeader>
@@ -688,25 +688,25 @@ export default function InvoiceShow() {
                                     <table className="text-foreground w-full caption-bottom text-sm">
                                         <thead>
                                             <tr className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[170px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[170px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Date')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Method')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[110px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[110px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Type')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[140px] bg-[#F0F0F1] px-4 py-2.5 pr-6 text-right font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[140px] bg-[#F0F0F1] px-4 py-2.5 pr-6 text-right font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Amount')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 pl-6 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 pl-6 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Status')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[200px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[200px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Payment ID')}
                                                 </th>
-                                                <th className="text-muted-foreground sticky top-0 z-10 w-[80px] bg-[#F0F0F1] px-4 py-2.5 text-center font-semibold dark:bg-gray-800 dark:text-gray-300">
+                                                <th className="text-foreground/75 sticky top-0 z-10 w-[80px] bg-[#F0F0F1] px-4 py-2.5 text-center font-semibold dark:bg-gray-800 dark:text-gray-300">
                                                     {translate('Receipt')}
                                                 </th>
                                             </tr>
@@ -731,7 +731,7 @@ export default function InvoiceShow() {
                                                     <td className="px-4 py-3 align-middle capitalize">{payment.payment_method}</td>
                                                     <td className="px-4 py-3 align-middle">
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                                 payment.payment_type === 'full'
                                                                     ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                                     : payment.payment_type === 'partial'
@@ -749,7 +749,7 @@ export default function InvoiceShow() {
                                                     </td>
                                                     <td className="px-4 py-3 pl-6 align-middle">
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                                 payment.status === 'completed'
                                                                     ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                                     : payment.status === 'pending'
@@ -802,7 +802,7 @@ export default function InvoiceShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
+                                    <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
@@ -904,7 +904,7 @@ export default function InvoiceShow() {
                                                                                 src={activity.user?.avatar}
                                                                                 alt={activity.user?.name || 'U'}
                                                                             />
-                                                                            <AvatarFallback className="bg-muted text-muted-foreground text-xs font-extrabold">
+                                                                            <AvatarFallback className="bg-muted text-foreground/75 text-xs font-extrabold">
                                                                                 {getInitials(activity.user?.name || 'U')}
                                                                             </AvatarFallback>
                                                                         </Avatar>
@@ -929,12 +929,12 @@ export default function InvoiceShow() {
                                                                         {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
-                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
+                                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${badgeCls}`}
                                                                     >
                                                                         {activity.activity_type.charAt(0).toUpperCase() +
                                                                             activity.activity_type.slice(1)}
                                                                     </span>
-                                                                    <span className="text-muted-foreground text-xs">
+                                                                    <span className="text-foreground/75 text-xs">
                                                                         {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                                     </span>
                                                                 </div>
@@ -949,7 +949,7 @@ export default function InvoiceShow() {
                                                                                             <Button
                                                                                                 variant="ghost"
                                                                                                 size="sm"
-                                                                                                className="text-muted-foreground h-6 w-6 p-0"
+                                                                                                className="text-foreground/75 h-6 w-6 p-0"
                                                                                                 onClick={() => {
                                                                                                     setEditingComment(activity.id);
                                                                                                     setEditCommentText(activity.description);
@@ -971,7 +971,7 @@ export default function InvoiceShow() {
                                                                                         <Button
                                                                                             variant="ghost"
                                                                                             size="sm"
-                                                                                            className="text-muted-foreground h-6 w-6 p-0"
+                                                                                            className="text-foreground/75 h-6 w-6 p-0"
                                                                                             onClick={() => {
                                                                                                 setCurrentActivity(activity);
                                                                                                 setIsDeleteModalOpen(true);
@@ -1036,13 +1036,13 @@ export default function InvoiceShow() {
                                                                     )
                                                                 ) : activity.description?.includes('into') ? (
                                                                     <p
-                                                                        className="text-muted-foreground text-sm break-words"
+                                                                        className="text-foreground/75 text-sm break-words"
                                                                         dangerouslySetInnerHTML={{ __html: activity.description }}
                                                                     />
                                                                 ) : activity.title ? (
-                                                                    <p className="text-muted-foreground text-sm break-words">{activity.title}</p>
+                                                                    <p className="text-foreground/75 text-sm break-words">{activity.title}</p>
                                                                 ) : (
-                                                                    <p className="text-muted-foreground text-sm break-words">
+                                                                    <p className="text-foreground/75 text-sm break-words">
                                                                         {activity.description}
                                                                     </p>
                                                                 )}
@@ -1053,8 +1053,8 @@ export default function InvoiceShow() {
                                             })}
                                         </div>
                                     ) : (
-                                        <div className="text-muted-foreground py-12 text-center">
-                                            <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
+                                        <div className="text-foreground/75 py-12 text-center">
+                                            <Calendar className="text-foreground/75/30 mx-auto mb-3 h-10 w-10" />
                                             <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
@@ -1078,7 +1078,7 @@ export default function InvoiceShow() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Balance Due')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Balance Due')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(dueAmount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(invoice.status)}</div>
@@ -1086,7 +1086,7 @@ export default function InvoiceShow() {
                             {/* Payment Progress Bar */}
                             {parseFloat(invoice.total_amount) > 0 && (
                                 <div className="mb-4">
-                                    <div className="text-muted-foreground mb-1 flex justify-between text-xs">
+                                    <div className="text-foreground/75 mb-1 flex justify-between text-xs">
                                         <span>
                                             {translate('Paid')}: <span className="font-mono">{formatCurrency(paidAmount)}</span>
                                         </span>
@@ -1098,7 +1098,7 @@ export default function InvoiceShow() {
                                             style={{ width: `${Math.min(100, (paidAmount / parseFloat(invoice.total_amount)) * 100)}%` }}
                                         />
                                     </div>
-                                    <p className="text-muted-foreground mt-1 text-xs">
+                                    <p className="text-foreground/75 mt-1 text-xs">
                                         {translate('of')} <span className="font-mono">{formatCurrency(invoice.total_amount)}</span>
                                     </p>
                                 </div>
@@ -1138,7 +1138,7 @@ export default function InvoiceShow() {
                             <CardContent className="p-0">
                                 {invoice.contact && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             {translate('Contact')}
                                         </p>
@@ -1148,7 +1148,7 @@ export default function InvoiceShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{invoice.contact.name}</p>
                                                     {invoice.contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{invoice.contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{invoice.contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -1182,7 +1182,7 @@ export default function InvoiceShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{invoice.account.name}</p>
                                                     {invoice.account.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{invoice.account.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{invoice.account.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -1217,34 +1217,34 @@ export default function InvoiceShow() {
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
-                                <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-muted-foreground text-xs">{translate('Invoice Number')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Invoice Number')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
-                                        <p className="text-foreground text-sm font-medium">{invoice.invoice_number}</p>
+                                        <p className="text-foreground text-sm">{invoice.invoice_number}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Invoice Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Invoice Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Due Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Due Date')}</p>
+                                    <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</p>
                                 </div>
                             </div>
 
                             {invoice.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={invoice.assigned_user.avatar} alt={invoice.assigned_user.name} />
@@ -1253,9 +1253,9 @@ export default function InvoiceShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{invoice.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{invoice.assigned_user.name}</p>
                                             {invoice.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{invoice.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{invoice.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -1263,7 +1263,7 @@ export default function InvoiceShow() {
                             )}
                             {invoice.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={invoice.creator.avatar} alt={invoice.creator.name} />
@@ -1272,9 +1272,9 @@ export default function InvoiceShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{invoice.creator.name}</p>
+                                            <p className="text-foreground truncate text-sm">{invoice.creator.name}</p>
                                             {invoice.creator.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{invoice.creator.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{invoice.creator.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -1300,11 +1300,11 @@ export default function InvoiceShow() {
                                     >
                                         <div className="flex min-w-0 items-center gap-2">
                                             <div className="min-w-0">
-                                                <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
-                                                <p className="text-foreground truncate text-sm font-medium">{invoice.sales_order.name}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                                <p className="text-foreground truncate text-sm">{invoice.sales_order.name}</p>
                                             </div>
                                         </div>
-                                        <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                        <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                     </Link>
                                 )}
                                 {invoice.quote && useHasPermission('view-quotes') && (
@@ -1314,11 +1314,11 @@ export default function InvoiceShow() {
                                     >
                                         <div className="flex min-w-0 items-center gap-2">
                                             <div className="min-w-0">
-                                                <p className="text-muted-foreground text-xs">{translate('Quote')}</p>
-                                                <p className="text-foreground truncate text-sm font-medium">{invoice.quote.name}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Quote')}</p>
+                                                <p className="text-foreground truncate text-sm">{invoice.quote.name}</p>
                                             </div>
                                         </div>
-                                        <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                                        <Eye className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
                                     </Link>
                                 )}
                             </CardContent>

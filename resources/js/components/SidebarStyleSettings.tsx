@@ -71,7 +71,7 @@ export default function SidebarStyleSettings() {
 
                 {/* Variant Selection */}
                 <div className="mt-4">
-                    <h4 className="mb-2 text-sm font-medium">{translate('Sidebar variant')}</h4>
+                    <h4 className="mb-2 text-sm">{translate('Sidebar variant')}</h4>
                     <div className="grid grid-cols-3 gap-2">
                         <VariantButton
                             variant="sidebar"
@@ -99,7 +99,7 @@ export default function SidebarStyleSettings() {
 
                 {/* Collapsible Selection */}
                 <div className="mt-4">
-                    <h4 className="mb-2 text-sm font-medium">{translate('Sidebar collapse mode')}</h4>
+                    <h4 className="mb-2 text-sm">{translate('Sidebar collapse mode')}</h4>
                     <div className="grid grid-cols-3 gap-2">
                         <CollapsibleButton
                             mode="offcanvas"
@@ -127,7 +127,7 @@ export default function SidebarStyleSettings() {
 
                 {/* Preview */}
                 <div className="mt-6">
-                    <h4 className="mb-2 text-sm font-medium">{translate('Preview')}</h4>
+                    <h4 className="mb-2 text-sm">{translate('Preview')}</h4>
                     <div className="bg-sidebar text-sidebar-foreground rounded-md border p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <SidebarIcon className="h-4 w-4" />

@@ -494,7 +494,7 @@ export default function Plans({
                       });
 
                 return (
-                    <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm font-medium text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
+                    <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
                         {translate('Expires on {{date}}', {
                             date: formattedDate,
                         })}
@@ -503,7 +503,7 @@ export default function Plans({
             }
 
             return (
-                <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm font-medium text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
+                <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
                     {translate('Current Plan')}
                 </div>
             );
@@ -688,13 +688,13 @@ export default function Plans({
                                 <TabsList className="grid h-auto w-full grid-cols-2 bg-transparent p-0">
                                     <TabsTrigger
                                         value="monthly"
-                                        className="cursor-pointer rounded-md px-6 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
+                                        className="cursor-pointer rounded-md px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
                                     >
                                         {translate('Monthly')}
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="yearly"
-                                        className="relative cursor-pointer rounded-md px-6 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
+                                        className="relative cursor-pointer rounded-md px-6 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
                                     >
                                         {translate('Yearly')}
                                         <Badge className="ml-2 bg-green-500 px-2 py-0.5 text-xs text-white">{translate('Save 20%')}</Badge>
@@ -744,12 +744,12 @@ export default function Plans({
                                     {isAdmin && (
                                         <>
                                             {plan.is_default && (
-                                                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-700/10 ring-inset">
                                                     {translate('Default')}
                                                 </span>
                                             )}
                                             <span
-                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                     plan.status
                                                         ? 'bg-green-50 text-green-700 ring-green-600/20'
                                                         : 'bg-red-50 text-red-700 ring-red-600/20'
@@ -760,7 +760,7 @@ export default function Plans({
                                         </>
                                     )}
                                     {!isAdmin && plan.is_current && (
-                                        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                        <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
                                             <Crown className="mr-1 h-3 w-3" />
                                             {translate('Current')}
                                         </span>
@@ -781,7 +781,7 @@ export default function Plans({
                                     </div>
                                     <p className="mb-4 text-sm text-gray-600">{plan.description}</p>
                                     {plan.trial_days > 0 && plan.is_trial_available && !userTrialUsed && (
-                                        <div className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
+                                        <div className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-700/10 ring-inset">
                                             <Zap className="h-3 w-3" />
                                             {translate('{{days}} days free trial', { days: plan.trial_days })}
                                         </div>

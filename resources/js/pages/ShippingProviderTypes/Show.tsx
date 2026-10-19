@@ -23,7 +23,7 @@ export default function ShippingProviderTypeShow() {
 
         return (
             <span
-                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
                 {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Active')}
             </span>
@@ -60,7 +60,7 @@ export default function ShippingProviderTypeShow() {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="flex items-center text-lg font-extrabold">
-                                <Truck className="text-muted-foreground mr-2 h-5 w-5" />
+                                <Truck className="text-foreground/75 mr-2 h-5 w-5" />
                                 {shippingProviderType.name}
                             </h1>
                             <p className="mt-2 text-sm">{shippingProviderType.description || translate('No description provided')}</p>
@@ -78,17 +78,17 @@ export default function ShippingProviderTypeShow() {
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{translate('Name')}</label>
+                                    <label className="text-foreground/75 text-sm">{translate('Name')}</label>
                                     <p className="mt-1 text-sm">{shippingProviderType.name}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{translate('Description')}</label>
+                                    <label className="text-foreground/75 text-sm">{translate('Description')}</label>
                                     <p className="mt-1 text-sm">{shippingProviderType.description || translate('-')}</p>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <Palette className="text-muted-foreground h-4 w-4" />
+                                    <Palette className="text-foreground/75 h-4 w-4" />
                                     <div>
-                                        <label className="text-muted-foreground text-sm font-medium">{translate('Color')}</label>
+                                        <label className="text-foreground/75 text-sm">{translate('Color')}</label>
                                         <div className="mt-1 flex items-center space-x-2">
                                             <div
                                                 className="h-6 w-6 rounded border border-gray-300"
@@ -101,13 +101,13 @@ export default function ShippingProviderTypeShow() {
                             </div>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{translate('Status')}</label>
+                                    <label className="text-foreground/75 text-sm">{translate('Status')}</label>
                                     <div className="mt-1">{getStatusBadge(shippingProviderType.status)}</div>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <User className="text-muted-foreground h-4 w-4" />
+                                    <User className="text-foreground/75 h-4 w-4" />
                                     <div>
-                                        <label className="text-muted-foreground text-sm font-medium">{translate('Created By')}</label>
+                                        <label className="text-foreground/75 text-sm">{translate('Created By')}</label>
                                         <p className="mt-1 text-sm">{shippingProviderType.creator?.name || translate('-')}</p>
                                     </div>
                                 </div>
@@ -124,14 +124,14 @@ export default function ShippingProviderTypeShow() {
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
+                                <label className="text-foreground/75 text-sm">{translate('Created At')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.kbSettings.formatDateTime(shippingProviderType.created_at, false) ||
                                         new Date(shippingProviderType.created_at).toLocaleDateString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">{translate('Updated At')}</label>
+                                <label className="text-foreground/75 text-sm">{translate('Updated At')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.kbSettings.formatDateTime(shippingProviderType.updated_at, false) ||
                                         new Date(shippingProviderType.updated_at).toLocaleDateString()}

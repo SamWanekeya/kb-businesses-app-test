@@ -199,7 +199,7 @@ export default function CookieConsentBanner() {
                         </Button>
                     </div>
 
-                    <p className="text-muted-foreground mb-4 text-sm">
+                    <p className="text-foreground/75 mb-4 text-sm">
                         {settings.cookie_description ||
                             translate('We use cookies to enhance your browsing experience and provide personalized content')}
                     </p>
@@ -226,7 +226,7 @@ export default function CookieConsentBanner() {
                     </div>
 
                     {settings.contact_us_url && (
-                        <p className="text-muted-foreground mt-2 text-xs">
+                        <p className="text-foreground/75 mt-2 text-xs">
                             {settings.contact_us_description || translate('Questions about our cookie policy?')}
                             <a href={settings.contact_us_url} className="underline">
                                 {translate('Contact us')}
@@ -259,10 +259,10 @@ export default function CookieConsentBanner() {
                                 {/* Strictly Necessary Cookies */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h4 className="text-sm font-medium">
+                                        <h4 className="text-sm">
                                             {settings.strictly_cookie_title || translate('Strictly necessary cookies')}
                                         </h4>
-                                        <p className="text-muted-foreground mt-1 text-xs">
+                                        <p className="text-foreground/75 mt-1 text-xs">
                                             {settings.strictly_cookie_description ||
                                                 translate('These cookies are essential for the website to function properly')}
                                         </p>

@@ -43,16 +43,16 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                 <CardContent className="mt-6">
                     <div className="space-y-6">
                         <div className="bg-muted/50 rounded-lg p-3">
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-foreground/75 text-sm">
                                 {translate("This is a page meant for more advanced users, simply ignore it if you don't understand what cache is.")}
                             </p>
                         </div>
                         <div className="flex items-center justify-between rounded-lg border p-4">
                             <div className="flex items-center space-x-3">
-                                <HardDrive className="text-muted-foreground h-5 w-5" />
+                                <HardDrive className="text-foreground/75 h-5 w-5" />
                                 <div>
                                     <h4 className="font-medium">{translate('Current Cache Size')}</h4>
-                                    <p className="text-muted-foreground text-sm">
+                                    <p className="text-foreground/75 text-sm">
                                         {cacheSize} MB {translate('of cached data')}
                                     </p>
                                 </div>
@@ -80,7 +80,7 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                             </TooltipProvider>
                         </div>
 
-                        <div className="text-muted-foreground text-sm">
+                        <div className="text-foreground/75 text-sm">
                             <p>{translate('Clearing cache will remove')}:</p>
                             <ul className="mt-2 list-inside list-disc space-y-1">
                                 <li>{translate('Application cache')}</li>

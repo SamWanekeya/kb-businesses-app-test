@@ -121,33 +121,33 @@ export default function DeliveryOrderShow() {
                         </CardHeader>
                         <CardContent className="p-5">
                             <div>
-                                <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Delivery Address')}</p>
+                                <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Delivery Address')}</p>
                                 <div className="space-y-2">
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                            <p className="text-foreground text-sm font-medium">{deliveryOrder.delivery_address || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Address')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_address || translate('-')}</p>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
-                                            <p className="text-foreground text-sm font-medium">{deliveryOrder.delivery_city || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('City')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_city || translate('-')}</p>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                            <p className="text-foreground text-sm font-medium">{deliveryOrder.delivery_state || translate('-')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('State')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_state || translate('-')}</p>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                            <p className="text-foreground text-sm font-medium">
+                                            <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                            <p className="text-foreground text-sm">
                                                 {deliveryOrder.delivery_postal_code || translate('-')}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="space-y-0.5">
-                                        <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
-                                        <p className="text-foreground text-sm font-medium">{deliveryOrder.delivery_country || translate('-')}</p>
+                                        <p className="text-foreground/75 text-xs">{translate('Country')}</p>
+                                        <p className="text-foreground text-sm">{deliveryOrder.delivery_country || translate('-')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +159,7 @@ export default function DeliveryOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <StickyNote className="text-muted-foreground me-3 h-5 w-5" />
+                                    <StickyNote className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Delivery Notes')}
                                 </CardTitle>
                             </CardHeader>
@@ -176,7 +176,7 @@ export default function DeliveryOrderShow() {
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
-                                    <FileText className="text-muted-foreground me-3 h-5 w-5" />
+                                    <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>
                             </CardHeader>
@@ -196,10 +196,10 @@ export default function DeliveryOrderShow() {
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Package className="text-muted-foreground me-3 h-5 w-5" />
+                                <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                                 {deliveryOrder.products?.length > 0 && (
-                                    <span className="bg-muted text-muted-foreground ms-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
+                                    <span className="bg-muted text-foreground/75 ms-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs">
                                         {deliveryOrder.products.length}
                                     </span>
                                 )}
@@ -244,16 +244,16 @@ export default function DeliveryOrderShow() {
                                                                     </a>
                                                                 ) : (
                                                                     <div className="bg-muted border-border flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border">
-                                                                        <Package className="text-muted-foreground/40 h-4 w-4" />
+                                                                        <Package className="text-foreground/75/40 h-4 w-4" />
                                                                     </div>
                                                                 )}
                                                                 <div className="min-w-0">
                                                                     <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
                                                                     {product.sku && (
-                                                                        <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
+                                                                        <p className="text-foreground/75 mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                     )}
                                                                     {product.category?.name && (
-                                                                        <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                                                                        <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                                                             {product.category.name}
                                                                         </span>
                                                                     )}
@@ -290,9 +290,9 @@ export default function DeliveryOrderShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-16 text-center">
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
-                                        <Package className="text-muted-foreground/40 h-8 w-8" />
+                                        <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-sm">
                                         {translate('No products added to this delivery order')}
                                     </p>
                                 </div>
@@ -315,12 +315,12 @@ export default function DeliveryOrderShow() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Shipping Cost')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Shipping Cost')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(deliveryOrder.shipping_cost)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
                                     <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${cfg.cls}`}
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${cfg.cls}`}
                                     >
                                         {cfg.label}
                                     </span>
@@ -355,7 +355,7 @@ export default function DeliveryOrderShow() {
                             <CardContent className="p-0">
                                 {deliveryOrder.contact && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             {translate('Contact')}
                                         </p>
@@ -365,7 +365,7 @@ export default function DeliveryOrderShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{deliveryOrder.contact.name}</p>
                                                     {deliveryOrder.contact.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{deliveryOrder.contact.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{deliveryOrder.contact.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -392,7 +392,7 @@ export default function DeliveryOrderShow() {
                                 {deliveryOrder.contact && deliveryOrder.account && <div className="mx-0 border-t" />}
                                 {deliveryOrder.account && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
+                                        <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             {translate('Account')}
                                         </p>
@@ -402,7 +402,7 @@ export default function DeliveryOrderShow() {
                                                 <div className="min-w-0">
                                                     <p className="text-foreground truncate text-sm font-semibold">{deliveryOrder.account.name}</p>
                                                     {deliveryOrder.account.email && (
-                                                        <p className="text-muted-foreground truncate text-xs">{deliveryOrder.account.email}</p>
+                                                        <p className="text-foreground/75 truncate text-xs">{deliveryOrder.account.email}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -440,40 +440,40 @@ export default function DeliveryOrderShow() {
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
-                                <Hash className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Delivery Number')}</p>
-                                    <p className="text-foreground font-mono text-sm font-medium">{deliveryOrder.delivery_number}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Delivery Number')}</p>
+                                    <p className="text-foreground font-mono text-sm">{deliveryOrder.delivery_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Delivery Date')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
-                                    <p className="text-foreground text-sm font-medium">
+                                    <p className="text-foreground/75 text-xs">{translate('Expected Delivery')}</p>
+                                    <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(deliveryOrder.expected_delivery_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <Hash className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
+                                <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{translate('Tracking Number')}</p>
-                                    <p className="text-foreground font-mono text-sm font-medium">{deliveryOrder.tracking_number || translate('-')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Tracking Number')}</p>
+                                    <p className="text-foreground font-mono text-sm">{deliveryOrder.tracking_number || translate('-')}</p>
                                 </div>
                             </div>
                             {deliveryOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.assigned_user.avatar} alt={deliveryOrder.assigned_user.name} />
@@ -482,9 +482,9 @@ export default function DeliveryOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{deliveryOrder.assigned_user.name}</p>
+                                            <p className="text-foreground truncate text-sm">{deliveryOrder.assigned_user.name}</p>
                                             {deliveryOrder.assigned_user.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{deliveryOrder.assigned_user.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{deliveryOrder.assigned_user.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -492,7 +492,7 @@ export default function DeliveryOrderShow() {
                             )}
                             {deliveryOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.creator.avatar} alt={deliveryOrder.creator.name} />
@@ -501,9 +501,9 @@ export default function DeliveryOrderShow() {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="min-w-0">
-                                            <p className="text-foreground truncate text-sm font-medium">{deliveryOrder.creator.name}</p>
+                                            <p className="text-foreground truncate text-sm">{deliveryOrder.creator.name}</p>
                                             {deliveryOrder.creator.email && (
-                                                <p className="text-muted-foreground truncate text-xs">{deliveryOrder.creator.email}</p>
+                                                <p className="text-foreground/75 truncate text-xs">{deliveryOrder.creator.email}</p>
                                             )}
                                         </div>
                                     </div>
@@ -528,8 +528,8 @@ export default function DeliveryOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">{deliveryOrder.sales_order.name}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground truncate text-sm">{deliveryOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
@@ -549,8 +549,8 @@ export default function DeliveryOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm font-medium">
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground truncate text-sm">
                                                 {deliveryOrder.shipping_provider_type.name}
                                             </p>
                                         </div>

@@ -51,7 +51,7 @@ export default function PaymentInputField({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="text-muted-foreground absolute top-0 right-0 h-full px-3"
+                        className="text-foreground/75 absolute top-0 right-0 h-full px-3"
                         onClick={() => {
                             setShowSecret(!showSecret);
                         }}

@@ -25,7 +25,7 @@ export function SummaryCard({ title, value, icon, iconColor, blobCls, iconCls, v
             <CardContent className="relative p-4 min-[1450px]:p-6">
                 <div className="flex items-start justify-between">
                     <div className="min-w-0 flex-1 pr-2">
-                        <p className="text-muted-foreground mb-1 text-sm font-medium" title={title}>
+                        <p className="text-foreground/75 mb-1 text-sm" title={title}>
                             {title}
                         </p>
                         <p

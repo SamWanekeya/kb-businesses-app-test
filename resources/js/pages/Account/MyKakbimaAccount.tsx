@@ -458,7 +458,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                         <div className="flex flex-col gap-2">
                                             <Label
                                                 htmlFor="avatar"
-                                                className="border-input bg-background hover:bg-accent hover:text-accent-foreground focus-within:ring-ring/50 inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm font-medium transition-colors focus-within:ring-2 focus-within:ring-offset-2"
+                                                className="border-input bg-background hover:bg-accent hover:text-accent-foreground focus-within:ring-ring/50 inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm transition-colors focus-within:ring-2 focus-within:ring-offset-2"
                                             >
                                                 <Camera aria-hidden="true" className="mr-2 h-4 w-4" />
                                                 {translate('Change profile picture')}
@@ -474,7 +474,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                                 aria-describedby={profileErrors.avatar ? 'avatar-error' : undefined}
                                             />
 
-                                            <p className="text-muted-foreground text-xs">
+                                            <p className="text-foreground/75 text-xs">
                                                 {translate('Choose an image to use as your profile picture.')}
                                             </p>
 
@@ -492,6 +492,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                         <Input
                                             inputType="text"
                                             inputMode="text"
+                                            label={translate('Full name')}
                                             inputIdentifier="name"
                                             value={profileData.name}
                                             onChange={(event) => handleProfileFieldChange('name', event.target.value)}
@@ -501,21 +502,14 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             aria-invalid={Boolean(profileErrors.name)}
                                             aria-describedby={profileErrors.name ? 'name-error' : undefined}
                                         />
-
-                                        {profileErrors.name && (
-                                            <p id="name-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                                {profileErrors.name}
-                                            </p>
-                                        )}
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">{translate('Your work email')}</Label>
-
                                         <Input
                                             inputIdentifier="email"
                                             inputType="email"
                                             inputMode="email"
+                                            label={translate('Your work email')}
                                             value={profileData.email}
                                             onChange={(event) => handleProfileFieldChange('email', event.target.value)}
                                             onValidate={(valid, message) => handleProfileValidate('email', valid, message)}
@@ -524,12 +518,6 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             aria-invalid={Boolean(profileErrors.email)}
                                             aria-describedby={profileErrors.email ? 'email-error' : undefined}
                                         />
-
-                                        {profileErrors.email && (
-                                            <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                                {profileErrors.email}
-                                            </p>
-                                        )}
                                     </div>
 
                                     {mustVerifyEmail && auth?.user?.email_verified_at === null && (
@@ -549,7 +537,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             </p>
 
                                             {status === 'verification-link-sent' && (
-                                                <p className="mt-2 text-sm font-medium text-green-700 dark:text-green-400">
+                                                <p className="mt-2 text-sm text-green-700 dark:text-green-400">
                                                     {translate('A new verification link has been sent to your email address.')}
                                                 </p>
                                             )}
@@ -588,6 +576,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                         <Input
                                             inputIdentifier="current_password"
                                             inputType="password"
+                                            label={translate('Current password')}
                                             value={passwordData.current_password}
                                             onChange={(event) => handlePasswordFieldChange('current_password', event.target.value)}
                                             required
@@ -595,20 +584,13 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             aria-invalid={Boolean(passwordErrors.current_password)}
                                             aria-describedby={passwordErrors.current_password ? 'current-password-error' : undefined}
                                         />
-
-                                        {passwordErrors.current_password && (
-                                            <p id="current-password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                                {passwordErrors.current_password}
-                                            </p>
-                                        )}
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password">{translate('New password')}</Label>
-
                                         <Input
                                             inputIdentifier="password"
                                             inputType="password"
+                                            label={translate('New password')}
                                             value={passwordData.password}
                                             onChange={(event) => handlePasswordFieldChange('password', event.target.value)}
                                             onValidate={(valid, message) => handlePasswordValidate('password', valid, message)}
@@ -617,20 +599,13 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             aria-invalid={Boolean(passwordErrors.password)}
                                             aria-describedby={passwordErrors.password ? 'password-error' : undefined}
                                         />
-
-                                        {passwordErrors.password && (
-                                            <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                                {passwordErrors.password}
-                                            </p>
-                                        )}
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password_confirmation">{translate('Confirm new password')}</Label>
-
                                         <Input
                                             inputIdentifier="password_confirmation"
                                             inputType="password"
+                                            label={translate('Confirm new password')}
                                             value={passwordData.password_confirmation}
                                             onChange={(event) => handlePasswordFieldChange('password_confirmation', event.target.value)}
                                             onValidate={(valid, message) => handlePasswordValidate('password_confirmation', valid, message)}
@@ -639,12 +614,6 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             aria-invalid={Boolean(passwordErrors.password_confirmation)}
                                             aria-describedby={passwordErrors.password_confirmation ? 'password-confirmation-error' : undefined}
                                         />
-
-                                        {passwordErrors.password_confirmation && (
-                                            <p id="password-confirmation-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                                {passwordErrors.password_confirmation}
-                                            </p>
-                                        )}
                                     </div>
 
                                     <div className="flex items-center gap-4">

@@ -139,7 +139,7 @@ export default function SearchAndFilterBar({
                         </div>
                     )}
 
-                    <Label className="text-muted-foreground text-xs">{translate('Per page:')}</Label>
+                    <Label className="text-foreground/75 text-xs">{translate('Per page:')}</Label>
                     <Select value={currentPerPage} onValueChange={onPerPageChange}>
                         <SelectTrigger className="h-8 w-16">
                             <SelectValue placeholder={translate('Select...')} />

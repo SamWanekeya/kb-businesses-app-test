@@ -306,7 +306,7 @@ export default function ReturnOrderEdit() {
                         </div>
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Return Order Name')}
                                 </Label>
                                 <Input
@@ -318,7 +318,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Sales Order')}
                                 </Label>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
@@ -337,7 +337,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Account')}
                                 </Label>
                                 <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
@@ -356,7 +356,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Contact')}
                                 </Label>
                                 <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
@@ -375,7 +375,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Shipping Provider')}
                                 </Label>
                                 <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
@@ -394,7 +394,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Return Date')}
                                 </Label>
                                 <div
@@ -419,7 +419,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
@@ -436,7 +436,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{translate('Return Reason')}</Label>
+                                <Label className="text-sm">{translate('Return Reason')}</Label>
                                 <Select value={form.reason} onValueChange={(v) => set('reason', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
@@ -452,7 +452,7 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>
+                                <Label className="text-sm" required>
                                     {translate('Assigned To')}
                                 </Label>
                                 <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -471,12 +471,12 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm font-medium">{translate('Description')}</Label>
+                                <Label className="text-sm">{translate('Description')}</Label>
                                 <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm font-medium">{translate('Reason Description')}</Label>
+                                <Label className="text-sm">{translate('Reason Description')}</Label>
                                 <Textarea value={form.reason_description} onChange={(e) => set('reason_description', e.target.value)} rows={2} />
                             </div>
                         </div>
@@ -516,7 +516,7 @@ export default function ReturnOrderEdit() {
                                             {['Product', 'Available Quantity', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
                                                 <th
                                                     key={h}
-                                                    className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                                    className="pe-6 pb-3 text-start text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
                                                 >
                                                     {translate(h)}
                                                 </th>
@@ -632,7 +632,7 @@ export default function ReturnOrderEdit() {
                                             {['Product', 'Return Quantity', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
                                                 <th
                                                     key={h}
-                                                    className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                                    className="pe-6 pb-3 text-start text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
                                                 >
                                                     {translate(h)}
                                                 </th>
@@ -743,7 +743,7 @@ export default function ReturnOrderEdit() {
                             <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Additional Notes')}</span>
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{translate('Notes')}</Label>
+                            <Label className="text-sm">{translate('Notes')}</Label>
                             <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
                         </div>
                     </CardContent>
