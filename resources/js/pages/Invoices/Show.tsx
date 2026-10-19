@@ -13,7 +13,6 @@ import { Textarea } from '@components/UserInterface/Textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import useInitials from '@hooks/useInitials';
 import { Link, router, usePage } from '@inertiajs/react';
-import { formatRelativeTime } from '@utils/Helpers/StringFormatters';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
 import {
@@ -348,7 +347,9 @@ export default function InvoiceShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">
+                                                                            {product.name}
+                                                                        </p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}
@@ -445,7 +446,9 @@ export default function InvoiceShow() {
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
                                                 <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
-                                                <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                                <span className="font-mono text-lg font-extrabold text-emerald-600">
+                                                    {formatCurrency(grandTotal)}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

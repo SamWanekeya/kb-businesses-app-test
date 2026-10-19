@@ -526,7 +526,12 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                 <Tag className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
                             </div>
                             {!appliedDiscount ? (
-                                <Button type="button" variant="outline" onClick={handleApplyDiscount} disabled={!discountCode.trim() || discountLoading}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={handleApplyDiscount}
+                                    disabled={!discountCode.trim() || discountLoading}
+                                >
                                     {discountLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
                                 </Button>
                             ) : (

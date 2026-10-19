@@ -273,134 +273,74 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
 
     return (
         <AuthLayout title={translate('Create your Kakbima account')}>
-            <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
-                <div className="space-y-3">
+            <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-4">
                     {/* Your full name */}
-                    <div className="space-y-2">
-                        <Label htmlFor="name">
-                            {translate('Your full name')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
-                        <Input
-                            inputIdentifier="name"
-                            inputType="text"
-                            inputMode="text"
-                            required
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={handleNameChange}
-                            onValidate={(valid, message) => {
-                                handleValidate('name', valid, message);
-                            }}
-                            aria-invalid={Boolean(clientErrors.name)}
-                            aria-describedby={clientErrors.name ? 'name-error' : undefined}
-                        />
-
-                        {clientErrors.name && (
-                            <p id="name-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.name}
-                            </p>
-                        )}
-                    </div>
+                    <Input
+                        inputIdentifier="name"
+                        inputType="text"
+                        inputMode="text"
+                        label={translate('Your full name')}
+                        required
+                        autoComplete="name"
+                        value={data.name}
+                        onChange={handleNameChange}
+                        onValidate={(valid, message) => {
+                            handleValidate('name', valid, message);
+                        }}
+                        error={clientErrors.name}
+                    />
 
                     {/* Your work email */}
-                    <div className="space-y-2">
-                        <Label htmlFor="email">
-                            {translate('Your work email')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
-                        <Input
-                            inputIdentifier="email"
-                            inputType="email"
-                            inputMode="email"
-                            required
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={handleEmailChange}
-                            onValidate={(valid, message) => {
-                                handleValidate('email', valid, message);
-                            }}
-                            aria-invalid={Boolean(clientErrors.email)}
-                            aria-describedby={clientErrors.email ? 'email-error' : undefined}
-                        />
-
-                        {clientErrors.email && (
-                            <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.email}
-                            </p>
-                        )}
-                    </div>
+                    <Input
+                        inputIdentifier="email"
+                        inputType="email"
+                        inputMode="email"
+                        label={translate('Your work email')}
+                        required
+                        autoComplete="email"
+                        value={data.email}
+                        onChange={handleEmailChange}
+                        onValidate={(valid, message) => {
+                            handleValidate('email', valid, message);
+                        }}
+                        error={clientErrors.email}
+                    />
 
                     {/* Password */}
-                    <div className="space-y-2">
-                        <Label htmlFor="password">
-                            {translate('Your password')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
-                        <Input
-                            inputIdentifier="password"
-                            inputType="password"
-                            required
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={handlePasswordChange}
-                            onValidate={(valid, message) => {
-                                handleValidate('password', valid, message);
-                            }}
-                            aria-invalid={Boolean(clientErrors.password)}
-                            aria-describedby={clientErrors.password ? 'password-error' : undefined}
-                        />
-
-                        {clientErrors.password && (
-                            <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.password}
-                            </p>
-                        )}
-                    </div>
+                    <Input
+                        inputIdentifier="password"
+                        inputType="password"
+                        label={translate('Your password')}
+                        required
+                        autoComplete="new-password"
+                        value={data.password}
+                        onChange={handlePasswordChange}
+                        onValidate={(valid, message) => {
+                            handleValidate('password', valid, message);
+                        }}
+                        error={clientErrors.password}
+                    />
 
                     {/* Password confirmation */}
-                    <div className="space-y-2">
-                        <Label htmlFor="password_confirmation">
-                            {translate('Confirm your password')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
-                        <Input
-                            inputIdentifier="password_confirmation"
-                            inputType="password"
-                            required
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={handlePasswordConfirmationChange}
-                            onValidate={(valid, message) => {
-                                handleValidate('password_confirmation', valid, message);
-                            }}
-                            onBlur={handleConfirmBlur}
-                            aria-invalid={Boolean(clientErrors.password_confirmation) || passwordMismatch}
-                            aria-describedby={clientErrors.password_confirmation || passwordMismatch ? 'password-confirmation-error' : undefined}
-                        />
-
-                        {(clientErrors.password_confirmation || passwordMismatchMessage) && (
-                            <p id="password-confirmation-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.password_confirmation ?? passwordMismatchMessage}
-                            </p>
-                        )}
-                    </div>
+                    <Input
+                        inputIdentifier="password_confirmation"
+                        inputType="password"
+                        label={translate('Confirm your password')}
+                        required
+                        autoComplete="new-password"
+                        value={data.password_confirmation}
+                        onChange={handlePasswordConfirmationChange}
+                        onValidate={(valid, message) => {
+                            handleValidate('password_confirmation', valid, message);
+                        }}
+                        onBlur={handleConfirmBlur}
+                        error={clientErrors.password_confirmation || (passwordMismatch ? passwordMismatchMessage : undefined)}
+                    />
 
                     {/* Terms and privacy */}
-                    <div className="space-y-2">
-                        <div className="flex items-start gap-2">
+                    <div className="space-y-2 pt-1">
+                        <div className="flex items-start gap-2.5">
                             <Checkbox
                                 id="terms"
                                 name="terms"
@@ -408,16 +348,16 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                                 onClick={handleTermsToggle}
                                 aria-describedby={termsError ? 'terms-error' : undefined}
                                 aria-invalid={Boolean(termsError)}
-                                className="rounded border-neutral-300"
+                                className="border-input mt-0.5 rounded"
                             />
 
-                            <Label htmlFor="terms" className="text-muted-foreground text-sm leading-5">
+                            <Label htmlFor="terms" className="text-foreground/75 text-sm leading-5">
                                 {translate('I agree to the')}{' '}
                                 <TextLink
                                     href={termsUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-sm font-medium transition-colors duration-200"
+                                    className="font-medium transition-colors duration-200"
                                 >
                                     {translate('Terms')}
                                 </TextLink>{' '}
@@ -426,7 +366,7 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                                     href={privacyUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-sm font-medium transition-colors duration-200"
+                                    className="font-medium transition-colors duration-200"
                                 >
                                     {translate('Privacy')}
                                 </TextLink>
@@ -434,20 +374,24 @@ export default function SignUp({ referralCode, planId }: SignUpProps) {
                         </div>
 
                         {termsError && (
-                            <p id="terms-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
+                            <p id="terms-error" role="alert" className="text-destructive text-sm">
                                 {termsError}
                             </p>
                         )}
                     </div>
                 </div>
 
-                {/*<Recaptcha onVerify={handleRecaptchaVerify} onExpired={handleRecaptchaExpired} onError={handleRecaptchaError} />*/}
+                {/*<Recaptcha
+        onVerify={handleRecaptchaVerify}
+        onExpired={handleRecaptchaExpired}
+        onError={handleRecaptchaError}
+    />*/}
 
                 <AccountButton processing={processing} disabled={isSubmitDisabled}>
                     {translate('Create account')}
                 </AccountButton>
 
-                <p className="text-muted-foreground text-center text-sm">
+                <p className="text-foreground/75 text-center text-sm">
                     {translate('Already have an account?')}{' '}
                     <TextLink href={route('sign-in')} className="font-medium">
                         {translate('Sign in')}

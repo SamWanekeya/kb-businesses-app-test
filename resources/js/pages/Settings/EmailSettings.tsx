@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { AlertCircle, Lock, Mail, Save, Send, Server, User } from 'lucide-react';
+import { AlertCircle, Lock, Mail, Send, Server, User } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -96,7 +96,6 @@ export default function EmailSettings() {
             description={translate('Configure email server settings for system notifications and communications')}
             action={
                 <Button type="submit" disabled={processing} form="email-settings-form" size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

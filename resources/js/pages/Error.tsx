@@ -84,9 +84,7 @@ export default function Error({ status, message }: ErrorProps) {
                 <p className="mb-8 leading-relaxed text-neutral-600 dark:text-neutral-400">{currentConfig.description}</p>
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <Link href="/">
-                        <Button className="btn-primary kb-bg-primary h-12 w-full rounded-md py-2.5 font-extrabold text-white">
-                            {translate('Go back home')}
-                        </Button>
+                        <Button className="btn-primary h-12 w-full rounded-md py-2.5 font-extrabold text-white">{translate('Go back home')}</Button>
                     </Link>
                     <Button
                         variant="outline"

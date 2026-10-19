@@ -26,6 +26,15 @@ interface ValidationResult {
  * attributes can be passed directly to the underlying input element.
  */
 export interface InputProps extends React.ComponentProps<'input'> {
+    /** Optional floating label. */
+    label?: string;
+
+    /** Optional supporting text displayed below the input. */
+    helperText?: string;
+
+    /** Additional classes for the input wrapper. */
+    wrapperClassName?: string;
+
     /**
      * Called whenever validation runs.
      *
@@ -106,6 +115,9 @@ export interface InputProps extends React.ComponentProps<'input'> {
  * - Domain-specific validation should remain delegated to dedicated hooks,
  *   such as `useEmailValidation`.
  *
+ * @param label
+ * @param helperText
+ * @param wrapperClassName
  * @param className
  * @param inputIdentifier
  * @param inputType
@@ -121,6 +133,9 @@ export interface InputProps extends React.ComponentProps<'input'> {
  * @param props Input configuration and native HTML input attributes.
  */
 export default function Input({
+    label,
+    helperText,
+    wrapperClassName,
     className,
     inputIdentifier,
     inputType = 'text',
@@ -139,6 +154,7 @@ export default function Input({
     const validateEmail = useEmailValidation();
 
     const [hasValidationError, setHasValidationError] = useState(Boolean(error));
+    const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
     /**
      * Validates the supplied input value.
@@ -259,6 +275,7 @@ export default function Input({
             const result = runValidation(value);
 
             setHasValidationError(!result.valid);
+            setValidationMessage(result.message);
             onValidate?.(result.valid, result.message);
             onChange?.(event);
         },
@@ -276,6 +293,7 @@ export default function Input({
             const result = runValidation(value);
 
             setHasValidationError(!result.valid);
+            setValidationMessage(result.message);
             onValidate?.(result.valid, result.message);
             onBlur?.(event);
         },
@@ -284,23 +302,126 @@ export default function Input({
 
     const isInvalid = ariaInvalid === true || ariaInvalid === 'true' || Boolean(error) || hasValidationError;
 
+    const errorMessage = typeof error === 'string' && error.length > 0 ? error : validationMessage;
+
+    const helperId = inputIdentifier ? `${inputIdentifier}-description` : undefined;
+
+    const describedBy =
+        [props['aria-describedby'], isInvalid && errorMessage ? helperId : undefined, !isInvalid && helperText ? helperId : undefined]
+            .filter(Boolean)
+            .join(' ') || undefined;
+
     return (
-        <input
-            id={inputIdentifier}
-            type={inputType}
-            inputMode={inputMode}
-            data-slot="input"
-            aria-invalid={isInvalid}
-            className={cn(
-                'h-12 w-full rounded-md border px-3 py-2 shadow-xs outline-none md:text-sm',
-                'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-                'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-                className,
-            )}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            {...props}
-        />
+        <div className={cn('w-full min-w-0', wrapperClassName)}>
+            <div className="relative">
+                <input
+                    id={inputIdentifier}
+                    type={inputType}
+                    inputMode={inputMode}
+                    data-slot="input"
+                    aria-invalid={isInvalid}
+                    aria-describedby={describedBy}
+                    placeholder={label ? ' ' : props.placeholder}
+
+                    className={cn(
+                        // Base field
+                        'peer block h-14 w-full min-w-0 rounded-md border',
+                        'border-input bg-background px-3.5 pt-3 pb-2',
+                        'text-foreground text-base font-normal',
+                        'shadow-none ring-0 outline-none',
+
+                        // Placeholder
+                        label && 'placeholder:text-transparent',
+
+                        // Focus: border only, no outer ring or shadow
+                        'transition-colors duration-150',
+                        'focus:border-primary focus:border-2',
+                        'focus:!shadow-none focus:!ring-0 focus:!outline-none',
+                        'focus-visible:!ring-0 focus-visible:!outline-none',
+                        'focus-visible:!shadow-none',
+
+                        // Invalid: red border takes priority, even when focused
+                        'aria-invalid:!border-destructive',
+                        'aria-invalid:focus:!border-destructive',
+                        'aria-invalid:focus:!ring-0',
+                        'aria-invalid:focus:!shadow-none',
+                        'aria-invalid:focus-visible:!ring-0',
+                        'aria-invalid:focus-visible:!shadow-none',
+
+                        // Disabled
+                        'disabled:cursor-not-allowed disabled:opacity-60',
+
+                        // Reduced motion
+                        'motion-reduce:transition-none',
+
+                        className,
+                    )}
+
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    {...props}
+                />
+
+                {label && (
+                    <label
+                        htmlFor={inputIdentifier}
+
+                        className={cn(
+                            // Position and appearance
+                            'pointer-events-none absolute start-3.5 z-10',
+                            'origin-start bg-background px-1',
+                            'text-foreground/75 text-sm font-medium',
+
+                            // Default: floated label
+                            'top-0 -translate-y-1/2',
+
+                            // Empty and unfocused: center the label
+                            'peer-placeholder-shown:top-1/2',
+                            'peer-placeholder-shown:-translate-y-1/2',
+                            'peer-placeholder-shown:text-base',
+                            'peer-placeholder-shown:font-normal',
+
+                            // Focus: float immediately and use brand color
+                            'peer-focus:top-0',
+                            'peer-focus:-translate-y-1/2',
+                            'peer-focus:text-sm',
+                            'peer-focus:font-medium',
+                            'peer-focus:text-primary',
+
+                            // Invalid: keep label visible and red
+                            'peer-aria-invalid:top-0',
+                            'peer-aria-invalid:-translate-y-1/2',
+                            'peer-aria-invalid:text-sm',
+                            'peer-aria-invalid:font-medium',
+                            'peer-aria-invalid:text-destructive',
+
+                            // Smooth movement
+                            'transition-[top,transform,color,font-size] duration-150',
+                            'motion-reduce:transition-none',
+
+                            // Error takes priority over focus
+                            isInvalid && 'text-destructive peer-focus:text-destructive',
+
+                            // Disabled
+                            'peer-disabled:opacity-60',
+                        )}
+                    >
+                        {label}
+                        {required && (
+                            <span aria-hidden="true" className="ms-1">
+                                *
+                            </span>
+                        )}
+                    </label>
+                )}
+            </div>
+
+            {(isInvalid && errorMessage) || (!isInvalid && helperText) ? (
+                <p id={helperId} className={cn('mt-1.5 px-1 text-xs leading-5', isInvalid ? 'text-destructive' : 'text-muted-foreground')}>
+                    {isInvalid ? errorMessage : helperText}
+                </p>
+            ) : null}
+        </div>
     );
 }
 

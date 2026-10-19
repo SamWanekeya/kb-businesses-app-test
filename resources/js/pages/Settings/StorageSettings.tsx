@@ -8,7 +8,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { HardDrive, Save, Search } from 'lucide-react';
+import { HardDrive, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -493,7 +493,6 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             description={translate('Configure file storage settings for your application')}
             action={
                 <Button type="submit" disabled={processing} form="storage-settings-form" size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

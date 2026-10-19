@@ -20,7 +20,6 @@ import Template6 from '@pages/quotes/Templates/Template6';
 import Template7 from '@pages/quotes/Templates/Template7';
 import Template8 from '@pages/quotes/Templates/Template8';
 import Template9 from '@pages/quotes/Templates/Template9';
-import { formatRelativeTime } from '@utils/Helpers/StringFormatters';
 
 const templateComponents = {
     template1: Template1,
@@ -689,7 +688,9 @@ export default function PublicSalesOrder({
                                                                             </div>
                                                                         )}
                                                                         <div className="min-w-0">
-                                                                            <p className="truncate text-sm font-extrabold text-gray-900">{product.name}</p>
+                                                                            <p className="truncate text-sm font-extrabold text-gray-900">
+                                                                                {product.name}
+                                                                            </p>
                                                                             {product.sku && (
                                                                                 <p className="mt-0.5 text-xs text-gray-500">SKU: {product.sku}</p>
                                                                             )}
@@ -775,7 +776,9 @@ export default function PublicSalesOrder({
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
                                                     <span className="text-sm font-extrabold text-gray-900">{translate('Grand Total')}</span>
-                                                    <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                                    <span className="font-mono text-lg font-extrabold text-emerald-600">
+                                                        {formatCurrency(grandTotal)}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -6,7 +6,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Bell, Key, MessageSquare, Phone, Save, Send } from 'lucide-react';
+import { Bell, Key, MessageSquare, Phone, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -139,7 +139,6 @@ export default function TwilioNotificationSettings() {
             description={translate('Configure Twilio settings for SMS notifications and communications')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

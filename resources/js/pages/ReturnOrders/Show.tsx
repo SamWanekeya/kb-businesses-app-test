@@ -191,7 +191,9 @@ export default function ReturnOrderShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">
+                                                                            {product.name}
+                                                                        </p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}

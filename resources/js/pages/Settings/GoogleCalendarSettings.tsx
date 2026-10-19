@@ -7,7 +7,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { RefreshCw, Save } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -77,7 +77,6 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
             description={translate('Configure Google Calendar integration for appointment synchronization')}
             action={
                 <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

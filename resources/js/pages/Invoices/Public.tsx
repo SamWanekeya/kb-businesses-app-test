@@ -398,7 +398,9 @@ export default function PublicInvoice({
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-extrabold text-gray-500">{translate('Due Amount')}</p>
-                                            <h3 className="text-destructive mt-2 text-2xl leading-none font-extrabold">{formatCurrency(dueAmount)}</h3>
+                                            <h3 className="text-destructive mt-2 text-2xl leading-none font-extrabold">
+                                                {formatCurrency(dueAmount)}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full bg-red-100 p-4">
                                             <DollarSign className="text-destructive h-5 w-5" />
@@ -554,9 +556,15 @@ export default function PublicInvoice({
                                                     <th className="w-1/3 px-6 py-4 text-left text-base font-extrabold text-white">
                                                         {translate('Product')}
                                                     </th>
-                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">{translate('Quantity')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">{translate('Unit Price')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">{translate('Discount')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">
+                                                        {translate('Quantity')}
+                                                    </th>
+                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">
+                                                        {translate('Unit Price')}
+                                                    </th>
+                                                    <th className="px-4 py-4 text-right text-base font-extrabold text-white">
+                                                        {translate('Discount')}
+                                                    </th>
                                                     <th className="px-4 py-4 text-right text-base font-extrabold text-white">{translate('Tax')}</th>
                                                     <th className="w-1/6 px-4 py-4 text-right text-base font-extrabold text-white">
                                                         {translate('Total')}
@@ -724,9 +732,15 @@ export default function PublicInvoice({
                                         <thead>
                                             <tr style={{ backgroundColor: template.primary }}>
                                                 <th className="w-1/4 px-6 py-4 text-left text-base font-extrabold text-white">{translate('Date')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-left text-base font-extrabold text-white">{translate('Method')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-right text-base font-extrabold text-white">{translate('Amount')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-left text-base font-extrabold text-white">{translate('Status')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-extrabold text-white">
+                                                    {translate('Method')}
+                                                </th>
+                                                <th className="w-1/4 px-4 py-4 text-right text-base font-extrabold text-white">
+                                                    {translate('Amount')}
+                                                </th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-extrabold text-white">
+                                                    {translate('Status')}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>

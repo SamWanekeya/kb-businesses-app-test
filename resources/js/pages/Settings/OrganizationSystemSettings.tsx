@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { router, usePage } from '@inertiajs/react';
 import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
-import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -105,7 +104,6 @@ export default function OrganizationSystemSettings({
             description={translate('Configure system-wide settings for your organization')}
             action={
                 <Button type="submit" disabled={processing} form="organization-system-settings-form" size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

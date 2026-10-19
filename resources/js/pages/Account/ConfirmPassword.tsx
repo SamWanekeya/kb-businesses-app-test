@@ -115,7 +115,7 @@ export default function ConfirmPassword() {
                         inputIdentifier="password"
                         inputType="password"
                         required
-                        autoComplete="current-password"
+                        autoComplete="password"
                         value={data.password}
                         onChange={handlePasswordChange}
                         onValidate={handlePasswordValidate}

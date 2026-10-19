@@ -620,7 +620,9 @@ export default function DiscountsPage() {
                     layout: 'flex',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? translate('Add Discount') : formMode === 'edit' ? translate('Edit Discount') : translate('View Discount')}
+                title={
+                    formMode === 'create' ? translate('Add Discount') : formMode === 'edit' ? translate('Edit Discount') : translate('View Discount')
+                }
                 mode={formMode}
             />
 

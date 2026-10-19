@@ -9,7 +9,6 @@ import { Textarea } from '@components/UserInterface/Textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import useInitials from '@hooks/useInitials';
 import { Link, router, usePage } from '@inertiajs/react';
-import { formatRelativeTime } from '@utils/Helpers/StringFormatters';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
 import {
@@ -357,7 +356,9 @@ export default function PurchaseOrderShow() {
                                                                         </div>
                                                                     )}
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm font-extrabold">{product.name}</p>
+                                                                        <p className="text-foreground truncate text-sm font-extrabold">
+                                                                            {product.name}
+                                                                        </p>
                                                                         {product.sku && (
                                                                             <p className="text-muted-foreground mt-0.5 text-xs">SKU: {product.sku}</p>
                                                                         )}

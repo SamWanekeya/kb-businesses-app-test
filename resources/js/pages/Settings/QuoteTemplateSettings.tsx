@@ -19,7 +19,6 @@ import Template7 from '@pages/quotes/Templates/Template7';
 import Template8 from '@pages/quotes/Templates/Template8';
 import Template9 from '@pages/quotes/Templates/Template9';
 import { route } from '@utils/Routes';
-import { Save } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -286,7 +285,6 @@ export default function QuoteTemplateSettings() {
             description={translate('Configure quote template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="quote-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

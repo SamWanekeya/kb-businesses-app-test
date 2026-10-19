@@ -14,7 +14,7 @@ import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { useForm } from '@inertiajs/react';
 import { PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS, PAYMENT_METHODS } from '@utils/Payment';
 import { route } from '@utils/Routes';
-import { AlertCircle, Banknote, CreditCard, Save, Search, X } from 'lucide-react';
+import { AlertCircle, Banknote, CreditCard, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -338,7 +338,6 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
             description={translate('Configure payment gateway for subscription plans')}
             action={
                 <Button type="submit" form="payment-settings-form" size="sm" disabled={processing} className="max-[1300px]:px-2.5">
-
                     <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
                 </Button>
             }

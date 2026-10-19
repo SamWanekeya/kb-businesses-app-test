@@ -11,7 +11,7 @@
  */
 
 import { router, useForm } from '@inertiajs/react';
-import type { SubmitEvent } from 'react';
+import type { ChangeEvent, SubmitEvent } from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -116,6 +116,26 @@ export default function SignIn() {
     }, []);
 
     /**
+     * Updates the email field.
+     */
+    const handleEmailChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            setData('email', event.target.value);
+        },
+        [setData],
+    );
+
+    /**
+     * Updates the password field.
+     */
+    const handlePasswordChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            setData('password', event.target.value);
+        },
+        [setData],
+    );
+
+    /**
      * Handles standard sign-in form submission.
      */
     const handleSubmit = useCallback(
@@ -211,66 +231,36 @@ export default function SignIn() {
             ) : (
                 <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                     <div className="space-y-2">
-                        <Label htmlFor="email">
-                            {translate('Your work email')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
                         <Input
                             inputIdentifier="email"
                             inputType="email"
                             inputMode="email"
+                            label={translate('Your work email')}
                             required
                             autoComplete="email"
                             value={data.email}
-                            onChange={(event) => {
-                                setData('email', event.target.value);
-                            }}
+                            onChange={handleEmailChange}
                             onValidate={(valid, message) => {
                                 handleValidate('email', valid, message);
                             }}
-                            aria-invalid={Boolean(clientErrors.email)}
-                            aria-describedby={clientErrors.email ? 'email-error' : undefined}
+                            error={clientErrors.email}
                         />
-
-                        {clientErrors.email && (
-                            <p id="email-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.email}
-                            </p>
-                        )}
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="password">
-                            {translate('Your password')}{' '}
-                            <span aria-hidden="true" className="text-destructive">
-                                *
-                            </span>
-                        </Label>
-
                         <Input
                             inputIdentifier="password"
                             inputType="password"
+                            label={translate('Your password')}
                             required
-                            autoComplete="current-password"
+                            autoComplete="password"
                             value={data.password}
-                            onChange={(event) => {
-                                setData('password', event.target.value);
-                            }}
+                            onChange={handlePasswordChange}
                             onValidate={(valid, message) => {
                                 handleValidate('password', valid, message);
                             }}
-                            aria-invalid={Boolean(clientErrors.password)}
-                            aria-describedby={clientErrors.password ? 'password-error' : undefined}
+                            error={clientErrors.password}
                         />
-
-                        {clientErrors.password && (
-                            <p id="password-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                {clientErrors.password}
-                            </p>
-                        )}
                     </div>
 
                     <div className="flex items-center justify-between gap-4">
@@ -284,7 +274,7 @@ export default function SignIn() {
                                 className="rounded border-neutral-300"
                             />
 
-                            <Label htmlFor="remember" className="text-muted-foreground">
+                            <Label htmlFor="remember" className="text-foreground/75">
                                 {translate('Remember me')}
                             </Label>
                         </div>
@@ -304,7 +294,7 @@ export default function SignIn() {
                         {translate('Sign in')}
                     </AccountButton>
 
-                    <p className="text-muted-foreground text-center text-sm">
+                    <p className="text-foreground/75 text-center text-sm">
                         {translate('Don’t have an account yet?')}{' '}
                         <TextLink href={route('sign-up')} className="font-medium transition-colors duration-200">
                             {translate('Sign up')}
