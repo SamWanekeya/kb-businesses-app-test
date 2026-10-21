@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers\Subscription;
+
+use App\Http\Controllers\Controller;
+
+use App\Models\Currency;
+use App\Models\PlanOrder;
+use App\Models\User;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+
+class PlanOrderController extends BaseController
+{
+    public function index(Request $request)
+    {
+        $query = PlanOrder::with(['user', 'plan', 'discount', 'processedBy']);
+
+        if (Auth::user()?->hasRole('organization')) {
+            $query->where('user_id', Auth::user()?->id);
+        }
+        // Apply search
+        if ($request->filled('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('order_number', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('plan', function ($planQuery) use ($search) {
+                        $planQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Apply filters
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Handle date range filter
+        if ($request->filled('date_from')) {
+            $query->whereDate('ordered_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('ordered_at', '<=', $request->date_to);
+        }
+
+        // Always use super admin currency for plan pricing
+        $superAdmin = User::where('type', 'super_admin')?->first();
+        $superAdminSettings = settings($superAdmin->id);
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
+        if (!empty($currency)) {
+            $currencyData = Currency::where('code', $currency)?->first();
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
+        }
+
+        // Apply sorting
+        $sortField = $request->input('sort_field', 'ordered_at');
+        $sortDirection = $request->input('sort_direction', 'desc');
+        $allowedSorts = ['final_price', 'ordered_at'];
+        $allowedDirection = ['asc', 'desc'];
+        if (!in_array($sortDirection, $allowedDirection)) {
+            $sortDirection = 'desc';
+        }
+        if (in_array($sortField, $allowedSorts)) {
+            $query->orderBy($sortField, $sortDirection);
+        }
+
+        // Handle pagination with validation
+        $perPage = $request->input('per_page', 10);
+        if (!is_numeric($perPage) || $perPage < 1 || $perPage > 100) {
+            $perPage = 10;
+        }
+
+        $planOrders = $query->paginate((int)$perPage)->withQueryString();
+
+        return Inertia::render('Plans/PlanOrders', [
+            'planOrders' => $planOrders,
+            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'date_from', 'date_to', 'page']),
+            'currency' => $currency,
+            'currency_symbol' => $currency_symbol,
+        ]);
+    }
+
+    public function approve(PlanOrder $planOrder)
+    {
+        try {
+            $planOrder->approve(Auth::id());
+
+            return redirect()->route('subscriptions.plan-orders.index')
+                ->with('success', __('Plan order approved successfully!'));
+        } catch (Exception $e) {
+            return redirect()->route('subscriptions.plan-orders.index')
+                ->with('error', __('Failed to approve plan order: ') . $e->getMessage());
+        }
+    }
+
+    public function reject(Request $request, PlanOrder $planOrder)
+    {
+        try {
+            $request->validate([
+                'notes' => 'nullable|string|max:500',
+            ]);
+
+            $planOrder->reject(Auth::id(), $request->notes);
+
+            return redirect()->route('subscriptions.plan-orders.index')
+                ->with('success', __('Plan order rejected successfully!'));
+        } catch (Exception $e) {
+            return redirect()->route('subscriptions.plan-orders.index')
+                ->with('error', __('Failed to reject plan order: ') . $e->getMessage());
+        }
+    }
+}
