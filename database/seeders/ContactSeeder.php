@@ -33,8 +33,8 @@ class ContactSeeder extends Seeder
 
             for ($i = 1; $i <= 15; $i++) {
                 $account = $accounts->random();
-                $firstName = $faker->firstName;
-                $lastName = $faker->lastName;
+                $firstName = $faker->firstName();
+                $lastName = $faker->lastName();
 
                 Contact::create([
                     'name' => $firstName . ' ' . $lastName,

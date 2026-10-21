@@ -283,7 +283,7 @@ export default function PlanOrdersPage() {
                   label: translate('Approve'),
                   icon: 'Check',
                   action: 'approve',
-                  className: 'text-green-500',
+                  className: 'text-primary',
                   requiredPermission: 'approve-plan-orders',
                   condition: (row) => row.status === 'pending',
               },

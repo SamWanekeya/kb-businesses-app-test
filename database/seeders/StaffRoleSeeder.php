@@ -919,8 +919,8 @@ class StaffRoleSeeder extends Seeder
                 }
 
                 for ($i = 0; $i < $staffCount; $i++) {
-                    $firstName = $faker->firstName;
-                    $lastName = $faker->lastName;
+                    $firstName = $faker->firstName();
+                    $lastName = $faker->lastName();
                     $name = $firstName . ' ' . $lastName;
                     $email = strtolower($firstName . '.' . $lastName . '.' . $organization->id . '@kakbima.dev');
 

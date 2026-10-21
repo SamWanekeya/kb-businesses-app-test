@@ -303,7 +303,7 @@ export function AuthorizeNetPaymentForm({
 
                     <div className="text-foreground/75 space-y-1 text-center text-xs">
                         <div className="flex items-center justify-center gap-1">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
+                            <CheckCircle className="h-3 w-3 text-primary" />
                             {translate('Powered by AuthorizeNet - Secure payment processing')}
                         </div>
                         <div>

@@ -640,7 +640,7 @@ export default function Plans({
     // Define stat icons
     const statIcons = {
         users: <Users className="h-4 w-4 text-blue-500" />,
-        projects: <Box className="h-4 w-4 text-green-500" />,
+        projects: <Box className="h-4 w-4 text-primary" />,
         contacts: <Mail className="h-4 w-4 text-orange-500" />,
         accounts: <Store className="h-4 w-4 text-purple-500" />,
         storage: <HardDrive className="h-4 w-4 text-yellow-500" />,

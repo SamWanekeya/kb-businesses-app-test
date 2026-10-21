@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\SubscriptionEvaluatorService;
+use App\Services\Subscription\SubscriptionEvaluatorService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

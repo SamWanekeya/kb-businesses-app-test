@@ -213,7 +213,7 @@ export default function PlanRequestsPage() {
                   label: translate('Approve'),
                   icon: 'Check',
                   action: 'approve',
-                  className: 'text-green-500',
+                  className: 'text-primary',
                   requiredPermission: 'approve-plan-requests',
                   condition: (row) => row.status === 'pending',
               },

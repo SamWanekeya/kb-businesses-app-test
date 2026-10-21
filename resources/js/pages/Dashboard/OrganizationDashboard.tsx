@@ -375,7 +375,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <div className="rounded-xl bg-green-100 p-2.5 dark:bg-green-900/50">
                                             <Target className="h-5 w-5 text-green-600 dark:text-green-400" />
                                         </div>
-                                        <ArrowUpRight className="h-4 w-4 text-green-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-green-500" />
+                                        <ArrowUpRight className="h-4 w-4 text-green-200 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
                                     </div>
                                     <p className="mb-1 text-xs text-green-700 dark:text-green-400">{translate('Total Leads')}</p>
                                     <p className="truncate text-xl font-extrabold tracking-tight text-green-900 sm:text-2xl dark:text-green-100">

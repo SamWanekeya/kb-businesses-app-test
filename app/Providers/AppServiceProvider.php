@@ -20,7 +20,7 @@ use App\Observers\PurchaseOrderObserver;
 use App\Observers\QuoteObserver;
 use App\Observers\SalesOrderObserver;
 use App\Observers\UserObserver;
-use App\Services\SubscriptionEvaluatorService;
+use App\Services\Subscription\SubscriptionEvaluatorService;
 use App\Services\WebhookService;
 use Exception;
 use Illuminate\Support\Facades\Artisan;

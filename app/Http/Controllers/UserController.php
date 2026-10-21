@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserCreated;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserPermissions\UserRequest;
 use App\Models\Meeting;
 use App\Models\Role;
 use App\Models\SignInHistory;

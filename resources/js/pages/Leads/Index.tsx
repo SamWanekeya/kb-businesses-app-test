@@ -474,7 +474,7 @@ export default function Leads() {
             label: translate('Convert to Account'),
             icon: 'Building2',
             action: 'convert-to-account',
-            className: 'text-green-500',
+            className: 'text-primary',
             requiredPermission: 'convert-leads',
             condition: (item: any) => !item.is_converted,
         },

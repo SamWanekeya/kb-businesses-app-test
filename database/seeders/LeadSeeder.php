@@ -44,15 +44,15 @@ class LeadSeeder extends Seeder
 
             for ($i = 1; $i <= 25; $i++) {
                 $organizationName = $faker->randomElement($organizationNames);
-                $firstName = $faker->firstName;
-                $lastName = $faker->lastName;
+                $firstName = $faker->firstName();
+                $lastName = $faker->lastName();
 
                 Lead::create([
                     'name' => $firstName . ' ' . $lastName,
                     'email' => strtolower($firstName . '.' . $lastName . '.' . $organization->id) . '@' . strtolower($organizationName) . '.com',
                     'phone' => $faker->phoneNumber,
                     'organization' => $organizationName . ' Inc',
-                    'account_name' => $faker->firstName . ' ' . $faker->lastName,
+                    'account_name' => $faker->firstName() . ' ' . $faker->lastName(),
                     'position' => $faker->randomElement($positions),
                     'address' => $faker->streetAddress,
                     'value' => $faker->randomElement($values),

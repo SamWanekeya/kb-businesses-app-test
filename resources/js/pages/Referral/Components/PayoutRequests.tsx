@@ -144,7 +144,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                       label: translate('Approve'),
                       icon: 'Check',
                       action: 'approve',
-                      className: 'text-green-500',
+                      className: 'text-primary',
                       condition: (row) => row.status === 'pending',
                   },
                   {

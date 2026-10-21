@@ -20,6 +20,8 @@ use App\Events\ReturnOrderCreated;
 use App\Events\SalesOrderCreated;
 use App\Events\TaskAssigned;
 use App\Events\UserCreated;
+use App\Events\OrganizationUserCreated;
+use App\Listeners\SendOrganizationUserCreatedNotification;
 use App\Listeners\SendAssignLeadEmail;
 use App\Listeners\SendCaseCreatedEmail;
 use App\Listeners\SendDeliveryOrderCreatedEmail;
@@ -66,6 +68,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
+        OrganizationUserCreated::class => [
+            SendOrganizationUserCreatedNotification::class,
+        ],
         UserCreated::class => [
             SendUserCreatedEmail::class,
             WebhookUserCreateListener::class,

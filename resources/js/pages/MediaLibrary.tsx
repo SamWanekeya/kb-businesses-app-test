@@ -327,7 +327,7 @@ export default function MediaLibraryDemo() {
             );
         }
         if (mimeType === 'text/csv' || mimeType.includes('spreadsheet')) {
-            return <FileText className="h-12 w-12 text-green-500" />;
+            return <FileText className="h-12 w-12 text-primary" />;
         }
         return <File className="h-12 w-12 text-gray-500" />;
     };

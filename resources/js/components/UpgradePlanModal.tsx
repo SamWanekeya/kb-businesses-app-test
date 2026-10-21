@@ -166,7 +166,7 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
                                                             variant="outline"
                                                             className="border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs leading-tight font-normal text-neutral-700"
                                                         >
-                                                            <CheckCircle2 className="mr-1 h-3 w-3 flex-shrink-0 text-green-500" />
+                                                            <CheckCircle2 className="mr-1 h-3 w-3 flex-shrink-0 text-primary" />
                                                             <span className="truncate">{feature}</span>
                                                         </Badge>
                                                     ))}

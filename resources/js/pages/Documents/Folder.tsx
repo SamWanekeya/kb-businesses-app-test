@@ -255,7 +255,7 @@ export default function DocumentFolderView() {
         if (isImageExt(ext)) return <FileImage className="text-primary h-14 w-14" strokeWidth={1.2} />;
         if (ext === 'pdf') return <FileText className="h-14 w-14 text-red-500" strokeWidth={1.2} />;
         if (ext === 'doc' || ext === 'docx') return <FileText className="h-14 w-14 text-blue-500" strokeWidth={1.2} />;
-        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className="h-14 w-14 text-green-500" strokeWidth={1.2} />;
+        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className="h-14 w-14 text-primary" strokeWidth={1.2} />;
         if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) return <FileVideo className="h-14 w-14 text-pink-500" strokeWidth={1.2} />;
         if (['mp3', 'wav', 'ogg', 'aac'].includes(ext)) return <FileAudio className="h-14 w-14 text-yellow-500" strokeWidth={1.2} />;
         if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return <FileArchive className="h-14 w-14 text-orange-500" strokeWidth={1.2} />;

@@ -86,7 +86,7 @@ export default function DocumentShow() {
         if (isImageExt(ext)) return <FileImage className={`${size} text-primary`} strokeWidth={1.2} />;
         if (ext === 'pdf') return <FileText className={`${size} text-red-500`} strokeWidth={1.2} />;
         if (ext === 'doc' || ext === 'docx') return <FileText className={`${size} text-blue-500`} strokeWidth={1.2} />;
-        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className={`${size} text-green-500`} strokeWidth={1.2} />;
+        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className={`${size} text-primary`} strokeWidth={1.2} />;
         if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) return <FileVideo className={`${size} text-pink-500`} strokeWidth={1.2} />;
         if (['mp3', 'wav', 'ogg', 'aac'].includes(ext)) return <FileAudio className={`${size} text-yellow-500`} strokeWidth={1.2} />;
         if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return <FileArchive className={`${size} text-orange-500`} strokeWidth={1.2} />;
@@ -369,7 +369,7 @@ export default function DocumentShow() {
                                         <Tooltip>
                                             <TooltipTrigger asChild>
                                                 <button
-                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-green-500 transition-colors"
+                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-primary transition-colors"
                                                     onClick={handleDownload}
                                                 >
                                                     <Download className="h-4 w-4 text-gray-500" />

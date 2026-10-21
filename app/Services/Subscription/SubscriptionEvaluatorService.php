@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Subscription;
 
 use App\Models\Plan;
 use App\Models\User;
@@ -92,25 +92,6 @@ class SubscriptionEvaluatorService
     }
 
     /**
-     * Determine whether an expiry date is still valid.
-     *
-     * @param string|null $expiryDate
-     * @param DateTimeImmutable $currentDate
-     *
-     * @return bool
-     */
-    protected function isActiveDate(
-        ?string           $expiryDate,
-        DateTimeImmutable $currentDate
-    ): bool {
-        if (!$expiryDate) {
-            return false;
-        }
-
-        return $currentDate <= new DateTimeImmutable($expiryDate);
-    }
-
-    /**
      * Evaluate subscription rules for organization members.
      */
     protected function evaluateOrganizationMember(
@@ -143,5 +124,24 @@ class SubscriptionEvaluatorService
         }
 
         return SubscriptionResultService::allow();
+    }
+
+    /**
+     * Determine whether an expiry date is still valid.
+     *
+     * @param string|null $expiryDate
+     * @param DateTimeImmutable $currentDate
+     *
+     * @return bool
+     */
+    protected function isActiveDate(
+        ?string           $expiryDate,
+        DateTimeImmutable $currentDate
+    ): bool {
+        if (!$expiryDate) {
+            return false;
+        }
+
+        return $currentDate <= new DateTimeImmutable($expiryDate);
     }
 }

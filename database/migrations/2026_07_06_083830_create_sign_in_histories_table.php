@@ -14,10 +14,10 @@ return new class () extends Migration {
             Schema::create('sign_in_histories', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-                $table->string('ip_address');
+                $table->ipAddress();
                 $table->date('date');
                 $table->json('details');
-                $table->string('type', 50)->default('sign_in');
+                $table->string('type', 50)->default('default_sign_in');
                 $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
                 $table->timestamps();
             });

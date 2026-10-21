@@ -53,7 +53,7 @@ export default function Error({ status, message }: ErrorProps) {
         500: {
             title: translate('Server error'),
             description: translate(message) || translate('Something went wrong on our end.'),
-            icon: <AlertCircle className="h-12 w-12 text-green-500" />,
+            icon: <AlertCircle className="h-12 w-12 text-primary" />,
         },
         503: {
             title: translate('Service unavailable'),
