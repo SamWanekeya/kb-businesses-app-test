@@ -16,6 +16,7 @@ import { route } from '@utils/Routes';
 import { Calendar, CheckCircle, CreditCard, Download, FileText, ShoppingCart, Tag, User, UserCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { resolveImageUrl } from '@utils/Helpers/Url';
 
 export default function PlanOrdersPage() {
     const { t: translate } = useTranslation();

@@ -9,6 +9,7 @@ import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { route } from '@utils/Routes';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { resolveImageUrl } from '@utils/Helpers/Url';
 
 export default function PlanRequestsPage() {
     const { t: translate } = useTranslation();
