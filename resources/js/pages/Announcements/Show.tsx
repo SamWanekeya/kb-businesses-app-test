@@ -62,7 +62,7 @@ export default function AnnouncementShow() {
     const getStatusBadge = (status: string) => {
         const statusColors = {
             expired: 'bg-gray-100 text-gray-800 ring-1 ring-inset ring-gray-600/20',
-            active: 'bg-green-100 text-green-800 ring-1 ring-inset ring-green-600/20',
+            active: 'bg-fuchsia-100 text-fuchsia-800 ring-1 ring-inset ring-fuchsia-600/20',
             inactive: 'bg-red-100 text-red-800 ring-1 ring-inset ring-red-600/20',
         };
 

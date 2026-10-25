@@ -36,7 +36,7 @@ export default function ShowReceiptOrder() {
             pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20 dark:bg-yellow-900/30 dark:text-yellow-400',
             received: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400',
             partial: 'bg-orange-50 text-orange-700 ring-orange-600/20 dark:bg-orange-900/30 dark:text-orange-400',
-            completed: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400',
+            completed: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400',
             cancelled: 'bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-900/30 dark:text-red-400',
         };
         return (
@@ -141,7 +141,7 @@ export default function ShowReceiptOrder() {
                     {/* Products */}
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <ShoppingCart className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
@@ -153,20 +153,20 @@ export default function ShowReceiptOrder() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 font-bold whitespace-nowrap">{translate('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Quantity')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Unit Price')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Tax')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-right font-bold whitespace-nowrap">
                                                         {translate('Total')}
                                                     </TableHead>
                                                 </TableRow>
@@ -220,10 +220,10 @@ export default function ShowReceiptOrder() {
                                                                 </div>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground text-sm font-semibold">{quantity}</p>
+                                                                <p className="text-foreground text-sm font-bold">{quantity}</p>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground font-mono text-sm font-semibold">
+                                                                <p className="text-foreground font-mono text-sm font-bold">
                                                                     {formatCurrency(unitPrice)}
                                                                 </p>
                                                             </TableCell>
@@ -232,7 +232,7 @@ export default function ShowReceiptOrder() {
                                                                 product.pivot.discount_type !== 'none' &&
                                                                 discountAmt > 0 ? (
                                                                     <>
-                                                                        <p className="text-foreground text-sm font-semibold">
+                                                                        <p className="text-foreground text-sm font-bold">
                                                                             {product.pivot.discount_type === 'percentage' ? (
                                                                                 `${Number(product.pivot.discount_value)}%`
                                                                             ) : (
@@ -252,7 +252,7 @@ export default function ShowReceiptOrder() {
                                                             <TableCell className="py-3 text-center">
                                                                 {product.tax ? (
                                                                     <>
-                                                                        <p className="text-foreground text-sm font-semibold">
+                                                                        <p className="text-foreground text-sm font-bold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
                                                                         <p className="text-foreground/75 mt-0.5 font-mono text-xs">
@@ -290,19 +290,19 @@ export default function ShowReceiptOrder() {
                                         <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">
+                                                <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(receiptOrder.subtotal ?? subtotal)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
-                                                <span className="font-mono text-sm font-semibold text-red-500">
+                                                <span className="font-mono text-sm font-bold text-red-500">
                                                     -{formatCurrency(receiptOrder.discount_amount || totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">
+                                                <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(receiptOrder.tax_amount ?? totalTax)}
                                                 </span>
                                             </div>
@@ -320,9 +320,7 @@ export default function ShowReceiptOrder() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-foreground/75 text-sm">
-                                        {translate('No products added to this receipt order')}
-                                    </p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this receipt order')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -332,7 +330,7 @@ export default function ShowReceiptOrder() {
                     <div className="space-y-6">
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Notes')}
                                 </CardTitle>
@@ -349,7 +347,7 @@ export default function ShowReceiptOrder() {
                         </Card>
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>
@@ -373,7 +371,7 @@ export default function ShowReceiptOrder() {
                     {/* Summary */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <ClipboardCheck className="mr-2 h-4 w-4 text-emerald-600" />
                                 {translate('Summary')}
                             </CardTitle>
@@ -407,7 +405,7 @@ export default function ShowReceiptOrder() {
                     {(receiptOrder.contact || receiptOrder.account) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <User className="mr-2 h-4 w-4 text-emerald-600" />
                                     {translate('Customer Info')}
                                 </CardTitle>
@@ -423,7 +421,7 @@ export default function ShowReceiptOrder() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={receiptOrder.contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{receiptOrder.contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{receiptOrder.contact.name}</p>
                                                     {receiptOrder.contact.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{receiptOrder.contact.email}</p>
                                                     )}
@@ -460,7 +458,7 @@ export default function ShowReceiptOrder() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={receiptOrder.account.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{receiptOrder.account.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{receiptOrder.account.name}</p>
                                                     {receiptOrder.account.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{receiptOrder.account.email}</p>
                                                     )}
@@ -494,7 +492,7 @@ export default function ShowReceiptOrder() {
                     {(receiptOrder.assigned_user || receiptOrder.creator) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <User className="mr-2 h-4 w-4 text-emerald-600" />
                                     {translate('Assigned To')}
                                 </CardTitle>
@@ -511,7 +509,7 @@ export default function ShowReceiptOrder() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-semibold">{receiptOrder.assigned_user.name}</p>
+                                                <p className="text-foreground truncate text-sm font-bold">{receiptOrder.assigned_user.name}</p>
                                                 {receiptOrder.assigned_user.email && (
                                                     <p className="text-foreground/75 truncate text-xs">{receiptOrder.assigned_user.email}</p>
                                                 )}
@@ -531,7 +529,7 @@ export default function ShowReceiptOrder() {
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="min-w-0">
-                                                <p className="text-foreground truncate text-sm font-semibold">{receiptOrder.creator.name}</p>
+                                                <p className="text-foreground truncate text-sm font-bold">{receiptOrder.creator.name}</p>
                                                 {receiptOrder.creator.email && (
                                                     <p className="text-foreground/75 truncate text-xs">{receiptOrder.creator.email}</p>
                                                 )}
@@ -547,7 +545,7 @@ export default function ShowReceiptOrder() {
                     {(receiptOrder.purchase_order || receiptOrder.return_order) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="mr-2 h-4 w-4 text-gray-600" />
                                     {translate('Related Records')}
                                 </CardTitle>

@@ -8,7 +8,6 @@ use App\Http\Controllers\Settings\PaymentSettingController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
 use App\Http\Controllers\Settings\WebhookController;
-use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,9 +26,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/enabled-payment-methods', [PaymentSettingController::class, 'getEnabledMethods'])
         ->name('payment.enabled-methods');
-
-    Route::post('/stripe-payment', [StripePaymentController::class, 'processPayment'])
-        ->name('settings.subscriptions.stripe.payment');
 });
 
 // These routes require authentication, email verification, and an active subscription.

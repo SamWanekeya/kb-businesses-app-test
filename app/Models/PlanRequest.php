@@ -16,6 +16,7 @@ class PlanRequest extends Model
         'rejected_at',
         'approved_by',
         'rejected_by',
+        'billing_cycle',
     ];
 
     protected $casts = [

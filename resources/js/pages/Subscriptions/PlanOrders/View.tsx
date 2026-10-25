@@ -67,7 +67,7 @@ const STATUS_PRESENTATION: Record<PlanOrderStatus, StatusPresentation> = {
     },
     approved: {
         icon: CheckCircle,
-        className: 'bg-green-500/10 text-green-700 dark:text-green-400',
+        className: 'bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400',
     },
     rejected: {
         icon: XCircle,
@@ -109,7 +109,7 @@ function formatOrderDate(value: string | null, unavailableLabel: string): string
         return unavailableLabel;
     }
 
-    return window.hfSettings.formatDateTimeSimple(value);
+    return window.kbSettings.formatDateTimeSimple(value);
 }
 
 /**
@@ -161,7 +161,7 @@ export default function View({ planOrder }: ViewPlanOrderProps) {
         <DialogContent className="flex max-h-[calc(100dvh-2rem)] flex-col gap-0 overflow-hidden rounded-xl p-0 sm:max-w-xl">
             <DialogHeader className="border-border shrink-0 border-b px-5 py-4 sm:px-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
-                    <DialogTitle className="text-base font-semibold tracking-tight">{translate('Plan order details')}</DialogTitle>
+                    <DialogTitle className="text-base font-bold tracking-tight">{translate('Plan order details')}</DialogTitle>
 
                     <span
                         className={`inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-sm capitalize ${statusPresentation.className}`}
@@ -201,7 +201,7 @@ export default function View({ planOrder }: ViewPlanOrderProps) {
                     <DetailRow label={translate('Discount')} value={formatCurrencySimple(planOrder.discount_amount, 'USD', 'en-US')} />
 
                     <DetailRow label={translate('Final price')}>
-                        <p className="text-primary text-base font-semibold">{formatCurrencySimple(planOrder.final_price, 'USD', 'en-US')}</p>
+                        <p className="text-primary text-base font-bold">{formatCurrencySimple(planOrder.final_price, 'USD', 'en-US')}</p>
                     </DetailRow>
                 </section>
 

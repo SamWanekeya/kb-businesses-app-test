@@ -16,7 +16,7 @@ class InvoicePayment extends Model
         'status',
         'processed_at',
         'notes',
-        'receipt_path',
+        'receipt',
     ];
 
     protected $casts = [

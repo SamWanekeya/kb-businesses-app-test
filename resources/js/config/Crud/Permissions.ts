@@ -27,7 +27,7 @@ export const usePermissionsConfig = (): CrudConfig => {
                     sortable: true,
                     render: columnRenderers.status({
                         [translate('Products')]: 'bg-blue-100 text-blue-800',
-                        [translate('Categories')]: 'bg-green-100 text-green-800',
+                        [translate('Categories')]: 'bg-fuchsia-100 text-fuchsia-800',
                         [translate('Contacts')]: 'bg-purple-100 text-purple-800',
                         [translate('Permissions')]: 'bg-amber-100 text-amber-800',
                         [translate('Roles')]: 'bg-red-100 text-red-800',

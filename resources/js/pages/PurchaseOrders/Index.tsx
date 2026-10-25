@@ -290,7 +290,7 @@ export default function PurchaseOrders() {
                 const statusColors = {
                     draft: 'bg-gray-50 text-gray-700 ring-gray-600/20',
                     sent: 'bg-blue-50 text-blue-700 ring-blue-600/20',
-                    confirmed: 'bg-green-50 text-green-700 ring-green-600/20',
+                    confirmed: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     received: 'bg-purple-50 text-purple-700 ring-purple-600/20',
                     cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };

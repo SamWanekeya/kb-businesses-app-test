@@ -258,7 +258,7 @@ export default function ProjectKanban() {
                                 <LayoutGrid className="text-primary h-10 w-10" />
                             </div>
                             <div className="space-y-1.5">
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
                                 <p className="text-foreground/75 text-sm leading-relaxed">
                                     {translate('Set up task statuses to start organizing your work in a Kanban board.')}
                                 </p>
@@ -331,9 +331,9 @@ export default function ProjectKanban() {
                                 <div className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: colBorder }}>
                                     <div className="flex items-center gap-2">
                                         <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: status.color }}></span>
-                                        <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{status.name}</span>
+                                        <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{status.name}</span>
                                         <span
-                                            className="rounded-full px-2 py-0.5 text-xs font-semibold"
+                                            className="rounded-full px-2 py-0.5 text-xs font-bold"
                                             style={{ backgroundColor: status.color + '22', color: status.color }}
                                         >
                                             {statusTasks.length}
@@ -385,7 +385,7 @@ export default function ProjectKanban() {
                                                         <div className="mb-2.5 flex items-start gap-2.5">
                                                             <div className="min-w-0 flex-1">
                                                                 <h4
-                                                                    className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
+                                                                    className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-bold text-gray-900 transition-colors dark:text-gray-100"
                                                                     onClick={() => {
                                                                         handleAction('view', task);
                                                                     }}

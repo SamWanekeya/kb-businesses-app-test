@@ -420,7 +420,7 @@ export default function Invoices() {
                     draft: 'bg-gray-50 text-gray-700 ring-gray-600/20',
                     sent: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
-                    paid: 'bg-green-50 text-green-700 ring-green-600/20',
+                    paid: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     partially_paid: 'bg-orange-50 text-orange-700 ring-orange-600/20',
                     overdue: 'bg-red-50 text-red-700 ring-red-600/20',
                     cancelled: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
@@ -603,7 +603,7 @@ export default function Invoices() {
             {/* Pending Invoice Payments Section */}
             {pendingPayments.length > 0 && (
                 <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
-                    <h3 className="mb-4 text-lg font-semibold text-gray-800">{translate('Pending Invoice Payments')}</h3>
+                    <h3 className="mb-4 text-lg font-bold text-gray-800">{translate('Pending Invoice Payments')}</h3>
                     <div className="space-y-3">
                         {pendingPayments.map((payment: any) => (
                             <div key={payment.id} className="flex items-center justify-between rounded-lg border p-3">
@@ -619,9 +619,9 @@ export default function Invoices() {
                                                 </span>{' '}
                                                 ({payment.payment_type})
                                             </p>
-                                            {payment.receipt_path && (
+                                            {payment.receipt && (
                                                 <a
-                                                    href={resolveImageUrl(payment.receipt_path)}
+                                                    href={resolveImageUrl(payment.receipt)}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="text-xs text-blue-600 hover:underline"
@@ -641,7 +641,7 @@ export default function Invoices() {
                                     <Button
                                         size="sm"
                                         variant="outline"
-                                        className="border-green-600 text-green-600 hover:bg-green-50"
+                                        className="border-fuchsia-600 text-fuchsia-600 hover:bg-fuchsia-50"
                                         onClick={() => handleApprovePayment(payment)}
                                     >
                                         <CheckCircle className="mr-1 h-4 w-4" />
@@ -811,15 +811,9 @@ export default function Invoices() {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="sticky top-0 bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
-                                                {translate('Sent At')}
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
-                                                {translate('Type')}
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">
-                                                {translate('Sent By')}
-                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">{translate('Sent At')}</th>
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">{translate('Type')}</th>
+                                            <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500">{translate('Sent By')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">

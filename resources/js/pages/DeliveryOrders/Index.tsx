@@ -284,7 +284,7 @@ export default function DeliveryOrders() {
                 const statusColors = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     in_transit: 'bg-blue-50 text-blue-700 ring-blue-600/20',
-                    delivered: 'bg-green-50 text-green-700 ring-green-600/20',
+                    delivered: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (

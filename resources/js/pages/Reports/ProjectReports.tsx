@@ -51,8 +51,8 @@ export default function ProjectReports() {
         {
             title: translate('Active Projects'),
             value: summary.active_projects.toLocaleString(),
-            icon: <Play className="h-6 w-6 text-green-600" />,
-            iconColor: 'bg-green-100',
+            icon: <Play className="h-6 w-6 text-fuchsia-600" />,
+            iconColor: 'bg-fuchsia-100',
         },
         {
             title: translate('Completed Projects'),
@@ -84,7 +84,7 @@ export default function ProjectReports() {
                 <div className="col-span-full">
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{translate('Project Trend')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Project Trend')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -155,7 +155,7 @@ export default function ProjectReports() {
                             className="border-border bg-muted/30 flex shrink-0 flex-row items-center border-b px-5"
                             style={{ minHeight: '72px' }}
                         >
-                            <CardTitle className="text-foreground text-base font-semibold">{translate('Projects by Status')}</CardTitle>
+                            <CardTitle className="text-foreground text-base font-bold">{translate('Projects by Status')}</CardTitle>
                         </CardHeader>
 
                         <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
@@ -226,7 +226,7 @@ export default function ProjectReports() {
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <div className="border-border bg-muted/30 flex shrink-0 items-center border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
-                                <h3 className="text-foreground text-base font-semibold">{translate('Overdue Projects')}</h3>
+                                <h3 className="text-foreground text-base font-bold">{translate('Overdue Projects')}</h3>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Active projects past their deadline')}</p>
                             </div>
                         </div>
@@ -245,7 +245,7 @@ export default function ProjectReports() {
                           </div> */}
 
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="text-foreground truncate text-sm leading-tight font-semibold">{project.name}</p>
+                                                    <p className="text-foreground truncate text-sm leading-tight font-bold">{project.name}</p>
 
                                                     <p className="text-foreground/75 mt-0.5 truncate text-xs">{project.code}</p>
                                                 </div>

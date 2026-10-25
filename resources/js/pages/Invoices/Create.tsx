@@ -393,7 +393,7 @@ export default function InvoiceCreate() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center gap-2">
-                            <CardTitle className="text-base font-semibold">{translate('Invoice Details')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Invoice Details')}</CardTitle>
                         </div>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-4">
@@ -634,7 +634,7 @@ export default function InvoiceCreate() {
                 {/* Billing Information */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-semibold">{translate('Billing Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Billing Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4 p-6">
                         <Field label={translate('Billing Address')} required error={errors.billing_address}>
@@ -685,7 +685,7 @@ export default function InvoiceCreate() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-semibold">
+                            <CardTitle className="text-base font-bold">
                                 {translate('Invoice Product')}
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
@@ -698,7 +698,7 @@ export default function InvoiceCreate() {
                         <div className="overflow-x-auto p-4 md:p-0">
                             <table className="block w-full text-sm xl:table">
                                 <thead className="hidden xl:table-header-group">
-                                    <tr className="border-b bg-gray-50 text-xs font-semibold tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                    <tr className="border-b bg-gray-50 text-xs font-bold tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
                                             {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
@@ -729,7 +729,7 @@ export default function InvoiceCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -759,7 +759,7 @@ export default function InvoiceCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -773,7 +773,7 @@ export default function InvoiceCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -788,7 +788,7 @@ export default function InvoiceCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -808,7 +808,7 @@ export default function InvoiceCreate() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Value')}
                                                     </span>
                                                     <Input
@@ -825,7 +825,7 @@ export default function InvoiceCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     <span className="text-foreground/75 text-sm">
@@ -834,8 +834,8 @@ export default function InvoiceCreate() {
                                                             : translate('No Tax')}
                                                     </span>
                                                 </td>
-                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-semibold xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-bold xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span className="font-mono">{fmt(c.total)}</span>
@@ -862,7 +862,7 @@ export default function InvoiceCreate() {
                         {/* Invoice Summary */}
                         <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
-                                <h4 className="mb-3 font-semibold text-gray-800 dark:text-gray-200">{translate('Invoice Summary')}</h4>
+                                <h4 className="mb-3 font-bold text-gray-800 dark:text-gray-200">{translate('Invoice Summary')}</h4>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{translate('Subtotal')}</span>
                                     <span className="font-mono">{fmt(totals.subtotal + totals.discount)}</span>

@@ -20,13 +20,13 @@ class InvoiceBankPaymentController extends Controller
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
 
-            $receiptPath = null;
+            $receipt = null;
             if ($request->hasFile('receipt')) {
                 $file = $request->file('receipt');
                 $fileNameToStore = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $upload = uploadFile($request, 'receipt', $fileNameToStore, 'bank-receipts');
                 if ($upload['status'] == true) {
-                    $receiptPath = $upload['url'];
+                    $receipt = $upload['url'];
                 }
             }
 
@@ -37,7 +37,7 @@ class InvoiceBankPaymentController extends Controller
                 'payment_method' => 'bank',
                 'payment_id' => 'BANK_' . strtoupper(uniqid()),
                 'status' => 'pending',
-                'receipt_path' => $receiptPath,
+                'receipt' => $receipt,
             ]);
 
             return back()->with('success', __('Payment request submitted. Your invoice will be updated after payment verification.'));
@@ -82,7 +82,7 @@ class InvoiceBankPaymentController extends Controller
             'status' => $data['status'] ?? 'pending',
             'processed_at' => $data['status'] === 'completed' ? now() : null,
             'notes' => "Invoice #{$invoice->invoice_number} - {$data['payment_type']} payment (Bank Transfer)",
-            'receipt_path' => $data['receipt_path'] ?? null,
+            'receipt' => $data['receipt'] ?? null,
         ]);
     }
 

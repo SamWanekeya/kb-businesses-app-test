@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Plan;
 use App\Models\Setting;
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,6 +16,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
+        $plans = Plan::all();
+
         // Create Super Administrator User
         $superAdmin = User::firstOrCreate(
             ['email' => 'super_admin@kakbima.dev'],
@@ -35,9 +39,6 @@ class UserSeeder extends Seeder
             createDefaultSettings($superAdmin->id);
         }
 
-        // Get default plan
-        $defaultPlan = Plan::where('is_default', true)?->first();
-
         // Create Organization User
         $organization = User::firstOrCreate(
             ['email' => 'organization@kakbima.dev'],
@@ -46,9 +47,10 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('Kakbima@DemoAccount2026'),
                 'type' => 'organization',
-                'lang' => 'en',
-                // 'plan_id' => $defaultPlan ? $defaultPlan->id : null,
+                'lang' => $faker->randomElement(config('system-languages.supported_languages')),
+                'plan_id' => $plans->first()?->id,
                 'referral_code' => rand(100000, 999999),
+                'plan_expiry_date' => $faker->dateTimeBetween('+1 month', '+400 days')->format('Y-m-d'),
                 'created_by' => $superAdmin->id,
             ]
         );
@@ -59,13 +61,6 @@ class UserSeeder extends Seeder
         // Create default settings for organization user if not exists
         if (!Setting::where('user_id', $organization->id)->exists()) {
             copySettingsFromSuperAdministrator($organization->id);
-        }
-
-        // Assign default plan to all organization users with null plan_id
-        if ($defaultPlan) {
-            User::where('type', 'organization')
-                ->whereNull('plan_id')
-                ->update(['plan_id' => $defaultPlan->id]);
         }
 
         $this->command->info('Basic users created. Staff roles and users will be created by StaffRoleSeeder.');

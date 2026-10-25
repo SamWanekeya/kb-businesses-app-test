@@ -3,60 +3,73 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Subscription\ProcessPaystackPaymentRequest;
+use App\Services\Subscription\PaystackPaymentService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
-use App\Models\Plan;
-use Exception;
-use Illuminate\Http\Request;
-
+/**
+ * Handles Paystack payment endpoints.
+ *
+ * Responsibilities:
+ * - Receive and validate payment requests.
+ * - Delegate payment processing to PaystackPaymentService.
+ * - Translate successful and failed operations into HTTP/Inertia responses.
+ *
+ * Architectural Notes:
+ * - Validation is handled by ProcessPaystackPaymentRequest.
+ * - Paystack communication and payment orchestration are handled by
+ *   PaystackPaymentService.
+ * - The controller intentionally contains no gateway-specific HTTP logic.
+ *
+ * Error Handling:
+ * - Expected payment failures are converted into user-facing errors.
+ * - Unexpected failures are logged with contextual information and
+ *   delegated to the existing payment error handler.
+ */
 class PaystackPaymentController extends Controller
 {
-    public function processPayment(Request $request)
-    {
-        $validated = validatePaymentRequest($request, [
-            'payment_id' => 'required|string',
-        ]);
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        private readonly PaystackPaymentService $paymentService,
+    ) {
+    }
 
+    /**
+     * Verify and process a Paystack payment.
+     *
+     * Validation and authentication are performed by the form request.
+     * Successful payment processing is delegated to the payment service.
+     *
+     * @param ProcessPaystackPaymentRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function processPayment(
+        ProcessPaystackPaymentRequest $request,
+    ): RedirectResponse {
         try {
-            $plan = Plan::findOrFail($validated['plan_id']);
-            $settings = getPaymentGatewaySettings();
+            $this->paymentService->process($request);
 
-            if (!isset($settings['payment_settings']['paystack_secret_key'])) {
-                return back()->withErrors(['error' => __('Paystack not configured')]);
-            }
-
-            // Verify payment with Paystack API
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_URL => "https://api.paystack.co/transaction/verify/" . $validated['payment_id'],
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => [
-                    "Authorization: Bearer " . $settings['payment_settings']['paystack_secret_key'],
-                    "Cache-Control: no-cache",
-                ],
+            return back()->with(
+                'success',
+                __('Payment successful and plan activated.')
+            );
+        } catch (Throwable $exception) {
+            Log::error('Paystack payment processing failed.', [
+                'user_id' => $request->user()?->getKey(),
+                'payment_id' => $request->input('payment_id'),
+                'plan_id' => $request->input('plan_id'),
+                'exception' => $exception,
             ]);
 
-            $response = curl_exec($curl);
-            curl_close($curl);
-
-            $result = json_decode($response, true);
-
-            if ($result['status'] && $result['data']['status'] === 'success') {
-                processPaymentSuccess([
-                    'user_id' => auth()?->id(),
-                    'plan_id' => $plan->id,
-                    'billing_cycle' => $validated['billing_cycle'],
-                    'payment_method' => 'paystack',
-                    'discount_code' => $validated['discount_code'] ?? null,
-                    'payment_id' => $validated['payment_id'],
-                ]);
-
-                return back()->with('success', __('Payment successful and plan activated'));
-            }
-
-            return back()->withErrors(['error' => __('Payment verification failed')]);
-
-        } catch (Exception $e) {
-            return handlePaymentError($e, 'paystack');
+            return handlePaymentError(
+                $exception,
+                'paystack'
+            );
         }
     }
 }

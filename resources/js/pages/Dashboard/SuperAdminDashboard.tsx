@@ -252,7 +252,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     style={{ animationDelay: '300ms', animationDuration: '1.2s' }}
                                 />
                             </div>
-                            <span className="text-primary text-sm font-semibold transition-transform duration-200 group-hover:scale-105">
+                            <span className="text-primary text-sm font-bold transition-transform duration-200 group-hover:scale-105">
                                 {stats.totalActivePlanOrganizations.toLocaleString()} {translate('active plan organizations')}
                             </span>
                         </div>
@@ -486,10 +486,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('Recently Registered Organizations')}</CardTitle>
-                                    <p className="text-foreground/75 mt-0.5 text-xs">
-                                        {translate('Latest organizations that joined the platform')}
-                                    </p>
+                                    <CardTitle className="text-base font-bold">{translate('Recently Registered Organizations')}</CardTitle>
+                                    <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest organizations that joined the platform')}</p>
                                 </div>
                                 <Link
                                     href={route('organizations.index')}
@@ -524,11 +522,11 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm leading-tight font-semibold">{organization.name}</p>
+                                                <p className="truncate text-sm leading-tight font-bold">{organization.name}</p>
                                                 <p className="text-foreground/75 mt-0.5 truncate text-xs">{organization.email}</p>
                                             </div>
                                             <div className="flex shrink-0 flex-col items-end gap-1">
-                                                <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset">
                                                     {translate('Active')}
                                                 </span>
                                                 <span className="text-foreground/75 text-[11px]">{organization.registered_at}</span>
@@ -552,7 +550,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('Top Plans')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Top Plans')}</CardTitle>
                                     <p className="text-foreground/75 mt-0.5 text-xs">{translate('By revenue generated')}</p>
                                 </div>
                                 <Link
@@ -576,7 +574,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                 <UserInitials name={`${index + 1}`} />
                                                 <div className="min-w-0 flex-1">
                                                     <div className="mb-1.5 flex items-center gap-2">
-                                                        <p className="truncate text-sm font-semibold">{plan.name}</p>
+                                                        <p className="truncate text-sm font-bold">{plan.name}</p>
                                                     </div>
                                                     <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full dark:bg-slate-700">
                                                         <div
@@ -614,7 +612,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('New Organizations Registered')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('New Organizations Registered')}</CardTitle>
                                     <p className="text-foreground/75 mt-0.5 text-xs">
                                         {translate('Organizations joined per month')} — {selectedOrganizationsYear}
                                     </p>
@@ -709,13 +707,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('Monthly Revenue')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Monthly Revenue')}</CardTitle>
                                     <p className="text-foreground/75 mt-0.5 text-xs">
                                         {translate('Approved plan orders')} — {selectedYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 font-mono text-xs text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30">
+                                    <span className="inline-flex items-center gap-1 rounded-md bg-fuchsia-50 px-2 py-1 font-mono text-xs text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset dark:bg-fuchsia-900/20 dark:text-fuchsia-400 dark:ring-fuchsia-500/30">
                                         {formatCurrency(monthlyRevenue.reduce((s, m) => s + m.revenue, 0))}
                                     </span>
                                     <Select

@@ -58,9 +58,9 @@ export default function DocumentShow() {
         pdf: { icon: FileText, bg: 'bg-red-100', color: 'text-red-600' },
         doc: { icon: FileText, bg: 'bg-blue-100', color: 'text-blue-600' },
         docx: { icon: FileText, bg: 'bg-blue-100', color: 'text-blue-600' },
-        xls: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
-        xlsx: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
-        csv: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
+        xls: { icon: FileSpreadsheet, bg: 'bg-fuchsia-100', color: 'text-fuchsia-600' },
+        xlsx: { icon: FileSpreadsheet, bg: 'bg-fuchsia-100', color: 'text-fuchsia-600' },
+        csv: { icon: FileSpreadsheet, bg: 'bg-fuchsia-100', color: 'text-fuchsia-600' },
         txt: { icon: FileText, bg: 'bg-gray-100', color: 'text-gray-600' },
         zip: { icon: FileArchive, bg: 'bg-yellow-100', color: 'text-yellow-600' },
         rar: { icon: FileArchive, bg: 'bg-yellow-100', color: 'text-yellow-600' },
@@ -71,8 +71,8 @@ export default function DocumentShow() {
     const extIconConfig: Record<string, { icon: any; color: string }> = {
         doc: { icon: FileText, color: 'text-blue-600' },
         docx: { icon: FileText, color: 'text-blue-600' },
-        xls: { icon: FileSpreadsheet, color: 'text-green-600' },
-        xlsx: { icon: FileSpreadsheet, color: 'text-green-600' },
+        xls: { icon: FileSpreadsheet, color: 'text-fuchsia-600' },
+        xlsx: { icon: FileSpreadsheet, color: 'text-fuchsia-600' },
         csv: { icon: FileSpreadsheet, color: 'text-teal-500' },
         zip: { icon: FileArchive, color: 'text-yellow-600' },
         rar: { icon: FileArchive, color: 'text-yellow-600' },
@@ -282,12 +282,12 @@ export default function DocumentShow() {
                                     e.currentTarget.src = resolveImageUrl('avatars/avatar.png');
                                 }}
                             />
-                            <AvatarFallback className="bg-primary/10 text-primary rounded-xl text-lg font-semibold">
+                            <AvatarFallback className="bg-primary/10 text-primary rounded-xl text-lg font-bold">
                                 <User className="h-6 w-6" />
                             </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0 flex-1">
-                            <h1 className="truncate text-base font-semibold text-gray-900 dark:text-white">{document.name}</h1>
+                            <h1 className="truncate text-base font-bold text-gray-900 dark:text-white">{document.name}</h1>
                             <div className="mt-1 flex flex-wrap items-center gap-3">
                                 {document.assigned_user?.name && (
                                     <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
@@ -369,7 +369,7 @@ export default function DocumentShow() {
                                         <Tooltip>
                                             <TooltipTrigger asChild>
                                                 <button
-                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-primary transition-colors"
+                                                    className="text-primary flex h-7 w-7 items-center justify-center rounded-lg transition-colors"
                                                     onClick={handleDownload}
                                                 >
                                                     <Download className="h-4 w-4 text-gray-500" />
@@ -611,7 +611,7 @@ function DetailRow({
 
     const badgeColors: Record<string, string> = {
         blue: 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-300',
-        green: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/30 dark:text-green-300',
+        green: 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-inset ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-300',
         red: 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-900/30 dark:text-red-300',
     };
 

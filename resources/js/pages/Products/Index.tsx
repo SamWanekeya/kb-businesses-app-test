@@ -263,7 +263,7 @@ export default function Products() {
                             <Package className="hidden h-6 w-6 text-gray-400" />
                         </div>
                         <div>
-                            <div className="font-semibold text-gray-900 dark:text-white">{row.name}</div>
+                            <div className="font-bold text-gray-900 dark:text-white">{row.name}</div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">SKU: {row.sku}</div>
                         </div>
                     </div>
@@ -276,7 +276,7 @@ export default function Products() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: any) => (
-                <span className="font-mono font-semibold whitespace-nowrap text-green-600">
+                <span className="font-mono font-bold whitespace-nowrap text-fuchsia-600">
                     {window.kbSettings.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}
                 </span>
             ),
@@ -290,7 +290,7 @@ export default function Products() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value > 10
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : value > 0
                               ? 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20 ring-inset'
                               : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
@@ -344,7 +344,7 @@ export default function Products() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value === 'active'
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
@@ -589,7 +589,7 @@ export default function Products() {
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                                     product.status === 'active'
-                                                        ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                                                         : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                                 }`}
                                             >
@@ -610,7 +610,7 @@ export default function Products() {
                                     <div className="flex flex-1 flex-col gap-3 p-4">
                                         {/* Name + SKU */}
                                         <div>
-                                            <h3 className="line-clamp-2 text-sm leading-snug font-semibold text-gray-900 dark:text-white">
+                                            <h3 className="line-clamp-2 text-sm leading-snug font-bold text-gray-900 dark:text-white">
                                                 {product.name}
                                             </h3>
                                             <div className="mt-0.5 flex items-center justify-between">
@@ -640,9 +640,9 @@ export default function Products() {
                                         {/* Stock */}
                                         <div>
                                             <div className="grid grid-cols-2 gap-2">
-                                                <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 dark:border-green-700 dark:bg-green-900/20">
+                                                <div className="rounded-md border border-fuchsia-200 bg-fuchsia-50 px-3 py-2 dark:border-fuchsia-700 dark:bg-fuchsia-900/20">
                                                     <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('Price')}</p>
-                                                    <p className="font-mono text-sm font-extrabold text-green-600">
+                                                    <p className="font-mono text-sm font-extrabold text-fuchsia-600">
                                                         {window.kbSettings.formatCurrency(parseFloat(product.price || 0)) ||
                                                             `$${parseFloat(product.price || 0).toFixed(2)}`}
                                                     </p>

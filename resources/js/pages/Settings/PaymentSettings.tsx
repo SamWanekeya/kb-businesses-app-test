@@ -8,7 +8,7 @@ import { Textarea } from '@components/UserInterface/Textarea';
 
 import { toast } from '@components/CustomToast';
 import PaymentInputField from '@components/Payment/PaymentInputField';
-import { PaymentMethodCard } from '@components/Payment/PaymentMethodCard';
+import PaymentMethodCard from '@components/Payment/PaymentMethodCard';
 import SettingsSection from '@components/SettingsSection';
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { useForm } from '@inertiajs/react';

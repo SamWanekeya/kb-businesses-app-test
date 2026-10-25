@@ -96,7 +96,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                 </Alert>
 
                 <div className="flex-1 overflow-auto">
-                    <h3 className="mb-3 text-base font-semibold">{translate('Column mapping & preview')}</h3>
+                    <h3 className="mb-3 text-base font-bold">{translate('Column mapping & preview')}</h3>
                     <div className="overflow-x-auto rounded-lg border">
                         <table className="w-full">
                             <thead className="sticky top-0 border-b bg-neutral-50">
@@ -104,7 +104,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                     {databaseFields.map((field) => (
                                         <th key={field.key} className="min-w-[180px] px-4 py-3 text-left font-medium text-neutral-700">
                                             <div className="space-y-2">
-                                                <div className="text-sm font-semibold">
+                                                <div className="text-sm font-bold">
                                                     {field.key?.replace(/_/g, ' ')?.replace(/\b\w/g, (l) => l.toUpperCase())}
                                                     {field.required && <span className="text-destructive ml-1">*</span>}
                                                 </div>

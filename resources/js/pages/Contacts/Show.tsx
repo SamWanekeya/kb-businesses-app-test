@@ -30,7 +30,7 @@ export default function ContactShow() {
 
     const getStatusBadge = (status: string) => {
         const statusColors = {
-            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             inactive: 'bg-red-50 text-red-700 ring-red-600/10',
         };
         return (
@@ -120,7 +120,7 @@ export default function ContactShow() {
                     {/* Contact Summary */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact Summary')}
                             </CardTitle>
@@ -163,7 +163,7 @@ export default function ContactShow() {
                     {/* Contact Info */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact Info')}
                             </CardTitle>
@@ -188,7 +188,7 @@ export default function ContactShow() {
                     {/* Address */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <MapPin className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Address')}
                             </CardTitle>
@@ -210,7 +210,7 @@ export default function ContactShow() {
                     {/* Related Account */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Account')}
                             </CardTitle>
@@ -222,10 +222,8 @@ export default function ContactShow() {
                                         <UserInitials name={contact.account.name} />
                                         <div className="min-w-0">
                                             <p className="text-foreground/75 text-xs">{translate('Account')}</p>
-                                            <p className="text-foreground truncate text-sm font-semibold">{contact.account.name}</p>
-                                            {contact.account.email && (
-                                                <p className="text-foreground/75 truncate text-xs">{contact.account.email}</p>
-                                            )}
+                                            <p className="text-foreground truncate text-sm font-bold">{contact.account.name}</p>
+                                            {contact.account.email && <p className="text-foreground/75 truncate text-xs">{contact.account.email}</p>}
                                         </div>
                                     </div>
                                     {useHasPermission('view-accounts') && (
@@ -258,11 +256,11 @@ export default function ContactShow() {
                     {/* Quotes */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Quotes')}
                                 {contact.quotes?.length > 0 && (
-                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                         {contact.quotes.length}
                                     </span>
                                 )}
@@ -285,7 +283,7 @@ export default function ContactShow() {
                                             <div className="flex min-w-0 items-center gap-2.5">
                                                 <UserInitials name={quote.quote_number} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{quote.quote_number}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{quote.quote_number}</p>
                                                     {quote.name && <p className="text-foreground/75 truncate text-xs">{quote.name}</p>}
                                                 </div>
                                             </div>
@@ -318,11 +316,11 @@ export default function ContactShow() {
                     {/* Cases */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Tag className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Cases')}
                                 {contact.cases?.length > 0 && (
-                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                    <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                         {contact.cases.length}
                                     </span>
                                 )}
@@ -342,7 +340,7 @@ export default function ContactShow() {
                                             <div className="flex min-w-0 items-center gap-2.5">
                                                 <UserInitials name={caseItem.subject} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{caseItem.subject}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{caseItem.subject}</p>
                                                     {caseItem.status && <p className="text-foreground/75 truncate text-xs">{caseItem.status}</p>}
                                                 </div>
                                             </div>
@@ -379,10 +377,10 @@ export default function ContactShow() {
                         return (
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
-                                    <CardTitle className="flex items-center text-lg font-semibold">
+                                    <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -391,7 +389,7 @@ export default function ContactShow() {
                                     <div className="grid grid-cols-1 gap-4 min-[992px]:grid-cols-2">
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
@@ -422,9 +420,7 @@ export default function ContactShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm">
-                                                                            {meeting.title}
-                                                                        </p>
+                                                                        <p className="text-foreground truncate text-sm">{meeting.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-foreground/75 truncate text-xs">
@@ -479,7 +475,7 @@ export default function ContactShow() {
 
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}

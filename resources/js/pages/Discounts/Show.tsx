@@ -80,7 +80,7 @@ export default function DiscountDetailsPage() {
 
     const getStatusBadge = (status: boolean) => {
         return status ? (
-            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
+            <span className="inline-flex items-center rounded-md bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset">
                 {translate('Active')}
             </span>
         ) : (
@@ -91,7 +91,7 @@ export default function DiscountDetailsPage() {
     };
 
     const getTypeBadge = (type: string) => {
-        const className = type === 'percentage' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' : 'bg-green-50 text-green-700 ring-blue-600/20';
+        const className = type === 'percentage' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' : 'bg-fuchsia-50 text-fuchsia-700 ring-blue-600/20';
         const label = type === 'percentage' ? translate('Percentage') : translate('Flat Amount');
         return <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${className}`}>{label}</span>;
     };
@@ -128,7 +128,7 @@ export default function DiscountDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-foreground/75 text-sm">{translate('Discount Value')}</p>
-                                    <h3 className="mt-2 font-mono text-xl font-semibold">
+                                    <h3 className="mt-2 font-mono text-xl font-bold">
                                         {formatDiscount(discount.type, discount.discount_amount)}
                                     </h3>
                                 </div>
@@ -144,13 +144,13 @@ export default function DiscountDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-foreground/75 text-sm">{translate('Times Used')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold">
+                                    <h3 className="mt-2 text-xl font-bold">
                                         {discount.used_count}
                                         {discount.use_limit_per_discount && ` / ${discount.use_limit_per_discount}`}
                                     </h3>
                                 </div>
-                                <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
-                                    <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                <div className="rounded-full bg-fuchsia-100 p-3 dark:bg-fuchsia-900">
+                                    <TrendingUp className="h-5 w-5 text-fuchsia-600 dark:text-fuchsia-400" />
                                 </div>
                             </div>
                         </CardContent>
@@ -161,7 +161,7 @@ export default function DiscountDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-foreground/75 text-sm">{translate('User Limit')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold"> {discount.use_limit_per_user || translate('Unlimited')}</h3>
+                                    <h3 className="mt-2 text-xl font-bold"> {discount.use_limit_per_user || translate('Unlimited')}</h3>
                                 </div>
                                 <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
                                     <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -175,7 +175,7 @@ export default function DiscountDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-foreground/75 text-sm">{translate('Expires')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold">
+                                    <h3 className="mt-2 text-xl font-bold">
                                         {' '}
                                         {discount.expiry_date
                                             ? window.kbSettings.formatDateTime(discount.expiry_date, false) || discount.expiry_date
@@ -192,7 +192,7 @@ export default function DiscountDetailsPage() {
 
                 {/* Discount Details */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-semibold">{translate('Discount Information')}</h2>
+                    <h2 className="mb-4 text-lg font-bold">{translate('Discount Information')}</h2>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
@@ -227,7 +227,7 @@ export default function DiscountDetailsPage() {
 
                 {/* Usage History */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-semibold">{translate('Usage History')}</h2>
+                    <h2 className="mb-4 text-lg font-bold">{translate('Usage History')}</h2>
                     <div className="rounded-lg border">
                         <Table>
                             <TableHeader>

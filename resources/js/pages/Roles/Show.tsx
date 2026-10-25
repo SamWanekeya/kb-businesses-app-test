@@ -44,13 +44,13 @@ export default function RolesShow() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role Information')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                             <div>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Role Name')}</p>
-                                <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{role.label || '-'}</p>
+                                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{role.label || '-'}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Slug')}</p>
@@ -58,7 +58,7 @@ export default function RolesShow() {
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Total Permissions')}</p>
-                                <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{assignedPermissionNames.length}</p>
+                                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{assignedPermissionNames.length}</p>
                             </div>
                             {role.description && (
                                 <div className="sm:col-span-2 md:col-span-3">
@@ -73,7 +73,7 @@ export default function RolesShow() {
                 {/* Permissions grouped by module */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Assigned Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Assigned Permissions')}</CardTitle>
                         <CardDescription>{translate('Permissions assigned to this role, grouped by module.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -91,7 +91,7 @@ export default function RolesShow() {
                                     return (
                                         <div key={module} className="overflow-hidden rounded-lg border dark:border-gray-700">
                                             <div className="flex items-center justify-between border-b bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
-                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
                                                     {formatTitleCase(module)}
                                                 </span>
                                                 <span className="rounded-full border bg-white px-2 py-0.5 text-xs text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">

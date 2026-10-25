@@ -424,7 +424,7 @@ export default function SalesOrderCreate() {
                 {/* Basic Info */}
                 <Card class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Order Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Order Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="md:col-span-2">
@@ -579,7 +579,7 @@ export default function SalesOrderCreate() {
                 {/* Contacts & Shipping Provider */}
                 <Card class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Contacts & Shipping Provider')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Contacts & Shipping Provider')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <Field label={translate('Billing Contact')} required error={errors.billing_contact_id}>
@@ -647,7 +647,7 @@ export default function SalesOrderCreate() {
                 <Card class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-semibold">
+                            <CardTitle className="text-base font-bold">
                                 {translate('Products')}
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
@@ -660,7 +660,7 @@ export default function SalesOrderCreate() {
                         <div className="overflow-x-auto p-4 md:p-0">
                             <table className="block w-full text-sm xl:table">
                                 <thead className="hidden xl:table-header-group">
-                                    <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                    <tr className="border-b bg-gray-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
                                             {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
@@ -690,7 +690,7 @@ export default function SalesOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -720,7 +720,7 @@ export default function SalesOrderCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -734,7 +734,7 @@ export default function SalesOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -749,7 +749,7 @@ export default function SalesOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -769,7 +769,7 @@ export default function SalesOrderCreate() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
@@ -786,7 +786,7 @@ export default function SalesOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     {(() => {
@@ -801,7 +801,7 @@ export default function SalesOrderCreate() {
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(c.net + c.tax)}</span>
@@ -841,7 +841,7 @@ export default function SalesOrderCreate() {
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                     <span>{translate('Grand Total')}</span>
-                                    <span className="font-mono text-lg text-green-600">{fmt(totals.subtotal + totals.tax)}</span>
+                                    <span className="font-mono text-lg text-fuchsia-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
                         </div>
@@ -852,7 +852,7 @@ export default function SalesOrderCreate() {
                 <Card class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-semibold">{translate('Billing & Shipping Address')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Billing & Shipping Address')}</CardTitle>
                             <button
                                 type="button"
                                 onClick={() => {
@@ -871,7 +871,7 @@ export default function SalesOrderCreate() {
                                 {/* Billing */}
                                 <div>
                                     <div className="mb-4 flex items-center justify-between">
-                                        <h3 className="font-semibold text-gray-800 dark:text-gray-100">{translate('Billing Address')}</h3>
+                                        <h3 className="font-bold text-gray-800 dark:text-gray-100">{translate('Billing Address')}</h3>
                                         <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
                                             <Copy className="mr-1 h-3 w-3" /> {translate('Copy to Shipping')}
                                         </Button>
@@ -922,7 +922,7 @@ export default function SalesOrderCreate() {
 
                                 {/* Shipping */}
                                 <div>
-                                    <h3 className="mb-4 font-semibold text-gray-800 dark:text-gray-100">{translate('Shipping Address')}</h3>
+                                    <h3 className="mb-4 font-bold text-gray-800 dark:text-gray-100">{translate('Shipping Address')}</h3>
                                     <div className="space-y-3">
                                         <Field label={translate('Shipping Address')} error={errors.shipping_address}>
                                             <Textarea

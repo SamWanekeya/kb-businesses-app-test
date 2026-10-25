@@ -306,7 +306,7 @@ export default function Campaigns() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs whitespace-nowrap ${
                         value === 'active'
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
@@ -619,14 +619,14 @@ export default function Campaigns() {
 
                                         {/* Header: name + badges */}
                                         <div className="mb-3 pr-8">
-                                            <h3 className="truncate text-sm leading-tight font-semibold text-gray-900 dark:text-white">
+                                            <h3 className="truncate text-sm leading-tight font-bold text-gray-900 dark:text-white">
                                                 {campaign.name}
                                             </h3>
                                             <div className="mt-1.5 flex flex-wrap gap-1">
                                                 <span
                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                         campaign.status === 'active'
-                                                            ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                                             : 'bg-red-50 text-red-700 ring-red-600/20'
                                                     }`}
                                                 >
@@ -677,7 +677,7 @@ export default function Campaigns() {
                                                 <div className="mb-1 flex items-center justify-between">
                                                     <span className="text-[10px] text-gray-500">{translate('Budget Used')}</span>
                                                     <span
-                                                        className={`text-[10px] font-semibold ${
+                                                        className={`text-[10px] font-bold ${
                                                             spendPct >= 90 ? 'text-red-600' : spendPct >= 70 ? 'text-amber-600' : 'text-emerald-600'
                                                         }`}
                                                     >

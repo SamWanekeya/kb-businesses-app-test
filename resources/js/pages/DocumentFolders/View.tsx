@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Folder className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-semibold">{translate('Document Folder Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Document Folder Details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -43,7 +43,7 @@ export default function View({ record }: ViewProps) {
                             <span
                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                     record.status === 'active'
-                                        ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                         : 'bg-red-50 text-red-700 ring-red-600/20'
                                 }`}
                             >

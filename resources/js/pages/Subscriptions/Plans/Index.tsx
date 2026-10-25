@@ -373,7 +373,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
         [translate],
     );
 
-    const commonFeatures = useMemo(() => ['Hafinen Intelligence'], []);
+    const commonFeatures = useMemo(() => ['Kakbima Intelligence'], []);
 
     /**
      * Changes the billing cycle and requests the corresponding server state.
@@ -614,8 +614,8 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             <div className="space-y-8">
                 <header className="mx-auto max-w-6xl text-center">
                     <div className="mx-auto max-w-3xl">
-                        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                            {isSuperAdmin ? translate('Manage Hafinen subscription plans') : translate('Choose the right plan for your organization')}
+                        <h1 className="text-foreground text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+                            {isSuperAdmin ? translate('Manage Kakbima subscription plans') : translate('Choose the right plan for your organization')}
                         </h1>
                     </div>
 
@@ -629,7 +629,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                                 <TabsTrigger value="yearly" className="rounded-lg px-5 py-2.5 text-sm">
                                     <span>{translate('Yearly')}</span>
 
-                                    <Badge className="ml-2 border-0 bg-green-500/10 text-green-700 dark:text-green-400">
+                                    <Badge className="ml-2 border-0 bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400">
                                         {translate('2 months free')}
                                     </Badge>
                                 </TabsTrigger>
@@ -684,7 +684,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                             <CreditCard className="text-foreground/75 h-5 w-5" />
                         </div>
 
-                        <h2 id="empty-plans-heading" className="text-foreground mt-4 text-lg font-semibold">
+                        <h2 id="empty-plans-heading" className="text-foreground mt-4 text-lg font-bold">
                             {translate('No plans available')}
                         </h2>
 

@@ -86,7 +86,7 @@ export default function RolesCreate() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role Information')}</CardTitle>
                         <CardDescription>{translate('Enter the role name and an optional description.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -124,7 +124,7 @@ export default function RolesCreate() {
                 {/* Permissions */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Role Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role Permissions')}</CardTitle>
                         <CardDescription>
                             {translate('Select permissions for this role. You can select all permissions at once or manage them by module.')}
                             {auth?.user?.type !== 'super_admin' && (

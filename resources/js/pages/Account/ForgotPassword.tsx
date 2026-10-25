@@ -172,7 +172,7 @@ export default function ForgotPassword() {
                 {/*    {!isRecaptchaIncomplete && (*/}
                 {/*        <p*/}
                 {/*            role="status"*/}
-                {/*            className="text-sm text-green-700 dark:text-green-400"*/}
+                {/*            className="text-sm text-fuchsia-700 dark:text-fuchsia-400"*/}
                 {/*        >*/}
                 {/*            {translate('Verification completed.')}*/}
                 {/*        </p>*/}

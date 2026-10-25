@@ -152,7 +152,7 @@ export default function CalendarIndex() {
             case 'meeting':
                 return 'bg-blue-50 text-blue-700 ring-blue-600/20';
             case 'call':
-                return 'bg-green-50 text-green-700 ring-green-600/20';
+                return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
             case 'task':
                 return 'bg-amber-50 text-amber-700 ring-amber-600/20';
             default:
@@ -167,7 +167,7 @@ export default function CalendarIndex() {
                 case 'planned':
                     return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                 case 'held':
-                    return 'bg-green-50 text-green-700 ring-green-600/20';
+                    return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                 case 'not_held':
                     return 'bg-red-50 text-red-700 ring-red-600/20';
                 default:
@@ -179,7 +179,7 @@ export default function CalendarIndex() {
                 case 'planned':
                     return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                 case 'held':
-                    return 'bg-green-50 text-green-700 ring-green-600/20';
+                    return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                 case 'not_held':
                     return 'bg-red-50 text-red-700 ring-red-600/20';
                 default:
@@ -195,7 +195,7 @@ export default function CalendarIndex() {
                 case 'review':
                     return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
                 case 'done':
-                    return 'bg-green-50 text-green-700 ring-green-600/20';
+                    return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                 default:
                     return 'bg-gray-50 text-gray-700 ring-gray-600/20';
             }
@@ -392,9 +392,7 @@ export default function CalendarIndex() {
                                         }}
                                         className="w-full cursor-pointer overflow-hidden px-1.5 py-0.5 hover:opacity-80"
                                     >
-                                        <div className={`truncate text-xs ${isNotHeld ? 'line-through' : ''}`}>
-                                            {eventInfo.event.title}
-                                        </div>
+                                        <div className={`truncate text-xs ${isNotHeld ? 'line-through' : ''}`}>{eventInfo.event.title}</div>
                                         {eventInfo.view.type !== 'dayGridMonth' && eventInfo.event.extendedProps.parent_name && (
                                             <div className={`truncate text-xs ${isNotHeld ? 'line-through' : ''}`}>
                                                 {eventInfo.event.extendedProps.parent_name}
@@ -410,7 +408,7 @@ export default function CalendarIndex() {
                 <div className="space-y-6 lg:col-span-1">
                     <Card className="border-border flex flex-col overflow-hidden border p-0 shadow-sm">
                         <div className="bg-muted/30 shrink-0 border-b px-5 py-4">
-                            <h3 className="text-base font-semibold">{translate('Upcoming Events')}</h3>
+                            <h3 className="text-base font-bold">{translate('Upcoming Events')}</h3>
                         </div>
 
                         <div className="custom-scrollbar h-[360px] overflow-y-auto">
@@ -437,7 +435,7 @@ export default function CalendarIndex() {
                                                     event.type === 'meeting'
                                                         ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400'
                                                         : event.type === 'call'
-                                                          ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400'
+                                                          ? 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/40 dark:text-fuchsia-400'
                                                           : 'bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400'
                                                 }`}
                                             >
@@ -445,7 +443,7 @@ export default function CalendarIndex() {
                                             </div>
 
                                             <div className="min-w-0 flex-1">
-                                                <p className="text-foreground truncate text-sm font-semibold">{event.title}</p>
+                                                <p className="text-foreground truncate text-sm font-bold">{event.title}</p>
 
                                                 <div className="text-foreground/75 mt-1 flex items-center gap-1 text-xs">
                                                     <Calendar className="h-3 w-3 shrink-0" />
@@ -471,7 +469,7 @@ export default function CalendarIndex() {
                     <Card className="border-border overflow-hidden border p-0 shadow-sm">
                         {/* Header */}
                         <div className="border-border border-b px-4 py-4">
-                            <h3 className="text-foreground text-sm font-semibold">{translate('This Month')}</h3>
+                            <h3 className="text-foreground text-sm font-bold">{translate('This Month')}</h3>
                         </div>
 
                         {/* Stats */}
@@ -485,7 +483,7 @@ export default function CalendarIndex() {
                             {/* Calls */}
                             <div className="flex items-center justify-between">
                                 <span className="text-foreground/75 text-sm">{translate('Calls')}</span>
-                                <span className="text-sm text-green-600 dark:text-green-400">{summaryStats.calls}</span>
+                                <span className="text-sm text-fuchsia-600 dark:text-fuchsia-400">{summaryStats.calls}</span>
                             </div>
 
                             {/* Leaves */}
@@ -497,7 +495,7 @@ export default function CalendarIndex() {
                             <div className="border-border -mx-4 border-t px-4 pt-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-foreground/75 text-sm">{translate('Total Events')}</span>
-                                    <span className="text-foreground text-sm font-semibold">{summaryStats.total}</span>
+                                    <span className="text-foreground text-sm font-bold">{summaryStats.total}</span>
                                 </div>
                             </div>
                         </div>

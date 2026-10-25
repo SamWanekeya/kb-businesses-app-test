@@ -2,7 +2,7 @@
 
 namespace App\Services\Subscription;
 
-use App\Http\Requests\ProcessPaystackPaymentRequest;
+use App\Http\Requests\Subscription\ProcessPaystackPaymentRequest;
 use App\Models\Plan;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;

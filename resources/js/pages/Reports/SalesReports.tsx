@@ -37,8 +37,8 @@ export default function SalesReports() {
                     {window.kbSettings.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}
                 </span>
             ),
-            icon: <DollarSign className="h-6 w-6 text-green-600" />,
-            iconColor: 'bg-green-100',
+            icon: <DollarSign className="h-6 w-6 text-fuchsia-600" />,
+            iconColor: 'bg-fuchsia-100',
         },
         {
             title: translate('Total Orders'),
@@ -80,7 +80,7 @@ export default function SalesReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('Sales Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Sales Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -152,7 +152,7 @@ export default function SalesReports() {
                 <div className="col-span-full">
                     <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{translate('Sales by Status')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Sales by Status')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 pt-5" dir="ltr">
                             <ResponsiveContainer width="100%" height={300}>
@@ -198,7 +198,7 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{translate('Recent Sales')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Recent Sales')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest sales orders')}</p>
                             </div>
                             <Link
@@ -221,7 +221,7 @@ export default function SalesReports() {
                       <UserInitials name={sale.account?.name || sale.name || 'Unknown'} />
                     </div> */}
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm leading-tight font-semibold">
+                                            <p className="truncate text-sm leading-tight font-bold">
                                                 {sale.account?.name || sale.name || 'Unknown'}
                                             </p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">{sale.order_number}</p>
@@ -251,7 +251,7 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{translate('Top Selling Products')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Top Selling Products')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest revenue products')}</p>
                             </div>
                             <Link
@@ -307,7 +307,7 @@ export default function SalesReports() {
                                         </div>
 
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
+                                            <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                 {product.total_quantity} {translate('units sold')}
                                             </p>

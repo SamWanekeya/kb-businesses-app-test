@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Factory className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-semibold">{translate('Account Industry Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Account Industry Details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -58,7 +58,7 @@ export default function View({ record }: ViewProps) {
                     <div className="mt-1">
                         <span
                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
-                                record.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'
+                                record.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'
                             }`}
                         >
                             {record.status === 'active' ? translate('Active') : translate('Inactive')}

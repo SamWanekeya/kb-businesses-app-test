@@ -79,21 +79,17 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="flex max-h-[90vh] flex-col overflow-hidden sm:max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-semibold text-neutral-500">{translate('Upgrade plan for organization')}</DialogTitle>
+                    <DialogTitle className="text-lg font-bold text-neutral-500">{translate('Upgrade plan for organization')}</DialogTitle>
                     <DialogDescription className="text-sm text-neutral-600">{translate('Select a new plan for this organization')}</DialogDescription>
                 </DialogHeader>
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-3 rounded-lg bg-neutral-50 px-4 py-2">
-                    <span className={`text-sm transition-colors ${!isYearly ? 'text-primary' : 'text-neutral-600'}`}>
-                        {translate('Monthly')}
-                    </span>
+                    <span className={`text-sm transition-colors ${!isYearly ? 'text-primary' : 'text-neutral-600'}`}>{translate('Monthly')}</span>
                     <Switch checked={isYearly} onCheckedChange={setIsYearly} className="data-[state=checked]:bg-primary" />
-                    <span className={`text-sm transition-colors ${isYearly ? 'text-primary' : 'text-neutral-600'}`}>
-                        {translate('Yearly')}
-                    </span>
+                    <span className={`text-sm transition-colors ${isYearly ? 'text-primary' : 'text-neutral-600'}`}>{translate('Yearly')}</span>
                     {isYearly && (
-                        <Badge variant="secondary" className="ml-2 border-0 bg-green-100 text-xs text-green-700">
+                        <Badge variant="secondary" className="ml-2 border-0 bg-fuchsia-100 text-xs text-fuchsia-700">
                             {translate('Save up to 20%')}
                         </Badge>
                     )}
@@ -131,7 +127,7 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
                                             {/* Plan Header */}
                                             <div className="mb-1 flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <h3 className="text-base leading-tight font-semibold text-neutral-500">{plan.name}</h3>
+                                                    <h3 className="text-base leading-tight font-bold text-neutral-500">{plan.name}</h3>
                                                     {plan.is_current && (
                                                         <Badge
                                                             variant="secondary"
@@ -166,7 +162,7 @@ export default function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, cu
                                                             variant="outline"
                                                             className="border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs leading-tight font-normal text-neutral-700"
                                                         >
-                                                            <CheckCircle2 className="mr-1 h-3 w-3 flex-shrink-0 text-primary" />
+                                                            <CheckCircle2 className="text-primary mr-1 h-3 w-3 flex-shrink-0" />
                                                             <span className="truncate">{feature}</span>
                                                         </Badge>
                                                     ))}

@@ -52,7 +52,7 @@ export default function ProjectTaskShow() {
 
     const getStatusBadgeClass = (name: string) => {
         const n = (name || '').toLowerCase();
-        if (n === 'done') return 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20';
+        if (n === 'done') return 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-inset ring-fuchsia-600/20';
         if (n === 'in_progress' || n === 'in progress') return 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20';
         if (n === 'review') return 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20';
         if (n === 'todo') return 'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20';
@@ -353,8 +353,8 @@ export default function ProjectTaskShow() {
                                     </div>
                                     <div className="text-sm text-gray-600 dark:text-gray-400">{translate('Estimated')}</div>
                                 </div>
-                                <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-center dark:border-green-800 dark:bg-green-900/20">
-                                    <div className="flex items-center justify-center gap-2 text-2xl font-extrabold text-green-600 dark:text-green-400">
+                                <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-4 text-center dark:border-fuchsia-800 dark:bg-fuchsia-900/20">
+                                    <div className="flex items-center justify-center gap-2 text-2xl font-extrabold text-fuchsia-600 dark:text-fuchsia-400">
                                         <CheckCircle className="h-5 w-5" />
                                         {task.actual_hours || 0}h
                                     </div>

@@ -265,7 +265,7 @@ export default function PublicQuote({
         const statusColors = {
             draft: 'bg-gray-50 text-gray-600 ring-gray-500/10',
             sent: 'bg-blue-50 text-blue-700 ring-blue-700/10',
-            accepted: 'bg-green-50 text-green-700 ring-green-600/20',
+            accepted: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             rejected: 'bg-red-50 text-red-700 ring-red-600/10',
             expired: 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
         };
@@ -301,7 +301,7 @@ export default function PublicQuote({
                                     onClick={copyQuoteLink}
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
                                 >
-                                    {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
+                                    {copied ? <Check className="mr-2 h-4 w-4 text-fuchsia-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? translate('Copied!') : translate('Copy Link')}
                                 </button>
                             )}
@@ -407,7 +407,7 @@ export default function PublicQuote({
                         {/* Quote Information */}
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
-                                <h3 className="text-lg font-semibold">{translate('Quote Information')}</h3>
+                                <h3 className="text-lg font-bold">{translate('Quote Information')}</h3>
                             </div>
                             <div className="p-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -499,7 +499,7 @@ export default function PublicQuote({
                         {(quote.account || quote.contact || quote.shipping_provider_type) && (
                             <div className="rounded-lg border bg-white shadow-sm">
                                 <div className="border-b px-6 py-4">
-                                    <h3 className="flex items-center text-lg font-semibold">
+                                    <h3 className="flex items-center text-lg font-bold">
                                         <User className="mr-3 h-5 w-5 text-gray-400" />
                                         {translate('Related Data')}
                                     </h3>
@@ -512,7 +512,7 @@ export default function PublicQuote({
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={quote.account.name} />
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-semibold text-gray-900">{quote.account.name}</p>
+                                                        <p className="truncate text-sm font-bold text-gray-900">{quote.account.name}</p>
                                                         {quote.account.email && (
                                                             <p className="truncate text-xs text-gray-500">{quote.account.email}</p>
                                                         )}
@@ -526,7 +526,7 @@ export default function PublicQuote({
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={quote.contact.name} />
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-semibold text-gray-900">{quote.contact.name}</p>
+                                                        <p className="truncate text-sm font-bold text-gray-900">{quote.contact.name}</p>
                                                         {quote.contact.email && (
                                                             <p className="truncate text-xs text-gray-500">{quote.contact.email}</p>
                                                         )}
@@ -542,7 +542,7 @@ export default function PublicQuote({
                                                         <Truck className="h-4 w-4 text-orange-500" />
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="truncate text-sm font-semibold text-gray-900">
+                                                        <p className="truncate text-sm font-bold text-gray-900">
                                                             {quote.shipping_provider_type.name}
                                                         </p>
                                                     </div>
@@ -557,7 +557,7 @@ export default function PublicQuote({
                         {/* Billing & Shipping Details */}
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
-                                <h3 className="flex items-center text-lg font-semibold">
+                                <h3 className="flex items-center text-lg font-bold">
                                     <svg className="text-foreground/75 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path
                                             strokeLinecap="round"
@@ -573,7 +573,7 @@ export default function PublicQuote({
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     {/* Billing */}
                                     <div>
-                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing Address')}</p>
                                         {quote.billing_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.billing_contact.name} />
@@ -603,9 +603,7 @@ export default function PublicQuote({
                                                 </div>
                                                 <div className="space-y-0.5">
                                                     <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm">
-                                                        {quote.billing_postal_code || translate('-')}
-                                                    </p>
+                                                    <p className="text-foreground text-sm">{quote.billing_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
@@ -616,7 +614,7 @@ export default function PublicQuote({
                                     </div>
                                     {/* Shipping */}
                                     <div className="sm:border-s sm:ps-6">
-                                        <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping Address')}</p>
                                         {quote.shipping_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.shipping_contact.name} />
@@ -646,9 +644,7 @@ export default function PublicQuote({
                                                 </div>
                                                 <div className="space-y-0.5">
                                                     <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm">
-                                                        {quote.shipping_postal_code || translate('-')}
-                                                    </p>
+                                                    <p className="text-foreground text-sm">{quote.shipping_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
@@ -664,7 +660,7 @@ export default function PublicQuote({
                         {/* Products Table */}
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
-                                <h3 className="flex items-center text-lg font-semibold">
+                                <h3 className="flex items-center text-lg font-bold">
                                     <Package className="mr-3 h-5 w-5 text-gray-400" />
                                     {translate('Products')}
                                 </h3>
@@ -676,12 +672,12 @@ export default function PublicQuote({
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1]">
-                                                        <TableHead className="py-2.5 font-semibold">{translate('Product')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Quantity')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Unit Price')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Discount')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Tax')}</TableHead>
-                                                        <TableHead className="py-2.5 text-right font-semibold">{translate('Total')}</TableHead>
+                                                        <TableHead className="py-2.5 font-bold">{translate('Product')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Quantity')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Unit Price')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Discount')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Tax')}</TableHead>
+                                                        <TableHead className="py-2.5 text-right font-bold">{translate('Total')}</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
@@ -729,10 +725,10 @@ export default function PublicQuote({
                                                                     </div>
                                                                 </TableCell>
                                                                 <TableCell className="py-3 text-center">
-                                                                    <p className="text-sm font-semibold text-gray-900">{product.pivot.quantity}</p>
+                                                                    <p className="text-sm font-bold text-gray-900">{product.pivot.quantity}</p>
                                                                 </TableCell>
                                                                 <TableCell className="py-3 text-center">
-                                                                    <p className="font-mono text-sm font-semibold text-gray-900">
+                                                                    <p className="font-mono text-sm font-bold text-gray-900">
                                                                         {formatCurrency(product.pivot.unit_price)}
                                                                     </p>
                                                                 </TableCell>
@@ -741,7 +737,7 @@ export default function PublicQuote({
                                                                     product.pivot.discount_type !== 'none' &&
                                                                     product.pivot.discount_value > 0 ? (
                                                                         <>
-                                                                            <p className="text-sm font-semibold text-gray-900">
+                                                                            <p className="text-sm font-bold text-gray-900">
                                                                                 {product.pivot.discount_type === 'percentage' ? (
                                                                                     `${Number(product.pivot.discount_value)}%`
                                                                                 ) : (
@@ -761,7 +757,7 @@ export default function PublicQuote({
                                                                 <TableCell className="py-3 text-center">
                                                                     {product.tax ? (
                                                                         <>
-                                                                            <p className="text-sm font-semibold text-gray-900">
+                                                                            <p className="text-sm font-bold text-gray-900">
                                                                                 {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                             </p>
                                                                             <p className="mt-0.5 font-mono text-xs text-gray-500">
@@ -788,17 +784,17 @@ export default function PublicQuote({
                                             <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
                                                     <span className="text-sm text-gray-500">{translate('Subtotal')}</span>
-                                                    <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(subtotal)}</span>
+                                                    <span className="font-mono text-sm font-bold text-gray-900">{formatCurrency(subtotal)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
                                                     <span className="text-sm text-gray-500">{translate('Discount')}</span>
-                                                    <span className="font-mono text-sm font-semibold text-red-500">
+                                                    <span className="font-mono text-sm font-bold text-red-500">
                                                         -{formatCurrency(totalDiscount)}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
                                                     <span className="text-sm text-gray-500">{translate('Total Tax')}</span>
-                                                    <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(totalTax)}</span>
+                                                    <span className="font-mono text-sm font-bold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
                                                     <span className="text-sm font-extrabold text-gray-900">{translate('Grand Total')}</span>
@@ -824,7 +820,7 @@ export default function PublicQuote({
                         {quote.activities && quote.activities.length > 0 && (
                             <div className="rounded-lg border bg-white shadow-sm">
                                 <div className="border-b px-6 py-4">
-                                    <h3 className="flex items-center text-lg font-semibold">
+                                    <h3 className="flex items-center text-lg font-bold">
                                         <MessageCircle className="mr-3 h-5 w-5 text-gray-400" />
                                         {translate('Activity Stream')}
                                     </h3>
@@ -835,7 +831,7 @@ export default function PublicQuote({
                                             const getActivityBadgeColor = (type: string): string => {
                                                 switch (type) {
                                                     case 'created':
-                                                        return 'bg-green-50 text-green-700 ring-green-600/20';
+                                                        return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                                                     case 'updated':
                                                         return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                                                     case 'deleted':
@@ -874,7 +870,7 @@ export default function PublicQuote({
                                                     <div className="min-w-0 flex-1 overflow-hidden rounded-xl border bg-white shadow-sm">
                                                         <div className="flex items-center justify-between gap-2 border-b px-4 py-2.5">
                                                             <div className="flex flex-wrap items-center gap-2">
-                                                                <span className="text-sm font-semibold text-gray-900">
+                                                                <span className="text-sm font-bold text-gray-900">
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span

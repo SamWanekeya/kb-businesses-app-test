@@ -28,7 +28,7 @@ return new class () extends Migration {
             $table->timestamp('processed_at')->nullable();
             $table->foreignId('processed_by')->nullable()->constrained('users')->nullOnDelete();
             $table->text('notes')->nullable();
-            $table->string('receipt_path')->nullable();
+            $table->string('receipt')->nullable();
             $table->timestamps();
         });
     }

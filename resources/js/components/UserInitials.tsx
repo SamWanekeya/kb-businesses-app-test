@@ -7,7 +7,7 @@ const COLORS = [
     'bg-amber-50 text-amber-700 border-amber-300',
     'bg-yellow-50 text-yellow-700 border-yellow-300',
     'bg-lime-50 text-lime-700 border-lime-300',
-    'bg-green-50 text-green-700 border-green-300',
+    'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-300',
     'bg-teal-50 text-teal-700 border-teal-300',
     'bg-cyan-50 text-cyan-700 border-cyan-300',
     'bg-sky-50 text-sky-700 border-sky-300',
@@ -30,7 +30,7 @@ const UserInitials = ({ name }: { name?: string }) => {
     return (
         <Avatar className="size-9 rounded-full">
             <AvatarFallback
-                className={`rounded-full border text-sm font-semibold ${name ? pickColor(name) : 'border-gray-300 bg-gray-50 text-gray-700'}`}
+                className={`rounded-full border text-sm font-bold ${name ? pickColor(name) : 'border-gray-300 bg-gray-50 text-gray-700'}`}
             >
                 {getInitials(name || 'A N')}
             </AvatarFallback>

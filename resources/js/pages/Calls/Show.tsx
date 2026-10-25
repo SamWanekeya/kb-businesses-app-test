@@ -51,7 +51,7 @@ export default function CallShow() {
                     {/* Call Details */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h2 className="text-lg font-semibold">{translate('Call Details')}</h2>
+                            <h2 className="text-lg font-bold">{translate('Call Details')}</h2>
                         </div>
                         <div className="p-6">
                             <div className="space-y-4">
@@ -83,7 +83,7 @@ export default function CallShow() {
                                             call.status === 'planned'
                                                 ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
                                                 : call.status === 'held'
-                                                  ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                  ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                                   : call.status === 'not_held'
                                                     ? 'bg-red-50 text-red-700 ring-red-600/20'
                                                     : 'bg-gray-50 text-gray-700 ring-gray-600/20'
@@ -107,7 +107,7 @@ export default function CallShow() {
                         <Card>
                             <div className="flex items-center gap-2 border-b px-6 py-4">
                                 <Users className="h-5 w-5" />
-                                <h2 className="text-lg font-semibold">{translate('Attendees')}</h2>
+                                <h2 className="text-lg font-bold">{translate('Attendees')}</h2>
                             </div>
                             <div className="space-y-3 p-6">
                                 {call.attendees.map((attendee: any, index: number) => (
@@ -147,7 +147,7 @@ export default function CallShow() {
                     {/* Call Info */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="font-semibold">{translate('Call Information')}</h3>
+                            <h3 className="font-bold">{translate('Call Information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
@@ -241,7 +241,7 @@ export default function CallShow() {
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
                                         <Building2 className="text-foreground/75 h-4 w-4" />
-                                        <h3 className="text-base font-semibold">{translate('Related To')}</h3>
+                                        <h3 className="text-base font-bold">{translate('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
                                         {useHasPermission(viewRoute) ? (

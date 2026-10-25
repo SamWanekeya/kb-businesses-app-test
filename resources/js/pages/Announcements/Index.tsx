@@ -187,7 +187,7 @@ export default function Announcements() {
     const getStatusBadge = (status: string) => {
         const statusColors = {
             expired: 'bg-gray-50 text-gray-700 ring-gray-600/20',
-            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             inactive: 'bg-red-50 text-red-700 ring-red-600/20',
         };
 
@@ -393,7 +393,7 @@ export default function Announcements() {
                             {tab.icon}
                             {tab.label}
                             <span
-                                className={`ml-0.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+                                className={`ml-0.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold ${
                                     selectedStatus === tab.value
                                         ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
                                         : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'

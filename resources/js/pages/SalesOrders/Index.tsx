@@ -271,7 +271,7 @@ export default function SalesOrders() {
                     confirmed: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     processing: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     shipped: 'bg-purple-50 text-purple-700 ring-purple-600/20',
-                    delivered: 'bg-green-50 text-green-700 ring-green-600/20',
+                    delivered: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (

@@ -158,7 +158,7 @@ export default function OpportunityCreate() {
                     {/* Basic Information */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -264,7 +264,7 @@ export default function OpportunityCreate() {
                     {/* Classification */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Classification')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -401,7 +401,7 @@ export default function OpportunityCreate() {
                 {/* ROW 2 — Products */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Products')}</h2>
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Products')}</h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
                             {translate('Add Product')}
@@ -418,7 +418,7 @@ export default function OpportunityCreate() {
                                 <div className="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-14 w-14 items-center justify-center rounded-full transition-colors">
                                     <PackagePlus className="text-primary h-7 w-7" />
                                 </div>
-                                <p className="text-foreground text-sm font-semibold">{translate('No products added yet')}</p>
+                                <p className="text-foreground text-sm font-bold">{translate('No products added yet')}</p>
                                 <p className="text-foreground/75 mt-1 text-xs">{translate('Click here or use the Add Product button above')}</p>
                             </div>
                         ) : (
@@ -427,7 +427,7 @@ export default function OpportunityCreate() {
                                 <div className="hidden overflow-x-auto md:block">
                                     <table className="w-full text-sm">
                                         <thead>
-                                            <tr className="border-t border-b border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+                                            <tr className="border-t border-b border-gray-200 bg-gray-50 text-xs font-bold text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
                                                 <th className="px-3 py-2 text-left">
                                                     {translate('Product')} <span className="text-red-500">*</span>
                                                 </th>
@@ -558,7 +558,7 @@ export default function OpportunityCreate() {
                                                 className="border-border relative space-y-3 rounded-lg border bg-gray-50/50 p-4 dark:bg-gray-800/30"
                                             >
                                                 <div className="flex items-center justify-between border-b pb-2">
-                                                    <span className="text-foreground/75 text-xs font-semibold">
+                                                    <span className="text-foreground/75 text-xs font-bold">
                                                         {translate('Product #{{index}}', { index: i + 1 })}
                                                     </span>
                                                     <button
@@ -574,9 +574,7 @@ export default function OpportunityCreate() {
                                                 </div>
                                                 <div className="space-y-2">
                                                     <div>
-                                                        <label className="text-foreground/75 mb-1 block text-xs">
-                                                            {translate('Product')} *
-                                                        </label>
+                                                        <label className="text-foreground/75 mb-1 block text-xs">{translate('Product')} *</label>
                                                         <Select
                                                             value={row.product_id}
                                                             onValueChange={(v) => {
@@ -617,9 +615,7 @@ export default function OpportunityCreate() {
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
-                                                            <label className="text-foreground/75 mb-1 block text-xs">
-                                                                {translate('Quantity')} *
-                                                            </label>
+                                                            <label className="text-foreground/75 mb-1 block text-xs">{translate('Quantity')} *</label>
                                                             <Input
                                                                 inputType="number"
                                                                 inputMode="decimal"
@@ -659,7 +655,7 @@ export default function OpportunityCreate() {
                                                             {translate('Tax')}:{' '}
                                                             {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                         </span>
-                                                        <span className="text-foreground font-mono font-semibold">
+                                                        <span className="text-foreground font-mono font-bold">
                                                             {translate('Total')}: {fmt(lineTotal + taxAmt)}
                                                         </span>
                                                     </div>
@@ -686,7 +682,7 @@ export default function OpportunityCreate() {
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
                                     <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
-                                    <span className="font-mono text-base font-extrabold text-green-600 dark:text-green-400">{fmt(grandTotal)}</span>
+                                    <span className="font-mono text-base font-extrabold text-fuchsia-600 dark:text-fuchsia-400">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -696,7 +692,7 @@ export default function OpportunityCreate() {
                 {/* ROW 3 — Assignment */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Assignment')}</h2>
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Assignment')}</h2>
                     </div>
                     <div className="space-y-4 p-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

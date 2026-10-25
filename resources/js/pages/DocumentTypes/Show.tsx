@@ -53,7 +53,7 @@ export default function ShowDocumentType() {
                                     <span
                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                             documentType.status === 'active'
-                                                ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                                ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                         }`}
                                     >

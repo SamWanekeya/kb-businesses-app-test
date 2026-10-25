@@ -108,7 +108,7 @@ export default function LeadEdit() {
                     {/* Basic Information */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -246,7 +246,7 @@ export default function LeadEdit() {
                     {/* Lead Classification */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Lead Classification')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Lead Classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -385,7 +385,7 @@ export default function LeadEdit() {
                     {/* Address & Notes */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Address & Notes')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Address & Notes')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -425,7 +425,7 @@ export default function LeadEdit() {
                     {/* Assignment */}
                     <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Assignment')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Assignment')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">

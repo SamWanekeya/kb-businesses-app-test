@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\Plan;
 use Exception;
 use Illuminate\Http\JsonResponse;

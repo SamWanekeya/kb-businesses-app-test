@@ -122,8 +122,8 @@ export function PayTabsPaymentForm({
                         </div>
                         {discountCode && (
                             <div className="mt-2 flex items-center justify-between border-t pt-2">
-                                <span className="text-sm text-green-600">{translate('Discount Applied')}:</span>
-                                <span className="text-sm text-green-700">{discountCode}</span>
+                                <span className="text-sm text-fuchsia-600">{translate('Discount Applied')}:</span>
+                                <span className="text-sm text-fuchsia-700">{discountCode}</span>
                             </div>
                         )}
                     </div>

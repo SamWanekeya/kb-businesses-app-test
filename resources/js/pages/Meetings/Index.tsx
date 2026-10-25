@@ -220,7 +220,7 @@ export default function Meetings() {
             case 'planned':
                 return 'bg-blue-50 text-blue-700 ring-blue-600/20';
             case 'held':
-                return 'bg-green-50 text-green-700 ring-green-600/20';
+                return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
             case 'not_held':
                 return 'bg-red-50 text-red-700 ring-red-600/20';
             default:
@@ -283,7 +283,7 @@ export default function Meetings() {
                 >
                     {isRtl ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
                 </button>
-                <span className="text-sm font-semibold">
+                <span className="text-sm font-bold">
                     {monthNames[selectedMonth - 1]} {selectedYear}
                 </span>
                 <button
@@ -348,13 +348,13 @@ export default function Meetings() {
     const renderSummary = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Meeting Summary')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Meeting Summary')}</p>
                 <span className="text-foreground/75 text-xs">({formatSelectedDate(selectedDateObj)})</span>
             </div>
             <div className="space-y-2.5 p-4">
                 {[
                     { label: translate('Planned'), color: 'bg-blue-500', count: summary.planned },
-                    { label: translate('Held'), color: 'bg-green-500', count: summary.held },
+                    { label: translate('Held'), color: 'bg-fuchsia-500', count: summary.held },
                     { label: translate('Not Held'), color: 'bg-red-500', count: summary.not_held },
                 ].map((item) => (
                     <div key={item.label} className="flex items-center justify-between">
@@ -362,12 +362,12 @@ export default function Meetings() {
                             <span className={`h-2.5 w-2.5 rounded-full ${item.color}`} />
                             <span className="text-sm text-gray-600 dark:text-gray-300">{item.label}</span>
                         </div>
-                        <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{item.count}</span>
+                        <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{item.count}</span>
                     </div>
                 ))}
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 dark:border-gray-700">
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Total Meetings')}</span>
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Total Meetings')}</span>
                 <span className="text-sm font-extrabold text-gray-900 dark:text-gray-100">
                     {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)}
                 </span>
@@ -379,7 +379,7 @@ export default function Meetings() {
     const renderQuickFilters = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Quick Filters')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Quick Filters')}</p>
             </div>
             <div className="space-y-1 p-4">
                 {(['yesterday', 'today', 'tomorrow'] as const).map((f) => {
@@ -406,11 +406,7 @@ export default function Meetings() {
                                 <CalendarDays className={`h-4 w-4 shrink-0 ${isActive ? 'text-primary' : 'text-foreground/75'}`} />
                                 <span>{translate(f.charAt(0).toUpperCase() + f.slice(1))}</span>
                             </div>
-                            {isRtl ? (
-                                <ChevronLeft className="text-foreground/75 h-4 w-4" />
-                            ) : (
-                                <ChevronRight className="text-foreground/75 h-4 w-4" />
-                            )}
+                            {isRtl ? <ChevronLeft className="text-foreground/75 h-4 w-4" /> : <ChevronRight className="text-foreground/75 h-4 w-4" />}
                         </button>
                     );
                 })}
@@ -440,7 +436,7 @@ export default function Meetings() {
                         {/* Date Header */}
                         <div className="flex flex-wrap items-center gap-3 border-b border-gray-200 px-5 py-4 dark:border-gray-700">
                             <CalendarDays className="text-foreground/75 h-4 w-4" />
-                            <span className="font-semibold text-gray-800 dark:text-gray-100">
+                            <span className="font-bold text-gray-800 dark:text-gray-100">
                                 {formatSelectedDate(selectedDateObj)}
                                 {isToday(selectedDateObj) && <span className="ms-1 font-extrabold">({translate('Today')})</span>}
                             </span>
@@ -477,11 +473,11 @@ export default function Meetings() {
                                         {/* Time column */}
                                         <div className="relative me-4 flex w-16 shrink-0 flex-col items-end justify-start pe-4 pt-4 pb-4 sm:w-20">
                                             <div className="absolute end-0 top-3 bottom-3 w-px bg-gray-300 dark:bg-gray-600" />
-                                            <span className="text-xs leading-tight font-semibold text-gray-700 dark:text-gray-200">
+                                            <span className="text-xs leading-tight font-bold text-gray-700 dark:text-gray-200">
                                                 {formatTime(meeting.start_time)}
                                             </span>
                                             <span className="my-0.5 text-xs leading-none text-gray-400 dark:text-gray-400">↓</span>
-                                            <span className="text-xs leading-tight font-semibold text-gray-700 dark:text-gray-200">
+                                            <span className="text-xs leading-tight font-bold text-gray-700 dark:text-gray-200">
                                                 {formatTime(meeting.end_time)}
                                             </span>
                                         </div>
@@ -505,7 +501,7 @@ export default function Meetings() {
                                             {/* Row 1: title + badge + actions */}
                                             <div className="flex items-start justify-between gap-1 sm:gap-2">
                                                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                                                    <p className="truncate text-sm leading-tight font-semibold text-gray-900 dark:text-gray-100">
+                                                    <p className="truncate text-sm leading-tight font-bold text-gray-900 dark:text-gray-100">
                                                         {meeting.title}
                                                     </p>
                                                     <span
@@ -642,7 +638,7 @@ export default function Meetings() {
                                                                     <TooltipProvider>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
-                                                                                <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-[9px] font-semibold text-gray-700 ring-2 ring-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-900">
+                                                                                <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-[9px] font-bold text-gray-700 ring-2 ring-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-900">
                                                                                     +{extra}
                                                                                 </div>
                                                                             </TooltipTrigger>

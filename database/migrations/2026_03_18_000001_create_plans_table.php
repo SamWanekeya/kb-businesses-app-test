@@ -21,7 +21,6 @@ return new class () extends Migration {
             $table->integer('maximum_contacts')->default(0);
             $table->integer('maximum_accounts')->default(0);
             $table->text('description')->nullable();
-            $table->enum('enable_branding', ['on', 'off']);
             $table->enum('enable_kakbima_intelligence', ['on', 'off']);
             $table->decimal('storage_limit', total: 19, places: 7)->default(0);
             $table->enum('is_trial', ['on', 'off'])->nullable();

@@ -17,7 +17,7 @@ export default function ShippingProviderTypeShow() {
 
     const getStatusBadge = (status: string) => {
         const statusColors = {
-            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             inactive: 'bg-red-50 text-red-700 ring-red-600/10',
         };
 
@@ -72,7 +72,7 @@ export default function ShippingProviderTypeShow() {
                 {/* Shipping Provider Type Information */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-semibold">{translate('Shipping Provider Type Information')}</CardTitle>
+                        <CardTitle className="text-lg font-bold">{translate('Shipping Provider Type Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -119,7 +119,7 @@ export default function ShippingProviderTypeShow() {
                 {/* Timestamps */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-semibold">{translate('Record Information')}</CardTitle>
+                        <CardTitle className="text-lg font-bold">{translate('Record Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

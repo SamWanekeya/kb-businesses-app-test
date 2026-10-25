@@ -92,7 +92,7 @@ export default function ProjectShow() {
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'active':
-                return 'bg-green-100 text-green-800 border-green-200';
+                return 'bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200';
             case 'completed':
                 return 'bg-blue-100 text-blue-800 border-blue-200';
             case 'on_hold':
@@ -142,7 +142,7 @@ export default function ProjectShow() {
                             <span
                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                     project.status === 'active'
-                                        ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                                         : project.status === 'completed'
                                           ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20 ring-inset'
                                           : project.status === 'on_hold'
@@ -166,7 +166,7 @@ export default function ProjectShow() {
                 {totalTasks > 0 && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{translate('Task Progress')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Task Progress')}</h3>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="flex items-center justify-between">
@@ -211,7 +211,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <Building2 className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{translate('Account Information')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Account Information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             {project.account ? (
@@ -238,7 +238,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <Calendar className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{translate('Timeline')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Timeline')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
@@ -282,7 +282,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <DollarSign className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{translate('Budget & Assignment')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Budget & Assignment')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
@@ -350,7 +350,7 @@ export default function ProjectShow() {
                 {meetings && meetings.length > 0 && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{translate('Activities')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Activities')}</h3>
                         </div>
                         <div className="grid grid-cols-1 gap-8 p-6 md:grid-cols-2">
                             {/* Meetings Section */}
@@ -420,7 +420,7 @@ export default function ProjectShow() {
                             {/* Calls Section */}
                             <div>
                                 <div className="mb-4 flex items-center">
-                                    <svg className="mr-2 h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="mr-2 h-5 w-5 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
@@ -443,7 +443,7 @@ export default function ProjectShow() {
                                             >
                                                 <div className="flex items-start space-x-3">
                                                     <div className="mt-1 flex-shrink-0">
-                                                        <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg className="h-4 w-4 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path
                                                                 strokeLinecap="round"
                                                                 strokeLinejoin="round"
@@ -488,7 +488,7 @@ export default function ProjectShow() {
                 {project.description && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{translate('Description')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Description')}</h3>
                         </div>
                         <div className="prose dark:prose-invert max-w-none p-6">
                             <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">{project.description}</p>

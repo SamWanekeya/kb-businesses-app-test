@@ -9,70 +9,92 @@ use App\Models\OpportunityStage;
 use App\Models\Plan;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Handles organization registration and registration-page rendering.
+ *
+ * Account creation and default workspace provisioning are performed
+ * in a single database transaction. Authentication and registration
+ * events happen only after the transaction succeeds.
+ */
 class SignUpUserController extends Controller
 {
     /**
-     * Handle an incoming registration request.
+     * Register a new organization account.
      *
-     * @param SignUpRequest $request
-     *
-     * @return RedirectResponse
+     * @throws \Throwable If account creation or provisioning fails.
      */
     public function register(SignUpRequest $request): RedirectResponse
     {
-        $locale = Cookie::get('__kb_lcl');
+        $validated = $request->validated();
 
-        $user = DB::transaction(function () use ($request, $locale) {
+        // Hash before opening the transaction to reduce transaction duration.
+        $password = Hash::make($validated['password']);
+
+        // Read the incoming cookie through the request.
+        $locale = $request->cookie('__kb_lcl');
+
+        $locale = is_string($locale)
+        && preg_match('/\A[a-z]{2,3}(?:-[a-z0-9]{2,8})*\z/i', $locale) === 1
+            ? $locale
+            : 'en';
+
+        $user = DB::transaction(function () use (
+            $validated,
+            $password,
+            $locale,
+        ): User {
             $userData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $password,
                 'type' => 'organization',
-                'lang' => $locale ?? 'en',
+                'lang' => $locale,
                 'is_active' => 1,
                 'is_sign_in_enabled' => 1,
                 'is_plan_active' => 0,
             ];
 
-            if ($request->filled('referral_code')) {
-                $referrer = User::where('referral_code', $request->referral_code)
-                    ->where('type', 'organization')?->first();
+            $referralCode = $validated['referral_code'] ?? null;
 
-                if ($referrer) {
-                    $userData['referral_code_used'] = $request->referral_code;
-                }
+            // Associate the referral only when it belongs to an organization.
+            if (
+                is_string($referralCode)
+                && $referralCode !== ''
+                && User::query()
+                    ->where('referral_code', $referralCode)
+                    ->where('type', 'organization')
+                    ->exists()
+            ) {
+                $userData['referral_code_used'] = $referralCode;
             }
 
-            $user = User::create($userData);
+            $user = User::query()->create($userData);
 
-            // Assign role and settings to the user
+            // Preserve existing role and settings initialization.
             defaultRoleAndSetting($user);
 
-            // Create default lead statuses
             $this->createDefaultLeadStatuses($user->id);
-
-            // Create default opportunity stages
             $this->createDefaultOpportunityStages($user->id);
-
-            // Create default task statuses
             $this->createDefaultTaskStatuses($user->id);
 
             return $user;
         });
 
+        // Authenticate only after successful account provisioning.
         Auth::login($user);
+
+        // Regenerate the session ID after authentication.
+        $request->session()->regenerate();
 
         event(new Registered($user));
 
@@ -84,15 +106,30 @@ class SignUpUserController extends Controller
     }
 
     /**
-     * Show the registration page.
+     * Render the registration page with optional referral and plan details.
      */
     public function create(Request $request): Response
     {
-        $referralCode = $request->input('ref');
-        $planId = $this->resolvePlanId($request->input('plan'));
+        $referralCode = $request->query('ref');
+
+        // Ignore malformed query parameters rather than passing arrays to queries.
+        if (
+            ! is_string($referralCode)
+            || strlen($referralCode) > 255
+        ) {
+            $referralCode = null;
+        }
+
+        $encryptedPlanId = $request->query('plan');
+
+        $planId = is_string($encryptedPlanId)
+        && strlen($encryptedPlanId) <= 2048
+            ? $this->resolvePlanId($encryptedPlanId)
+            : null;
 
         $referrer = $referralCode
-            ? User::where('referral_code', $referralCode)
+            ? User::query()
+                ->where('referral_code', $referralCode)
                 ->where('type', 'organization')
                 ->value('name')
             : null;
@@ -106,7 +143,10 @@ class SignUpUserController extends Controller
     }
 
     /**
-     * Resolve and validate encrypted plan ID.
+     * Decrypt a plan ID and confirm that the plan exists.
+     *
+     * Invalid tokens and invalid identifiers resolve to null.
+     * Database failures are allowed to propagate to Laravel's exception handler.
      */
     protected function resolvePlanId(?string $encrypted): ?int
     {
@@ -115,24 +155,42 @@ class SignUpUserController extends Controller
         }
 
         try {
-            $planId = decrypt($encrypted);
-
-            return Plan::whereKey($planId)->exists() ? $planId : null;
-        } catch (Exception $e) {
-            // Fail silently but log once for investigation
-            Log::error($e);
-
-            // Return an appropriate error response
+            $decrypted = decrypt($encrypted);
+        } catch (DecryptException) {
             return null;
         }
+
+        if (
+            ! is_int($decrypted)
+            && ! (
+                is_string($decrypted)
+                && ctype_digit($decrypted)
+            )
+        ) {
+            return null;
+        }
+
+        $planId = filter_var(
+            $decrypted,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]],
+        );
+
+        if ($planId === false) {
+            return null;
+        }
+
+        return Plan::query()->whereKey($planId)->exists()
+            ? $planId
+            : null;
     }
 
     /**
-     * Create default lead statuses for new organization
+     * Create the default lead statuses for a new organization.
      */
-    private function createDefaultLeadStatuses($userId): void
+    private function createDefaultLeadStatuses(int $userId): void
     {
-        $defaultStatuses = [
+        $statuses = [
             ['name' => 'New', 'color' => '#3B82F6'],
             ['name' => 'Contacted', 'color' => '#F59E0B'],
             ['name' => 'Qualified', 'color' => '#10b77f'],
@@ -141,10 +199,9 @@ class SignUpUserController extends Controller
             ['name' => 'Lost', 'color' => '#EF4444'],
         ];
 
-        foreach ($defaultStatuses as $status) {
-            LeadStatus::create([
-                'name' => $status['name'],
-                'color' => $status['color'],
+        foreach ($statuses as $status) {
+            LeadStatus::query()->create([
+                ...$status,
                 'status' => 'active',
                 'created_by' => $userId,
             ]);
@@ -152,24 +209,46 @@ class SignUpUserController extends Controller
     }
 
     /**
-     * Create default opportunity stages for new organization
+     * Create the default opportunity stages for a new organization.
      */
-    private function createDefaultOpportunityStages($userId): void
+    private function createDefaultOpportunityStages(int $userId): void
     {
-        $defaultStages = [
-            ['name' => 'Prospecting', 'color' => '#6B7280', 'probability' => 10],
-            ['name' => 'Qualification', 'color' => '#3B82F6', 'probability' => 25],
-            ['name' => 'Proposal', 'color' => '#F59E0B', 'probability' => 50],
-            ['name' => 'Negotiation', 'color' => '#8B5CF6', 'probability' => 75],
-            ['name' => 'Closed won', 'color' => '#10b77f', 'probability' => 100],
-            ['name' => 'Closed lost', 'color' => '#EF4444', 'probability' => 0],
+        $stages = [
+            [
+                'name' => 'Prospecting',
+                'color' => '#6B7280',
+                'probability' => 10,
+            ],
+            [
+                'name' => 'Qualification',
+                'color' => '#3B82F6',
+                'probability' => 25,
+            ],
+            [
+                'name' => 'Proposal',
+                'color' => '#F59E0B',
+                'probability' => 50,
+            ],
+            [
+                'name' => 'Negotiation',
+                'color' => '#8B5CF6',
+                'probability' => 75,
+            ],
+            [
+                'name' => 'Closed won',
+                'color' => '#10b77f',
+                'probability' => 100,
+            ],
+            [
+                'name' => 'Closed lost',
+                'color' => '#EF4444',
+                'probability' => 0,
+            ],
         ];
 
-        foreach ($defaultStages as $stage) {
-            OpportunityStage::create([
-                'name' => $stage['name'],
-                'color' => $stage['color'],
-                'probability' => $stage['probability'],
+        foreach ($stages as $stage) {
+            OpportunityStage::query()->create([
+                ...$stage,
                 'status' => 'active',
                 'created_by' => $userId,
             ]);
@@ -177,21 +256,20 @@ class SignUpUserController extends Controller
     }
 
     /**
-     * Create default task statuses for new organization
+     * Create the default task statuses for a new organization.
      */
-    private function createDefaultTaskStatuses($userId): void
+    private function createDefaultTaskStatuses(int $userId): void
     {
-        $defaultStatuses = [
+        $statuses = [
             ['name' => 'To do', 'color' => '#6B7280'],
             ['name' => 'In progress', 'color' => '#3B82F6'],
             ['name' => 'Review', 'color' => '#F59E0B'],
             ['name' => 'Done', 'color' => '#10b77f'],
         ];
 
-        foreach ($defaultStatuses as $status) {
-            TaskStatus::create([
-                'name' => $status['name'],
-                'color' => $status['color'],
+        foreach ($statuses as $status) {
+            TaskStatus::query()->create([
+                ...$status,
                 'status' => 'active',
                 'created_by' => $userId,
             ]);

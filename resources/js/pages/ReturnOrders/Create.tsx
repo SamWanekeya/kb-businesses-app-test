@@ -728,7 +728,7 @@ export default function ReturnOrderCreate() {
                                         </div>
                                         <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-extrabold dark:border-gray-700">
                                             <span className="text-gray-900 dark:text-white">{translate('Total Return Amount')}</span>
-                                            <span className="font-mono text-green-600 dark:text-green-400">{fmt(totals.subtotal + totals.tax)}</span>
+                                            <span className="font-mono text-fuchsia-600 dark:text-fuchsia-400">{fmt(totals.subtotal + totals.tax)}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -23,7 +23,7 @@ interface Plan {
     maximum_users: number;
     maximum_staffs: number;
     storage_limit: number;
-    enable_hafinen_intelligence: string;
+    enable_kakbima_intelligence: string;
     is_trial: string | null;
     trial_days: number;
     is_plan_enabled: string;
@@ -39,7 +39,7 @@ interface PlanCreateEditFormData {
     maximum_users: number | string | null;
     maximum_staffs: number | string | null;
     storage_limit: number | string | null;
-    enable_hafinen_intelligence: string;
+    enable_kakbima_intelligence: string;
     is_trial: string | null;
     trial_days: number | string | null;
     is_plan_enabled: string;
@@ -78,7 +78,7 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
         maximum_users: plan?.maximum_users ?? null,
         maximum_staffs: plan?.maximum_staffs ?? null,
         storage_limit: formatNumberInput(plan?.storage_limit),
-        enable_hafinen_intelligence: plan?.enable_hafinen_intelligence ?? 'off',
+        enable_kakbima_intelligence: plan?.enable_kakbima_intelligence ?? 'off',
         is_trial: plan?.is_trial ?? null,
         trial_days: plan?.trial_days ?? null,
         is_plan_enabled: plan?.is_plan_enabled ?? 'on',
@@ -538,12 +538,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="flex items-center justify-between gap-4">
-                                    <Label htmlFor="enable_hafinen_intelligence">{translate('Hafinen Intelligence')}</Label>
+                                    <Label htmlFor="enable_kakbima_intelligence">{translate('Kakbima Intelligence')}</Label>
 
                                     <Switch
-                                        id="enable_hafinen_intelligence"
-                                        checked={formData.enable_hafinen_intelligence === 'on'}
-                                        onCheckedChange={(checked) => handleSwitchChange('enable_hafinen_intelligence', checked)}
+                                        id="enable_kakbima_intelligence"
+                                        checked={formData.enable_kakbima_intelligence === 'on'}
+                                        onCheckedChange={(checked) => handleSwitchChange('enable_kakbima_intelligence', checked)}
                                     />
                                 </div>
 

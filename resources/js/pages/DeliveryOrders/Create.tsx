@@ -30,7 +30,7 @@ function FieldError({ message }: { message?: string }) {
 function SectionHeader({ title }: { title: string }) {
     return (
         <div className="mb-5 flex items-center gap-2 border-b border-gray-200 pb-2 dark:border-gray-700">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <h2 className="text-base font-bold text-gray-900 dark:text-white">{title}</h2>
         </div>
     );
 }
@@ -212,7 +212,7 @@ export default function DeliveryOrderCreate() {
                     <SectionHeader title={translate('Order Details')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery Order Name')} <span className="text-red-500">*</span>
                             </Label>
                             <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
@@ -220,12 +220,12 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Sales Order')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
@@ -252,7 +252,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
@@ -279,7 +279,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
@@ -306,7 +306,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Shipping Provider')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
@@ -333,7 +333,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery Date')} <span className="text-red-500">*</span>
                             </Label>
                             <div
@@ -358,7 +358,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Expected Delivery Date')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected Delivery Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -381,7 +381,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Status')}</Label>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -396,7 +396,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
                                     inputType="number"
@@ -410,7 +410,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -442,7 +442,7 @@ export default function DeliveryOrderCreate() {
                 <div className="-mx-6">
                     <div className="flex items-center justify-between border-t border-b bg-gray-50 px-6 py-3 dark:bg-gray-800">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{translate('Products')}</h2>
+                            <h2 className="text-base font-bold text-gray-900 dark:text-white">{translate('Products')}</h2>
                             {errors.products && <span className="text-xs font-normal text-red-500">{errors.products}</span>}
                         </div>
                         <Button
@@ -473,7 +473,7 @@ export default function DeliveryOrderCreate() {
                             <div className="max-h-72 overflow-x-auto overflow-y-auto p-4 md:p-0">
                                 <table className="block w-full text-sm xl:table">
                                     <thead className="hidden xl:table-header-group">
-                                        <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                        <tr className="border-b bg-gray-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                             <th className="min-w-[220px] px-4 py-3 text-left">
                                                 {translate('Product')} <span className="text-red-500">*</span>
                                             </th>
@@ -494,7 +494,7 @@ export default function DeliveryOrderCreate() {
                                                     className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:text-gray-100 dark:hover:bg-gray-800/50"
                                                 >
                                                     <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[220px] xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                             {translate('Product')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Select
@@ -531,7 +531,7 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Input
@@ -549,7 +549,7 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                             {translate('Unit Weight (kg)')}
                                                         </span>
                                                         <Input
@@ -568,12 +568,10 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                        <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                             {translate('Total Weight (kg)')}
                                                         </span>
-                                                        <span className="text-sm text-gray-700 dark:text-gray-200">
-                                                            {lineWeight.toFixed(2)} kg
-                                                        </span>
+                                                        <span className="text-sm text-gray-700 dark:text-gray-200">{lineWeight.toFixed(2)} kg</span>
                                                     </td>
                                                     <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                         <button
@@ -598,7 +596,7 @@ export default function DeliveryOrderCreate() {
                                     <div className="w-64">
                                         <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                             <span>{translate('Total Weight')}</span>
-                                            <span className="text-lg text-green-600">{totalWeight.toFixed(2)} kg</span>
+                                            <span className="text-lg text-fuchsia-600">{totalWeight.toFixed(2)} kg</span>
                                         </div>
                                     </div>
                                 </div>
@@ -615,7 +613,7 @@ export default function DeliveryOrderCreate() {
                     <SectionHeader title={translate('Delivery Address')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery Address')} <span className="text-red-500">*</span>
                             </Label>
                             <Textarea
@@ -628,7 +626,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery City')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
@@ -640,7 +638,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery State')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
@@ -652,7 +650,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery Country')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
@@ -663,7 +661,7 @@ export default function DeliveryOrderCreate() {
                             <FieldError message={errors.delivery_country} />
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Delivery Postal Code')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
@@ -675,7 +673,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
                             <Textarea value={form.delivery_notes} onChange={(e) => set('delivery_notes', e.target.value)} rows={3} />
                         </div>
                     </div>

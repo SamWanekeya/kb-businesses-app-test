@@ -3,437 +3,271 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
-
-use App\Models\Currency;
+use App\Http\Requests\Subscription\PlanIndexRequest;
+use App\Http\Requests\Subscription\PlanRequestSubmissionRequest;
+use App\Http\Requests\Subscription\StartTrialRequest;
+use App\Http\Requests\Subscription\StorePlanRequest;
+use App\Http\Requests\Subscription\SubscribeRequest;
+use App\Http\Requests\Subscription\UpdatePlanRequest;
 use App\Models\Plan;
-use App\Models\PlanOrder;
-use App\Models\PlanRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\Subscription\PlanCatalogService;
+use App\Services\Subscription\PlanService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
+/**
+ * PlanController
+ *
+ * Handles subscription-plan HTTP endpoints.
+ *
+ * Responsibilities:
+ * - Receive validated requests.
+ * - Delegate plan read operations to PlanCatalogService.
+ * - Delegate plan mutations to PlanService.
+ * - Return Inertia responses and redirects.
+ *
+ * Architectural Notes:
+ * - Authentication is enforced by route middleware.
+ * - Permission checks are enforced by route middleware.
+ * - Validation is delegated to Form Requests.
+ * - Business rules are delegated to PlanService.
+ * - Read-side catalogue construction is delegated to
+ *   PlanCatalogService.
+ * - API Resources are intentionally not used because these are
+ *   Inertia endpoints rather than API endpoints.
+ *
+ * Error Handling:
+ * - Validation failures are handled by Laravel Form Requests and returned
+ *   through the normal Inertia validation flow.
+ * - Expected business failures use existing Inertia flash messages.
+ * - Unexpected exceptions are allowed to propagate to Laravel's exception
+ *   handler for logging and production reporting.
+ */
 class PlanController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = auth()?->user();
+    /**
+     * Create a new plan controller instance.
+     */
+    public function __construct(
+        private readonly PlanService        $planService,
+        private readonly PlanCatalogService $catalogService,
+    ) {
+    }
 
-        // Organization users see only active plans
+    /**
+     * Display the subscription plan catalogue.
+     */
+    public function index(PlanIndexRequest $request): Response
+    {
+        $user = $request->user();
+
+        $catalogue = $this->catalogService->forUser(
+            $user,
+            $request->billingCycle(),
+        );
+
         if ($user->type !== 'super_admin') {
-            return $this->organizationPlansView($request);
+            return Inertia::render('Subscriptions/Plans/Index', [
+                'plans' => $catalogue['plans'],
+                'billingCycle' => $catalogue['billingCycle'],
+                'currentPlan' => $catalogue['currentPlan'],
+                'userTrialUsed' => $catalogue['userTrialUsed'],
+                'currency' => $catalogue['currency'],
+                'currencySymbol' => $catalogue['currencySymbol'],
+            ]);
         }
 
-        // Admin view
-        $billingCycle = $request->input('billing_cycle', 'monthly');
-
-        $dbPlans = Plan::all();
-        $hasDefaultPlan = $dbPlans->where('is_default', true)?->count() > 0;
-        $settings = settings();
-
-        // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')?->first();
-        $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
-        $currency_symbol = '$';
-        if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)?->first();
-            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
-        }
-
-        $plans = $dbPlans->map(function ($plan) use ($billingCycle) {
-            // Determine features based on plan attributes
-            $features = [];
-            if ($plan->enable_kakbima_intelligence === 'on') {
-                $features[] = 'Kakbima Intelligence';
-            }
-
-            // Get price based on billing cycle
-            $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
-
-            // Format price with currency symbol
-            $formattedPrice = '$' . number_format($price, 2);
-
-            // Set duration based on billing cycle
-            $duration = $billingCycle === 'yearly' ? 'yearly' : 'monthly';
-
-            return [
-                'id' => $plan->id,
-                'name' => $plan->name,
-                'price' => $price,
-                'formattedPrice' => $formattedPrice,
-                'duration' => $duration,
-                'description' => $plan->description,
-                'trial_days' => $plan->trial_days,
-                'features' => $features,
-                'stats' => [
-                    'users' => $plan->maximum_users,
-                    'projects' => $plan->maximum_projects,
-                    'contacts' => $plan->maximum_contacts,
-                    'accounts' => $plan->maximum_accounts,
-                    'storage' => $plan->storage_limit . ' GB',
-                ],
-                'status' => $plan->is_plan_enabled === 'on',
-                'is_default' => $plan->is_default,
-                'recommended' => false, // Default to false
-            ];
-        })?->toArray();
-
-        // Mark the plan with most subscribers as recommended
-        $planSubscriberCounts = Plan::withCount('users')->get()?->pluck('users_count', 'id');
-        $mostSubscribedPlanId = $planSubscriberCounts->keys()?->first();
-        if ($planSubscriberCounts->isNotEmpty()) {
-            $mostSubscribedPlanId = $planSubscriberCounts->keys()->sortByDesc(function ($planId) use ($planSubscriberCounts) {
-                return $planSubscriberCounts[$planId];
-            })?->first();
-        }
-
-        foreach ($plans as &$plan) {
-            if ($plan['id'] == $mostSubscribedPlanId && $plan['price'] != '0') {
-                $plan['recommended'] = true;
-                break;
-            }
-        }
-
-        return Inertia::render('Plans/Index', [
-            'plans' => $plans,
-            'billingCycle' => $billingCycle,
-            'hasDefaultPlan' => $hasDefaultPlan,
-            'isAdmin' => true,
-            'currency' => $currency,
-            'currency_symbol' => $currency_symbol,
-        ]);
-    }
-
-    private function organizationPlansView(Request $request)
-    {
-        $user = auth()?->user();
-        $billingCycle = $request->input('billing_cycle', 'monthly');
-
-        $dbPlans = Plan::where('is_plan_enabled', 'on')->get();
-
-        // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'super_admin')?->first();
-        $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
-        $currency_symbol = '$';
-        if (!empty($currency)) {
-            $currencyData = Currency::where('code', $currency)?->first();
-            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
-        }
-
-        // Determine the organization's current billing cycle from their latest approved plan order
-        $latestPlanOrder = $user->planOrders()
-            ->where('status', 'approved')
-            ->where('plan_id', $user->plan_id)
-            ->latest('processed_at')
-            ->first();
-
-        $currentBillingCycle = $latestPlanOrder ? $latestPlanOrder->billing_cycle : 'monthly';
-
-        if ($user->is_trial) {
-            $currentBillingCycle = 'monthly';
-        }
-
-
-        $plans = $dbPlans->map(function ($plan) use ($billingCycle, $user, $currentBillingCycle) {
-
-            $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
-
-            $features = [];
-            if ($plan->enable_kakbima_intelligence === 'on') {
-                $features[] = 'Kakbima Intelligence';
-            }
-
-            return [
-                'id' => $plan->id,
-                'name' => $plan->name,
-                'price' => $price,
-                'formatted_price' => '$' . number_format($price, 2),
-                'duration' => $billingCycle === 'yearly' ? 'yearly' : 'monthly',
-                'description' => $plan->description,
-                'trial_days' => $plan->trial_days,
-                'features' => $features,
-                'stats' => [
-                    'users' => $plan->maximum_users,
-                    'projects' => $plan->maximum_projects,
-                    'contacts' => $plan->maximum_contacts,
-                    'accounts' => $plan->maximum_accounts,
-                    'storage' => $plan->storage_limit . ' GB',
-                ],
-                'is_current' => $user->plan_id === $plan->id && ($currentBillingCycle === $billingCycle),
-                'is_trial_available' => $plan->is_trial === 'on' && !$user->is_trial,
-                'is_default' => $plan->is_default,
-                'recommended' => false, // Default to false
-            ];
-        });
-
-        // Mark the plan with most subscribers as recommended
-        $planSubscriberCounts = Plan::withCount('users')->get()?->pluck('users_count', 'id');
-        if ($planSubscriberCounts->isNotEmpty()) {
-            $mostSubscribedPlanId = $planSubscriberCounts->keys()->sortByDesc(function ($planId) use ($planSubscriberCounts) {
-                return $planSubscriberCounts[$planId];
-            })?->first();
-
-            $plans = $plans->map(function ($plan) use ($mostSubscribedPlanId) {
-                if ($plan['id'] == $mostSubscribedPlanId) {
-                    $plan['recommended'] = true;
-                }
-
-                return $plan;
-            });
-        }
-
-        return Inertia::render('Plans/Index', [
-            'plans' => $plans,
-            'billingCycle' => $billingCycle,
-            'currentPlan' => $user->plan,
-            'userTrialUsed' => $user->is_trial,
-            'currency' => $currency,
-            'currency_symbol' => $currency_symbol,
+        return Inertia::render('Subscriptions/Plans/Index', [
+            'plans' => $catalogue['plans'],
+            'billingCycle' => $catalogue['billingCycle'],
+            'hasDefaultPlan' => $catalogue['hasDefaultPlan'],
+            'currency' => $catalogue['currency'],
+            'currencySymbol' => $catalogue['currencySymbol'],
         ]);
     }
 
     /**
-     * Toggle plan status
+     * Toggle the enabled state of a plan.
      */
-    public function toggleStatus(Plan $plan)
+    public function toggleStatus(Plan $plan): RedirectResponse
     {
-        $plan->is_plan_enabled = $plan->is_plan_enabled === 'on' ? 'off' : 'on';
-        $plan->save();
+        $status = $this->planService->togglePlanStatus($plan);
 
-        $status = $plan->is_plan_enabled === 'on' ? 'activated' : 'deactivated';
-
-        return back()->with('success', __('Plan :status successfully', ['status' => $status]));
+        return back()->with(
+            'success',
+            __('Plan :status successfully', [
+                'status' => $status,
+            ]),
+        );
     }
 
     /**
-     * Store a newly created plan
+     * Store a newly created subscription plan.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:plans',
-            'price' => 'required|numeric|min:0',
-            'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string|in:monthly,quarterly,yearly',
-            'description' => 'nullable|string',
-            'maximum_users' => 'required|integer|min:0',
-            'maximum_projects' => 'required|integer|min:0',
-            'maximum_contacts' => 'required|integer|min:0',
-            'maximum_accounts' => 'required|integer|min:0',
-            'storage_limit' => 'required|numeric|min:0',
-            'enable_branding' => 'nullable|in:on,off',
-            'enable_kakbima_intelligence' => 'nullable|in:on,off',
-            'module' => 'nullable|array',
-            'is_trial' => 'nullable|in:on,off',
-            'trial_days' => 'nullable|integer|min:0',
-            'is_plan_enabled' => 'nullable|in:on,off',
-            'is_default' => 'nullable|boolean',
-        ]);
+    public function store(
+        StorePlanRequest $request,
+    ): RedirectResponse {
+        $this->planService->createPlan(
+            $request->validated(),
+        );
 
-        // Set default values for nullable fields
-        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
-        $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
-        $validated['is_default'] = $validated['is_default'] ?? false;
-
-        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
-        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
-            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
-        }
-
-        // If this plan is set as default, remove default status from other plans
-        if ($validated['is_default']) {
-            Plan::where('is_default', true)->update(['is_default' => false]);
-        }
-
-        // Create the plan
-        Plan::create($validated);
-
-        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan created successfully.'));
+        return redirect()
+            ->route('subscriptions.plans.index')
+            ->with(
+                'success',
+                __('Plan created successfully.'),
+            );
     }
 
     /**
-     * Update a plan
+     * Update an existing subscription plan.
      */
-    public function update(Request $request, Plan $plan)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:plans,name,' . $plan->id,
-            'price' => 'required|numeric|min:0',
-            'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string|in:monthly,quarterly,yearly',
-            'description' => 'nullable|string',
-            'maximum_users' => 'required|integer|min:0',
-            'maximum_projects' => 'required|integer|min:0',
-            'maximum_contacts' => 'required|integer|min:0',
-            'maximum_accounts' => 'required|integer|min:0',
-            'storage_limit' => 'required|numeric|min:0',
-            'enable_branding' => 'nullable|in:on,off',
-            'enable_kakbima_intelligence' => 'nullable|in:on,off',
-            'module' => 'nullable|array',
-            'is_trial' => 'nullable|in:on,off',
-            'trial_days' => 'nullable|integer|min:0',
-            'is_plan_enabled' => 'nullable|in:on,off',
-            'is_default' => 'nullable|boolean',
-        ]);
+    public function update(
+        UpdatePlanRequest $request,
+        Plan              $plan,
+    ): RedirectResponse {
+        $this->planService->updatePlan(
+            $plan,
+            $request->validated(),
+        );
 
-        // Set default values for nullable fields
-        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
-        $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
-        $validated['is_default'] = $validated['is_default'] ?? false;
-
-        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
-        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
-            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
-        }
-
-        // If this plan is set as default, remove default status from other plans
-        if ($validated['is_default'] && !$plan->is_default) {
-            Plan::where('is_default', true)->update(['is_default' => false]);
-        }
-
-        // Update the plan
-        $plan->update($validated);
-
-        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan updated successfully.'));
+        return redirect()
+            ->route('subscriptions.plans.index')
+            ->with(
+                'success',
+                __('Plan updated successfully.'),
+            );
     }
 
     /**
-     * Show the form for creating a new plan
+     * Display the plan creation form.
      */
-    public function create()
+    public function create(): Response
     {
-        $hasDefaultPlan = Plan::where('is_default', true)->exists();
+        $hasDefaultPlan = Plan::query()
+            ->where('is_default', true)
+            ->exists();
 
-        return Inertia::render('Plans/Create', [
+        return Inertia::render('Subscriptions/Plans/Create', [
             'hasDefaultPlan' => $hasDefaultPlan,
         ]);
     }
 
     /**
-     * Show the form for editing a plan
+     * Display the plan editing form.
      */
-    public function edit(Plan $plan)
+    public function edit(Plan $plan): Response
     {
-        $otherDefaultPlanExists = Plan::where('is_default', true)
+        $otherDefaultPlanExists = Plan::query()
+            ->where('is_default', true)
             ->whereKeyNot($plan->id)
             ->exists();
 
-        return Inertia::render('Plans/Edit', [
+        return Inertia::render('Subscriptions/Plans/Edit', [
             'plan' => $plan,
             'otherDefaultPlanExists' => $otherDefaultPlanExists,
         ]);
     }
 
     /**
-     * Delete a plan
+     * Delete a subscription plan.
      */
-    public function destroy(Plan $plan)
+    public function destroy(Plan $plan): RedirectResponse
     {
-        // Don't allow deleting the default plan
-        if ($plan->is_default) {
-            return back()->with('error', __('Cannot delete the default plan.'));
+        if (!$this->planService->deletePlan($plan)) {
+            return back()->with(
+                'error',
+                __('You cannot delete the default plan.'),
+            );
         }
 
-        // Don't allow deleting plans assigned to users
-        if ($plan->users()?->count() > 0) {
-            return back()->with('error', __('The organization has subscribed to this plan, so it cannot be deleted.'));
+        return redirect()
+            ->route('subscriptions.plans.index')
+            ->with(
+                'success',
+                __('Plan deleted successfully.'),
+            );
+    }
+
+    /**
+     * Submit a customer request for a plan change.
+     */
+    public function requestPlan(
+        PlanRequestSubmissionRequest $request,
+    ): RedirectResponse {
+        $validated = $request->validated();
+
+        $plan = Plan::query()->findOrFail(
+            $validated['plan_id'],
+        );
+
+        $this->planService->submitPlanRequest(
+            $request->user(),
+            $plan,
+            $validated['billing_cycle'],
+        );
+
+        return back()->with(
+            'success',
+            __('Plan request submitted successfully'),
+        );
+    }
+
+    /**
+     * Start a subscription-plan trial.
+     *
+     * Trial ineligibility is treated as an expected business condition and
+     * returned through the normal Inertia flash-message mechanism.
+     */
+    public function startTrial(
+        StartTrialRequest $request,
+    ): RedirectResponse {
+        $plan = Plan::query()->findOrFail(
+            $request->integer('plan_id'),
+        );
+
+        $started = $this->planService->startTrial(
+            $request->user(),
+            $plan,
+        );
+
+        if (!$started) {
+            return back()->with(
+                'error',
+                __('Trial not available'),
+            );
         }
 
-        $plan->delete();
-
-        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan deleted successfully.'));
+        return redirect()
+            ->route('dashboard.index')
+            ->with(
+                'success',
+                __('Your 14-day free trial has started'),
+            );
     }
 
-    public function requestPlan(Request $request)
-    {
-        $request->validate([
-            'plan_id' => 'required|exists:plans,id',
-            'billing_cycle' => 'required|in:monthly,yearly',
-        ]);
+    /**
+     * Create a pending subscription order.
+     */
+    public function subscribe(
+        SubscribeRequest $request,
+    ): RedirectResponse {
+        $validated = $request->validated();
 
-        $user = auth()?->user();
+        $plan = Plan::query()->findOrFail(
+            $validated['plan_id'],
+        );
 
-        // Check if user already has a pending request
-        $existingRequest = PlanRequest::where('user_id', $user->id)
-            ->where('status', 'pending')
-            ->first();
+        $this->planService->createSubscriptionOrder(
+            $request->user(),
+            $plan,
+            $validated['billing_cycle'],
+        );
 
-        if ($existingRequest) {
-            return back()->with('error', __('You already sent request to another plan'));
-        }
-
-        $plan = Plan::findOrFail($request->plan_id);
-
-        PlanRequest::create([
-            'user_id' => $user->id,
-            'plan_id' => $plan->id,
-            'duration' => $request['billing_cycle'],
-            'status' => 'pending',
-        ]);
-
-        return back()->with('success', __('Plan request submitted successfully'));
-    }
-
-    public function cancelRequest(Request $request)
-    {
-        $request->validate([
-            'request_id' => 'required|exists:plan_requests,id',
-        ]);
-
-        $planRequest = PlanRequest::findOrFail($request->request_id);
-
-        $planRequest->delete();
-
-        return back()->with('success', __('Plan request cancelled successfully'));
-    }
-
-    public function startTrial(Request $request)
-    {
-        $request->validate([
-            'plan_id' => 'required|exists:plans,id',
-        ]);
-
-        $user = auth()?->user();
-        $plan = Plan::findOrFail($request->plan_id);
-
-        if ($user->is_trial || $plan->is_trial !== 'on') {
-            return back()->withErrors(['error' => 'Trial not available']);
-        }
-
-        $user->update([
-            'plan_id' => $plan->id,
-            'is_trial' => 1,
-            'trial_days' => $plan->trial_days,
-            'trial_expiry_date' => now()->addDays($plan->trial_days),
-        ]);
-
-        return back()->with('success', __('Trial started successfully'));
-    }
-
-    public function subscribe(Request $request)
-    {
-        $request->validate([
-            'plan_id' => 'required|exists:plans,id',
-            'billing_cycle' => 'required|in:monthly,yearly',
-        ]);
-
-        $user = auth()?->user();
-        $plan = Plan::findOrFail($request->plan_id);
-        $price = $request->billing_cycle === 'yearly' ? $plan->yearly_price : $plan->price;
-
-        PlanOrder::create([
-            'user_id' => $user->id,
-            'plan_id' => $plan->id,
-            'original_price' => $price,
-            'final_price' => $price,
-            'status' => 'pending',
-        ]);
-
-        return back()->with('success', __('Subscription request submitted successfully'));
+        return back()->with(
+            'success',
+            __('Subscription request submitted successfully'),
+        );
     }
 }

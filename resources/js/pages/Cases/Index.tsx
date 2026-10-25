@@ -340,7 +340,7 @@ export default function Cases() {
                     new: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     in_progress: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     pending: 'bg-orange-50 text-orange-700 ring-orange-600/20',
-                    resolved: 'bg-green-50 text-green-700 ring-green-600/20',
+                    resolved: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     closed: 'bg-gray-50 text-gray-700 ring-gray-600/20',
                 };
                 return (
@@ -599,7 +599,7 @@ export default function Cases() {
                                 new: { cls: 'bg-blue-50 text-blue-700 ring-blue-600/20' },
                                 in_progress: { cls: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20' },
                                 pending: { cls: 'bg-orange-50 text-orange-700 ring-orange-600/20' },
-                                resolved: { cls: 'bg-green-50 text-green-700 ring-green-600/20' },
+                                resolved: { cls: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' },
                                 closed: { cls: 'bg-gray-50 text-gray-700 ring-gray-600/20' },
                             };
                             const sc = statusConfig[caseItem.status] ?? statusConfig.new;
@@ -671,7 +671,7 @@ export default function Cases() {
                                         {/* Header: subject + status pill */}
                                         <div className="mb-3">
                                             <Link href={route('cases.show', caseItem.id)}>
-                                                <h3 className="hover:text-primary cursor-pointer truncate pr-8 text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-white">
+                                                <h3 className="hover:text-primary cursor-pointer truncate pr-8 text-sm leading-tight font-bold text-gray-900 transition-colors dark:text-white">
                                                     {caseItem.subject}
                                                 </h3>
                                             </Link>

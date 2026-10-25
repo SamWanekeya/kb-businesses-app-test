@@ -367,11 +367,7 @@ export default function Organizations() {
             key: 'plan_name',
             label: translate('Plan'),
             render: (value: string) => (
-                <span
-                    className={
-                        'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset'
-                    }
-                >
+                <span className={'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset'}>
                     {formatTitleCase(value)}
                 </span>
             ),
@@ -603,7 +599,7 @@ export default function Organizations() {
                                             </Avatar>
                                         </div>
                                         <div className="max-w-80 min-w-0 flex-1">
-                                            <h3 className="mr-10 mb-1 line-clamp-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                            <h3 className="mr-10 mb-1 line-clamp-1 text-lg font-bold text-gray-900 dark:text-white">
                                                 {organization.name}
                                             </h3>
                                             <p className="line-clamp-1 text-sm text-gray-500 dark:text-gray-400">{organization.email}</p>

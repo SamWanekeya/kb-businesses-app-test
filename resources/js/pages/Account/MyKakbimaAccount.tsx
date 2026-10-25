@@ -414,7 +414,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                         type="button"
                                         variant="ghost"
                                         aria-current={isActive ? 'page' : undefined}
-                                        className={cn('shrink-0 justify-start text-sm md:w-full', isActive && 'bg-muted font-semibold')}
+                                        className={cn('shrink-0 justify-start text-sm md:w-full', isActive && 'bg-muted font-bold')}
                                         onClick={() => handleNavClick(item.href)}
                                     >
                                         <Icon aria-hidden="true" className="mr-2 h-4 w-4" />
@@ -430,7 +430,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                     <section id="profile" ref={profileRef} aria-labelledby="profile-title" className="mb-16 scroll-mt-24">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle id="profile-title" className="text-lg font-semibold">
+                                <CardTitle id="profile-title" className="text-lg font-bold">
                                     {translate('Personal information')}
                                 </CardTitle>
 
@@ -487,8 +487,6 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">{translate('Name')}</Label>
-
                                         <Input
                                             inputType="text"
                                             inputMode="text"
@@ -537,7 +535,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                                             </p>
 
                                             {status === 'verification-link-sent' && (
-                                                <p className="mt-2 text-sm text-green-700 dark:text-green-400">
+                                                <p className="mt-2 text-sm text-fuchsia-700 dark:text-fuchsia-400">
                                                     {translate('A new verification link has been sent to your email address.')}
                                                 </p>
                                             )}
@@ -557,7 +555,7 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                     <section id="password" ref={passwordRef} aria-labelledby="password-title" className="mb-16 scroll-mt-24">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle id="password-title" className="text-lg font-semibold">
+                                <CardTitle id="password-title" className="text-lg font-bold">
                                     {translate('Your password')}
                                 </CardTitle>
 
@@ -571,8 +569,6 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
                             <CardContent>
                                 <form autoComplete="off" id="password-form" onSubmit={updatePassword} noValidate className="space-y-6">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="current_password">{translate('Current password')}</Label>
-
                                         <Input
                                             inputIdentifier="current_password"
                                             inputType="password"

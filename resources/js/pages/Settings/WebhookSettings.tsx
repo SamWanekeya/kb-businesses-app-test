@@ -166,10 +166,10 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                    <TableHead className="py-2.5 font-semibold">{translate('Module')}</TableHead>
-                                    <TableHead className="py-2.5 font-semibold">{translate('Method')}</TableHead>
-                                    <TableHead className="py-2.5 font-semibold">{translate('URL')}</TableHead>
-                                    <TableHead className="w-24 py-2.5 text-right font-semibold">{translate('Actions')}</TableHead>
+                                    <TableHead className="py-2.5 font-bold">{translate('Module')}</TableHead>
+                                    <TableHead className="py-2.5 font-bold">{translate('Method')}</TableHead>
+                                    <TableHead className="py-2.5 font-bold">{translate('URL')}</TableHead>
+                                    <TableHead className="w-24 py-2.5 text-right font-bold">{translate('Actions')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -196,7 +196,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                         webhook.method === 'GET'
                                                             ? 'bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-400/30'
-                                                            : 'bg-green-50 text-green-700 ring-green-700/10 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-400/30'
+                                                            : 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-700/10 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-400/30'
                                                     }`}
                                                 >
                                                     {webhook.method}

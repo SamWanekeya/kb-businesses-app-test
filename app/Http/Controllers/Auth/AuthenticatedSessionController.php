@@ -195,7 +195,7 @@ class AuthenticatedSessionController extends Controller
             $signInDetails->ip_address = $ipAddress;
             $signInDetails->date = now();
             $signInDetails->details = json_encode($query);
-            $signInDetails->type       = $user->type;
+            $signInDetails->type = $user->type;
             $signInDetails->created_by = $createdBy;
             $signInDetails->save();
 

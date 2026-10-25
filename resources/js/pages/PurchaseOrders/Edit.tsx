@@ -435,7 +435,7 @@ export default function PurchaseOrderEdit() {
                         <div className="overflow-x-auto p-4 md:p-0">
                             <table className="block w-full text-sm xl:table">
                                 <thead className="hidden xl:table-header-group">
-                                    <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                    <tr className="border-b bg-gray-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[180px] px-4 py-3 text-left">
                                             {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
@@ -463,7 +463,7 @@ export default function PurchaseOrderEdit() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b border-gray-100 bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:border-gray-700 dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[180px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -503,7 +503,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -521,7 +521,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -541,7 +541,7 @@ export default function PurchaseOrderEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -561,7 +561,7 @@ export default function PurchaseOrderEdit() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Val')}
                                                     </span>
                                                     <Input
@@ -579,7 +579,7 @@ export default function PurchaseOrderEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     <span className="text-foreground/75 text-sm">
@@ -592,7 +592,7 @@ export default function PurchaseOrderEdit() {
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(total)}</span>
@@ -633,7 +633,7 @@ export default function PurchaseOrderEdit() {
                                     </div>
                                     <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900">
                                         <span>{translate('Grand Total')}</span>
-                                        <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
+                                        <span className="font-mono text-lg text-fuchsia-600">{fmt(grandTotal)}</span>
                                     </div>
                                 </div>
                             </div>

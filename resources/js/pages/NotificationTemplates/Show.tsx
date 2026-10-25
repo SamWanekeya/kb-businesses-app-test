@@ -237,9 +237,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                         }}
                                     >
                                         <div className="flex items-center justify-between">
-                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-sm">
-                                                {variable}
-                                            </code>
+                                            <code className="text-primary bg-background rounded px-1.5 py-0.5 font-mono text-sm">{variable}</code>
                                             <div className="opacity-0 transition-opacity group-hover:opacity-100">
                                                 <Badge variant="outline" className="text-xs">
                                                     {translate('Click to copy')}

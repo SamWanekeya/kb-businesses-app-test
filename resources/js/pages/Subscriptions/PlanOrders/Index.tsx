@@ -152,7 +152,7 @@ function formatOrderDate(value: string): string {
         return value;
     }
 
-    const formatted = window.hfSettings?.formatDateTimeSimple?.(value, false);
+    const formatted = window.kbSettings?.formatDateTimeSimple?.(value, false);
 
     return formatted || date.toLocaleDateString();
 }
@@ -439,7 +439,7 @@ export default function PlanOrders() {
                     <div className="flex min-w-0 items-center gap-3">
                         <div
                             aria-hidden="true"
-                            className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-semibold"
+                            className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-bold"
                         >
                             {row.user?.avatar ? (
                                 <img src={row.user.avatar} alt="" loading="lazy" decoding="async" className="size-full object-cover" />
@@ -479,7 +479,7 @@ export default function PlanOrders() {
                     const amount = Number(value);
 
                     return amount > 0 ? (
-                        <span className="font-medium text-green-700 dark:text-green-400">−{formatCurrencySimple(amount, 'USD', 'en-US')}</span>
+                        <span className="font-medium text-fuchsia-700 dark:text-fuchsia-400">−{formatCurrencySimple(amount, 'USD', 'en-US')}</span>
                     ) : (
                         <span className="text-foreground/75">—</span>
                     );
@@ -491,7 +491,7 @@ export default function PlanOrders() {
                 render: (value: PlanOrderStatus) => {
                     const statusClasses: Record<PlanOrderStatus, string> = {
                         pending: 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400',
-                        approved: 'border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400',
+                        approved: 'border-fuchsia-500/30 bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400',
                         rejected: 'border-destructive/30 bg-destructive/10 text-destructive',
                         completed: 'border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-400',
                     };

@@ -186,7 +186,7 @@ export default function CookieConsentBanner() {
             <div className="fixed bottom-4 left-1/2 z-50 mx-4 w-full max-w-md -translate-x-1/2 transform">
                 <Card className="border p-4 shadow-lg">
                     <div className="mb-3 flex items-start justify-between">
-                        <h3 className="text-sm font-semibold">{settings.cookie_title || translate('Cookie consent')}</h3>
+                        <h3 className="text-sm font-bold">{settings.cookie_title || translate('Cookie consent')}</h3>
                         <Button
                             variant="ghost"
                             size="lg"
@@ -242,7 +242,7 @@ export default function CookieConsentBanner() {
                     <Card className="max-h-[80vh] w-full max-w-md overflow-y-auto">
                         <div className="p-6">
                             <div className="mb-4 flex items-center justify-between">
-                                <h3 className="text-lg font-semibold">{settings.cookie_title || translate('Cookie preferences')}</h3>
+                                <h3 className="text-lg font-bold">{settings.cookie_title || translate('Cookie preferences')}</h3>
                                 <Button
                                     variant="ghost"
                                     size="lg"
@@ -259,9 +259,7 @@ export default function CookieConsentBanner() {
                                 {/* Strictly Necessary Cookies */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h4 className="text-sm">
-                                            {settings.strictly_cookie_title || translate('Strictly necessary cookies')}
-                                        </h4>
+                                        <h4 className="text-sm">{settings.strictly_cookie_title || translate('Strictly necessary cookies')}</h4>
                                         <p className="text-foreground/75 mt-1 text-xs">
                                             {settings.strictly_cookie_description ||
                                                 translate('These cookies are essential for the website to function properly')}

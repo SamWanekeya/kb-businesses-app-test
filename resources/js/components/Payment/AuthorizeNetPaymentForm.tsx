@@ -195,7 +195,7 @@ export function AuthorizeNetPaymentForm({
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
-                        <div className="mt-1 text-sm text-green-600">
+                        <div className="mt-1 text-sm text-fuchsia-600">
                             {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
@@ -303,7 +303,7 @@ export function AuthorizeNetPaymentForm({
 
                     <div className="text-foreground/75 space-y-1 text-center text-xs">
                         <div className="flex items-center justify-center gap-1">
-                            <CheckCircle className="h-3 w-3 text-primary" />
+                            <CheckCircle className="text-primary h-3 w-3" />
                             {translate('Powered by AuthorizeNet - Secure payment processing')}
                         </div>
                         <div>

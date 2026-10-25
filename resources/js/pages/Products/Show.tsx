@@ -190,7 +190,7 @@ export default function ProductShow() {
                     <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <FileText className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Basic Information')}
                                 </CardTitle>
@@ -202,7 +202,7 @@ export default function ProductShow() {
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                 product.status === 'active'
-                                                    ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400'
+                                                    ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400'
                                                     : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400'
                                             }`}
                                         >
@@ -233,7 +233,7 @@ export default function ProductShow() {
 
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <Users className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Additional Information')}
                                 </CardTitle>
@@ -289,7 +289,7 @@ export default function ProductShow() {
                     {product.description && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>

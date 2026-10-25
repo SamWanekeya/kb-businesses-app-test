@@ -97,13 +97,13 @@ export default function VerifyEmail() {
             <div className="space-y-6">
                 <div className="text-foreground/75 space-y-4 text-sm leading-6" aria-live="polite">
                     <p>
-                        <strong className="text-foreground font-semibold">{translate('Check your inbox!')}</strong>{' '}
+                        <strong className="text-foreground font-bold">{translate('Check your inbox!')}</strong>{' '}
                         {translate('We’ve sent a verification link to')} <span className="text-foreground font-medium">{email}</span>.{' '}
                         {translate('Please click the link to verify your email address and continue using your account.')}
                     </p>
 
                     <p>
-                        <strong className="text-foreground font-semibold">{translate('Didn’t get the email?')}</strong>{' '}
+                        <strong className="text-foreground font-bold">{translate('Didn’t get the email?')}</strong>{' '}
                         {translate('Check your spam folder or click the button below to request another verification email.')}
                     </p>
                 </div>

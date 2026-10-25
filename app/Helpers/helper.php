@@ -1073,7 +1073,7 @@ if (!function_exists('createPlanOrder')) {
             'status' => $data['status'] ?? 'pending',
             'ordered_at' => now(),
             'processed_at' => $data['processed_at'] ?? null,   // Add
-            'receipt_path' => $data['receipt_path'] ?? null,
+            'receipt' => $data['receipt'] ?? null,
         ]);
     }
 }

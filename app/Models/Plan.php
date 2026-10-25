@@ -16,7 +16,6 @@ class Plan extends Model
         'maximum_projects',
         'maximum_contacts',
         'maximum_accounts',
-        'enable_branding',
         'enable_kakbima_intelligence',
         'storage_limit',
         'is_trial',

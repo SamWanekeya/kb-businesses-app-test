@@ -268,12 +268,12 @@ export default function ReceiptOrderCreate() {
                 {/* Basic Information */}
                 <div className="border-b border-gray-200 dark:border-gray-700">
                     <div className="px-6 pt-5">
-                        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                        <h2 className="text-sm font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
                     </div>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 p-6 md:grid-cols-2">
                         {/* Name + Description */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Receipt Order Name')} <span className="text-red-500">*</span>
                             </Label>
                             <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
@@ -281,13 +281,13 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                         </div>
 
                         {/* Purchase Order + Return Order */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Purchase Order')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Purchase Order')}</Label>
                             <Select value={form.purchase_order_id} onValueChange={handlePurchaseOrderChange}>
                                 <SelectTrigger className={errors.purchase_order_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select purchase order')} />
@@ -312,7 +312,7 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Return Order')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Return Order')}</Label>
                             <Select value={form.return_order_id} onValueChange={handleReturnOrderChange}>
                                 <SelectTrigger>
                                     <SelectValue placeholder={translate('Select return order')} />
@@ -337,7 +337,7 @@ export default function ReceiptOrderCreate() {
 
                         {/* Account + Contact */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
@@ -364,7 +364,7 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
@@ -392,7 +392,7 @@ export default function ReceiptOrderCreate() {
 
                         {/* Receipt Date + Expected Date */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Receipt Date')} <span className="text-red-500">*</span>
                             </Label>
                             <div
@@ -417,7 +417,7 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Expected Date')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -441,7 +441,7 @@ export default function ReceiptOrderCreate() {
 
                         {/* Status + Assigned To */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Status')}</Label>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -457,7 +457,7 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
                                 {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
@@ -488,7 +488,7 @@ export default function ReceiptOrderCreate() {
                 {/* Products */}
                 <div className="border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center justify-between border-b bg-gray-50 px-6 py-3 dark:bg-gray-800">
-                        <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+                        <h2 className="text-base font-bold text-gray-900 dark:text-white">
                             {translate('Products')}
                             {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                         </h2>
@@ -501,7 +501,7 @@ export default function ReceiptOrderCreate() {
                         <div className="max-h-72 overflow-x-auto overflow-y-auto p-4 md:p-0">
                             <table className="block w-full text-sm xl:table">
                                 <thead className="hidden xl:table-header-group">
-                                    <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                    <tr className="border-b bg-gray-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
                                             {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
@@ -527,7 +527,7 @@ export default function ReceiptOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select
@@ -565,7 +565,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -580,7 +580,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
@@ -596,7 +596,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
                                                     <Select
@@ -617,7 +617,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
                                                         {translate('Discount Value')}
                                                     </span>
                                                     <Input
@@ -635,7 +635,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Tax')}
                                                     </span>
                                                     {(() => {
@@ -651,7 +651,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-semibold xl:hidden">
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
                                                         {translate('Total')}
                                                     </span>
                                                     <span>{fmt(c.net + c.tax)}</span>
@@ -694,7 +694,7 @@ export default function ReceiptOrderCreate() {
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
                                     <span>{translate('Grand Total')}</span>
-                                    <span className="font-mono text-lg text-green-600">{fmt(totals.subtotal + totals.tax)}</span>
+                                    <span className="font-mono text-lg text-fuchsia-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
                         </div>
@@ -703,7 +703,7 @@ export default function ReceiptOrderCreate() {
 
                 {/* Additional Notes */}
                 <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-                    <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
+                    <h2 className="mb-4 text-sm font-bold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
                     <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
                 </div>
 

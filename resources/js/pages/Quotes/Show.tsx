@@ -45,7 +45,7 @@ export default function QuoteShow() {
         const statusColors = {
             draft: 'bg-gray-50 text-gray-600 ring-gray-500/10',
             sent: 'bg-blue-50 text-blue-700 ring-blue-700/10',
-            accepted: 'bg-green-50 text-green-700 ring-green-600/20',
+            accepted: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             rejected: 'bg-red-50 text-red-700 ring-red-600/10',
             expired: 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
         };
@@ -119,7 +119,7 @@ export default function QuoteShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -148,7 +148,7 @@ export default function QuoteShow() {
                                     </div>
                                 </div>
                                 <div className="xl:border-s xl:ps-6">
-                                    <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -182,7 +182,7 @@ export default function QuoteShow() {
                     {/* Products */}
                     <Card className="overflow-hidden shadow-sm" id="products-section">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
@@ -194,20 +194,20 @@ export default function QuoteShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 font-bold whitespace-nowrap">{translate('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Quantity')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Unit Price')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Tax')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-right font-bold whitespace-nowrap">
                                                         {translate('Total')}
                                                     </TableHead>
                                                 </TableRow>
@@ -260,10 +260,10 @@ export default function QuoteShow() {
                                                                 </div>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground text-sm font-semibold">{product.pivot.quantity}</p>
+                                                                <p className="text-foreground text-sm font-bold">{product.pivot.quantity}</p>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground font-mono text-sm font-semibold">
+                                                                <p className="text-foreground font-mono text-sm font-bold">
                                                                     {formatCurrency(product.pivot.unit_price)}
                                                                 </p>
                                                             </TableCell>
@@ -272,7 +272,7 @@ export default function QuoteShow() {
                                                                 product.pivot.discount_type !== 'none' &&
                                                                 product.pivot.discount_value > 0 ? (
                                                                     <>
-                                                                        <p className="text-foreground text-sm font-semibold">
+                                                                        <p className="text-foreground text-sm font-bold">
                                                                             {product.pivot.discount_type === 'percentage' ? (
                                                                                 `${Number(product.pivot.discount_value)}%`
                                                                             ) : (
@@ -292,7 +292,7 @@ export default function QuoteShow() {
                                                             <TableCell className="py-3 text-center">
                                                                 {product.tax ? (
                                                                     <>
-                                                                        <p className="text-foreground text-sm font-semibold">
+                                                                        <p className="text-foreground text-sm font-bold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
                                                                         <p className="text-foreground/75 mt-0.5 font-mono text-xs">
@@ -319,15 +319,15 @@ export default function QuoteShow() {
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
+                                                <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(subtotal)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Discount')}</span>
-                                                <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
+                                                <span className="font-mono text-sm font-bold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
+                                                <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
                                                 <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
@@ -352,7 +352,7 @@ export default function QuoteShow() {
                     {/* Description */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
@@ -372,7 +372,7 @@ export default function QuoteShow() {
                     {useHasPermission('view-stream') && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <MessageCircle className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Activity Stream')}
                                 </CardTitle>
@@ -449,7 +449,7 @@ export default function QuoteShow() {
                                                 const getActivityBadgeColor = (type: string): string => {
                                                     switch (type) {
                                                         case 'created':
-                                                            return 'bg-green-50 text-green-700 ring-green-600/20';
+                                                            return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                                                         case 'updated':
                                                             return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                                                         case 'deleted':
@@ -496,7 +496,7 @@ export default function QuoteShow() {
                                                                 className={`flex flex-col justify-between gap-2 px-4 py-2.5 sm:flex-row sm:items-center ${isEditing ? 'bg-emerald-50/60' : 'bg-muted/30'} border-b`}
                                                             >
                                                                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                                                                    <span className="text-foreground truncate text-sm font-semibold">
+                                                                    <span className="text-foreground truncate text-sm font-bold">
                                                                         {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
@@ -613,9 +613,7 @@ export default function QuoteShow() {
                                                                 ) : activity.title ? (
                                                                     <p className="text-foreground/75 text-sm break-words">{activity.title}</p>
                                                                 ) : (
-                                                                    <p className="text-foreground/75 text-sm break-words">
-                                                                        {activity.description}
-                                                                    </p>
+                                                                    <p className="text-foreground/75 text-sm break-words">{activity.description}</p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -641,7 +639,7 @@ export default function QuoteShow() {
                     {/* Summary & Actions */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Summary & Actions')}
                             </CardTitle>
@@ -675,7 +673,7 @@ export default function QuoteShow() {
                     {(quote.contact || quote.account || quote.billing_contact || quote.shipping_contact) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
                                     {translate('Customer Info')}
                                 </CardTitle>
@@ -692,7 +690,7 @@ export default function QuoteShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={quote.account.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{quote.account.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{quote.account.name}</p>
                                                     {quote.account.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{quote.account.email}</p>
                                                     )}
@@ -726,7 +724,7 @@ export default function QuoteShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={quote.billing_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{quote.billing_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{quote.billing_contact.name}</p>
                                                     {quote.billing_contact.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{quote.billing_contact.email}</p>
                                                     )}
@@ -763,7 +761,7 @@ export default function QuoteShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={quote.shipping_contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{quote.shipping_contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{quote.shipping_contact.name}</p>
                                                     {quote.shipping_contact.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{quote.shipping_contact.email}</p>
                                                     )}
@@ -796,7 +794,7 @@ export default function QuoteShow() {
                     {/* Quote Details */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Quote Details')}
                             </CardTitle>
@@ -868,7 +866,7 @@ export default function QuoteShow() {
                     {(quote.shipping_provider_type || quote.opportunity) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="text-foreground/75 me-2 h-4 w-4" />
                                     {translate('Related Records')}
                                 </CardTitle>

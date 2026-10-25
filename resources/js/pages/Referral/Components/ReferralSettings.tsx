@@ -45,7 +45,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base font-semibold">{translate('Referral Program Settings')}</CardTitle>
+                <CardTitle className="text-base font-bold">{translate('Referral Program Settings')}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">

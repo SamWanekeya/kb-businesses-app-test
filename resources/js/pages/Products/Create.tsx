@@ -182,7 +182,7 @@ export default function ProductCreate() {
                                                         STEP {s.number}
                                                     </span>
                                                     <span
-                                                        className={`block text-xs font-semibold ${isActive ? 'text-primary' : isDone ? 'text-primary' : 'text-foreground/75'}`}
+                                                        className={`block text-xs font-bold ${isActive ? 'text-primary' : isDone ? 'text-primary' : 'text-foreground/75'}`}
                                                     >
                                                         {translate(s.label)}
                                                     </span>
@@ -433,7 +433,7 @@ export default function ProductCreate() {
                     <div className="hidden w-72 shrink-0 xl:block">
                         <div className="bg-card border-border sticky top-4 overflow-hidden rounded-xl border">
                             <div className="border-border flex items-center justify-between border-b px-4 py-3">
-                                <span className="text-foreground/75 text-xs font-semibold tracking-wide">{translate('Live  Preview')}</span>
+                                <span className="text-foreground/75 text-xs font-bold tracking-wide">{translate('Live  Preview')}</span>
                                 {/* <span className="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 font-medium">{translate('Draft')}</span> */}
                             </div>
 
@@ -452,7 +452,7 @@ export default function ProductCreate() {
                             {/* Product info */}
                             <div className="space-y-3 p-4">
                                 <div>
-                                    <p className="text-foreground text-sm font-semibold">{data.name || translate('Untitled Item')}</p>
+                                    <p className="text-foreground text-sm font-bold">{data.name || translate('Untitled Item')}</p>
                                     <p className="text-foreground/75 mt-0.5 flex items-center gap-1 text-xs">
                                         <Tag className="h-3 w-3 shrink-0" />
                                         {data.sku || 'SKU-XXXXXXXX'}

@@ -208,9 +208,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                                 return (
                                     <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900 dark:text-white">
-                                                {log.user?.name || 'Unknown User'}
-                                            </div>
+                                            <div className="text-sm text-gray-900 dark:text-white">{log.user?.name || 'Unknown User'}</div>
                                             <div className="text-sm text-gray-500 dark:text-gray-400">{log.user?.email || '-'}</div>
                                         </td>
                                         <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">{log.ip}</td>

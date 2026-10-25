@@ -232,11 +232,11 @@ export default function CrudTable({
             <Table>
                 <TableHeader>
                     <TableRow className="border-b bg-neutral-50 dark:bg-neutral-800">
-                        <TableHead className="w-12 py-2.5 font-semibold">#</TableHead>
+                        <TableHead className="w-12 py-2.5 font-bold">#</TableHead>
                         {columns.map((column) => (
                             <TableHead
                                 key={column.key}
-                                className={cn('py-2.5 text-left font-semibold', column.sortable && 'cursor-pointer select-none', column.className)}
+                                className={cn('py-2.5 text-left font-bold', column.sortable && 'cursor-pointer select-none', column.className)}
                                 onClick={() => {
                                     handleSort(column);
                                 }}
@@ -247,9 +247,9 @@ export default function CrudTable({
                                 </div>
                             </TableHead>
                         ))}
-                        {/* <TableHead className="w-24 py-2.5 font-semibold text-right">{translate('Actions')}</TableHead> */}
+                        {/* <TableHead className="w-24 py-2.5 font-bold text-right">{translate('Actions')}</TableHead> */}
                         {showActions && hasAnyActionPermission && (
-                            <TableHead className="w-24 py-2.5 text-right font-semibold">{translate('Actions')}</TableHead>
+                            <TableHead className="w-24 py-2.5 text-right font-bold">{translate('Actions')}</TableHead>
                         )}
                     </TableRow>
                 </TableHeader>

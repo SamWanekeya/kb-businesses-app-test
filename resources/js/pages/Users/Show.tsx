@@ -79,7 +79,7 @@ export default function UserShow() {
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                 user.status === 'active'
-                                                    ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                    ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                                     : 'bg-red-50 text-red-700 ring-red-600/20'
                                             }`}
                                         >
@@ -134,7 +134,7 @@ export default function UserShow() {
                                             <span
                                                 className={`rounded-full px-2 py-1 text-xs ${
                                                     meeting.status === 'completed'
-                                                        ? 'bg-green-100 text-green-800'
+                                                        ? 'bg-fuchsia-100 text-fuchsia-800'
                                                         : meeting.status === 'in_progress'
                                                           ? 'bg-blue-100 text-blue-800'
                                                           : 'bg-gray-100 text-gray-800'

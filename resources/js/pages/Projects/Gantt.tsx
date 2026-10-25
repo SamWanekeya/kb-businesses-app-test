@@ -454,7 +454,7 @@ export default function ProjectGantt() {
             <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="border-b border-gray-200 p-4">
                     <div className="flex items-center justify-between">
-                        <h6 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Gantt Chart')}</h6>
+                        <h6 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Gantt Chart')}</h6>
                         <div className="flex gap-1">
                             {[
                                 { value: 'quarter-day', label: translate('Quarter Day') },
@@ -591,7 +591,7 @@ export default function ProjectGantt() {
                         }}
                     >
                         <div className="mb-4 flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedTask.title}</h3>
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{selectedTask.title}</h3>
                             <button
                                 onClick={() => {
                                     setSelectedTask(null);

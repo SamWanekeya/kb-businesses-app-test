@@ -177,7 +177,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
 
                         {/* Overlay */}
                         <div className="absolute inset-0 flex flex-col justify-between rounded-xl bg-black/40 p-6">
-                            <div className="text-sm font-semibold text-white">
+                            <div className="text-sm font-bold text-white">
                                 {/*<a*/}
                                 {/*    href={externalWebsiteUrl()}*/}
                                 {/*    target="_blank"*/}

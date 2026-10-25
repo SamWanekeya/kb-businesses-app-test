@@ -34,7 +34,7 @@ export const usePlanRequestsConfig = (): CrudConfig => {
                     label: translate('Status'),
                     render: columnRenderers.status({
                         [translate('Pending')]: 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20',
-                        [translate('Approved')]: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20',
+                        [translate('Approved')]: 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-inset ring-fuchsia-600/20',
                         [translate('Rejected')]: 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20',
                     }),
                 },
@@ -50,7 +50,7 @@ export const usePlanRequestsConfig = (): CrudConfig => {
                     label: translate('Approve'),
                     icon: 'Check',
                     action: 'approve',
-                    className: 'text-green-600',
+                    className: 'text-fuchsia-600',
                     condition: (item: any) => item.status === 'pending',
                     requiredPermission: 'approve-plan-requests',
                 },

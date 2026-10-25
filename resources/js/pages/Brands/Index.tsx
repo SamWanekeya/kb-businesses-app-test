@@ -226,7 +226,7 @@ export default function Brands() {
                 <div className="lg:col-span-1">
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                                 {formMode === 'create' ? translate('Add New Brand') : translate('Edit Brand')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -370,7 +370,7 @@ export default function Brands() {
                         {(brands?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Brands')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Brands')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage brands for your products.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
@@ -469,7 +469,7 @@ export default function Brands() {
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <span
-                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
                                                             {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
@@ -557,7 +557,7 @@ export default function Brands() {
                                                         <Bookmark className="h-5 w-5" />
                                                     </div>
                                                     <div>
-                                                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{item.name}</h4>
+                                                        <h4 className="text-sm font-bold text-gray-900 dark:text-white">{item.name}</h4>
                                                         {item.description && (
                                                             <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                                 <div
@@ -674,7 +674,7 @@ export default function Brands() {
                                                 <div>
                                                     <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
                                                         {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>

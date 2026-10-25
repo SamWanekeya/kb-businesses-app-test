@@ -332,7 +332,7 @@ export default function Calls() {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-[9px] font-semibold text-gray-700 ring-2 ring-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-900">
+                                        <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-[9px] font-bold text-gray-700 ring-2 ring-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-900">
                                             +{extra}
                                         </div>
                                     </TooltipTrigger>
@@ -362,7 +362,7 @@ export default function Calls() {
                         case 'planned':
                             return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                         case 'held':
-                            return 'bg-green-50 text-green-700 ring-green-600/20';
+                            return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                         case 'not_held':
                             return 'bg-red-50 text-red-700 ring-red-600/20';
                         default:

@@ -37,7 +37,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const statusConfig: Record<string, { label: string; className: string }> = {
-    active: { label: 'Active', className: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20' },
+    active: { label: 'Active', className: 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-inset ring-fuchsia-600/20' },
     inactive: { label: 'Inactive', className: 'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20' },
     completed: { label: 'Completed', className: 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20' },
     on_hold: { label: 'On Hold', className: 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20' },
@@ -51,7 +51,7 @@ const priorityConfig: Record<string, { label: string; className: string }> = {
 };
 
 const progressBarColor = (pct: number) => {
-    if (pct >= 80) return 'bg-green-500';
+    if (pct >= 80) return 'bg-fuchsia-500';
     if (pct >= 40) return 'bg-blue-500';
     return 'bg-orange-400';
 };
@@ -71,7 +71,7 @@ function Avatar({ name, src }: { name: string; src?: string }) {
         );
     }
     return (
-        <div className="bg-primary/20 text-primary flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-xs font-semibold uppercase">
+        <div className="bg-primary/20 text-primary flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-xs font-bold uppercase">
             {name.charAt(0)}
         </div>
     );
@@ -299,8 +299,8 @@ export default function Projects() {
             value: stats.ongoing ?? 0,
             sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
             icon: <Play className="h-6 w-6" />,
-            color: 'text-green-700',
-            cardBg: 'bg-green-50 dark:bg-green-900/30',
+            color: 'text-fuchsia-700',
+            cardBg: 'bg-fuchsia-50 dark:bg-fuchsia-900/30',
             borderColor: '#bbf7d0',
         },
         {
@@ -464,7 +464,7 @@ export default function Projects() {
                             {tab.icon}
                             {tab.label}
                             <span
-                                className={`ml-0.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+                                className={`ml-0.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold ${
                                     selectedStatus === tab.value
                                         ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
                                         : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
@@ -499,7 +499,7 @@ export default function Projects() {
                                         {/* Top row: name + menu */}
                                         <div className="flex items-start justify-between gap-2">
                                             <h3
-                                                className="cursor-pointer truncate text-sm leading-snug font-semibold text-gray-900 transition-colors hover:text-emerald-600 dark:text-white dark:hover:text-emerald-400"
+                                                className="cursor-pointer truncate text-sm leading-snug font-bold text-gray-900 transition-colors hover:text-emerald-600 dark:text-white dark:hover:text-emerald-400"
                                                 onClick={() => {
                                                     router.get(route('projects.show', project.id));
                                                 }}
@@ -612,9 +612,7 @@ export default function Projects() {
                                                 {translate(sCfg.label)}
                                             </span>
                                             {project.priority && (
-                                                <span
-                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${pCfg.className}`}
-                                                >
+                                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${pCfg.className}`}>
                                                     {translate(pCfg.label)}
                                                 </span>
                                             )}

@@ -2,7 +2,7 @@
 
 namespace App\Services\Subscription;
 
-use App\Http\Requests\ProcessBankPaymentRequest;
+use App\Http\Requests\Subscription\ProcessBankPaymentRequest;
 use App\Models\Plan;
 use App\Notifications\BankPaymentSubmittedNotification;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +25,7 @@ use Throwable;
  * - HTTP validation remains in ProcessBankPaymentRequest.
  * - Pricing remains exclusively controlled by createPlanOrder().
  * - The existing uploadFile() helper remains the storage boundary because it
- *   encapsulates Hafinen's dynamic local/S3/Wasabi configuration.
+ *   encapsulates Kakbima's dynamic local/S3/Wasabi configuration.
  * - Email delivery is queued and therefore is not part of payment success.
  *
  * The service intentionally does not catch database/order exceptions. Such

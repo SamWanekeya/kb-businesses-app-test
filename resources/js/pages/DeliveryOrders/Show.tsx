@@ -63,8 +63,8 @@ export default function DeliveryOrderShow() {
         },
         delivered: {
             label: translate('Delivered'),
-            cls: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400',
-            dot: 'bg-green-400',
+            cls: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400',
+            dot: 'bg-fuchsia-400',
             icon: <CheckCircle2 className="h-3.5 w-3.5" />,
         },
         cancelled: {
@@ -121,7 +121,7 @@ export default function DeliveryOrderShow() {
                         </CardHeader>
                         <CardContent className="p-5">
                             <div>
-                                <p className="text-foreground/75 mb-3 text-xs font-semibold">{translate('Delivery Address')}</p>
+                                <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Delivery Address')}</p>
                                 <div className="space-y-2">
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
@@ -140,9 +140,7 @@ export default function DeliveryOrderShow() {
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
-                                            <p className="text-foreground text-sm">
-                                                {deliveryOrder.delivery_postal_code || translate('-')}
-                                            </p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_postal_code || translate('-')}</p>
                                         </div>
                                     </div>
                                     <div className="space-y-0.5">
@@ -158,7 +156,7 @@ export default function DeliveryOrderShow() {
                     <div className="space-y-6">
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <StickyNote className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Delivery Notes')}
                                 </CardTitle>
@@ -175,7 +173,7 @@ export default function DeliveryOrderShow() {
                         </Card>
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Description')}
                                 </CardTitle>
@@ -195,7 +193,7 @@ export default function DeliveryOrderShow() {
                     {/* Products */}
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                                 {deliveryOrder.products?.length > 0 && (
@@ -212,14 +210,14 @@ export default function DeliveryOrderShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="bg-muted hover:!bg-muted border-b">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 font-bold whitespace-nowrap">{translate('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Quantity')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Unit Weight')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-end font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-end font-bold whitespace-nowrap">
                                                         {translate('Total Weight')}
                                                     </TableHead>
                                                 </TableRow>
@@ -261,10 +259,10 @@ export default function DeliveryOrderShow() {
                                                             </div>
                                                         </TableCell>
                                                         <TableCell className="py-3 text-center">
-                                                            <p className="text-foreground text-sm font-semibold">{product.pivot?.quantity ?? 0}</p>
+                                                            <p className="text-foreground text-sm font-bold">{product.pivot?.quantity ?? 0}</p>
                                                         </TableCell>
                                                         <TableCell className="py-3 text-center">
-                                                            <p className="text-foreground text-sm font-semibold">
+                                                            <p className="text-foreground text-sm font-bold">
                                                                 {product.pivot?.unit_weight ?? 0} kg
                                                             </p>
                                                         </TableCell>
@@ -292,9 +290,7 @@ export default function DeliveryOrderShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-foreground/75/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-foreground/75 text-sm">
-                                        {translate('No products added to this delivery order')}
-                                    </p>
+                                    <p className="text-foreground/75 text-sm">{translate('No products added to this delivery order')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -307,7 +303,7 @@ export default function DeliveryOrderShow() {
                     {/* Summary & Actions */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <Truck className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Summary & Actions')}
                             </CardTitle>
@@ -319,9 +315,7 @@ export default function DeliveryOrderShow() {
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(deliveryOrder.shipping_cost)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
-                                    <span
-                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${cfg.cls}`}
-                                    >
+                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${cfg.cls}`}>
                                         {cfg.label}
                                     </span>
                                 </div>
@@ -347,7 +341,7 @@ export default function DeliveryOrderShow() {
                     {(deliveryOrder.contact || deliveryOrder.account) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
                                     {translate('Customer Info')}
                                 </CardTitle>
@@ -363,7 +357,7 @@ export default function DeliveryOrderShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={deliveryOrder.contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{deliveryOrder.contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{deliveryOrder.contact.name}</p>
                                                     {deliveryOrder.contact.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{deliveryOrder.contact.email}</p>
                                                     )}
@@ -400,7 +394,7 @@ export default function DeliveryOrderShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={deliveryOrder.account.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{deliveryOrder.account.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{deliveryOrder.account.name}</p>
                                                     {deliveryOrder.account.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{deliveryOrder.account.email}</p>
                                                     )}
@@ -433,7 +427,7 @@ export default function DeliveryOrderShow() {
                     {/* DO Details */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Order Details')}
                             </CardTitle>
@@ -450,9 +444,7 @@ export default function DeliveryOrderShow() {
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-foreground/75 text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm">
-                                        {window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}
-                                    </p>
+                                    <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
@@ -516,7 +508,7 @@ export default function DeliveryOrderShow() {
                     {(deliveryOrder.sales_order || deliveryOrder.shipping_provider_type) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
                                     {translate('Related Records')}
                                 </CardTitle>
@@ -550,9 +542,7 @@ export default function DeliveryOrderShow() {
                                     >
                                         <div className="min-w-0">
                                             <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
-                                            <p className="text-foreground truncate text-sm">
-                                                {deliveryOrder.shipping_provider_type.name}
-                                            </p>
+                                            <p className="text-foreground truncate text-sm">{deliveryOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>

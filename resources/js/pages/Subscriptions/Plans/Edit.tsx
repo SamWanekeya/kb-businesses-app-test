@@ -10,7 +10,7 @@ interface Plan {
     maximum_users: number;
     maximum_staffs: number;
     storage_limit: number;
-    enable_hafinen_intelligence: string;
+    enable_kakbima_intelligence: string;
     is_trial: string | null;
     trial_days: number;
     is_plan_enabled: string;

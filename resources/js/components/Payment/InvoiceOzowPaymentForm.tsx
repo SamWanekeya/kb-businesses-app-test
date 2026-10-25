@@ -106,9 +106,9 @@ export function InvoiceOzowPaymentForm({
                     <AlertDescription>{translate('You will be redirected to Ozow to complete your payment securely.')}</AlertDescription>
                 </Alert>
 
-                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                    <h4 className="mb-2 font-medium text-green-900">{translate('Supported Payment Methods')}</h4>
-                    <ul className="space-y-1 text-sm text-green-800">
+                <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-4">
+                    <h4 className="mb-2 font-medium text-fuchsia-900">{translate('Supported Payment Methods')}</h4>
+                    <ul className="space-y-1 text-sm text-fuchsia-800">
                         <li>• Instant EFT</li>
                         <li>• All Major South African Banks</li>
                         <li>• Secure Bank-to-Bank Transfer</li>

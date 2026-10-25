@@ -93,7 +93,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                       label: translate('Organization'),
                       render: (_, row) => (
                           <div>
-                              <p className="text-sm font-semibold">{row.organization?.name}</p>
+                              <p className="text-sm font-bold">{row.organization?.name}</p>
                               <p className="text-foreground/75 text-xs">{row.organization?.email}</p>
                           </div>
                       ),
@@ -116,7 +116,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             render: (value) => {
                 const statusColors: Record<string, string> = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
-                    approved: 'bg-green-50 text-green-700 ring-green-600/20',
+                    approved: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     rejected: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
@@ -162,7 +162,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             {userType === 'organization' && (
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="text-base font-semibold">{translate('Create Payout Request')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Create Payout Request')}</CardTitle>
                         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                             <DialogTrigger asChild>
                                 <Button disabled={stats.availableBalance < settings.threshold_amount}>
@@ -240,7 +240,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base font-semibold">
+                    <CardTitle className="text-base font-bold">
                         {userType === 'super_admin' ? translate('All Payout Requests') : translate('Your Payout Requests')}
                     </CardTitle>
                 </CardHeader>

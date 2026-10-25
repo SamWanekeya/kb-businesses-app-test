@@ -160,7 +160,7 @@ export function MidtransPaymentForm({
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
-                        <div className="mt-1 text-sm text-green-600">
+                        <div className="mt-1 text-sm text-fuchsia-600">
                             {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}

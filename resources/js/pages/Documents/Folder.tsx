@@ -255,7 +255,7 @@ export default function DocumentFolderView() {
         if (isImageExt(ext)) return <FileImage className="text-primary h-14 w-14" strokeWidth={1.2} />;
         if (ext === 'pdf') return <FileText className="h-14 w-14 text-red-500" strokeWidth={1.2} />;
         if (ext === 'doc' || ext === 'docx') return <FileText className="h-14 w-14 text-blue-500" strokeWidth={1.2} />;
-        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className="h-14 w-14 text-primary" strokeWidth={1.2} />;
+        if (['xls', 'xlsx', 'csv'].includes(ext)) return <FileSpreadsheet className="text-primary h-14 w-14" strokeWidth={1.2} />;
         if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) return <FileVideo className="h-14 w-14 text-pink-500" strokeWidth={1.2} />;
         if (['mp3', 'wav', 'ogg', 'aac'].includes(ext)) return <FileAudio className="h-14 w-14 text-yellow-500" strokeWidth={1.2} />;
         if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return <FileArchive className="h-14 w-14 text-orange-500" strokeWidth={1.2} />;
@@ -271,8 +271,8 @@ export default function DocumentFolderView() {
             pdf: 'hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-900/10',
             doc: 'hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/10',
             docx: 'hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/10',
-            xls: 'hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/10',
-            xlsx: 'hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/10',
+            xls: 'hover:border-fuchsia-300 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-900/10',
+            xlsx: 'hover:border-fuchsia-300 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-900/10',
             csv: 'hover:border-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/10',
             zip: 'hover:border-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/10',
             rar: 'hover:border-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/10',
@@ -317,7 +317,7 @@ export default function DocumentFolderView() {
                             <Folder className="text-primary h-7 w-7" strokeWidth={1.5} />
                         </div>
                         <div className="min-w-0 flex-1">
-                            <h1 className="truncate text-base font-semibold text-gray-900 dark:text-white">{folder.name}</h1>
+                            <h1 className="truncate text-base font-bold text-gray-900 dark:text-white">{folder.name}</h1>
                             <p className="text-xs text-gray-400">
                                 {subFolders.length + docsList.length} {translate('items')}
                             </p>
@@ -343,7 +343,7 @@ export default function DocumentFolderView() {
                                 {subFolders.length === 0 && docsList.length === 0 && (
                                     <div className="col-span-full flex flex-col items-center justify-center gap-3" style={{ minHeight: '390px' }}>
                                         <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600" strokeWidth={1} />
-                                        <p className="text-base font-semibold text-gray-500 dark:text-gray-400">
+                                        <p className="text-base font-bold text-gray-500 dark:text-gray-400">
                                             {translate('This folder is empty')}
                                         </p>
                                         <p className="text-sm text-gray-400 dark:text-gray-500">{translate('No subfolders or documents found')}</p>
@@ -777,16 +777,14 @@ function PanelRow({ label, value, badge = false, badgeColor = 'blue' }: { label:
     if (!value) return null;
     const colors: Record<string, string> = {
         blue: 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-300',
-        green: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/30 dark:text-green-300',
+        green: 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-inset ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-300',
         red: 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-900/30 dark:text-red-300',
     };
     return (
         <div className="flex items-center justify-between px-4 py-2.5">
             <p className="mr-3 shrink-0 text-sm font-extrabold text-gray-700 dark:text-gray-300">{label}</p>
             {badge ? (
-                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs ${colors[badgeColor] || colors.blue}`}>
-                    {value}
-                </span>
+                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs ${colors[badgeColor] || colors.blue}`}>{value}</span>
             ) : (
                 <p className="text-right text-sm text-gray-600 dark:text-gray-400">{value}</p>
             )}

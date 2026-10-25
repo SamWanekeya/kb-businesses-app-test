@@ -299,7 +299,7 @@ export default function PlanRequests() {
                 render: (_value: unknown, row: PlanRequest) => (
                     <div className="flex min-w-0 items-center gap-3">
                         <div
-                            className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-semibold"
+                            className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-bold"
                             aria-hidden="true"
                         >
                             {row.user?.avatar ? (
@@ -347,7 +347,7 @@ export default function PlanRequests() {
                 render: (value: PlanRequestStatus) => {
                     const statusClasses: Record<PlanRequestStatus, string> = {
                         pending: 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400',
-                        approved: 'border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400',
+                        approved: 'border-fuchsia-500/30 bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400',
                         rejected: 'border-destructive/30 bg-destructive/10 text-destructive',
                     };
 
@@ -363,7 +363,7 @@ export default function PlanRequests() {
                 label: translate('Request date'),
                 sortable: true,
                 render: (value: string) => {
-                    const formatted = window.hfSettings.formatDateTimeSimple(value, false);
+                    const formatted = window.kbSettings.formatDateTimeSimple(value, false);
 
                     return (
                         <time dateTime={value} className="text-foreground/75 text-sm whitespace-nowrap">
@@ -384,7 +384,7 @@ export default function PlanRequests() {
                           label: translate('Approve'),
                           icon: 'Check',
                           action: 'approve',
-                          className: 'text-green-600',
+                          className: 'text-fuchsia-600',
                           requiredPermission: 'approve-plan-requests',
                           condition: (row: PlanRequest) => row.status === 'pending',
                       },

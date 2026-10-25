@@ -134,7 +134,7 @@ export default function MediaLibraryModal({
             );
         }
         if (mimeType === 'text/csv' || mimeType.includes('spreadsheet')) {
-            return <FileText className="h-12 w-12 text-primary" />;
+            return <FileText className="text-primary h-12 w-12" />;
         }
         return <File className="h-12 w-12 text-gray-500" />;
     };
@@ -322,7 +322,7 @@ export default function MediaLibraryModal({
                                     </div>
 
                                     <div className="mb-6 space-y-3">
-                                        <h3 className="text-lg font-semibold">No media files found</h3>
+                                        <h3 className="text-lg font-bold">No media files found</h3>
                                         {searchTerm && (
                                             <p className="text-foreground/75 text-sm">
                                                 No results for <span className="text-foreground font-medium">"${searchTerm}"</span>

@@ -214,9 +214,11 @@ class PlanCatalogService
                             'trial_days' => $plan->trial_days,
                             'features' => $features,
                             'stats' => [
-                                'users' => $plan->maximum_users,
-                                'staffs' => $plan->maximum_staffs,
-                                'storage' => number_format(
+                                'maximum_users' => $plan->maximum_users,
+                                'maximum_projects' => $plan->maximum_projects,
+                                'maximum_contacts' => $plan->maximum_contacts,
+                                'maximum_accounts' => $plan->maximum_accounts,
+                                'maximum_storage' => number_format(
                                     $plan->storage_limit,
                                 ),
                             ],
@@ -239,9 +241,11 @@ class PlanCatalogService
                         'trial_days' => $plan->trial_days,
                         'features' => $features,
                         'stats' => [
-                            'users' => $plan->maximum_users,
-                            'staffs' => $plan->maximum_staffs,
-                            'storage' => number_format(
+                            'maximum_users' => $plan->maximum_users,
+                            'maximum_projects' => $plan->maximum_projects,
+                            'maximum_contacts' => $plan->maximum_contacts,
+                            'maximum_accounts' => $plan->maximum_accounts,
+                            'maximum_storage' => number_format(
                                 $plan->storage_limit,
                             ),
                         ],
@@ -269,8 +273,8 @@ class PlanCatalogService
      */
     private function features(Plan $plan): array
     {
-        return $plan->enable_hafinen_intelligence === 'on'
-            ? ['Hafinen Intelligence']
+        return $plan->enable_kakbima_intelligence === 'on'
+            ? ['Kakbima Intelligence']
             : [];
     }
 }

@@ -53,7 +53,7 @@ export default function OpportunityShow() {
 
     const getStatusBadge = (status: string) => {
         const statusColors = {
-            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             inactive: 'bg-red-50 text-red-700 ring-red-600/10',
         };
 
@@ -164,7 +164,7 @@ export default function OpportunityShow() {
                     {/* Opportunity Summary */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Opportunity Summary')}
                             </CardTitle>
@@ -207,7 +207,7 @@ export default function OpportunityShow() {
                     {/* Related Records */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Records')}
                             </CardTitle>
@@ -219,7 +219,7 @@ export default function OpportunityShow() {
                                         <UserInitials name={opportunity.account.name} />
                                         <div className="min-w-0">
                                             <p className="text-foreground/75 text-xs">{translate('Account')}</p>
-                                            <p className="text-foreground truncate text-sm font-semibold">{opportunity.account.name}</p>
+                                            <p className="text-foreground truncate text-sm font-bold">{opportunity.account.name}</p>
                                             {opportunity.account.email && (
                                                 <p className="text-foreground/75 truncate text-xs">{opportunity.account.email}</p>
                                             )}
@@ -251,7 +251,7 @@ export default function OpportunityShow() {
                                         <UserInitials name={opportunity.contact.name} />
                                         <div className="min-w-0">
                                             <p className="text-foreground/75 text-xs">{translate('Contact')}</p>
-                                            <p className="text-foreground truncate text-sm font-semibold">{opportunity.contact.name}</p>
+                                            <p className="text-foreground truncate text-sm font-bold">{opportunity.contact.name}</p>
                                             {opportunity.contact.email && (
                                                 <p className="text-foreground/75 truncate text-xs">{opportunity.contact.email}</p>
                                             )}
@@ -285,7 +285,7 @@ export default function OpportunityShow() {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Notes')}
                             </CardTitle>
@@ -308,7 +308,7 @@ export default function OpportunityShow() {
 
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
@@ -338,10 +338,10 @@ export default function OpportunityShow() {
                         return (
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
-                                    <CardTitle className="flex items-center text-lg font-semibold">
+                                    <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -350,7 +350,7 @@ export default function OpportunityShow() {
                                     <div className="grid grid-cols-1 gap-4 min-[992px]:grid-cols-2">
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
@@ -381,9 +381,7 @@ export default function OpportunityShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm">
-                                                                            {meeting.title}
-                                                                        </p>
+                                                                        <p className="text-foreground truncate text-sm">{meeting.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-foreground/75 truncate text-xs">
@@ -438,7 +436,7 @@ export default function OpportunityShow() {
 
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}
@@ -529,7 +527,7 @@ export default function OpportunityShow() {
                     {/* Card Header */}
                     <CardHeader className="border-b px-5 py-3.5">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <ShoppingCart className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
@@ -543,11 +541,11 @@ export default function OpportunityShow() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                            <TableHead className="py-2.5 font-semibold">{translate('Product')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Quantity')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Unit Price')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Tax')}</TableHead>
-                                            <TableHead className="py-2.5 text-right font-semibold">{translate('Total')}</TableHead>
+                                            <TableHead className="py-2.5 font-bold">{translate('Product')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-bold">{translate('Quantity')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-bold">{translate('Unit Price')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-bold">{translate('Tax')}</TableHead>
+                                            <TableHead className="py-2.5 text-right font-bold">{translate('Total')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -590,17 +588,17 @@ export default function OpportunityShow() {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="py-3 text-center">
-                                                        <p className="text-foreground text-sm font-semibold">{product.pivot.quantity}</p>
+                                                        <p className="text-foreground text-sm font-bold">{product.pivot.quantity}</p>
                                                     </TableCell>
                                                     <TableCell className="py-3 text-center">
-                                                        <p className="text-foreground font-mono text-sm font-semibold">
+                                                        <p className="text-foreground font-mono text-sm font-bold">
                                                             {formatCurrency(product.pivot.unit_price)}
                                                         </p>
                                                     </TableCell>
                                                     <TableCell className="py-3 text-center">
                                                         {product.tax ? (
                                                             <>
-                                                                <p className="text-foreground text-sm font-semibold">
+                                                                <p className="text-foreground text-sm font-bold">
                                                                     {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                 </p>
                                                                 <p className="text-foreground/75 mt-0.5 font-mono text-xs">
@@ -626,11 +624,11 @@ export default function OpportunityShow() {
                                     <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                         <div className="flex items-center justify-between border-b px-4 py-3">
                                             <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
-                                            <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
+                                            <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(subtotal)}</span>
                                         </div>
                                         <div className="flex items-center justify-between border-b px-4 py-3">
                                             <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
-                                            <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
+                                            <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(totalTax)}</span>
                                         </div>
                                         <div className="flex items-center justify-between px-4 py-3">
                                             <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
@@ -654,7 +652,7 @@ export default function OpportunityShow() {
                 {opportunity.quotes?.length > 0 && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Quotes')} ({opportunity.quotes.length})
                             </CardTitle>
@@ -667,7 +665,7 @@ export default function OpportunityShow() {
                                         className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 p-3.5 transition-colors hover:bg-blue-50 dark:border-blue-900/50 dark:bg-blue-900/20 dark:hover:bg-blue-900/30"
                                     >
                                         <div>
-                                            <p className="text-foreground text-sm font-semibold">{quote.quote_number}</p>
+                                            <p className="text-foreground text-sm font-bold">{quote.quote_number}</p>
                                             <p className="text-foreground/75 mt-0.5 text-xs">{quote.name}</p>
                                         </div>
                                         {useHasPermission('view-quotes') && (
@@ -688,7 +686,7 @@ export default function OpportunityShow() {
                 {useHasPermission('view-stream') && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Activity Stream')}
                             </CardTitle>
@@ -760,7 +758,7 @@ export default function OpportunityShow() {
                                             const getActivityBadgeColor = (type: string): string => {
                                                 switch (type) {
                                                     case 'created':
-                                                        return 'bg-green-50 text-green-700 ring-green-600/20';
+                                                        return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                                                     case 'updated':
                                                         return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                                                     case 'deleted':
@@ -804,7 +802,7 @@ export default function OpportunityShow() {
                                                             className={`flex items-center justify-between gap-2 px-4 py-2.5 ${isEditing ? 'bg-emerald-50/60' : 'bg-muted/30'} border-b`}
                                                         >
                                                             <div className="flex flex-wrap items-center gap-2">
-                                                                <span className="text-foreground text-sm font-semibold">
+                                                                <span className="text-foreground text-sm font-bold">
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span

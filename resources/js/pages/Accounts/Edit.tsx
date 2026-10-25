@@ -20,7 +20,7 @@ function FieldError({ message }: { message?: string }) {
 function SectionTitle({ title, extra }: { title: string; extra?: React.ReactNode }) {
     return (
         <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
+            <h2 className="text-base font-bold text-gray-900 dark:text-white">{title}</h2>
             {extra}
         </div>
     );

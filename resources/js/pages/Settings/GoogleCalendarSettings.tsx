@@ -128,7 +128,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                     disabled={!formData.googleCalendarEnabled}
                                 />
                                 {jsonFile && (
-                                    <p className="text-sm text-green-600">
+                                    <p className="text-sm text-fuchsia-600">
                                         {translate('Selected file')}: {jsonFile.name}
                                     </p>
                                 )}

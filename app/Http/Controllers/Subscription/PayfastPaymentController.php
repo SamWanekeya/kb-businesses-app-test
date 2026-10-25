@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;

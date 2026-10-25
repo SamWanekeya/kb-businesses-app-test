@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->enum('status', ['pending', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->timestamp('processed_at')->nullable();
             $table->text('notes')->nullable();
-            $table->string('receipt_path')->nullable();
+            $table->string('receipt')->nullable();
             $table->timestamps();
 
             // Indexes

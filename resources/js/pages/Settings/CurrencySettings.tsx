@@ -168,7 +168,7 @@ export default function CurrencySettings() {
                                     {/* Live Preview Section */}
                                     <div className="bg-muted/30 flex flex-col items-center justify-between gap-4 rounded-md border p-4 xl:flex-row">
                                         <div className="mb-3 flex flex-col items-center xl:mb-0 xl:items-start">
-                                            <div className="mb-1 font-mono text-2xl font-semibold">{formattedPreview()}</div>
+                                            <div className="mb-1 font-mono text-2xl font-bold">{formattedPreview()}</div>
                                             <div className="text-foreground/75 text-xs">
                                                 {currencySettings.currency_name} ({currencySettings.default_currency})
                                             </div>
@@ -419,9 +419,7 @@ export default function CurrencySettings() {
                                                     <Label htmlFor="currency_symbol_space" className="font-medium">
                                                         {translate('Add Space')}
                                                     </Label>
-                                                    <p className="text-foreground/75 mt-1 text-xs">
-                                                        {translate('Space between amount and symbol')}
-                                                    </p>
+                                                    <p className="text-foreground/75 mt-1 text-xs">{translate('Space between amount and symbol')}</p>
                                                 </div>
                                                 <Switch
                                                     id="currency_symbol_space"

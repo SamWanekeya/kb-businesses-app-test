@@ -54,7 +54,7 @@ export default function AnnouncementDashboard() {
 
     const getStatusBadge = (status: string) => {
         const map: Record<string, string> = {
-            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
             inactive: 'bg-red-50 text-red-700 ring-red-600/20',
             expired: 'bg-gray-50 text-gray-700 ring-gray-600/20',
         };
@@ -115,7 +115,7 @@ export default function AnnouncementDashboard() {
                                     {tab.icon}
                                     {tab.label}
                                     <span
-                                        className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+                                        className={`rounded-full px-1.5 py-0.5 text-xs font-bold ${
                                             activeTab === tab.value
                                                 ? 'bg-primary/10 text-primary'
                                                 : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
@@ -148,7 +148,7 @@ export default function AnnouncementDashboard() {
                                             <div className="min-w-0 flex-1">
                                                 <div className="mb-1 flex items-start justify-between gap-2">
                                                     <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-                                                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{a.title}</h3>
+                                                        <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">{a.title}</h3>
                                                         {a.is_featured && (
                                                             <span className="inline-flex items-center gap-0.5 rounded-md bg-yellow-50 px-2 py-1 text-xs text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
                                                                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
@@ -206,7 +206,7 @@ export default function AnnouncementDashboard() {
                                                                                 className="h-6 w-6 rounded-full object-cover"
                                                                             />
                                                                         ) : (
-                                                                            <span className="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold">
+                                                                            <span className="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold">
                                                                                 {a.creator.name?.charAt(0).toUpperCase()}
                                                                             </span>
                                                                         )}
@@ -234,12 +234,12 @@ export default function AnnouncementDashboard() {
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                         <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                             <BarChart2 className="text-foreground/75 h-4 w-4" />
-                            <span className="text-sm font-semibold">{translate('Overview')}</span>
+                            <span className="text-sm font-bold">{translate('Overview')}</span>
                         </div>
                         <div className="space-y-3 p-4">
                             {[
                                 { label: translate('Total'), count: announcements.length, color: 'bg-blue-500' },
-                                { label: translate('Active'), count: active.length, color: 'bg-green-500' },
+                                { label: translate('Active'), count: active.length, color: 'bg-fuchsia-500' },
                                 { label: translate('Featured'), count: featured.length, color: 'bg-yellow-500' },
                                 { label: translate('Upcoming'), count: upcoming.length, color: 'bg-purple-500' },
                                 { label: translate('Expired'), count: expired.length, color: 'bg-gray-400' },
@@ -260,7 +260,7 @@ export default function AnnouncementDashboard() {
                         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                                 <TrendingUp className="text-foreground/75 h-4 w-4" />
-                                <span className="text-sm font-semibold">{translate('By Category')}</span>
+                                <span className="text-sm font-bold">{translate('By Category')}</span>
                             </div>
                             <div className="overflow-y-auto" style={{ maxHeight: categoryBreakdown.length > 5 ? '205px' : 'none' }}>
                                 <div className="space-y-2.5 px-4 pt-4 pb-3">
@@ -270,7 +270,7 @@ export default function AnnouncementDashboard() {
                                             <div key={name}>
                                                 <div className="mb-1 flex items-center justify-between">
                                                     <span className="truncate text-xs text-gray-600 dark:text-gray-300">{name}</span>
-                                                    <span className="ml-2 text-xs font-semibold text-gray-800 dark:text-gray-200">{count}</span>
+                                                    <span className="ml-2 text-xs font-bold text-gray-800 dark:text-gray-200">{count}</span>
                                                 </div>
                                                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                                                     <div className="bg-primary h-full rounded-full" style={{ width: `${pct}%` }} />

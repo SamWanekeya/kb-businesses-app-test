@@ -141,7 +141,7 @@ export default function Referral() {
                                 key={item.href}
                                 variant="ghost"
                                 className={cn('w-full justify-start text-sm', {
-                                    'bg-muted font-semibold': activeSection === item.href.replace('#', ''),
+                                    'bg-muted font-bold': activeSection === item.href.replace('#', ''),
                                 })}
                                 onClick={() => {
                                     handleNavClick(item.href);
@@ -156,7 +156,7 @@ export default function Referral() {
 
                 <div className="min-w-0 flex-1">
                     <section id="dashboard" ref={dashboardRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{translate('Dashboard')}</h2>
+                        <h2 className="mb-4 text-xl font-bold">{translate('Dashboard')}</h2>
                         <ReferralDashboard
                             userType={userType}
                             stats={stats}
@@ -167,7 +167,7 @@ export default function Referral() {
                     </section>
 
                     <section id="referred-users" ref={referredUsersRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{translate('Referred Users')}</h2>
+                        <h2 className="mb-4 text-xl font-bold">{translate('Referred Users')}</h2>
                         <ReferredUsersSection
                             referredUsers={props.referredUsers}
                             usersWithPlans={props.usersWithPlans}
@@ -178,7 +178,7 @@ export default function Referral() {
                     </section>
 
                     <section id="payout-requests" ref={payoutRequestsRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{translate('Payout Requests')}</h2>
+                        <h2 className="mb-4 text-xl font-bold">{translate('Payout Requests')}</h2>
                         <PayoutRequests
                             userType={userType}
                             payoutRequests={payoutRequests}
@@ -190,7 +190,7 @@ export default function Referral() {
 
                     {userType === 'super_admin' && (
                         <section id="settings" ref={settingsRef} className="mb-8">
-                            <h2 className="mb-4 text-xl font-semibold">{translate('Settings')}</h2>
+                            <h2 className="mb-4 text-xl font-bold">{translate('Settings')}</h2>
                             <ReferralSettings settings={settings} currency_symbol={currency_symbol} globalSettings={globalSettings} />
                         </section>
                     )}

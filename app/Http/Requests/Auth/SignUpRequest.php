@@ -28,6 +28,7 @@ class SignUpRequest extends FormRequest
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'email' => [
                 'required',
+                'string',
                 'email',
                 'max:255',
                 'unique:users,email',
@@ -36,6 +37,7 @@ class SignUpRequest extends FormRequest
 
             'password' => [
                 'required',
+                'string',
                 'confirmed',
                 PasswordRule::min(12)
                     ->mixedCase()
@@ -43,6 +45,12 @@ class SignUpRequest extends FormRequest
                     ->symbols()
                     ->uncompromised()
                     ->max(128),
+            ],
+
+            'referral_code' => [
+                'nullable',
+                'string',
+                'max:255',
             ],
         ];
     }
@@ -60,6 +68,7 @@ class SignUpRequest extends FormRequest
             'email.email' => __('Please provide a valid work email address'),
             'email.max' => __('Are you sure you entered the work email correctly?'),
             'email.unique' => __('That work email is already taken. Try another'),
+            'email.string' => __('Please provide a valid work email address.'),
             'password.required' => __('The password field is required.'),
             'password.confirmed' => __('Passwords do not match.'),
             'password.min' => __('The new password must be at least 12 characters.'),
@@ -68,6 +77,9 @@ class SignUpRequest extends FormRequest
             'password.numbers' => __('The new password must contain at least one number.'),
             'password.symbols' => __('The new password must contain at least one symbol.'),
             'password.uncompromised' => __('The new password has appeared in a known data breach. Please choose a different password.'),
+            'password.string' => __('The password must be a valid string.'),
+            'referral_code.string' => __('The referral code must be a valid string.'),
+            'referral_code.max' => __('The referral code may not exceed 255 characters.'),
         ];
     }
 }

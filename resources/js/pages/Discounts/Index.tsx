@@ -271,9 +271,7 @@ export default function DiscountsPage() {
                     >
                         {value}
                     </button>
-                    {copiedCode === value && (
-                        <span className="mt-1 ml-3 text-xs text-red-600 dark:text-red-400">{translate('Copied!')}</span>
-                    )}
+                    {copiedCode === value && <span className="mt-1 ml-3 text-xs text-red-600 dark:text-red-400">{translate('Copied!')}</span>}
                 </div>
             ),
         },

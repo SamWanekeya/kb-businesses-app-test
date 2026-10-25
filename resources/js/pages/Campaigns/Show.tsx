@@ -83,7 +83,7 @@ export default function CampaignShow() {
                         <span
                             className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs ring-1 ring-inset ${
                                 campaign.status === 'active'
-                                    ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                    ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                     : 'bg-red-50 text-red-700 ring-red-600/20'
                             }`}
                         >
@@ -155,7 +155,7 @@ export default function CampaignShow() {
                     {/* Campaign Information */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Tag className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Campaign Information')}
                             </CardTitle>
@@ -241,16 +241,16 @@ export default function CampaignShow() {
                     {/* Budget Analysis */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <DollarSign className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Budget Analysis')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 p-6">
                             <div className="grid grid-cols-3 gap-1.5 min-[450px]:gap-3">
-                                <div className="rounded-lg border border-green-200 bg-green-50 p-1.5 text-center min-[400px]:p-3">
+                                <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-1.5 text-center min-[400px]:p-3">
                                     <p className="text-foreground/75 mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Budget')}</p>
-                                    <p className="truncate font-mono text-xs font-extrabold text-green-600 min-[400px]:text-sm sm:text-base">
+                                    <p className="truncate font-mono text-xs font-extrabold text-fuchsia-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.budget)}
                                     </p>
                                 </div>
@@ -304,10 +304,10 @@ export default function CampaignShow() {
                 {/* Campaign Leads */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b px-5 py-3.5">
-                        <CardTitle className="flex items-center text-lg font-semibold">
+                        <CardTitle className="flex items-center text-lg font-bold">
                             <Users className="text-foreground/75 mr-3 h-5 w-5" />
                             {translate('Campaign Leads')}
-                            <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                            <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                 {campaignLeads?.length || 0}
                             </span>
                         </CardTitle>

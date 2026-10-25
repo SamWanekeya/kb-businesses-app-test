@@ -77,7 +77,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
     const getActivityBadgeColor = (type: string) => {
         switch (type?.toLowerCase()) {
             case 'created':
-                return 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30';
+                return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30';
             case 'updated':
                 return 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-500/30';
             case 'deleted':
@@ -95,20 +95,20 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
 
     const getStatusBadgeColor = (desc: string): string | null => {
         const map: Record<string, string> = {
-            Active: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
+            Active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             Inactive: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-500/30',
             Overdue: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-500/30',
-            Paid: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
+            Paid: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             Partially_paid: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20 dark:bg-yellow-900/30 dark:text-yellow-400 dark:ring-yellow-500/30',
             Cancelled: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-500/30',
-            Received: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
+            Received: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             Rejected: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-500/30',
             Expired: 'bg-orange-50 text-orange-700 ring-orange-600/20 dark:bg-orange-900/30 dark:text-orange-400 dark:ring-orange-500/30',
             Sent: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-500/30',
-            Accepted: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
-            Delivered: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
+            Accepted: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
+            Delivered: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             Shipped: 'bg-indigo-50 text-indigo-700 ring-indigo-600/20 dark:bg-indigo-900/30 dark:text-indigo-400 dark:ring-indigo-500/30',
-            Confirmed: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30',
+            Confirmed: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             Processing: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-500/30',
             Draft: 'bg-gray-50 text-gray-700 ring-gray-600/20 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-500/30',
         };
@@ -143,7 +143,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                 <>
                     <Card className="shadow-sm">
                         <CardHeader className="border-b">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Calendar className="text-primary me-3 h-5 w-5" />
                                 {translate('Activity Stream')}
                             </CardTitle>
@@ -186,7 +186,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                 {/* Card Header */}
                                                 <div className="bg-muted/40 dark:bg-muted/20 border-border flex items-start justify-between gap-2 border-b px-3 py-2 sm:items-center sm:px-4 sm:py-2.5">
                                                     <div className="flex min-w-0 flex-wrap items-center gap-1.5 sm:gap-2">
-                                                        <span className="text-foreground max-w-[100px] truncate text-xs font-semibold sm:max-w-[180px] sm:text-sm">
+                                                        <span className="text-foreground max-w-[100px] truncate text-xs font-bold sm:max-w-[180px] sm:text-sm">
                                                             {activity.user?.name || translate('System')}
                                                         </span>
                                                         <span
@@ -199,7 +199,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                                             return rec ? (
                                                                 <Link
                                                                     href={rec.href}
-                                                                    className="text-primary inline-flex max-w-[90px] items-center gap-1 truncate text-xs font-semibold hover:underline sm:max-w-[160px]"
+                                                                    className="text-primary inline-flex max-w-[90px] items-center gap-1 truncate text-xs font-bold hover:underline sm:max-w-[160px]"
                                                                 >
                                                                     <ExternalLink className="h-3 w-3 flex-shrink-0" />
                                                                     <span className="truncate">{rec.name}</span>

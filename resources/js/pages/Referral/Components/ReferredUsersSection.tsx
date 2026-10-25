@@ -97,8 +97,8 @@ export default function ReferredUsersSection({
                                 <p className="text-foreground/75 text-sm">{translate('Total Referred Users')}</p>
                                 <p className="mt-2 text-2xl font-extrabold">{referredUsers.total}</p>
                             </div>
-                            <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
-                                <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
+                            <div className="rounded-full bg-fuchsia-100 p-3 dark:bg-fuchsia-900">
+                                <Users className="h-5 w-5 text-fuchsia-600 dark:text-fuchsia-400" />
                             </div>
                         </div>
                     </CardContent>
@@ -138,13 +138,13 @@ export default function ReferredUsersSection({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base font-semibold">{translate('Referred Users List')}</CardTitle>
+                    <CardTitle className="text-base font-bold">{translate('Referred Users List')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {referredUsers.data.length === 0 ? (
                         <div className="py-12 text-center">
                             <Users className="text-foreground/75 mx-auto mb-4 h-12 w-12" />
-                            <p className="text-foreground/75 mb-2 text-base font-semibold">{translate('No referred users yet')}</p>
+                            <p className="text-foreground/75 mb-2 text-base font-bold">{translate('No referred users yet')}</p>
                             <p className="text-foreground/75 text-sm">
                                 {userType === 'super_admin'
                                     ? translate('No users have registered using referral codes yet.')
@@ -168,7 +168,7 @@ export default function ReferredUsersSection({
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm font-semibold" title={user.name}>
+                                                <p className="truncate text-sm font-bold" title={user.name}>
                                                     {user.name}
                                                 </p>
                                                 <p className="text-foreground/75 mb-2 truncate text-sm" title={user.email}>
@@ -209,7 +209,7 @@ export default function ReferredUsersSection({
 
                                             {getTotalCommission(user) > 0 && (
                                                 <div className="min-w-[80px] text-end">
-                                                    <p className="font-mono text-sm font-semibold text-green-600">
+                                                    <p className="font-mono text-sm font-bold text-fuchsia-600">
                                                         +{currency_symbol}
                                                         {getTotalCommission(user)?.toFixed(2)}
                                                     </p>
@@ -221,14 +221,14 @@ export default function ReferredUsersSection({
 
                                     {user.referrals && user.referrals.length > 0 && (
                                         <div className="mt-4 border-t pt-4">
-                                            <p className="mb-2 text-sm font-semibold">{translate('Commission History')}</p>
+                                            <p className="mb-2 text-sm font-bold">{translate('Commission History')}</p>
                                             <div className="space-y-2">
                                                 {user.referrals.map((referral) => (
                                                     <div key={referral.id} className="flex items-center justify-between">
                                                         <span className="text-foreground/75 text-sm">
                                                             {referral.commission_percentage}% {translate('commission')}
                                                         </span>
-                                                        <span className="font-mono text-sm font-semibold text-green-600">
+                                                        <span className="font-mono text-sm font-bold text-fuchsia-600">
                                                             +{currency_symbol}
                                                             {referral.amount}
                                                         </span>

@@ -115,8 +115,10 @@ class HandleInertiaRequests extends Middleware
                                 ? optional($request->user()?->plan)->only([
                                     'id',
                                     'name',
-                                    'maximum_staffs',
                                     'maximum_users',
+                                    'maximum_projects',
+                                    'maximum_contacts',
+                                    'maximum_accounts',
                                 ])
                                 : null,
                         ],

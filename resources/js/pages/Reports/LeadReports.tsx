@@ -23,12 +23,12 @@ export default function LeadReports() {
     const getStatusColor = (status: string) => {
         const colors = {
             new: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/20 dark:text-blue-400 dark:ring-blue-500/30',
-            qualified: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30',
+            qualified: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/20 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             converted: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30',
-            closed: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30',
+            closed: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/20 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20 dark:bg-yellow-900/20 dark:text-yellow-400 dark:ring-yellow-500/30',
             in_progress: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/20 dark:text-blue-400 dark:ring-blue-500/30',
-            active: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30',
+            active: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/20 dark:text-fuchsia-400 dark:ring-fuchsia-500/30',
             inactive: 'bg-gray-50 text-gray-700 ring-gray-600/20 dark:bg-gray-800/30 dark:text-gray-400 dark:ring-gray-700/30',
         } as Record<string, string>;
         return (
@@ -113,7 +113,7 @@ export default function LeadReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{translate('Lead Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Lead Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -181,7 +181,7 @@ export default function LeadReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <CardHeader className="border-border flex shrink-0 flex-row items-center border-b px-5" style={{ minHeight: '64px' }}>
-                        <CardTitle className="text-base font-semibold">{translate('Leads by Source')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Leads by Source')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={300}>
@@ -215,11 +215,11 @@ export default function LeadReports() {
                     </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40">
+                <Card className="overflow-hidden border border-fuchsia-100 shadow-sm dark:border-fuchsia-900/40">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 py-3.5">
                         <div className="flex w-full items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{translate('Recent Leads')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Recent Leads')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Most recently created leads')}</p>
                             </div>
                             <Link
@@ -242,7 +242,7 @@ export default function LeadReports() {
                                             <UserInitials name={lead.name} />
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm leading-tight font-semibold">{lead.name}</p>
+                                            <p className="truncate text-sm leading-tight font-bold">{lead.name}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">{lead.email || lead.organization || ''}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">

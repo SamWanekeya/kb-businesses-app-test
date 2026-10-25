@@ -60,7 +60,7 @@ export default function LeadShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                     status === 'active'
-                        ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                         : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                 }`}
             >
@@ -144,7 +144,7 @@ export default function LeadShow() {
                     {/* Lead Summary */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Lead Summary')}
                             </CardTitle>
@@ -167,7 +167,7 @@ export default function LeadShow() {
                                     <p className="text-foreground/75 text-xs">{translate('Conversion')}</p>
                                     <div>
                                         {lead.is_converted ? (
-                                            <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                            <span className="inline-flex items-center gap-1 rounded-md bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset">
                                                 <TrendingUp className="h-3 w-3" />
                                                 {translate('Converted')}
                                             </span>
@@ -232,7 +232,7 @@ export default function LeadShow() {
                     {/* Contact & Address */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Contact & Address')}
                             </CardTitle>
@@ -294,7 +294,7 @@ export default function LeadShow() {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Notes')}
                             </CardTitle>
@@ -315,7 +315,7 @@ export default function LeadShow() {
 
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Target className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Related Campaign')}
                             </CardTitle>
@@ -325,7 +325,7 @@ export default function LeadShow() {
                                 {lead.campaign ? (
                                     <div className="border-border bg-muted/20 hover:bg-muted/40 flex w-full items-center justify-between rounded-xl border p-4 transition-colors">
                                         <div>
-                                            <p className="text-foreground text-sm font-semibold">{lead.campaign.name}</p>
+                                            <p className="text-foreground text-sm font-bold">{lead.campaign.name}</p>
                                             <p className="text-foreground/75 mt-0.5 text-xs">
                                                 {lead.campaign.campaign_type?.name || translate('Campaign')}
                                             </p>
@@ -371,11 +371,11 @@ export default function LeadShow() {
                         {/* Related Accounts */}
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <Building className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Related Accounts')}
                                     {relatedAccounts?.length > 0 && (
-                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {relatedAccounts.length}
                                         </span>
                                     )}
@@ -395,7 +395,7 @@ export default function LeadShow() {
                                                         <p className="text-foreground/75 text-xs">
                                                             {account.account_type?.name || translate('Account')}
                                                         </p>
-                                                        <p className="text-foreground truncate text-sm font-semibold">{account.name}</p>
+                                                        <p className="text-foreground truncate text-sm font-bold">{account.name}</p>
                                                         {account.email && <p className="text-foreground/75 truncate text-xs">{account.email}</p>}
                                                     </div>
                                                 </div>
@@ -428,11 +428,11 @@ export default function LeadShow() {
                         {/* Related Contacts */}
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <Users className="text-foreground/75 mr-3 h-5 w-5" />
                                     {translate('Related Contacts')}
                                     {relatedContacts?.length > 0 && (
-                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {relatedContacts.length}
                                         </span>
                                     )}
@@ -452,7 +452,7 @@ export default function LeadShow() {
                                                         <p className="text-foreground/75 text-xs">
                                                             {contact.account?.name || translate('No account')}
                                                         </p>
-                                                        <p className="text-foreground truncate text-sm font-semibold">{contact.name}</p>
+                                                        <p className="text-foreground truncate text-sm font-bold">{contact.name}</p>
                                                         {contact.email && <p className="text-foreground/75 truncate text-xs">{contact.email}</p>}
                                                     </div>
                                                 </div>
@@ -492,10 +492,10 @@ export default function LeadShow() {
                         return (
                             <Card className="shadow-sm">
                                 <CardHeader className="border-b px-5 py-3.5">
-                                    <CardTitle className="flex items-center text-lg font-semibold">
+                                    <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
                                         {translate('Meetings & Calls')}
-                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
+                                        <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
                                     </CardTitle>
@@ -505,7 +505,7 @@ export default function LeadShow() {
                                         {/* Meetings sub-card */}
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
                                                         {translate('Meetings')}
@@ -536,9 +536,7 @@ export default function LeadShow() {
                                                                         <UserCheck className="h-3.5 w-3.5" />
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <p className="text-foreground truncate text-sm">
-                                                                            {meeting.title}
-                                                                        </p>
+                                                                        <p className="text-foreground truncate text-sm">{meeting.title}</p>
                                                                         <div className="mt-0.5 flex items-center gap-2">
                                                                             <Clock className="text-foreground/75 h-3 w-3 flex-shrink-0" />
                                                                             <span className="text-foreground/75 truncate text-xs">
@@ -594,7 +592,7 @@ export default function LeadShow() {
                                         {/* Calls sub-card */}
                                         <Card className="border shadow-none">
                                             <CardHeader className="border-b px-4 py-3">
-                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-semibold">
+                                                <CardTitle className="text-foreground/75 flex items-center justify-between text-sm font-bold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
                                                         {translate('Calls')}
@@ -684,7 +682,7 @@ export default function LeadShow() {
                 {useHasPermission('view-stream') && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
                                 {translate('Activity Stream')}
                             </CardTitle>
@@ -758,7 +756,7 @@ export default function LeadShow() {
                                             const getActivityBadgeColor = (type: string): string => {
                                                 switch (type) {
                                                     case 'created':
-                                                        return 'bg-green-50 text-green-700 ring-green-600/20';
+                                                        return 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20';
                                                     case 'updated':
                                                         return 'bg-blue-50 text-blue-700 ring-blue-600/20';
                                                     case 'deleted':
@@ -813,7 +811,7 @@ export default function LeadShow() {
                                                             className={`flex items-center justify-between gap-2 px-4 py-2.5 ${isEditing ? 'bg-emerald-50/60' : 'bg-muted/30'} border-b`}
                                                         >
                                                             <div className="flex flex-wrap items-center gap-2">
-                                                                <span className="text-foreground text-sm font-semibold">
+                                                                <span className="text-foreground text-sm font-bold">
                                                                     {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
@@ -927,7 +925,7 @@ export default function LeadShow() {
                                                                 <span
                                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                                                                         activity.description === 'Active'
-                                                                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                                                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                                                                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                                                     }`}
                                                                 >

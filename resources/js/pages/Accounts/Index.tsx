@@ -305,7 +305,7 @@ export default function Accounts() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                             value === 'active'
-                                ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                         }`}
                     >
@@ -575,7 +575,7 @@ export default function Accounts() {
                                     <div className="mb-4 flex items-start gap-3 pr-8">
                                         <UserInitials name={account.name} />
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{account.name}</h3>
+                                            <h3 className="truncate text-sm font-bold text-gray-900 dark:text-white">{account.name}</h3>
                                             <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
                                                 <Mail className="h-3 w-3 shrink-0 text-gray-500" />
                                                 <p className="truncate text-xs text-gray-600 dark:text-gray-400">
@@ -585,7 +585,7 @@ export default function Accounts() {
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                     account.status === 'active'
-                                                        ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20'
+                                                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-500/10 dark:text-fuchsia-400 dark:ring-fuchsia-500/20'
                                                         : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20'
                                                 }`}
                                             >

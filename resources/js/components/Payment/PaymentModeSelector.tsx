@@ -9,13 +9,13 @@ interface PaymentModeSelectorProps {
     error?: string;
 }
 
-export function PaymentModeSelector({ value, onChange, name, error }: PaymentModeSelectorProps) {
+export default function PaymentModeSelector({ value, onChange, name, error }: PaymentModeSelectorProps) {
     const { t: translate } = useTranslation();
 
     return (
         <div className="space-y-2">
             <Label>{translate('Mode')}</Label>
-            <RadioGroup value={value} onValueChange={onChange} className="flex flex-row gap-4 max-[340px]:flex-col max-[340px]:gap-2">
+            <RadioGroup value={value} onValueChange={onChange} className="flex gap-4">
                 <div className="flex items-center space-x-2">
                     <RadioGroupItem value="sandbox" id={`${name}_sandbox`} />
                     <Label htmlFor={`${name}_sandbox`} className="font-normal">

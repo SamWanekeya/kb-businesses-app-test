@@ -712,7 +712,7 @@ export default function CrudFormModal({
                                 </div>
                                 <div className="border-t pt-2">
                                     <div className="flex items-center justify-between">
-                                        <span className="font-semibold">{translate('Total price')}:</span>
+                                        <span className="font-bold">{translate('Total price')}:</span>
                                         <span className="text-primary text-lg font-extrabold">${calculateTotal().toFixed(2)}</span>
                                     </div>
                                 </div>

@@ -354,7 +354,7 @@ export default function Opportunities() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value === 'active'
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
@@ -630,7 +630,7 @@ export default function Opportunities() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                             {translate('No Opportunity Stage Yet')}
                                         </h3>
                                         <p className="text-foreground/75 text-sm leading-relaxed">
@@ -733,9 +733,9 @@ export default function Opportunities() {
                                                     className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
                                                     style={{ backgroundColor: stage.color }}
                                                 ></span>
-                                                <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{stage.name}</span>
+                                                <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{stage.name}</span>
                                                 <span
-                                                    className="rounded-full px-2 py-0.5 text-xs font-semibold"
+                                                    className="rounded-full px-2 py-0.5 text-xs font-bold"
                                                     style={{ backgroundColor: stage.color + '22', color: stage.color }}
                                                 >
                                                     {stageOpportunities.length}
@@ -791,7 +791,7 @@ export default function Opportunities() {
                                                             </div> */}
                                                                     <div className="min-w-0 flex-1">
                                                                         <h4
-                                                                            className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
+                                                                            className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-bold text-gray-900 transition-colors dark:text-gray-100"
                                                                             onClick={() => {
                                                                                 handleAction('view', opportunity);
                                                                             }}
@@ -968,7 +968,7 @@ export default function Opportunities() {
                                                 </p>
                                                 <div className="flex items-center">
                                                     <span
-                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${opportunity.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${opportunity.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
                                                         {opportunity.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
@@ -1077,7 +1077,7 @@ export default function Opportunities() {
                                                 </span>
                                             )}
                                             {opportunity.opportunity_source && (
-                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs text-purple-700 ring-1 ring-green-600/20 ring-inset">
+                                                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs text-purple-700 ring-1 ring-fuchsia-600/20 ring-inset">
                                                     {opportunity.opportunity_source.name}
                                                 </span>
                                             )}

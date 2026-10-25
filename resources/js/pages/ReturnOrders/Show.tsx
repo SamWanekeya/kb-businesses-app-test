@@ -34,8 +34,8 @@ export default function ReturnOrderShow() {
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
-            processed: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400',
-            received: 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400',
+            processed: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400',
+            received: 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20 dark:bg-fuchsia-900/30 dark:text-fuchsia-400',
             approved: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400',
             shipped: 'bg-purple-50 text-purple-700 ring-purple-600/20 dark:bg-purple-900/30 dark:text-purple-400',
             cancelled: 'bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-900/30 dark:text-red-400',
@@ -135,7 +135,7 @@ export default function ReturnOrderShow() {
                     {/* Products */}
                     <Card className="overflow-hidden shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <Package className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Products')}
                             </CardTitle>
@@ -147,17 +147,17 @@ export default function ReturnOrderShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="bg-muted hover:!bg-muted border-b">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 font-bold whitespace-nowrap">{translate('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Quantity')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Unit Price')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Tax')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                    <TableHead className="py-2.5 text-right font-bold whitespace-nowrap">
                                                         {translate('Total')}
                                                     </TableHead>
                                                 </TableRow>
@@ -206,17 +206,17 @@ export default function ReturnOrderShow() {
                                                                 </div>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground text-sm font-semibold">{product.pivot.quantity}</p>
+                                                                <p className="text-foreground text-sm font-bold">{product.pivot.quantity}</p>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground font-mono text-sm font-semibold">
+                                                                <p className="text-foreground font-mono text-sm font-bold">
                                                                     {formatCurrency(product.pivot.unit_price)}
                                                                 </p>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
                                                                 {product.tax ? (
                                                                     <>
-                                                                        <p className="text-foreground text-sm font-semibold">
+                                                                        <p className="text-foreground text-sm font-bold">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </p>
                                                                         <p className="text-foreground/75 mt-0.5 font-mono text-xs">
@@ -243,13 +243,13 @@ export default function ReturnOrderShow() {
                                         <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Subtotal')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">
+                                                <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(returnOrder.subtotal)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
                                                 <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
-                                                <span className="text-foreground font-mono text-sm font-semibold">
+                                                <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(returnOrder.tax_amount)}
                                                 </span>
                                             </div>
@@ -276,7 +276,7 @@ export default function ReturnOrderShow() {
                     {/* Description */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Description')}
                             </CardTitle>
@@ -295,7 +295,7 @@ export default function ReturnOrderShow() {
                     {/* Reason Description */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-lg font-semibold">
+                            <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                 {translate('Reason Description')}
                             </CardTitle>
@@ -315,7 +315,7 @@ export default function ReturnOrderShow() {
                     {returnOrder.notes && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-lg font-semibold">
+                                <CardTitle className="flex items-center text-lg font-bold">
                                     <FileText className="text-foreground/75 me-3 h-5 w-5" />
                                     {translate('Notes')}
                                 </CardTitle>
@@ -337,7 +337,7 @@ export default function ReturnOrderShow() {
                     {/* Summary & Actions */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Summary & Actions')}
                             </CardTitle>
@@ -371,7 +371,7 @@ export default function ReturnOrderShow() {
                     {(returnOrder.contact || returnOrder.account) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
                                     {translate('Customer Info')}
                                 </CardTitle>
@@ -387,7 +387,7 @@ export default function ReturnOrderShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={returnOrder.contact.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{returnOrder.contact.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{returnOrder.contact.name}</p>
                                                     {returnOrder.contact.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{returnOrder.contact.email}</p>
                                                     )}
@@ -424,7 +424,7 @@ export default function ReturnOrderShow() {
                                             <div className="flex min-w-0 items-center gap-2">
                                                 <UserInitials name={returnOrder.account.name} />
                                                 <div className="min-w-0">
-                                                    <p className="text-foreground truncate text-sm font-semibold">{returnOrder.account.name}</p>
+                                                    <p className="text-foreground truncate text-sm font-bold">{returnOrder.account.name}</p>
                                                     {returnOrder.account.email && (
                                                         <p className="text-foreground/75 truncate text-xs">{returnOrder.account.email}</p>
                                                     )}
@@ -457,7 +457,7 @@ export default function ReturnOrderShow() {
                     {/* RO Details */}
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
-                            <CardTitle className="flex items-center text-base font-semibold">
+                            <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
                                 {translate('Order Details')}
                             </CardTitle>
@@ -518,7 +518,7 @@ export default function ReturnOrderShow() {
                     {(returnOrder.sales_order || returnOrder.shipping_provider_type) && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
-                                <CardTitle className="flex items-center text-base font-semibold">
+                                <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
                                     {translate('Related Records')}
                                 </CardTitle>

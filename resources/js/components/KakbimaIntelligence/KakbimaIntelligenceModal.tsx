@@ -171,7 +171,7 @@ export default function KakbimaIntelligenceModal({ isOpen, onClose, onGenerate, 
                 }}
             >
                 <div className="flex items-center justify-between border-b p-6">
-                    <h2 className="flex items-center gap-2 text-lg font-semibold">
+                    <h2 className="flex items-center gap-2 text-lg font-bold">
                         <Sparkles className="h-5 w-5 text-blue-500" />
                         {translate(title)}
                     </h2>

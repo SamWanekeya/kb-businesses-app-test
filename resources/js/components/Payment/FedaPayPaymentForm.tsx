@@ -102,7 +102,7 @@ export function FedaPayPaymentForm({
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
-                        <div className="mt-1 text-sm text-green-600">
+                        <div className="mt-1 text-sm text-fuchsia-600">
                             {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
@@ -113,9 +113,9 @@ export function FedaPayPaymentForm({
                     <AlertDescription>{translate('You will be redirected to FedaPay to complete your payment securely.')}</AlertDescription>
                 </Alert>
 
-                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                    <h4 className="mb-2 font-medium text-green-900">{translate('Supported Payment Methods')}</h4>
-                    <ul className="space-y-1 text-sm text-green-800">
+                <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-4">
+                    <h4 className="mb-2 font-medium text-fuchsia-900">{translate('Supported Payment Methods')}</h4>
+                    <ul className="space-y-1 text-sm text-fuchsia-800">
                         <li>• Mobile Money (MTN, Moov, Orange)</li>
                         <li>• Visa/Mastercard</li>
                         <li>• Bank Transfers</li>

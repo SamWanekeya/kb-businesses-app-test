@@ -225,8 +225,8 @@ export default function Notes() {
                             <p className="text-sm text-gray-500">{translate('Personal Notes')}</p>
                             <p className="text-2xl font-extrabold">{totalPersonalNotes}</p>
                         </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                            <Users className="h-6 w-6 text-green-600" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-fuchsia-100">
+                            <Users className="h-6 w-6 text-fuchsia-600" />
                         </div>
                     </div>
                 </Card>
@@ -310,7 +310,7 @@ export default function Notes() {
                 <div className="h-[calc(100vh-380px)] md:h-[calc(100vh-320px)]">
                     <div className="grid h-full grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
-                            <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-semibold md:mb-4 md:text-base">
+                            <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-bold md:mb-4 md:text-base">
                                 <Users className="h-4 w-4 md:h-5 md:w-5" />
                                 {translate('Personal Notes')} ({myNotesData.length})
                             </h3>
@@ -376,7 +376,7 @@ export default function Notes() {
                         </div>
 
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
-                            <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-semibold md:mb-4 md:text-base">
+                            <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-bold md:mb-4 md:text-base">
                                 <Share2 className="h-4 w-4 md:h-5 md:w-5" />
                                 {translate('Shared Notes')} ({sharedNotesData.length})
                             </h3>
@@ -451,7 +451,7 @@ export default function Notes() {
             ) : (
                 <div>
                     <div className="mb-6">
-                        <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+                        <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
                             <Users className="h-5 w-5" />
                             {translate('Personal Notes')} <span className="text-gray-500">({myNotesData.length})</span>
                         </h3>
@@ -464,7 +464,7 @@ export default function Notes() {
                                     <div className="p-4">
                                         <div className="mb-3 flex items-start justify-between">
                                             <div className="flex min-w-0 flex-1 items-center gap-2">
-                                                <h3 className="truncate font-semibold text-gray-900">{note.title}</h3>
+                                                <h3 className="truncate font-bold text-gray-900">{note.title}</h3>
                                             </div>
                                             <User className="text-primary ml-2 h-4 w-4 flex-shrink-0" />
                                         </div>
@@ -547,7 +547,7 @@ export default function Notes() {
                     </div>
 
                     <div>
-                        <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+                        <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
                             <Share2 className="h-5 w-5" />
                             {translate('Shared Notes')} <span className="text-gray-500">({sharedNotesData.length})</span>
                         </h3>
@@ -560,7 +560,7 @@ export default function Notes() {
                                     <div className="p-4">
                                         <div className="mb-3 flex items-start justify-between">
                                             <div className="flex min-w-0 flex-1 items-center gap-2">
-                                                <h3 className="truncate font-semibold text-gray-900">{note.title}</h3>
+                                                <h3 className="truncate font-bold text-gray-900">{note.title}</h3>
                                             </div>
                                             <Share2 className="text-primary ml-2 h-4 w-4 flex-shrink-0" />
                                         </div>

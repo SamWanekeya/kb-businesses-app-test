@@ -1,604 +1,523 @@
+import { PaymentMethod } from '@/types/payment';
+import { usePage } from '@inertiajs/react';
+import { Loader2 } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { toast } from '@components/CustomToast';
-import { Badge } from '@components/UserInterface/Badge';
+import BankTransferForm from '@components/Payment/BankTransferForm';
+import PaystackPaymentForm from '@components/Payment/PaystackPaymentForm';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
-import { router, usePage } from '@inertiajs/react';
+import { formatCurrencySimple } from '@utils/Helpers/NumberFormatters';
+import { formatSentenceCase } from '@utils/Helpers/StringFormatters';
 import { route } from '@utils/Routes';
-import { Loader2, Tag } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
-import { BankTransferForm } from '@components/Payment/BankTransferForm';
-import { PaystackPaymentForm } from '@components/Payment/PaystackPaymentForm';
+interface PaymentSettings {
+    [key: string]: string | null | undefined;
+}
 
-interface PaymentMethod {
-    id: string;
+interface PlanDetails {
+    id: number;
     name: string;
-    icon: React.ReactNode;
-    enabled: boolean;
-    currency?: string;
-    currency_symbol?: string;
+    price: string | number;
+    duration: string;
+    paymentMethods?: PaymentSettings;
+}
+
+interface Coupon {
+    code: string;
+    type: 'percentage' | 'fixed';
+    value: number;
+}
+
+interface CouponValidationResponse {
+    valid: boolean;
+    message?: string;
+    coupon?: Coupon;
 }
 
 interface PaymentProcessorProps {
-    plan: {
-        id: number;
-        name: string;
-        price: string | number;
-        duration: string;
-        paymentMethods?: any;
-    };
+    plan: PlanDetails;
     billingCycle: 'monthly' | 'yearly';
     paymentMethods: PaymentMethod[];
-    currency_symbol?: string;
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_symbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
+interface CommonPaymentProps {
+    planId: number;
+    couponCode: string;
+    billingCycle: 'monthly' | 'yearly';
+    onSuccess: () => void;
+    onCancel: () => void;
+}
+
+/**
+ * Handles subscription payment selection, coupon validation, pricing, and
+ * rendering of the configured payment provider.
+ *
+ * Responsibilities:
+ * - Display the selected subscription and calculated price.
+ * - Validate and apply subscription coupons.
+ * - Allow the customer to select an enabled payment method.
+ * - Render the payment form associated with the selected provider.
+ * - Coordinate payment cancellation and completion with the parent modal.
+ */
+export default function PaymentProcessor({
+    plan,
+    billingCycle,
+    paymentMethods,
+    onSuccess,
+    onCancel,
+}: PaymentProcessorProps) {
     const { t: translate } = useTranslation();
     const { csrfToken } = usePage().props;
 
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
-    const [discountCode, setDiscountCode] = useState('');
-    const [appliedDiscount, setAppliedDiscount] = useState<any>(null);
-    const [discountLoading, setDiscountLoading] = useState(false);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+    const [couponCode, setCouponCode] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
+    const [couponLoading, setCouponLoading] = useState(false);
     const [showPaymentForm, setShowPaymentForm] = useState(false);
 
-    const [currentPrice, setCurrentPrice] = useState(Number(plan.price));
+    const originalPrice = Number(plan.price);
 
-    useEffect(() => {
-        // Use the plan price directly as it should already be correct for the billing cycle
-        setCurrentPrice(Number(plan.price));
-    }, [plan.price]);
-
-    const originalPrice = currentPrice;
-    const discountAmount = appliedDiscount
-        ? appliedDiscount.type === 'percentage'
-            ? (originalPrice * appliedDiscount.value) / 100
-            : appliedDiscount.value
+    const discountAmount = appliedCoupon
+        ? appliedCoupon.type === 'percentage'
+            ? (originalPrice * appliedCoupon.value) / 100
+            : appliedCoupon.value
         : 0;
+
     const finalPrice = Math.max(0, originalPrice - discountAmount);
 
-    const handleApplyDiscount = async () => {
-        if (!discountCode.trim()) {
-            toast.error(translate('Please enter a discount code'));
+    const enabledPaymentMethods = paymentMethods.filter(
+        (method) => method.enabled,
+    );
+
+    /**
+     * Validates and applies the entered coupon code.
+     */
+    const handleApplyCoupon = useCallback(async () => {
+        const normalizedCouponCode = couponCode.trim();
+
+        if (!normalizedCouponCode) {
+            toast.error(translate('Please enter a coupon code'));
             return;
         }
 
-        setDiscountLoading(true);
+        setCouponLoading(true);
+
+        const toastId = toast.loading(
+            translate('Validating provided coupon...'),
+        );
+
         try {
-            const response = await fetch(route('subscriptions.discounts.validate'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+            const response = await fetch(
+                route('subscriptions.coupons.validate'),
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        coupon_code: normalizedCouponCode,
+                        plan_id: plan.id,
+                        amount: originalPrice,
+                    }),
                 },
-                body: JSON.stringify({
-                    discount_code: discountCode,
-                    plan_id: plan.id,
-                    amount: originalPrice,
-                }),
-            });
+            );
 
-            const data = await response.json();
+            const data = (await response.json()) as CouponValidationResponse;
 
-            if (response.ok && data.valid) {
-                setAppliedDiscount(data.discount);
-                toast.success(translate('Discount applied successfully'));
-            } else {
-                toast.error(data.message || translate('Invalid discount code'));
-                setAppliedDiscount(null);
+            toast.dismiss(toastId);
+
+            if (response.ok && data.valid && data.coupon) {
+                setAppliedCoupon(data.coupon);
+                toast.success(translate('Coupon applied successfully'));
+                return;
             }
-        } catch (error: any) {
-            toast.error(translate('Failed to validate discount'));
-            setAppliedDiscount(null);
+
+            setAppliedCoupon(null);
+            toast.error(data.message || translate('Invalid coupon code'));
+        } catch {
+            toast.dismiss(toastId);
+            setAppliedCoupon(null);
+            toast.error(translate('Failed to validate coupon'));
         } finally {
-            setDiscountLoading(false);
+            setCouponLoading(false);
         }
-    };
+    }, [couponCode, csrfToken, originalPrice, plan.id, translate]);
 
-    const handleRemoveDiscount = () => {
-        setAppliedDiscount(null);
-        setDiscountCode('');
-    };
+    /**
+     * Removes the currently applied coupon.
+     */
+    const handleRemoveCoupon = useCallback(() => {
+        setAppliedCoupon(null);
+        setCouponCode('');
+    }, []);
 
-    const handlePayNow = () => {
-        if (finalPrice == 0) {
-            handleConfirmZeroPayment();
-            return;
-        }
+    /**
+     * Selects a payment method.
+     */
+    const handlePaymentMethodSelect = useCallback((methodId: string) => {
+        setSelectedPaymentMethod(methodId);
+    }, []);
+
+    /**
+     * Opens the selected payment provider.
+     */
+    const handlePayNow = useCallback(() => {
         if (!selectedPaymentMethod) {
             toast.error(translate('Please select a payment method'));
             return;
         }
-        setShowPaymentForm(true);
-    };
 
-    const handlePaymentCancel = () => {
+        setShowPaymentForm(true);
+    }, [selectedPaymentMethod, translate]);
+
+    /**
+     * Returns the customer to payment-method selection.
+     */
+    const handlePaymentCancel = useCallback(() => {
         setShowPaymentForm(false);
         setSelectedPaymentMethod('');
-    };
+    }, []);
 
-    const [processing, setProcessing] = useState(false);
+    /**
+     * Renders the payment form for the currently selected provider.
+     */
+    const renderPaymentForm = (): ReactNode => {
+        const paymentSettings = plan.paymentMethods ?? {};
 
-    const handleConfirmZeroPayment = () => {
-        setProcessing(true);
-
-        router.post(
-            route('subscriptions.zero.payment'),
-            {
-                plan_id: plan.id,
-                billing_cycle: billingCycle,
-                discount_code: discountCode,
-                amount: finalPrice,
-            },
-            {
-                onSuccess: () => {
-                    toast.success(translate('Payment request submitted successfully'));
-                    onSuccess();
-                },
-                onError: () => {
-                    toast.error(translate('Failed to submit payment request'));
-                },
-                onFinish: () => {
-                    setProcessing(false);
-                },
-            },
-        );
-    };
-
-    const enabledPaymentMethods = paymentMethods.filter((method) => method.enabled);
-
-    const renderPaymentForm = () => {
-        const commonProps = {
+        const commonProps: CommonPaymentProps = {
             planId: plan.id,
-            discountCode,
+            couponCode,
             billingCycle,
             onSuccess,
             onCancel: handlePaymentCancel,
         };
 
         switch (selectedPaymentMethod) {
-            // case 'stripe':
-            //     return <StripePaymentForm {...commonProps} amount={finalPrice} stripeKey={plan.paymentMethods?.stripe_key || ''} />;
-            //
-            // case 'paypal':
-            //     return (
-            //         <PayPalPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             paypalClientId={plan.paymentMethods?.paypal_client_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
             case 'bank':
-                return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={plan.paymentMethods?.bank_details || ''} />;
-            // case 'razorpay':
-            //     return (
-            //         <RazorpayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             razorpayKey={plan.paymentMethods?.razorpay_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'INR'}
-            //         />
-            //     );
-            // case 'mercadopago':
-            //     return (
-            //         <MercadoPagoPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             accessToken={plan.paymentMethods?.mercadopago_access_token || ''}
-            //             currency={plan.paymentMethods?.currency || 'BRL'}
-            //         />
-            //     );
+                return (
+                    <BankTransferForm
+                        {...commonProps}
+                        planPrice={finalPrice}
+                        bankDetails={paymentSettings.bank_detail || ''}
+                    />
+                );
+
             case 'paystack':
                 return (
                     <PaystackPaymentForm
                         {...commonProps}
                         planPrice={finalPrice}
-                        paystackKey={plan.paymentMethods?.paystack_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'NGN'}
+                        paystackKey={
+                            paymentSettings.paystack_public_key || ''
+                        }
+                        currency={paymentSettings.currency || 'USD'}
                     />
                 );
-            // case 'flutterwave':
-            //     return (
-            //         <FlutterwavePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             flutterwaveKey={plan.paymentMethods?.flutterwave_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'NGN'}
-            //         />
-            //     );
-            // case 'paytabs':
-            //     return (
-            //         <PayTabsPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             paytabsClientKey={''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'skrill':
-            //     return (
-            //         <SkrillPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             skrillMerchantId={plan.paymentMethods?.skrill_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'coingate':
-            //     return (
-            //         <CoinGatePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             coinGateApiToken={plan.paymentMethods?.coingate_api_token || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'payfast':
-            //     return (
-            //         <PayfastPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             payfastMerchantId={plan.paymentMethods?.payfast_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'ZAR'}
-            //         />
-            //     );
-            // case 'toyyibpay':
-            //     return (
-            //         <ToyyibPayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             toyyibpayCategoryCode={plan.paymentMethods?.toyyibpay_category_code || ''}
-            //             currency={plan.paymentMethods?.currency || 'MYR'}
-            //         />
-            //     );
-            // case 'paytr':
-            //     return (
-            //         <PayTRPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             paytrMerchantId={plan.paymentMethods?.paytr_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'TRY'}
-            //         />
-            //     );
-            // case 'mollie':
-            //     return (
-            //         <MolliePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             mollieApiKey={plan.paymentMethods?.mollie_api_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'EUR'}
-            //         />
-            //     );
-            // case 'cashfree':
-            //     return (
-            //         <CashfreePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             cashfreeAppId={plan.paymentMethods?.cashfree_public_key || ''}
-            //             mode={plan.paymentMethods?.cashfree_mode || 'sandbox'}
-            //             currency={plan.paymentMethods?.currency || 'INR'}
-            //         />
-            //     );
-            // case 'iyzipay':
-            //     return (
-            //         <IyzipayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             iyzipayPublicKey={plan.paymentMethods?.iyzipay_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'benefit':
-            //     return (
-            //         <BenefitPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             benefitPublicKey={plan.paymentMethods?.benefit_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'BHD'}
-            //         />
-            //     );
-            // case 'ozow':
-            //     return (
-            //         <OzowPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             ozowSiteKey={plan.paymentMethods?.ozow_site_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'ZAR'}
-            //         />
-            //     );
-            // case 'easebuzz':
-            //     return (
-            //         <EasebuzzPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             easebuzzMerchantKey={plan.paymentMethods?.easebuzz_merchant_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'INR'}
-            //         />
-            //     );
-            // case 'khalti':
-            //     return (
-            //         <KhaltiPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             khaltiPublicKey={plan.paymentMethods?.khalti_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'NPR'}
-            //         />
-            //     );
-            // case 'authorizenet':
-            //     return (
-            //         <AuthorizeNetPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             authorizenetMerchantId={plan.paymentMethods?.authorizenet_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'fedapay':
-            //     return (
-            //         <FedaPayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             fedapayPublicKey={plan.paymentMethods?.fedapay_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'XOF'}
-            //         />
-            //     );
-            // case 'payhere':
-            //     return (
-            //         <PayHerePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             payhereMerchantId={plan.paymentMethods?.payhere_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'LKR'}
-            //         />
-            //     );
-            // case 'cinetpay':
-            //     return (
-            //         <CinetPayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             cinetpaySiteId={plan.paymentMethods?.cinetpay_site_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'XOF'}
-            //         />
-            //     );
-            // case 'paiement':
-            //     return (
-            //         <PaiementPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             paiementMerchantId={plan.paymentMethods?.paiement_merchant_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'XOF'}
-            //         />
-            //     );
-            // case 'nepalste':
-            //     return (
-            //         <NepalstePaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             nepalstePublicKey={plan.paymentMethods?.nepalste_public_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'NPR'}
-            //         />
-            //     );
-            // case 'yookassa':
-            //     return (
-            //         <YooKassaPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             yookassaShopId={plan.paymentMethods?.yookassa_shop_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'RUB'}
-            //         />
-            //     );
-            // case 'aamarpay':
-            //     return (
-            //         <AamarpayPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             aamarpayStoreId={plan.paymentMethods?.aamarpay_store_id || ''}
-            //             currency={plan.paymentMethods?.currency || 'BDT'}
-            //         />
-            //     );
-            // case 'midtrans':
-            //     return (
-            //         <MidtransPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             midtransSecretKey={plan.paymentMethods?.midtrans_secret_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'IDR'}
-            //         />
-            //     );
-            // case 'tap':
-            //     return (
-            //         <TapPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             tapSecretKey={plan.paymentMethods?.tap_secret_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'USD'}
-            //         />
-            //     );
-            // case 'xendit':
-            //     return (
-            //         <XenditPaymentForm
-            //             {...commonProps}
-            //             planPrice={finalPrice}
-            //             xenditApiKey={plan.paymentMethods?.xendit_api_key || ''}
-            //             currency={plan.paymentMethods?.currency || 'PHP'}
-            //         />
-            //     );
+
             default:
                 return null;
         }
     };
 
     if (showPaymentForm) {
-        return (
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h3 className="font-medium">{translate('Complete Payment')}</h3>
-                    <Button variant="outline" size="sm" onClick={handlePaymentCancel}>
-                        {translate('Back')}
-                    </Button>
-                </div>
-                {renderPaymentForm()}
-            </div>
-        );
+        return <div className="space-y-4">{renderPaymentForm()}</div>;
     }
+
     return (
-        <div className="space-y-6">
-            {/* Plan Summary */}
-            <Card>
-                <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h3 className="font-medium">{plan.name}</h3>
-                            <p className="text-foreground/75 text-sm">
-                                {translate(billingCycle)} {translate('subscription')}
+        <div className="space-y-7">
+            {/* Selected plan */}
+            <section aria-labelledby="checkout-plan-heading">
+                <div className="mb-3">
+                    <h2
+                        id="checkout-plan-heading"
+                        className="text-sm font-semibold text-foreground"
+                    >
+                        {translate('Selected plan')}
+                    </h2>
+                </div>
+
+                <Card className="rounded-xl border-border bg-card shadow-none">
+                    <CardContent className="flex items-center justify-between gap-4 p-4 sm:p-5">
+                        <div className="min-w-0">
+                            <h3 className="truncate font-semibold text-foreground">
+                                {plan.name}
+                            </h3>
+
+                            <p className="mt-1 text-sm text-muted-foreground">
+                                {translate('Pay')}{' '}
+                                {translate(formatSentenceCase(billingCycle))}
                             </p>
                         </div>
-                        <div className="text-right">
-                            <div className="text-lg font-extrabold">
-                                {currency_symbol} {plan.price}
-                            </div>
-                            <div className="text-foreground/75 text-sm">/{translate(billingCycle)}</div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
 
-            {/* Payment Methods */}
-            <div className="space-y-3">
-                {finalPrice != 0 && <Label>{translate('Select Payment Method')}</Label>}
+                        <div className="shrink-0 text-right">
+                            <p className="text-xl font-semibold tracking-tight text-foreground tabular-nums">
+                                {formatCurrencySimple(
+                                    originalPrice,
+                                    'USD',
+                                    'en-US',
+                                )}
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </section>
+
+            {/* Payment methods */}
+            <section
+                aria-labelledby="payment-method-label"
+                className="space-y-3"
+            >
+                <div className="flex items-center justify-between gap-3">
+                    <Label
+                        id="payment-method-label"
+                        className="text-sm font-semibold text-foreground"
+                    >
+                        {translate('Payment method')}
+                    </Label>
+                </div>
+
                 {enabledPaymentMethods.length === 0 ? (
-                    <p className="text-foreground/75 text-sm">{translate('No payment methods available')}</p>
+                    <div className="rounded-lg border border-border bg-muted/30 px-4 py-3">
+                        <p className="text-sm text-muted-foreground">
+                            {translate('No payment methods available')}
+                        </p>
+                    </div>
                 ) : (
-                    finalPrice != 0 && (
-                        <div className="space-y-2">
-                            {enabledPaymentMethods.map((method, index) => (
-                                <Card
-                                    key={`${method.id}-${index}`}
-                                    className={`cursor-pointer transition-colors ${
-                                        selectedPaymentMethod === method.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
-                                    }`}
-                                    onClick={() => {
-                                        setSelectedPaymentMethod(method.id);
-                                    }}
-                                >
-                                    <CardContent className="p-3">
-                                        <div className="flex items-center gap-3">
-                                            <div className="text-primary">{method.icon}</div>
-                                            <span className="font-medium">{method.name}</span>
-                                            {selectedPaymentMethod === method.id && (
-                                                <Badge variant="secondary" className="ml-auto">
-                                                    {translate('Selected')}
-                                                </Badge>
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )
-                )}
-            </div>
+                    <div
+                        className="grid grid-cols-1 gap-2.5 sm:grid-cols-2"
+                        role="group"
+                        aria-labelledby="payment-method-label"
+                    >
+                        {enabledPaymentMethods.map((method) => {
+                            const isSelected =
+                                selectedPaymentMethod === method.id;
 
-            {/* Discount Code */}
-            <div className="space-y-3">
-                {plan.price != 0 && (
-                    <>
-                        <Label htmlFor="discount">
-                            {translate('Discount Code')} ({translate('Optional')})
-                        </Label>
-                        <div className="flex gap-2">
-                            <div className="relative flex-1">
-                                <Input
-                                    inputIdentifier="discount"
-                                    value={discountCode}
-                                    onChange={(e) => {
-                                        setDiscountCode(e.target.value);
-                                    }}
-                                    className="pr-10"
-                                    disabled={!!appliedDiscount}
-                                />
-                                <Tag className="text-foreground/75 absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
-                            </div>
-                            {!appliedDiscount ? (
-                                <Button
+                            return (
+                                <button
+                                    key={method.id}
                                     type="button"
-                                    variant="outline"
-                                    onClick={handleApplyDiscount}
-                                    disabled={!discountCode.trim() || discountLoading}
+                                    aria-pressed={isSelected}
+                                    onClick={() =>
+                                        handlePaymentMethodSelect(method.id)
+                                    }
+                                    className={[
+                                        'flex min-h-16 w-full items-center gap-3 rounded-xl border px-4 py-3 text-left',
+                                        'transition-colors duration-150',
+                                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                                        isSelected
+                                            ? 'border-primary bg-primary/5'
+                                            : 'border-border bg-card hover:border-foreground/20 hover:bg-muted/30',
+                                    ].join(' ')}
                                 >
-                                    {discountLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
-                                </Button>
+                                    <span
+                                        className={[
+                                            'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+                                            isSelected
+                                                ? 'bg-primary/10 text-primary'
+                                                : 'bg-muted text-muted-foreground',
+                                        ].join(' ')}
+                                        aria-hidden="true"
+                                    >
+                                        {method.icon}
+                                    </span>
+
+                                    <span
+                                        className={[
+                                            'min-w-0 flex-1 text-sm font-medium',
+                                            isSelected
+                                                ? 'text-foreground'
+                                                : 'text-foreground/90',
+                                        ].join(' ')}
+                                    >
+                                        {method.name}
+                                    </span>
+
+                                    <span
+                                        className={[
+                                            'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
+                                            isSelected
+                                                ? 'border-primary'
+                                                : 'border-muted-foreground/40',
+                                        ].join(' ')}
+                                        aria-hidden="true"
+                                    >
+                                        {isSelected && (
+                                            <span className="h-2 w-2 rounded-full bg-primary" />
+                                        )}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+            </section>
+
+            {/* Discount code */}
+            <section
+                aria-labelledby="discount-code-heading"
+                className="space-y-3"
+            >
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
+                    <div className="min-w-0 flex-1">
+                        <Input
+                            id="coupon"
+                            label={translate('Discount code')}
+                            value={couponCode}
+                            onChange={(event) =>
+                                setCouponCode(event.target.value)
+                            }
+                            disabled={Boolean(appliedCoupon)}
+                        />
+                    </div>
+
+                    {!appliedCoupon ? (
+                        <Button
+                            type="button"
+                            size="lg"
+                            variant="outline"
+                            onClick={handleApplyCoupon}
+                            disabled={!couponCode.trim() || couponLoading}
+                            className="h-14"
+                        >
+                            {couponLoading ? (
+                                <>
+                                    <Loader2
+                                        aria-hidden="true"
+                                        className="mr-2 h-4 w-4 animate-spin"
+                                    />
+                                    {translate('Apply')}
+                                </>
                             ) : (
-                                <Button type="button" variant="outline" onClick={handleRemoveDiscount}>
-                                    {translate('Remove')}
-                                </Button>
+                                translate('Apply')
                             )}
-                        </div>
-                    </>
-                )}
+                        </Button>
+                    ) : (
+                        <Button
+                            type="button"
+                            size="lg"
+                            variant="outline"
+                            onClick={handleRemoveCoupon}
+                            className="h-14"
+                        >
+                            {translate('Remove')}
+                        </Button>
+                    )}
+                </div>
 
-                {appliedDiscount && (
-                    <div className="rounded-lg border border-green-200 bg-green-50 p-3">
-                        <div className="flex items-center justify-between text-sm">
-                            <span className="font-medium text-green-700">
-                                {translate('Discount Applied')}: {appliedDiscount.code}
-                            </span>
-                            <span className="text-green-600">
-                                -{appliedDiscount.type === 'percentage' ? `${appliedDiscount.value}%` : `${currency_symbol}${appliedDiscount.value}`}
-                            </span>
+                {appliedCoupon && (
+                    <div
+                        className="flex items-center justify-between gap-3 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-3"
+                        role="status"
+                    >
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                                {translate('Coupon applied')}
+                            </p>
+
+                            <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                {appliedCoupon.code}
+                            </p>
                         </div>
+
+                        <span
+                            className="shrink-0 text-sm font-semibold tabular-nums text-emerald-700 dark:text-emerald-400">
+                            {appliedCoupon.type === 'percentage'
+                                ? `${appliedCoupon.value}%`
+                                : formatCurrencySimple(
+                                    appliedCoupon.value,
+                                    'USD',
+                                    'en-US',
+                                )}
+                        </span>
                     </div>
                 )}
-            </div>
+            </section>
 
-            {/* Price Summary */}
-            <Card>
-                <CardContent className="p-4">
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                            <span>{translate('Subtotal')}</span>
-                            <span>
-                                {currency_symbol}
-                                {originalPrice}
-                            </span>
-                        </div>
-                        {appliedDiscount && (
-                            <div className="flex justify-between text-sm text-green-600">
-                                <span>{translate('Discount')}</span>
-                                <span>
-                                    -{currency_symbol}
-                                    {discountAmount}
-                                </span>
-                            </div>
-                        )}
-                        <div className="border-t pt-2">
-                            <div className="flex justify-between font-medium">
-                                <span>{translate('Total')}</span>
-                                <span>
-                                    {currency_symbol}
-                                    {finalPrice.toFixed(2)}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            {/* Order summary */}
+            <section aria-labelledby="order-summary-heading">
+                <Card className="rounded-xl border-border bg-card shadow-none">
+                    <CardContent className="p-4 sm:p-5">
+                        <h2
+                            id="order-summary-heading"
+                            className="text-sm font-semibold text-foreground"
+                        >
+                            {translate('Order summary')}
+                        </h2>
 
-            {/* Actions */}
-            <div className="flex gap-3">
-                <Button variant="outline" onClick={onCancel} className="flex-1">
+                        <dl className="mt-5 space-y-3">
+                            <div className="flex items-center justify-between gap-4 text-sm">
+                                <dt className="text-muted-foreground">
+                                    {translate('Subtotal')}
+                                </dt>
+
+                                <dd className="font-medium tabular-nums text-foreground">
+                                    {formatCurrencySimple(
+                                        originalPrice,
+                                        'USD',
+                                        'en-US',
+                                    )}
+                                </dd>
+                            </div>
+
+                            {appliedCoupon && (
+                                <div className="flex items-center justify-between gap-4 text-sm">
+                                    <dt className="text-muted-foreground">
+                                        {translate('Discount')}
+                                    </dt>
+
+                                    <dd className="font-medium tabular-nums text-emerald-700 dark:text-emerald-400">
+                                        −
+                                        {formatCurrencySimple(
+                                            discountAmount,
+                                            'USD',
+                                            'en-US',
+                                        )}
+                                    </dd>
+                                </div>
+                            )}
+                        </dl>
+
+                        <div className="mt-5 border-t border-border pt-4">
+                            <div className="flex items-end justify-between gap-4">
+                                <div>
+                                    <p className="text-sm font-semibold text-foreground">
+                                        {translate('Total')}
+                                    </p>
+                                </div>
+
+                                <p className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
+                                    {formatCurrencySimple(
+                                        finalPrice,
+                                        'USD',
+                                        'en-US',
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </section>
+
+            {/* Checkout actions */}
+            <footer className="flex flex-col-reverse gap-3 sm:flex-row">
+                <Button type="button" size="lg" variant="outline" onClick={onCancel} className="w-full">
                     {translate('Cancel')}
                 </Button>
-                <Button onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0 || processing} className="flex-1">
-                    {translate('Pay')} {currency_symbol} {finalPrice}
+
+                <Button type="button" size="lg" onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0}
+                        className="w-full">
+                    {translate('Pay now')}
                 </Button>
-            </div>
+            </footer>
         </div>
     );
 }

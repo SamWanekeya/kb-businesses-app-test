@@ -437,7 +437,7 @@ export default function Leads() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value === 'active'
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
@@ -452,7 +452,7 @@ export default function Leads() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs ${
                         value
-                            ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                            ? 'bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset'
                             : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
                     }`}
                 >
@@ -717,7 +717,7 @@ export default function Leads() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Lead Status Yet')}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No Lead Status Yet')}</h3>
                                         <p className="text-foreground/75 text-sm leading-relaxed">
                                             {translate('Set up lead statuses to start organizing your work in a Kanban board.')}
                                         </p>
@@ -791,9 +791,9 @@ export default function Leads() {
                                                     className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
                                                     style={{ backgroundColor: status.color }}
                                                 ></span>
-                                                <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{status.name}</span>
+                                                <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{status.name}</span>
                                                 <span
-                                                    className="rounded-full px-2 py-0.5 text-xs font-semibold"
+                                                    className="rounded-full px-2 py-0.5 text-xs font-bold"
                                                     style={{
                                                         backgroundColor: status.color + '22',
                                                         color: status.color,
@@ -849,7 +849,7 @@ export default function Leads() {
                                                                     <UserInitials name={lead.name} />
                                                                     <div className="min-w-0 flex-1">
                                                                         <h4
-                                                                            className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
+                                                                            className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-bold text-gray-900 transition-colors dark:text-gray-100"
                                                                             onClick={() => {
                                                                                 handleAction('view', lead);
                                                                             }}
@@ -902,7 +902,7 @@ export default function Leads() {
                                                                                             onClick={() => {
                                                                                                 handleAction('convert-to-account', lead);
                                                                                             }}
-                                                                                            className="text-green-600"
+                                                                                            className="text-fuchsia-600"
                                                                                         >
                                                                                             <Building2 className="mr-2 h-4 w-4" />
                                                                                             {translate('To Account')}
@@ -949,7 +949,7 @@ export default function Leads() {
                                                                 {lead.value && (
                                                                     <div className="mb-2 flex items-center gap-1.5">
                                                                         <Banknote className="h-3 w-3 flex-shrink-0 text-gray-400" />
-                                                                        <span className="font-mono text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                                                        <span className="font-mono text-xs font-bold text-gray-700 dark:text-gray-300">
                                                                             {window.kbSettings.formatCurrency(parseFloat(lead.value)) ||
                                                                                 `$${parseFloat(lead.value).toFixed(2)}`}
                                                                         </span>
@@ -965,7 +965,7 @@ export default function Leads() {
                                                                             </span>
                                                                         )}
                                                                         {lead.is_converted && (
-                                                                            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs text-green-700 ring-1 ring-green-600/20 ring-inset">
+                                                                            <span className="inline-flex items-center rounded-md bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700 ring-1 ring-fuchsia-600/20 ring-inset">
                                                                                 {translate('Converted')}
                                                                             </span>
                                                                         )}
@@ -1035,7 +1035,7 @@ export default function Leads() {
                                                 <h3 className="text-lg font-extrabold text-gray-900 dark:text-white mb-2">{lead.name}</h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{lead.email || translate('No email')}</p>
                                                 <div className="flex items-center">
-                                                    <div className={`h-2 w-2 rounded-full mr-2 ${lead.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
+                                                    <div className={`h-2 w-2 rounded-full mr-2 ${lead.status === 'active' ? 'bg-fuchsia-500' : 'bg-gray-400'
                                                         }`}></div>
                                                     <span className="text-sm text-gray-700 dark:text-gray-300">
                                                         {lead.status === 'active' ? translate('Active') : translate('Inactive')}
@@ -1066,7 +1066,7 @@ export default function Leads() {
                                                 )}
                                                 {useHasPermission('convert-leads') && !lead.is_converted && (
                                                     <>
-                                                        <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-green-600">
+                                                        <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-fuchsia-600">
                                                             <Building2 className='mr-2 w-4 h-4' />
                                                             <span>{translate("Convert to Account")}</span>
                                                         </DropdownMenuItem>
@@ -1117,7 +1117,7 @@ export default function Leads() {
                                                 </span>
                                             )}
                                             {lead.is_converted && (
-                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset bg-green-50 text-green-700 ring-green-600/20">
+                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20">
                                                     {translate('Converted')}
                                                 </span>
                                             )}

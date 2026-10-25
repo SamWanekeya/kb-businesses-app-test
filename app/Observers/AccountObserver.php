@@ -148,7 +148,7 @@ class AccountObserver
         switch ($field) {
             case 'status':
                 $statusColors = [
-                    'active' => 'bg-green-50 text-green-700 ring-green-600/20',
+                    'active' => 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20',
                     'inactive' => 'bg-red-50 text-red-700 ring-red-600/20',
                 ];
                 $oldColor = $statusColors[$oldValue] ?? $statusColors['active'];

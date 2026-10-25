@@ -102,7 +102,7 @@ export function OzowPaymentForm({
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
-                        <div className="mt-1 text-sm text-green-600">
+                        <div className="mt-1 text-sm text-fuchsia-600">
                             {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
@@ -148,9 +148,7 @@ export function OzowPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-foreground/75 text-center text-xs">
-                    {translate("Powered by Ozow - South Africa's instant payment gateway")}
-                </div>
+                <div className="text-foreground/75 text-center text-xs">{translate("Powered by Ozow - South Africa's instant payment gateway")}</div>
             </CardContent>
         </Card>
     );

@@ -51,8 +51,8 @@ export default function CustomerReports() {
         {
             title: translate('New Contacts'),
             value: summary.new_contacts.toLocaleString(),
-            icon: <UserPlus className="h-6 w-6 text-green-600" />,
-            iconColor: 'bg-green-100',
+            icon: <UserPlus className="h-6 w-6 text-fuchsia-600" />,
+            iconColor: 'bg-fuchsia-100',
         },
         {
             title: translate('Active Contacts'),
@@ -88,7 +88,7 @@ export default function CustomerReports() {
                 <div className="col-span-full">
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{translate('Contact Growth')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Contact Growth')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -159,7 +159,7 @@ export default function CustomerReports() {
                             className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3"
                             style={{ minHeight: '72px' }}
                         >
-                            <CardTitle className="text-base font-semibold">{translate('Contacts by Industry')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Contacts by Industry')}</CardTitle>
                         </CardHeader>
                         <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
                             <ResponsiveContainer width="100%" height={300}>
@@ -208,7 +208,7 @@ export default function CustomerReports() {
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <div className="flex shrink-0 items-center justify-between border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
-                                <h3 className="text-base font-semibold">{translate('Recent Interactions')}</h3>
+                                <h3 className="text-base font-bold">{translate('Recent Interactions')}</h3>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest calls and meetings')}</p>
                             </div>
                         </div>
@@ -255,7 +255,7 @@ export default function CustomerReports() {
 
             <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                 <div className="border-b px-5 py-5">
-                    <h3 className="text-base font-semibold">{translate('Top Contacts')}</h3>
+                    <h3 className="text-base font-bold">{translate('Top Contacts')}</h3>
                     <p className="text-foreground/75 mt-0.5 text-xs">{translate('Contacts by order volume and spending')}</p>
                 </div>
                 <div className="p-0">
@@ -270,7 +270,7 @@ export default function CustomerReports() {
                                         <UserInitials name={contact.name} />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm leading-tight font-semibold">{contact.name}</p>
+                                        <p className="truncate text-sm leading-tight font-bold">{contact.name}</p>
                                         <p className="text-foreground/75 mt-0.5 truncate text-xs">{contact.email || translate('No Email')}</p>
                                     </div>
                                     <div className="flex shrink-0 flex-col items-end gap-1">

@@ -119,7 +119,7 @@ export default function MediaPicker({
     const getFileIcon = (mime: string) => {
         if (mime.includes('pdf')) return <FileText className="h-7 w-7 text-red-500" />;
         if (mime.includes('word') || mime.includes('document')) return <FileText className="h-7 w-7 text-blue-500" />;
-        if (mime.includes('spreadsheet') || mime.includes('excel') || mime === 'text/csv') return <FileText className="h-7 w-7 text-primary" />;
+        if (mime.includes('spreadsheet') || mime.includes('excel') || mime === 'text/csv') return <FileText className="text-primary h-7 w-7" />;
         return <File className="h-7 w-7 text-gray-500" />;
     };
 

@@ -90,7 +90,7 @@ export default function CampaignEdit() {
                 {/* Card 1 — Campaign Information */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{translate('Campaign Information')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Campaign Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
@@ -231,7 +231,7 @@ export default function CampaignEdit() {
                 {/* Card 2 — Budget & Performance */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{translate('Budget & Performance')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Budget & Performance')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">

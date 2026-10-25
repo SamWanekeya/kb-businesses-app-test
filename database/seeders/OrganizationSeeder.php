@@ -17,9 +17,6 @@ class OrganizationSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
-        // Get default plan
-        $defaultPlan = Plan::where('is_default', true)?->first();
         $plans = Plan::all();
 
         // Organization names
@@ -58,8 +55,9 @@ class OrganizationSeeder extends Seeder
                 'password' => Hash::make('Kakbima@DemoAccount2026'),
                 'type' => 'organization',
                 'lang' => $faker->randomElement(config('system-languages.supported_languages')),
-                'plan_id' => $plans->random()?->id,
+                'plan_id' => $plans->first()?->id,
                 'referral_code' => rand(100000, 999999),
+                'plan_expiry_date' => $faker->dateTimeBetween('+1 month', '+400 days')->format('Y-m-d'),
                 'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ]);
 

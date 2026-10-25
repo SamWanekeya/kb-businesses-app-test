@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
+
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { Switch } from '@components/UserInterface/Switch';
 import { AlertCircle } from 'lucide-react';
-import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentMethodCardProps {
@@ -14,17 +15,17 @@ interface PaymentMethodCardProps {
     helpText?: string;
 }
 
-export function PaymentMethodCard({ title, icon, enabled, onToggle, children, helpUrl, helpText }: PaymentMethodCardProps) {
+export default function PaymentMethodCard({ title, icon, enabled, onToggle, children, helpUrl, helpText }: PaymentMethodCardProps) {
     const { t: translate } = useTranslation();
 
     return (
         <div className="rounded-lg border">
-            <div className="flex flex-row items-center justify-between gap-3 border-b p-4 max-[350px]:flex-col max-[350px]:items-start">
+            <div className="flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-3">
                     {icon}
-                    <span className="font-medium break-all">{title}</span>
+                    <span className="font-medium">{title}</span>
                 </div>
-                <Switch checked={enabled} onCheckedChange={onToggle} className="max-[350px]:self-end" />
+                <Switch checked={enabled} onCheckedChange={onToggle} />
             </div>
             {enabled && (
                 <div className="space-y-4 p-4">
@@ -32,7 +33,7 @@ export function PaymentMethodCard({ title, icon, enabled, onToggle, children, he
                         <Alert>
                             <AlertCircle className="h-4 w-4" />
                             <AlertDescription>
-                                {helpText}{' '}
+                                {helpText}
                                 <a href={helpUrl} target="_blank" rel="noopener noreferrer" className="underline">
                                     {translate('Dashboard')}
                                 </a>

@@ -117,15 +117,15 @@ export function AamarpayPaymentForm({
                         {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
-                        <div className="mt-1 text-sm text-green-600">
+                        <div className="mt-1 text-sm text-fuchsia-600">
                             {translate('Discount Applied')}: {discountCode}
                         </div>
                     )}
                 </div>
 
-                <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                    <h4 className="mb-2 font-medium text-green-900">{translate('Supported Payment Methods')}</h4>
-                    <ul className="space-y-1 text-sm text-green-800">
+                <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-4">
+                    <h4 className="mb-2 font-medium text-fuchsia-900">{translate('Supported Payment Methods')}</h4>
+                    <ul className="space-y-1 text-sm text-fuchsia-800">
                         <li>• bKash</li>
                         <li>• Nagad</li>
                         <li>• Rocket</li>

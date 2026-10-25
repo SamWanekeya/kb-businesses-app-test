@@ -35,8 +35,8 @@ export default function ProductReports() {
         {
             title: translate('Active Products'),
             value: summary.active_products.toLocaleString(),
-            icon: <CheckCircle className="h-6 w-6 text-green-600" />,
-            iconColor: 'bg-green-100',
+            icon: <CheckCircle className="h-6 w-6 text-fuchsia-600" />,
+            iconColor: 'bg-fuchsia-100',
         },
         {
             title: translate('Total Revenue'),
@@ -71,7 +71,7 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6">
                 <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                        <CardTitle className="text-base font-semibold">{translate('Top Products by Revenue')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Top Products by Revenue')}</CardTitle>
                     </CardHeader>
                     <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={400}>
@@ -120,7 +120,7 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{translate('Low Stock Products')}</h3>
+                        <h3 className="text-base font-bold">{translate('Low Stock Products')}</h3>
 
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory between 1 and 10')}</p>
                     </div>
@@ -170,11 +170,9 @@ export default function ProductReports() {
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
+                                                <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
 
-                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">
-                                                    SKU: {product.sku || translate('N/A')}
-                                                </p>
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
                                             </div>
                                         </div>
 
@@ -194,7 +192,7 @@ export default function ProductReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{translate('Out of Stock Products')}</h3>
+                        <h3 className="text-base font-bold">{translate('Out of Stock Products')}</h3>
 
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory at 0')}</p>
                     </div>
@@ -245,11 +243,9 @@ export default function ProductReports() {
                                             </div>
 
                                             <div className="min-w-0 flex-1">
-                                                <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
+                                                <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
 
-                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">
-                                                    SKU: {product.sku || translate('N/A')}
-                                                </p>
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
                                             </div>
                                         </div>
 
@@ -269,7 +265,7 @@ export default function ProductReports() {
 
                 <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{translate('Top 5 Products by Quantity Sold')}</h3>
+                        <h3 className="text-base font-bold">{translate('Top 5 Products by Quantity Sold')}</h3>
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest moving inventory')}</p>
                     </div>
                     <div className="p-0">
@@ -317,7 +313,7 @@ export default function ProductReports() {
                                         </div>
 
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
+                                            <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">
                                                 {product.quantity} {translate('units sold')}
                                             </p>

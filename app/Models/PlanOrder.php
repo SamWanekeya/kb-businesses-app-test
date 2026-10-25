@@ -25,7 +25,7 @@ class PlanOrder extends Model
         'processed_at',
         'processed_by',
         'notes',
-        'receipt_path',
+        'receipt',
     ];
 
     protected $casts = [

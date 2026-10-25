@@ -277,7 +277,7 @@ export default function PublicInvoice({
                                     onClick={copyInvoiceLink}
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"
                                 >
-                                    {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
+                                    {copied ? <Check className="mr-2 h-4 w-4 text-fuchsia-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? translate('Copied!') : translate('Copy Link')}
                                 </button>
                             )}
@@ -297,7 +297,7 @@ export default function PublicInvoice({
                                     onClick={() => {
                                         setShowPaymentModal(true);
                                     }}
-                                    className="inline-flex transform cursor-pointer items-center rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                                    className="inline-flex transform cursor-pointer items-center rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                                     style={{
                                         background: `linear-gradient(135deg, ${currentThemeColor}, ${currentThemeColor}dd)`,
                                         ':hover': { filter: 'brightness(0.9)' },
@@ -338,7 +338,7 @@ export default function PublicInvoice({
                                     <span
                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                             invoice.status === 'paid'
-                                                ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
                                                 : invoice.status === 'partially_paid'
                                                   ? 'bg-orange-50 text-orange-700 ring-orange-600/20'
                                                   : invoice.status === 'sent'
@@ -478,14 +478,14 @@ export default function PublicInvoice({
                                         </h4>
                                         {invoice.account && (
                                             <div className="space-y-2">
-                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{invoice.account.name}</p>
+                                                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{invoice.account.name}</p>
                                                 {invoice.account.email && <p className="text-gray-600 dark:text-gray-300">{invoice.account.email}</p>}
                                                 {invoice.account.phone && <p className="text-gray-600 dark:text-gray-300">{invoice.account.phone}</p>}
                                             </div>
                                         )}
                                         {invoice.contact && !invoice.account && (
                                             <div className="space-y-2">
-                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{invoice.contact.name}</p>
+                                                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{invoice.contact.name}</p>
                                                 {invoice.contact.email && <p className="text-gray-600 dark:text-gray-300">{invoice.contact.email}</p>}
                                                 {invoice.contact.phone && <p className="text-gray-600 dark:text-gray-300">{invoice.contact.phone}</p>}
                                             </div>
@@ -512,13 +512,13 @@ export default function PublicInvoice({
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
                                                 <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Invoice Date')}:</span>
-                                                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                                <span className="font-bold text-gray-900 dark:text-gray-100">
                                                     {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
                                                 <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Due Date')}:</span>
-                                                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                                <span className="font-bold text-gray-900 dark:text-gray-100">
                                                     {window.kbSettings.formatDateTimeSimple(invoice.due_date)}
                                                 </span>
                                             </div>
@@ -528,7 +528,7 @@ export default function PublicInvoice({
                                                         <CreditCard className="mr-1 h-4 w-4" />
                                                         {translate('Payment Method')}:
                                                     </span>
-                                                    <span className="font-semibold text-gray-900 capitalize dark:text-gray-100">
+                                                    <span className="font-bold text-gray-900 capitalize dark:text-gray-100">
                                                         {invoice.payment_method}
                                                     </span>
                                                 </div>
@@ -579,9 +579,9 @@ export default function PublicInvoice({
 
                                                     return (
                                                         <tr key={index} className="border-b hover:bg-gray-50">
-                                                            <td className="px-6 py-4 text-base font-semibold text-gray-900">{product.name}</td>
+                                                            <td className="px-6 py-4 text-base font-bold text-gray-900">{product.name}</td>
                                                             <td className="px-4 py-4 text-right text-base font-medium">{product.pivot.quantity}</td>
-                                                            <td className="px-4 py-4 text-right text-base font-semibold">
+                                                            <td className="px-4 py-4 text-right text-base font-bold">
                                                                 {formatCurrency(product.pivot.unit_price)}
                                                             </td>
                                                             <td className="px-4 py-4 text-right">
@@ -589,7 +589,7 @@ export default function PublicInvoice({
                                                                 product.pivot.discount_type !== 'none' &&
                                                                 product.pivot.discount_value > 0 ? (
                                                                     <div className="text-base">
-                                                                        <div className="font-semibold text-gray-700">
+                                                                        <div className="font-bold text-gray-700">
                                                                             {product.pivot.discount_type === 'percentage'
                                                                                 ? `${Number(product.pivot.discount_value)}%`
                                                                                 : formatCurrency(Number(product.pivot.discount_value))}
@@ -608,7 +608,7 @@ export default function PublicInvoice({
                                                                         <span className="text-foreground/75 text-sm">
                                                                             {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
                                                                         </span>
-                                                                        <div className="text-sm font-semibold text-gray-900">
+                                                                        <div className="text-sm font-bold text-gray-900">
                                                                             {formatCurrency(finalTotal * (product.tax.rate / 100))}
                                                                         </div>
                                                                     </div>
@@ -622,12 +622,12 @@ export default function PublicInvoice({
                                                                         <div className="text-sm text-gray-400 line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </div>
-                                                                        <div className="font-semibold text-green-600">
+                                                                        <div className="font-bold text-fuchsia-600">
                                                                             {formatCurrency(finalTotal)}
                                                                         </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <span className="font-semibold text-green-600">{formatCurrency(lineTotal)}</span>
+                                                                    <span className="font-bold text-fuchsia-600">{formatCurrency(lineTotal)}</span>
                                                                 )}
                                                             </td>
                                                         </tr>
@@ -635,28 +635,28 @@ export default function PublicInvoice({
                                                 })}
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         {translate('Discount')}:
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         -{formatCurrency(totalDiscount)}
                                                     </td>
                                                 </tr>
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         {translate('Subtotal')}:
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         {formatCurrency(invoice.subtotal)}
                                                     </td>
                                                 </tr>
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         {translate('Tax')}:
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                    <td className="px-4 py-3 text-right text-base font-bold" style={{ color: template.primary }}>
                                                         {formatCurrency(invoice.tax_amount)}
                                                     </td>
                                                 </tr>
@@ -750,12 +750,12 @@ export default function PublicInvoice({
                                                         {window.kbSettings.formatDateTimeSimple(payment.processed_at || payment.created_at)}
                                                     </td>
                                                     <td className="px-4 py-4 capitalize">{payment.payment_method}</td>
-                                                    <td className="px-4 py-4 text-right font-semibold">{formatCurrency(payment.amount)}</td>
+                                                    <td className="px-4 py-4 text-right font-bold">{formatCurrency(payment.amount)}</td>
                                                     <td className="px-4 py-4 capitalize">
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
                                                                 payment.status === 'completed'
-                                                                    ? 'bg-green-50 text-green-800 ring-green-600/20'
+                                                                    ? 'bg-fuchsia-50 text-fuchsia-800 ring-fuchsia-600/20'
                                                                     : payment.status === 'pending'
                                                                       ? 'bg-yellow-50 text-yellow-800 ring-yellow-600/20'
                                                                       : 'bg-red-50 text-red-800 ring-red-600/20'

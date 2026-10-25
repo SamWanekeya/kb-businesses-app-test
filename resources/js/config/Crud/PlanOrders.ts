@@ -58,7 +58,7 @@ export const usePlanOrdersConfig: CrudConfig = {
                 render: (value) => {
                     const statusMap = {
                         pending: { label: translate('Pending'), className: 'bg-yellow-100 text-yellow-800' },
-                        approved: { label: translate('Approved'), className: 'bg-green-100 text-green-800' },
+                        approved: { label: translate('Approved'), className: 'bg-fuchsia-100 text-fuchsia-800' },
                         rejected: { label: translate('Rejected'), className: 'bg-red-100 text-red-800' },
                     };
                     const status = statusMap[value as keyof typeof statusMap] || statusMap.pending;
@@ -66,7 +66,7 @@ export const usePlanOrdersConfig: CrudConfig = {
                 },
             },
             {
-                key: 'receipt_path',
+                key: 'receipt',
                 label: translate('Receipt'),
             },
         ],

@@ -327,7 +327,7 @@ export default function MediaLibraryDemo() {
             );
         }
         if (mimeType === 'text/csv' || mimeType.includes('spreadsheet')) {
-            return <FileText className="h-12 w-12 text-primary" />;
+            return <FileText className="text-primary h-12 w-12" />;
         }
         return <File className="h-12 w-12 text-gray-500" />;
     };
@@ -439,16 +439,16 @@ export default function MediaLibraryDemo() {
                                     <div className="bg-primary/10 rounded-md p-1.5">
                                         <ImageIcon className="text-primary h-4 w-4" />
                                     </div>
-                                    <span className="text-sm font-semibold">
+                                    <span className="text-sm font-bold">
                                         {filteredMedia.length} {translate('Files')}
                                     </span>
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    <div className="rounded-md bg-green-500/10 p-1.5">
-                                        <HardDrive className="h-4 w-4 text-green-600" />
+                                    <div className="rounded-md bg-fuchsia-500/10 p-1.5">
+                                        <HardDrive className="h-4 w-4 text-fuchsia-600" />
                                     </div>
-                                    <span className="text-sm font-semibold">
+                                    <span className="text-sm font-bold">
                                         {formatFileSize(useMemo(() => filteredMedia.reduce((acc, item) => acc + item.size, 0), [filteredMedia]))}
                                     </span>
                                 </div>
@@ -457,7 +457,7 @@ export default function MediaLibraryDemo() {
                                     <div className="rounded-md bg-blue-500/10 p-1.5">
                                         <ImageIcon className="h-4 w-4 text-blue-600" />
                                     </div>
-                                    <span className="text-sm font-semibold">
+                                    <span className="text-sm font-bold">
                                         {filteredMedia.filter((item) => item.mime_type.startsWith('image/')).length} {translate('Images')}
                                     </span>
                                 </div>
@@ -479,7 +479,7 @@ export default function MediaLibraryDemo() {
                                 <div className="bg-muted mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full">
                                     <ImageIcon className="text-foreground/75 h-10 w-10" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-semibold">{translate('No media files found')}</h3>
+                                <h3 className="mb-2 text-lg font-bold">{translate('No media files found')}</h3>
                                 <p className="text-foreground/75 mb-6">
                                     {searchTerm
                                         ? translate('No results found for "{{term}}"', { term: searchTerm })
@@ -574,9 +574,9 @@ export default function MediaLibraryDemo() {
                                 {totalPages > 1 && (
                                     <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row">
                                         <div className="text-foreground/75 text-sm">
-                                            {translate('Showing')} <span className="font-semibold">{startIndex + 1}</span> {translate('to')}{' '}
-                                            <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
-                                            {translate('of')} <span className="font-semibold">{filteredMedia.length}</span> {translate('results')}
+                                            {translate('Showing')} <span className="font-bold">{startIndex + 1}</span> {translate('to')}{' '}
+                                            <span className="font-bold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
+                                            {translate('of')} <span className="font-bold">{filteredMedia.length}</span> {translate('results')}
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -806,7 +806,7 @@ export default function MediaLibraryDemo() {
                                         ) : (
                                             <div className="flex h-full w-full flex-col items-center justify-center">
                                                 <div className="mb-6 text-9xl">{getFileIcon(selectedMediaInfo.mime_type)}</div>
-                                                <div className="text-foreground/75 mb-3 text-3xl font-semibold">
+                                                <div className="text-foreground/75 mb-3 text-3xl font-bold">
                                                     {selectedMediaInfo.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                 </div>
                                                 <div className="text-foreground/75 mt-2 max-w-md px-4 text-center text-base break-all">
@@ -821,13 +821,11 @@ export default function MediaLibraryDemo() {
                                 <div className="space-y-4 lg:col-span-1">
                                     {/* File Information */}
                                     <div className="space-y-3">
-                                        <h3 className="text-foreground text-sm font-semibold">{translate('File Information')}</h3>
+                                        <h3 className="text-foreground text-sm font-bold">{translate('File Information')}</h3>
 
                                         <div className="space-y-2.5">
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                                    {translate('File Name')}
-                                                </span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Name')}</span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.file_name}
                                                 </p>
@@ -843,25 +841,19 @@ export default function MediaLibraryDemo() {
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                                    {translate('File Type')}
-                                                </span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Type')}</span>
                                                 <Badge variant="secondary" className="font-mono text-xs">
                                                     {selectedMediaInfo.mime_type}
                                                 </Badge>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                                    {translate('File Size')}
-                                                </span>
-                                                <p className="text-foreground text-sm font-semibold">{formatFileSize(selectedMediaInfo.size)}</p>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Size')}</span>
+                                                <p className="text-foreground text-sm font-bold">{formatFileSize(selectedMediaInfo.size)}</p>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                                    {translate('Uploaded')}
-                                                </span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('Uploaded')}</span>
                                                 <p className="text-foreground text-sm">
                                                     {window.kbSettings.formatDateTimeSimple(selectedMediaInfo.created_at)}
                                                 </p>
@@ -871,9 +863,7 @@ export default function MediaLibraryDemo() {
 
                                     {/* URL Section */}
                                     <div className="space-y-1.5">
-                                        <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                            {translate('File URL')}
-                                        </span>
+                                        <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File URL')}</span>
                                         <div className="bg-muted/50 border-border flex items-center gap-2 rounded-lg border p-2">
                                             <code className="text-foreground/75 flex-1 font-mono text-xs leading-tight break-all">
                                                 {selectedMediaInfo.url}
