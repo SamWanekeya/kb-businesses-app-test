@@ -120,8 +120,8 @@ export default function PublicSalesOrder({
         }
     }, [props.flash, t]);
 
-    const themeColors = { blue: '#A12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
-    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#A12582';
+    const themeColors = { blue: '#a12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
+    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#a12582';
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     const formatCurrency = (amount: number) => {

@@ -321,7 +321,7 @@ export default function CalendarIndex() {
                         <div className="mb-4 flex flex-wrap justify-end gap-4">
                             <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex items-center gap-1.5">
-                                    <div className="h-3 w-3 rounded" style={{ backgroundColor: '#A12582' }}></div>
+                                    <div className="h-3 w-3 rounded" style={{ backgroundColor: '#a12582' }}></div>
                                     <span className="text-foreground text-xs">{translate('Meetings')}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">

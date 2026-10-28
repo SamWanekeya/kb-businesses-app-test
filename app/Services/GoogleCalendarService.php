@@ -280,7 +280,7 @@ class GoogleCalendarService
                     'title' => $event->getSummary() ?: 'Untitled Event',
                     'start' => $start,
                     'end' => $end,
-                    'color' => $type === 'meeting' ? '#A12582' : ($type === 'call' ? '#10b77f' : '#f59e0b'),
+                    'color' => $type === 'meeting' ? '#a12582' : ($type === 'call' ? '#10b77f' : '#f59e0b'),
                     'meeting_id' => $type === 'meeting' ? ($privateProps['app_id'] ?? null) : null,
                     'call_id' => $type === 'call' ? ($privateProps['app_id'] ?? null) : null,
                     'extendedProps' => [

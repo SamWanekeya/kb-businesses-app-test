@@ -8,7 +8,31 @@ import { useBrand } from '@contexts/BrandContext';
 import { useLayout } from '@contexts/LayoutContext';
 import { useSidebar } from '@contexts/SidebarContext';
 import { Link, usePage } from '@inertiajs/react';
-import { Building2, CreditCard, CurrencyIcon, Gift, HandCoins, Image, LayoutGrid, Settings } from 'lucide-react';
+import {
+    Activity,
+    Briefcase,
+    Building2,
+    Calendar,
+    CalendarDays,
+    CreditCard,
+    CurrencyIcon,
+    FileText,
+    Folder,
+    Gift,
+    HandCoins,
+    Image,
+    LayoutGrid,
+    Mail,
+    Megaphone,
+    NotebookPen,
+    Package,
+    Phone,
+    Settings,
+    ShoppingBag,
+    TrendingUp,
+    Truck,
+    Users
+} from 'lucide-react';
 
 import NavMain from '@components/NavMain';
 import { resolveImageUrl } from '@utils/Helpers/Url';
@@ -52,110 +76,70 @@ import { useTranslation } from 'react-i18next';
  */
 export default function AppSidebar() {
     const { t: translate } = useTranslation();
-    const { auth, organizationSlug } = usePage().props;
+    const { auth } = usePage().props;
 
     const userRole = auth?.user?.type || auth?.user?.role;
 
-    // Permissions
+// Permission hooks: keep these at the top level of the component/custom hook.
     const canManageDashboard = useHasPermission('manage-dashboard');
-    const canManageStaffs = useHasPermission('manage-staffs');
-    const canManageAwards = useHasPermission('manage-awards');
-    const canManagePromotions = useHasPermission('manage-promotions');
-    const canManageStaffGoals = useHasPermission('manage-staff-goals');
-    const canManageStaffReviews = useHasPermission('manage-staff-reviews');
-    const canManageResignations = useHasPermission('manage-resignations');
-    const canManageTerminations = useHasPermission('manage-terminations');
-    const canManageWarnings = useHasPermission('manage-warnings');
-    const canManageStaffTransfers = useHasPermission('manage-staff-transfers');
-    const canManageTrips = useHasPermission('manage-trips');
-    const canManageComplaints = useHasPermission('manage-complaints');
-    const canManageOrganizationalChart = useHasPermission('manage-organizational-chart');
-    const canManageBranches = useHasPermission('manage-branches');
-    const canManageDepartments = useHasPermission('manage-departments');
-    const canManageDesignations = useHasPermission('manage-designations');
-    const canManageDocumentTypes = useHasPermission('manage-document-types');
-    const canManageAwardTypes = useHasPermission('manage-award-types');
-    const canManageContractTypes = useHasPermission('manage-contract-types');
-    const canManageAnnouncements = useHasPermission('manage-announcements');
-    const canManageOnboardingChecklists = useHasPermission('manage-onboarding-checklists');
-    const canManageChecklistTasks = useHasPermission('manage-checklist-tasks');
-    const canManagePerformanceIndicatorCategories = useHasPermission('manage-performance-indicator-categories');
-    const canManagePerformanceIndicators = useHasPermission('manage-performance-indicators');
-    const canManageGoalTypes = useHasPermission('manage-goal-types');
-    const canManageReviewCycles = useHasPermission('manage-review-cycles');
-    const canManageLeaveTypes = useHasPermission('manage-leave-types');
-    const canManageLeavePolicies = useHasPermission('manage-leave-policies');
-    const canManageLeaveApplications = useHasPermission('manage-leave-applications');
-    const canManageLeaveBalances = useHasPermission('manage-leave-balances');
-    const canManageAttendanceRecords = useHasPermission('manage-attendance-records');
-    const canManageAttendanceRegularizations = useHasPermission('manage-attendance-regularizations');
-    const canManageBiometricAttendance = useHasPermission('manage-biometric-attendance');
-    const canManageShifts = useHasPermission('manage-shifts');
-    const canManageAttendancePolicies = useHasPermission('manage-attendance-policies');
-    const canViewCalendar = useHasPermission('view-calendar');
-    const canManageCalendar = useHasPermission('manage-calendar');
-    const canManageHolidays = useHasPermission('manage-holidays');
-    const canManageTrainingPrograms = useHasPermission('manage-training-programs');
-    const canManageTrainingSessions = useHasPermission('manage-training-sessions');
-    const canManageTrainingAssessments = useHasPermission('manage-training-assessments');
-    const canManageStaffTrainings = useHasPermission('manage-staff-trainings');
-    const canManageTrainingTypes = useHasPermission('manage-training-types');
-    const canManageAssets = useHasPermission('manage-assets');
-    const canManageAssetTypes = useHasPermission('manage-asset-types');
-    const canManageJobCategories = useHasPermission('manage-job-categories');
-    const canManageJobTypes = useHasPermission('manage-job-types');
-    const canManageJobLocations = useHasPermission('manage-job-locations');
-    const canManageJobRequisitions = useHasPermission('manage-job-requisitions');
-    const canManageCustomQuestions = useHasPermission('manage-custom-questions');
-    const canManageJobPostings = useHasPermission('manage-job-postings');
-    const canManageCandidates = useHasPermission('manage-candidates');
-    const canManageInterviewRounds = useHasPermission('manage-interview-rounds');
-    const canManageInterviews = useHasPermission('manage-interviews');
-    const canManageInterviewFeedback = useHasPermission('manage-interview-feedback');
-    const canManageCandidateAssessments = useHasPermission('manage-candidate-assessments');
-    const canManageOffers = useHasPermission('manage-offers');
-    const canManageCandidateOnboarding = useHasPermission('manage-candidate-onboarding');
-    const canManageOfferTemplates = useHasPermission('manage-offer-templates');
-    const canManageCandidateSources = useHasPermission('manage-candidate-sources');
-    const canManageInterviewTypes = useHasPermission('manage-interview-types');
-    const canManageCareerPage = useHasPermission('manage-career-page');
-    const canManageStaffContracts = useHasPermission('manage-staff-contracts');
-    const canManageContractRenewals = useHasPermission('manage-contract-renewals');
-    const canManageContractTemplates = useHasPermission('manage-contract-templates');
-    const canManageDocumentCategories = useHasPermission('manage-document-categories');
-    const canManageDocumentAcknowledgments = useHasPermission('manage-document-acknowledgments');
-    const canManageDocumentTemplates = useHasPermission('manage-document-templates');
-    const canManageHumanResourcePolicies = useHasPermission('manage-human-resource-policies');
-    const canManageMeetingTypes = useHasPermission('manage-meeting-types');
-    const canManageMeetingRooms = useHasPermission('manage-meeting-rooms');
-    const canManageMeetings = useHasPermission('manage-meetings');
-    const canManageMeetingMinutes = useHasPermission('manage-meeting-minutes');
-    const canManageMeetingAttendees = useHasPermission('manage-meeting-attendees');
-    const canManageMeetingActionItems = useHasPermission('manage-meeting-action-items');
-    const canManageTimeEntries = useHasPermission('manage-time-entries');
-    const canManagePayrollRuns = useHasPermission('manage-payroll-runs');
-    const canManagePayslips = useHasPermission('manage-payslips');
-    const canManageSalaryComponents = useHasPermission('manage-salary-components');
-    const canManageStaffSalaries = useHasPermission('manage-staff-salaries');
     const canManageUsers = useHasPermission('manage-users');
     const canManageRoles = useHasPermission('manage-roles');
     const canManageMedia = useHasPermission('manage-media');
     const canManagePlans = useHasPermission('manage-plans');
-    const canViewPlanRequests = useHasPermission('view-plan-requests');
-    const canViewPlanOrders = useHasPermission('view-plan-orders');
-    const canManageReferral = useHasPermission('manage-referral-program');
     const canManageSettings = useHasPermission('manage-settings');
+    const canManageMeetings = useHasPermission('manage-meetings');
+    const canManageCalls = useHasPermission('manage-calls');
+    const canManageProjectTasks = useHasPermission('manage-project-tasks');
+    const canManageReports = useHasPermission('manage-reports');
+    const canManageLeads = useHasPermission('manage-leads');
+    const canManageLeadSources = useHasPermission('manage-lead-sources');
+    const canManageLeadStatuses = useHasPermission('manage-lead-statuses');
+    const canManageContacts = useHasPermission('manage-contacts');
+    const canManageAccounts = useHasPermission('manage-accounts');
+    const canManageAccountTypes = useHasPermission('manage-account-types');
+    const canManageAccountIndustries = useHasPermission('manage-account-industries');
+    const canManageCampaigns = useHasPermission('manage-campaigns');
+    const canManageTargetLists = useHasPermission('manage-target-lists');
+    const canManageCampaignTypes = useHasPermission('manage-campaign-types');
+    const canManageCases = useHasPermission('manage-cases');
+    const canManageOpportunities = useHasPermission('manage-opportunities');
+    const canManageOpportunitySources = useHasPermission('manage-opportunity-sources');
+    const canManageOpportunityStages = useHasPermission('manage-opportunity-stages');
+    const canManageQuotes = useHasPermission('manage-quotes');
+    const canManageSalesOrders = useHasPermission('manage-sales-orders');
+    const canManageInvoices = useHasPermission('manage-invoices');
+    const canManageReceiptOrders = useHasPermission('manage-receipt-orders');
+    const canManageProducts = useHasPermission('manage-products');
+    const canManageTaxes = useHasPermission('manage-taxes');
+    const canManageBrands = useHasPermission('manage-brands');
+    const canManageCategories = useHasPermission('manage-categories');
+    const canManagePurchaseOrders = useHasPermission('manage-purchase-orders');
+    const canManageDeliveryOrders = useHasPermission('manage-delivery-orders');
+    const canManageReturnOrders = useHasPermission('manage-return-orders');
+    const canManageShippingProviderTypes = useHasPermission('manage-shipping-provider-types');
+    const canManageStream = useHasPermission('manage-stream');
+    const canManageNotes = useHasPermission('manage-notes');
+    const canManageAnnouncements = useHasPermission('manage-announcements');
+    const canManageAnnouncementCategories = useHasPermission('manage-announcement-categories');
+    const canManageProjects = useHasPermission('manage-projects');
+    const canManageTaskStatuses = useHasPermission('manage-task-statuses');
+    const canManageDocuments = useHasPermission('manage-documents');
+    const canManageDocumentTypes = useHasPermission('manage-document-types');
+    const canManagePlanRequests = useHasPermission('manage-plan-requests');
+    const canManagePlanOrders = useHasPermission('manage-plan-orders');
+    const canManageReferral = useHasPermission('manage-referral');
+    const canManageNotificationTemplates = useHasPermission('manage-notification-templates');
 
     const getSuperAdminNavItems = (): NavItem[] => [
         {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
-            icon: LayoutGrid,
+            icon: LayoutGrid
         },
         {
             title: translate('Organizations'),
             href: route('organizations.index'),
-            icon: Building2,
+            icon: Building2
         },
         {
             title: translate('Subscriptions'),
@@ -163,32 +147,32 @@ export default function AppSidebar() {
             children: [
                 {
                     title: translate('Plans'),
-                    href: route('subscriptions.plans.index'),
+                    href: route('subscriptions.plans.index')
                 },
                 {
                     title: translate('Requests'),
-                    href: route('subscriptions.plan-requests.index'),
+                    href: route('subscriptions.plan-requests.index')
                 },
                 {
                     title: translate('Orders'),
-                    href: route('subscriptions.plan-orders.index'),
-                },
-            ],
+                    href: route('subscriptions.plan-orders.index')
+                }
+            ]
         },
         {
             title: translate('Referral program'),
             href: route('referral-program.index'),
-            icon: Gift,
+            icon: Gift
         },
         {
             title: translate('Discounts'),
             href: route('discounts.index'),
-            icon: HandCoins,
+            icon: HandCoins
         },
         {
             title: translate('Currencies'),
             href: route('currencies.index'),
-            icon: CurrencyIcon,
+            icon: CurrencyIcon
         },
         // {
         //     title: translate('Email templates'),
@@ -198,778 +182,839 @@ export default function AppSidebar() {
         {
             title: translate('Media'),
             href: route('media-library.media.index'),
-            icon: Image,
+            icon: Image
         },
         {
             title: translate('Settings'),
             href: route('settings.index'),
-            icon: Settings,
-        },
+            icon: Settings
+        }
     ];
+
 
     const getOrganizationNavItems = (): NavItem[] => {
         const items: NavItem[] = [];
 
-        // 1. Dashboard
+// 1. Overview
         if (canManageDashboard) {
             items.push({
                 title: translate('Dashboard'),
                 href: route('dashboard.index'),
                 icon: LayoutGrid,
+                group: translate('Overview')
             });
         }
 
-        // // 2. Staff Management
-        // const staffManagementChildren: NavItem[] = [];
-        //
-        // // 2.1 Staff
-        // const staffChildren: NavItem[] = [];
-        // if (canManageStaffs) {
-        //     staffChildren.push({
-        //         title: translate('All staff'),
-        //         href: route('staff-management.staff.all-staff.index'),
-        //     });
-        // }
-        // if (canManageAwards) {
-        //     staffChildren.push({ title: translate('Awards'), href: route('staff-management.staff.awards.index') });
-        // }
-        // if (canManagePromotions) {
-        //     staffChildren.push({
-        //         title: translate('Promotions'),
-        //         href: route('staff-management.staff.promotions.index'),
-        //     });
-        // }
-        // if (canManageStaffGoals) {
-        //     staffChildren.push({
-        //         title: translate('Goals'),
-        //         href: route('staff-management.staff.goals.index'),
-        //     });
-        // }
-        // if (canManageStaffReviews) {
-        //     staffChildren.push({
-        //         title: translate('Reviews'),
-        //         href: route('staff-management.staff.reviews.index'),
-        //     });
-        // }
-        // if (canManageResignations) {
-        //     staffChildren.push({
-        //         title: translate('Resignations'),
-        //         href: route('staff-management.staff.resignations.index'),
-        //     });
-        // }
-        // if (canManageTerminations) {
-        //     staffChildren.push({
-        //         title: translate('Terminations'),
-        //         href: route('staff-management.staff.terminations.index'),
-        //     });
-        // }
-        // if (canManageWarnings) {
-        //     staffChildren.push({ title: translate('Warnings'), href: route('staff-management.staff.warnings.index') });
-        // }
-        // if (canManageStaffTransfers) {
-        //     staffChildren.push({
-        //         title: translate('Transfers'),
-        //         href: route('staff-management.staff.transfers.index'),
-        //     });
-        // }
-        // if (canManageTrips) {
-        //     staffChildren.push({ title: translate('Trips'), href: route('staff-management.staff.trips.index') });
-        // }
-        // if (canManageComplaints) {
-        //     staffChildren.push({
-        //         title: translate('Complaints'),
-        //         href: route('staff-management.staff.complaints.index'),
-        //     });
-        // }
-        // if (staffChildren.length > 0) {
-        //     staffManagementChildren.push({
-        //         title: translate('Staff'),
-        //         children: staffChildren,
-        //     });
-        // }
-        //
-        // // 2.2 Staff Operations
-        // const staffOpsChildren: NavItem[] = [];
-        // if (canManageOrganizationalChart) {
-        //     staffOpsChildren.push({
-        //         title: translate('Organizational chart'),
-        //         href: route('staff-management.staff-operations.organizational-chart.index'),
-        //     });
-        // }
-        // if (canManageBranches) {
-        //     staffOpsChildren.push({
-        //         title: translate('Branches'),
-        //         href: route('staff-management.staff-operations.branches.index'),
-        //     });
-        // }
-        // if (canManageDepartments) {
-        //     staffOpsChildren.push({
-        //         title: translate('Departments'),
-        //         href: route('staff-management.staff-operations.departments.index'),
-        //     });
-        // }
-        // if (canManageDesignations) {
-        //     staffOpsChildren.push({
-        //         title: translate('Designations'),
-        //         href: route('staff-management.staff-operations.designations.index'),
-        //     });
-        // }
-        // if (canManageDocumentTypes) {
-        //     staffOpsChildren.push({
-        //         title: translate('Document types'),
-        //         href: route('staff-management.staff-operations.document-types.index'),
-        //     });
-        // }
-        // if (canManageAwardTypes) {
-        //     staffOpsChildren.push({
-        //         title: translate('Award types'),
-        //         href: route('staff-management.staff-operations.award-types.index'),
-        //     });
-        // }
-        // if (canManageContractTypes) {
-        //     staffOpsChildren.push({
-        //         title: translate('Contract types'),
-        //         href: route('staff-management.staff-operations.contract-types.index'),
-        //     });
-        // }
-        // if (canManageAnnouncements) {
-        //     staffOpsChildren.push({
-        //         title: translate('Announcements'),
-        //         href: route('staff-management.staff-operations.announcements.index'),
-        //     });
-        // }
-        // if (canManageOnboardingChecklists) {
-        //     staffOpsChildren.push({
-        //         title: translate('Onboarding checklists'),
-        //         href: route('staff-management.staff-operations.onboarding-checklists.index'),
-        //     });
-        // }
-        // if (canManageChecklistTasks) {
-        //     staffOpsChildren.push({
-        //         title: translate('Onboarding tasks'),
-        //         href: route('staff-management.staff-operations.onboarding-tasks.index'),
-        //     });
-        // }
-        //
-        // if (staffOpsChildren.length > 0) {
-        //     staffManagementChildren.push({
-        //         title: translate('Staff operations'),
-        //         children: staffOpsChildren,
-        //     });
-        // }
-        //
-        // // 2.3 Performance Setup
-        // const perfSetupChildren: NavItem[] = [];
-        // if (canManagePerformanceIndicatorCategories) {
-        //     perfSetupChildren.push({
-        //         title: translate('Indicator categories'),
-        //         href: route('staff-management.performance-setup.indicator-categories.index'),
-        //     });
-        // }
-        // if (canManagePerformanceIndicators) {
-        //     perfSetupChildren.push({
-        //         title: translate('Indicators'),
-        //         href: route('staff-management.performance-setup.indicators.index'),
-        //     });
-        // }
-        // if (canManageGoalTypes) {
-        //     perfSetupChildren.push({
-        //         title: translate('Goal types'),
-        //         href: route('staff-management.performance-setup.goal-types.index'),
-        //     });
-        // }
-        // if (canManageReviewCycles) {
-        //     perfSetupChildren.push({
-        //         title: translate('Review cycles'),
-        //         href: route('staff-management.performance-setup.review-cycles.index'),
-        //     });
-        // }
-        // if (perfSetupChildren.length > 0) {
-        //     staffManagementChildren.push({
-        //         title: translate('Performance setup'),
-        //         children: perfSetupChildren,
-        //     });
-        // }
-        //
-        // if (staffManagementChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Staff management'),
-        //         icon: IdCardLanyard,
-        //         children: staffManagementChildren,
-        //     });
-        // }
-        //
-        // // 3. Leave & Attendance
-        // const leaveAttendanceChildren: NavItem[] = [];
-        //
-        // // 3.1 Leaves
-        // const leavesChildren: NavItem[] = [];
-        // if (canManageLeaveTypes) {
-        //     leavesChildren.push({
-        //         title: translate('Types'),
-        //         href: route('leave-attendance.leaves.leave-types.index'),
-        //     });
-        // }
-        // if (canManageLeavePolicies) {
-        //     leavesChildren.push({
-        //         title: translate('Policies'),
-        //         href: route('leave-attendance.leaves.leave-policies.index'),
-        //     });
-        // }
-        // if (canManageLeaveApplications) {
-        //     leavesChildren.push({
-        //         title: translate('Applications'),
-        //         href: route('leave-attendance.leaves.leave-applications.index'),
-        //     });
-        // }
-        // if (canManageLeaveBalances) {
-        //     leavesChildren.push({
-        //         title: translate('Balances'),
-        //         href: route('leave-attendance.leaves.leave-balances.index'),
-        //     });
-        // }
-        // if (leavesChildren.length > 0) {
-        //     leaveAttendanceChildren.push({
-        //         title: translate('Leaves'),
-        //         children: leavesChildren,
-        //     });
-        // }
-        //
-        // // 3.2 Attendance
-        // const attendanceChildren: NavItem[] = [];
-        // if (canManageAttendanceRecords) {
-        //     attendanceChildren.push({
-        //         title: translate('Records'),
-        //         href: route('leave-attendance.attendance.attendance-records.index'),
-        //     });
-        // }
-        // if (canManageAttendanceRegularizations) {
-        //     attendanceChildren.push({
-        //         title: translate('Regularization'),
-        //         href: route('leave-attendance.attendance.attendance-regularizations.index'),
-        //     });
-        // }
-        // if (canManageBiometricAttendance) {
-        //     attendanceChildren.push({
-        //         title: translate('Biometric'),
-        //         href: route('leave-attendance.attendance.biometric-attendance.index'),
-        //     });
-        // }
-        // if (canManageShifts) {
-        //     attendanceChildren.push({
-        //         title: translate('Shifts'),
-        //         href: route('leave-attendance.attendance.shifts.index'),
-        //     });
-        // }
-        // if (canManageAttendancePolicies) {
-        //     attendanceChildren.push({
-        //         title: translate('Policies'),
-        //         href: route('leave-attendance.attendance.attendance-policies.index'),
-        //     });
-        // }
-        // if (attendanceChildren.length > 0) {
-        //     leaveAttendanceChildren.push({
-        //         title: translate('Attendance'),
-        //         children: attendanceChildren,
-        //     });
-        // }
-        //
-        // // 3.3 Calendar
-        // if (canViewCalendar || canManageCalendar) {
-        //     leaveAttendanceChildren.push({
-        //         title: translate('Calendar'),
-        //         href: route('leave-attendance.calendar.index'),
-        //     });
-        // }
-        //
-        // // 3.4 Holidays
-        // if (canManageHolidays) {
-        //     leaveAttendanceChildren.push({
-        //         title: translate('Holidays'),
-        //         href: route('leave-attendance.holidays.index'),
-        //     });
-        // }
-        //
-        // if (leaveAttendanceChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Leave & attendance'),
-        //         icon: CalendarDays,
-        //         children: leaveAttendanceChildren,
-        //     });
-        // }
-        //
-        // // 4. Training & Development
-        // const trainingChildren: NavItem[] = [];
-        //
-        // // 4.1 Trainings
-        // const trainingsChildren: NavItem[] = [];
-        // if (canManageTrainingPrograms) {
-        //     trainingsChildren.push({
-        //         title: translate('Programs'),
-        //         href: route('training-development.trainings.training-programs.index'),
-        //     });
-        // }
-        // if (canManageTrainingSessions) {
-        //     trainingsChildren.push({
-        //         title: translate('Sessions'),
-        //         href: route('training-development.trainings.training-sessions.index'),
-        //     });
-        // }
-        // if (canManageTrainingAssessments) {
-        //     trainingsChildren.push({
-        //         title: translate('Assessments'),
-        //         href: route('training-development.trainings.assessments.index'),
-        //     });
-        // }
-        // if (canManageStaffTrainings) {
-        //     trainingsChildren.push({
-        //         title: translate('Staff trainings'),
-        //         href: route('training-development.trainings.staff-trainings.index'),
-        //     });
-        // }
-        // if (trainingsChildren.length > 0) {
-        //     trainingChildren.push({
-        //         title: translate('Trainings'),
-        //         children: trainingsChildren,
-        //     });
-        // }
-        //
-        // // 4.2 Training Setup
-        // const trainingSetupChildren: NavItem[] = [];
-        // if (canManageTrainingTypes) {
-        //     trainingSetupChildren.push({
-        //         title: translate('Training types'),
-        //         href: route('training-development.training-setup.training-types.index'),
-        //     });
-        // }
-        // if (trainingSetupChildren.length > 0) {
-        //     trainingChildren.push({
-        //         title: translate('Training setup'),
-        //         children: trainingSetupChildren,
-        //     });
-        // }
-        //
-        // // Add Training & Development section if there are children
-        // if (trainingChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Training & development'),
-        //         icon: GraduationCap,
-        //         children: trainingChildren,
-        //     });
-        // }
-        //
-        // // 5. Assets
-        // const assetChildren: NavItem[] = [];
-        // if (canManageAssets) {
-        //     assetChildren.push({ title: translate('All assets'), href: route('asset-management.all-assets.index') });
-        //     assetChildren.push({ title: translate('Dashboard'), href: route('asset-management.all-assets.dashboard') });
-        //     assetChildren.push({
-        //         title: translate('Depreciation reports'),
-        //         href: route('asset-management.all-assets.depreciation-report'),
-        //     });
-        // }
-        // if (canManageAssetTypes) {
-        //     assetChildren.push({ title: translate('Asset types'), href: route('asset-management.asset-types.index') });
-        // }
-        // if (assetChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Assets'),
-        //         icon: Package,
-        //         children: assetChildren,
-        //     });
-        // }
-        //
-        // // 6. Recruitment
-        // const recruitmentChildren: NavItem[] = [];
-        //
-        // // 6.1 Job Structure
-        // const jobStructureChildren: NavItem[] = [];
-        // if (canManageJobCategories) {
-        //     jobStructureChildren.push({
-        //         title: translate('Job categories'),
-        //         href: route('recruitment.job-structure.job-categories.index'),
-        //     });
-        // }
-        // if (canManageJobTypes) {
-        //     jobStructureChildren.push({
-        //         title: translate('Job types'),
-        //         href: route('recruitment.job-structure.job-types.index'),
-        //     });
-        // }
-        // if (canManageJobLocations) {
-        //     jobStructureChildren.push({
-        //         title: translate('Job locations'),
-        //         href: route('recruitment.job-structure.job-locations.index'),
-        //     });
-        // }
-        // if (jobStructureChildren.length > 0) {
-        //     recruitmentChildren.push({
-        //         title: translate('Job structure'),
-        //         children: jobStructureChildren,
-        //     });
-        // }
-        //
-        // // 6.2 Recruitment Workflow
-        // const recruitmentWorkflowChildren: NavItem[] = [];
-        // if (canManageJobRequisitions) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Job requisitions'),
-        //         href: route('recruitment.recruitment-workflow.job-requisitions.index'),
-        //     });
-        // }
-        // if (canManageCustomQuestions) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Custom questions'),
-        //         href: route('recruitment.recruitment-workflow.custom-questions.index'),
-        //     });
-        // }
-        // if (canManageJobPostings) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Job postings'),
-        //         href: route('recruitment.recruitment-workflow.job-postings.index'),
-        //     });
-        // }
-        // if (canManageCandidates) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Candidates'),
-        //         href: route('recruitment.recruitment-workflow.candidates.index'),
-        //     });
-        // }
-        // if (canManageInterviewRounds) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Interview rounds'),
-        //         href: route('recruitment.recruitment-workflow.interview-rounds.index'),
-        //     });
-        // }
-        // if (canManageInterviews) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Interviews'),
-        //         href: route('recruitment.recruitment-workflow.interviews.index'),
-        //     });
-        // }
-        // if (canManageInterviewFeedback) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Interview feedback'),
-        //         href: route('recruitment.recruitment-workflow.interview-feedback.index'),
-        //     });
-        // }
-        // if (canManageCandidateAssessments) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Candidate assessments'),
-        //         href: route('recruitment.recruitment-workflow.candidate-assessments.index'),
-        //     });
-        // }
-        // if (canManageOffers) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Offers'),
-        //         href: route('recruitment.recruitment-workflow.offers.index'),
-        //     });
-        // }
-        // if (canManageCandidateOnboarding) {
-        //     recruitmentWorkflowChildren.push({
-        //         title: translate('Candidate onboarding'),
-        //         href: route('recruitment.recruitment-workflow.candidate-onboarding.index'),
-        //     });
-        // }
-        // if (recruitmentWorkflowChildren.length > 0) {
-        //     recruitmentChildren.push({
-        //         title: translate('Workflow'),
-        //         children: recruitmentWorkflowChildren,
-        //     });
-        // }
-        //
-        // // 6.3 Recruitment Templates
-        // const recruitmentTemplatesChildren: NavItem[] = [];
-        // if (canManageOfferTemplates) {
-        //     recruitmentTemplatesChildren.push({
-        //         title: translate('Offer templates'),
-        //         href: route('recruitment.templates.offer-templates.index'),
-        //     });
-        // }
-        // if (recruitmentTemplatesChildren.length > 0) {
-        //     recruitmentChildren.push({
-        //         title: translate('Templates'),
-        //         children: recruitmentTemplatesChildren,
-        //     });
-        // }
-        //
-        // // 6.4 Recruitment Setup
-        // const recruitmentSetupChildren: NavItem[] = [];
-        // if (canManageCandidateSources) {
-        //     recruitmentSetupChildren.push({
-        //         title: translate('Candidate sources'),
-        //         href: route('recruitment.recruitment-setup.candidate-sources.index'),
-        //     });
-        // }
-        // if (canManageInterviewTypes) {
-        //     recruitmentSetupChildren.push({
-        //         title: translate('Interview types'),
-        //         href: route('recruitment.recruitment-setup.interview-types.index'),
-        //     });
-        // }
-        // if (recruitmentSetupChildren.length > 0) {
-        //     recruitmentChildren.push({
-        //         title: translate('Recruitment setup'),
-        //         children: recruitmentSetupChildren,
-        //     });
-        // }
-        // if (canManageCareerPage) {
-        //     if (organizationSlug) {
-        //         recruitmentChildren.push({
-        //             title: (
-        //                 <span className="flex items-center gap-1">
-        //                     {translate('Careers website')}
-        //                     <ExternalLink size={14} />
-        //                 </span>
-        //             ),
-        //             href: route('career.index', organizationSlug),
-        //             target: '_blank',
-        //         });
-        //     }
-        // }
-        //
-        // // Add Recruitment section if there are children to display
-        // if (recruitmentChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Recruitment'),
-        //         icon: Backpack,
-        //         children: recruitmentChildren,
-        //     });
-        // }
-        //
-        // // 7. Contracts
-        // const contractChildren: NavItem[] = [];
-        // if (canManageStaffContracts) {
-        //     contractChildren.push({
-        //         title: translate('All contracts'),
-        //         href: route('contracts.all-contracts.index'),
-        //     });
-        // }
-        // if (canManageContractRenewals) {
-        //     contractChildren.push({
-        //         title: translate('Contract renewals'),
-        //         href: route('contracts.contract-renewals.index'),
-        //     });
-        // }
-        // if (canManageContractTemplates) {
-        //     contractChildren.push({
-        //         title: translate('Contract templates'),
-        //         href: route('contracts.contract-templates.index'),
-        //     });
-        // }
-        // if (contractChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Contracts'),
-        //         icon: Signature,
-        //         children: contractChildren,
-        //     });
-        // }
-        //
-        // // 8. Documents
-        // const documentChildren: NavItem[] = [];
-        // if (canManageDocumentCategories) {
-        //     documentChildren.push({
-        //         title: translate('Categories'),
-        //         href: route('documents.document-categories.index'),
-        //     });
-        // }
-        // if (canManageDocumentAcknowledgments) {
-        //     documentChildren.push({
-        //         title: translate('Acknowledgments'),
-        //         href: route('documents.document-acknowledgments.index'),
-        //     });
-        // }
-        // if (canManageDocumentTemplates) {
-        //     documentChildren.push({
-        //         title: translate('Document templates'),
-        //         href: route('documents.document-templates.index'),
-        //     });
-        // }
-        // if (canManageHumanResourcePolicies) {
-        //     documentChildren.push({
-        //         title: translate('Policies & procedures'),
-        //         href: route('documents.document-policies-procedures.index'),
-        //     });
-        // }
-        // if (documentChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Documents'),
-        //         icon: Folder,
-        //         children: documentChildren,
-        //     });
-        // }
-        //
-        // // 9. Meetings
-        // const meetingChildren: NavItem[] = [];
-        // if (canManageMeetingTypes) {
-        //     meetingChildren.push({ title: translate('Meeting types'), href: route('meetings.meeting-types.index') });
-        // }
-        // if (canManageMeetingRooms) {
-        //     meetingChildren.push({ title: translate('Meeting rooms'), href: route('meetings.meeting-rooms.index') });
-        // }
-        // if (canManageMeetings) {
-        //     meetingChildren.push({ title: translate('All meetings'), href: route('meetings.all-meetings.index') });
-        // }
-        // if (canManageMeetingMinutes) {
-        //     meetingChildren.push({
-        //         title: translate('Meeting minutes'),
-        //         href: route('meetings.meeting-minutes.index'),
-        //     });
-        // }
-        // if (canManageMeetingAttendees) {
-        //     meetingChildren.push({
-        //         title: translate('Meeting attendees'),
-        //         href: route('meetings.meeting-attendees.index'),
-        //     });
-        // }
-        // if (canManageMeetingActionItems) {
-        //     meetingChildren.push({
-        //         title: translate('Meeting action items'),
-        //         href: route('meetings.meeting-action-items.index'),
-        //     });
-        // }
-        // if (meetingChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Meetings'),
-        //         icon: Presentation,
-        //         children: meetingChildren,
-        //     });
-        // }
-        //
-        // // 10. Time Tracking
-        // const timeTrackingChildren: NavItem[] = [];
-        // if (canManageTimeEntries) {
-        //     timeTrackingChildren.push({
-        //         title: translate('Time entries'),
-        //         href: route('time-tracking.time-entries.index'),
-        //     });
-        // }
-        // if (timeTrackingChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Time tracking'),
-        //         icon: ClipboardClock,
-        //         children: timeTrackingChildren,
-        //     });
-        // }
-        //
-        // // 11. Payroll
-        // const payrollChildren: NavItem[] = [];
-        //
-        // // 11.1 Payroll Management
-        // const payrollManagementChildren: NavItem[] = [];
-        // if (canManagePayrollRuns) {
-        //     payrollManagementChildren.push({
-        //         title: translate('Payroll runs'),
-        //         href: route('payroll.compensation.payroll-runs.index'),
-        //     });
-        // }
-        // if (canManagePayslips) {
-        //     payrollManagementChildren.push({
-        //         title: translate('Payslips'),
-        //         href: route('payroll.compensation.payslips.index'),
-        //     });
-        // }
-        // if (payrollManagementChildren.length > 0) {
-        //     payrollChildren.push({
-        //         title: translate('Compensation'),
-        //         children: payrollManagementChildren,
-        //     });
-        // }
-        //
-        // // 11.2 Payroll Setup
-        // const payrollSetupChildren: NavItem[] = [];
-        // if (canManageSalaryComponents) {
-        //     payrollSetupChildren.push({
-        //         title: translate('Salary components'),
-        //         href: route('payroll.payroll-setup.salary-components.index'),
-        //     });
-        // }
-        // if (canManageStaffSalaries) {
-        //     payrollSetupChildren.push({
-        //         title: translate('Staff salaries'),
-        //         href: route('payroll.payroll-setup.staff-salaries.index'),
-        //     });
-        // }
-        // if (payrollSetupChildren.length > 0) {
-        //     payrollChildren.push({
-        //         title: translate('Payroll setup'),
-        //         children: payrollSetupChildren,
-        //     });
-        // }
-        //
-        // // Add Payroll section if there are children
-        // if (payrollChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Payroll'),
-        //         icon: HandCoins,
-        //         children: payrollChildren,
-        //     });
-        // }
-        //
-        // // 12. Users & Permissions
-        // const usersPermChildren: NavItem[] = [];
-        // if (canManageUsers) {
-        //     usersPermChildren.push({ title: translate('Users'), href: route('users-permissions.users.index') });
-        // }
-        // if (canManageRoles) {
-        //     usersPermChildren.push({ title: translate('Roles'), href: route('users-permissions.roles.index') });
-        // }
-        // if (usersPermChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Users & permissions'),
-        //         icon: Users,
-        //         children: usersPermChildren,
-        //     });
-        // }
-        //
-        // // 13. Media Library
-        // if (canManageMedia) {
-        //     items.push({
-        //         title: translate('Media library'),
-        //         href: route('media-library.index'),
-        //         icon: Image,
-        //     });
-        // }
-        //
-        // // 14. Subscriptions (Plans)
-        // const planChildren: NavItem[] = [];
-        // if (canManagePlans) {
-        //     planChildren.push({ title: translate('Plans'), href: route('subscriptions.plans.index') });
-        // }
-        // if (canViewPlanRequests) {
-        //     planChildren.push({ title: translate('Plan requests'), href: route('subscriptions.plan-requests.index') });
-        // }
-        // if (canViewPlanOrders) {
-        //     planChildren.push({ title: translate('Plan orders'), href: route('subscriptions.plan-orders.index') });
-        // }
-        // if (planChildren.length > 0) {
-        //     items.push({
-        //         title: translate('Subscriptions'),
-        //         icon: CreditCard,
-        //         children: planChildren,
-        //     });
-        // }
-        //
-        // // 15. Referral Program
-        // if (canManageReferral) {
-        //     items.push({
-        //         title: translate('Referral program'),
-        //         href: route('referral-program.index'),
-        //         icon: Gift,
-        //     });
-        // }
+        if (
+            canManageMeetings ||
+            canManageCalls ||
+            canManageProjectTasks
+        ) {
+            items.push({
+                title: translate('Calendar'),
+                href: route('calendar.index'),
+                icon: Calendar,
+                group: translate('Overview')
+            });
+        }
 
-        // 16. Settings (global)
+        if (canManageReports) {
+            items.push({
+                title: translate('Reports & Analytics'),
+                icon: TrendingUp,
+                group: translate('Overview'),
+                children: [
+                    { title: translate('Lead Reports'), href: route('reports.leads') },
+                    { title: translate('Sales Reports'), href: route('reports.sales') },
+                    { title: translate('Product Reports'), href: route('reports.product-reports') },
+                    { title: translate('Contact Reports'), href: route('reports.customers') },
+                    { title: translate('Project Reports'), href: route('reports.projects') }
+                ]
+            });
+        }
+
+// 2. Customers & Relationships
+
+// Leads
+        const leadChildren = [];
+
+        if (canManageLeads) {
+            leadChildren.push({
+                title: translate('Leads'),
+                href: route('leads.index')
+            });
+        }
+
+        if (canManageLeadSources) {
+            leadChildren.push({
+                title: translate('Lead Sources'),
+                href: route('lead-sources.index')
+            });
+        }
+
+        if (canManageLeadStatuses) {
+            leadChildren.push({
+                title: translate('Lead Statuses'),
+                href: route('lead-statuses.index')
+            });
+        }
+
+        if (leadChildren.length > 0) {
+            items.push({
+                title: translate('Leads'),
+                icon: Users,
+                group: translate('Customers & Relationships'),
+                children: leadChildren
+            });
+        }
+
+// Contacts
+        if (canManageContacts) {
+            items.push({
+                title: translate('Contacts'),
+                href: route('contacts.index'),
+                icon: Users,
+                group: translate('Customers & Relationships')
+            });
+        }
+
+// Accounts
+        const accountChildren = [];
+
+        if (canManageAccounts) {
+            accountChildren.push({
+                title: translate('Accounts'),
+                href: route('accounts.index')
+            });
+        }
+
+        if (canManageAccountTypes) {
+            accountChildren.push({
+                title: translate('Account Types'),
+                href: route('account-types.index')
+            });
+        }
+
+        if (canManageAccountIndustries) {
+            accountChildren.push({
+                title: translate('Account Industries'),
+                href: route('account-industries.index')
+            });
+        }
+
+        if (accountChildren.length > 0) {
+            items.push({
+                title: translate('Accounts'),
+                icon: Building2,
+                group: translate('Customers & Relationships'),
+                children: accountChildren
+            });
+        }
+
+// Campaigns
+        const campaignChildren = [];
+
+        if (canManageCampaigns) {
+            campaignChildren.push({
+                title: translate('Campaigns'),
+                href: route('campaigns.index')
+            });
+        }
+
+        if (canManageTargetLists) {
+            campaignChildren.push({
+                title: translate('Target Lists'),
+                href: route('target-lists.index')
+            });
+        }
+
+        if (canManageCampaignTypes) {
+            campaignChildren.push({
+                title: translate('Campaign Types'),
+                href: route('campaign-types.index')
+            });
+        }
+
+        if (campaignChildren.length > 0) {
+            items.push({
+                title: translate('Campaigns'),
+                icon: Megaphone,
+                group: translate('Customers & Relationships'),
+                children: campaignChildren
+            });
+        }
+
+// Customer cases
+        if (canManageCases) {
+            items.push({
+                title: translate('Cases & Support'),
+                href: route('cases.index'),
+                icon: FileText,
+                group: translate('Customers & Relationships')
+            });
+        }
+
+// 3. Sales & Quotations
+
+// Opportunities
+        const opportunityChildren = [];
+
+        if (canManageOpportunities) {
+            opportunityChildren.push({
+                title: translate('Opportunities'),
+                href: route('opportunities.index')
+            });
+        }
+
+        if (canManageOpportunitySources) {
+            opportunityChildren.push({
+                title: translate('Opportunity Sources'),
+                href: route('opportunity-sources.index')
+            });
+        }
+
+        if (canManageOpportunityStages) {
+            opportunityChildren.push({
+                title: translate('Opportunity Stages'),
+                href: route('opportunity-stages.index')
+            });
+        }
+
+        if (opportunityChildren.length > 0) {
+            items.push({
+                title: translate('Opportunities'),
+                icon: TrendingUp,
+                group: translate('Sales'),
+                children: opportunityChildren
+            });
+        }
+
+// Quotations
+        if (canManageQuotes) {
+            items.push({
+                title: translate('Quotations'),
+                href: route('quotes.index'),
+                icon: FileText,
+                group: translate('Sales')
+            });
+        }
+
+// Sales orders
+        if (canManageSalesOrders) {
+            items.push({
+                title: translate('Sales Orders'),
+                href: route('sales-orders.index'),
+                icon: ShoppingBag,
+                group: translate('Sales')
+            });
+        }
+
+// Invoices
+        if (canManageInvoices) {
+            items.push({
+                title: translate('Invoices'),
+                href: route('invoices.index'),
+                icon: FileText,
+                group: translate('Sales')
+            });
+        }
+
+// Payments and receipts
+        if (canManageReceiptOrders) {
+            items.push({
+                title: translate('Receipts'),
+                href: route('receipt-orders.index'),
+                icon: FileText,
+                group: translate('Sales')
+            });
+        }
+
+// Insurance Operations: Policies
+//
+// FUTURE MODULES — enable these when the screens, routes, and permissions exist.
+// Keep these as comments for now so the navigation does not point to unavailable routes.
+//
+// Policies:
+// if (canManagePolicies) {
+//     items.push({
+//         title: translate('Policies'),
+//         href: route('policies.index'),
+//         icon: ShieldCheck,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Policy issuance:
+// if (canManagePolicyIssuance) {
+//     items.push({
+//         title: translate('Policy Issuance'),
+//         href: route('policy-issuance.index'),
+//         icon: FileCheck,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Renewals:
+// if (canManageRenewals) {
+//     items.push({
+//         title: translate('Renewals'),
+//         href: route('renewals.index'),
+//         icon: RefreshCw,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Endorsements and amendments:
+// if (canManagePolicyEndorsements) {
+//     items.push({
+//         title: translate('Endorsements & Amendments'),
+//         href: route('policy-endorsements.index'),
+//         icon: FileEdit,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Cancellations:
+// if (canManagePolicyCancellations) {
+//     items.push({
+//         title: translate('Cancellations'),
+//         href: route('policy-cancellations.index'),
+//         icon: FileX,
+//         group: translate('Insurance Operations')
+//     });
+// }
+
+// Insurance Operations: Claims
+//
+// FUTURE MODULE — uncomment when the claims screen, route, and permission exist.
+//
+// if (canManageClaims) {
+//     items.push({
+//         title: translate('Claims'),
+//         href: route('claims.index'),
+//         icon: ClipboardList,
+//         group: translate('Insurance Operations')
+//     });
+// }
+
+// 6. Insurance Products & Distribution
+
+// Insurance product catalogue
+        if (canManageProducts) {
+            items.push({
+                title: translate('Product Catalogue'),
+                href: route('products.index'),
+                icon: Package,
+                group: translate('Insurance Operations')
+            });
+        }
+
+// Product configuration
+        const productSetupChildren = [];
+
+        if (canManageTaxes) {
+            productSetupChildren.push({
+                title: translate('Taxes'),
+                href: route('taxes.index')
+            });
+        }
+
+        if (canManageBrands) {
+            productSetupChildren.push({
+                title: translate('Brands'),
+                href: route('brands.index')
+            });
+        }
+
+        if (canManageCategories) {
+            productSetupChildren.push({
+                title: translate('Product Categories'),
+                href: route('categories.index')
+            });
+        }
+
+        if (productSetupChildren.length > 0) {
+            items.push({
+                title: translate('Product Setup'),
+                icon: Settings,
+                group: translate('Insurance Operations'),
+                children: productSetupChildren
+            });
+        }
+
+// FUTURE MODULES — add each entry when its screen, route, and permission exist.
+//
+// Insurance Providers:
+// if (canManageInsuranceProviders) {
+//     items.push({
+//         title: translate('Insurance Providers'),
+//         href: route('insurance-providers.index'),
+//         icon: Building2,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Product Listings & Availability:
+// if (canManageProductListings) {
+//     items.push({
+//         title: translate('Product Listings & Availability'),
+//         href: route('product-listings.index'),
+//         icon: Package,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Distribution Channels:
+// if (canManageDistributionChannels) {
+//     items.push({
+//         title: translate('Distribution Channels'),
+//         href: route('distribution-channels.index'),
+//         icon: Network,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Partners & Integrations:
+// if (canManagePartnersIntegrations) {
+//     items.push({
+//         title: translate('Partners & Integrations'),
+//         href: route('partners-integrations.index'),
+//         icon: Plug,
+//         group: translate('Insurance Operations')
+//     });
+// }
+
+// 7. Fulfillment & Document Delivery
+
+// Existing purchase orders retained for physical fulfillment.
+        if (canManagePurchaseOrders) {
+            items.push({
+                title: translate('Fulfillment Orders'),
+                href: route('purchase-orders.index'),
+                icon: ShoppingBag,
+                group: translate('Fulfillment & Document Delivery')
+            });
+        }
+
+        if (canManageDeliveryOrders) {
+            items.push({
+                title: translate('Delivery Orders'),
+                href: route('delivery-orders.index'),
+                icon: Truck,
+                group: translate('Fulfillment & Document Delivery')
+            });
+        }
+
+        if (canManageReturnOrders) {
+            items.push({
+                title: translate('Returns & Undelivered Items'),
+                href: route('return-orders.index'),
+                icon: Package,
+                group: translate('Fulfillment & Document Delivery')
+            });
+        }
+
+        if (canManageShippingProviderTypes) {
+            items.push({
+                title: translate('Shipping Providers'),
+                href: route('shipping-provider-types.index'),
+                icon: Truck,
+                group: translate('Fulfillment & Document Delivery')
+            });
+        }
+
+// FUTURE MODULES — these can initially be views within Delivery Orders,
+// or become separate navigation entries if they need their own screens.
+//
+// Document Dispatch:
+// if (canManageDocumentDispatch) {
+//     items.push({
+//         title: translate('Document Dispatch'),
+//         href: route('document-dispatch.index'),
+//         icon: FileCheck,
+//         group: translate('Fulfillment & Document Delivery')
+//     });
+// }
+//
+// Delivery Tracking:
+// if (canManageDeliveryTracking) {
+//     items.push({
+//         title: translate('Delivery Tracking'),
+//         href: route('delivery-tracking.index'),
+//         icon: Truck,
+//         group: translate('Fulfillment & Document Delivery')
+//     });
+// }
+
+// Insurance Operations: Commissions
+//
+// FUTURE MODULES — uncomment each entry when its screen, route, and permission exist.
+//
+// Commissions:
+// if (canManageCommissions) {
+//     items.push({
+//         title: translate('Commissions'),
+//         href: route('commissions.index'),
+//         icon: Wallet,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Commission Rules:
+// if (canManageCommissionRules) {
+//     items.push({
+//         title: translate('Commission Rules'),
+//         href: route('commission-rules.index'),
+//         icon: Settings,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Commission Statements:
+// if (canManageCommissionStatements) {
+//     items.push({
+//         title: translate('Commission Statements'),
+//         href: route('commission-statements.index'),
+//         icon: FileText,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Reconciliation:
+// if (canManageCommissionReconciliation) {
+//     items.push({
+//         title: translate('Reconciliation'),
+//         href: route('commission-reconciliation.index'),
+//         icon: ClipboardList,
+//         group: translate('Insurance Operations')
+//     });
+// }
+//
+// Add the matching useHasPermission(...) calls at the top level of the component
+// when enabling any future entry. Confirm the route names against your actual routes.
+
+// 9. Team & Collaboration
+
+// Meetings
+        if (canManageMeetings) {
+            items.push({
+                title: translate('Meetings'),
+                href: route('meetings.index'),
+                icon: CalendarDays,
+                group: translate('Team & Collaboration')
+            });
+        }
+
+// Calls
+        if (canManageCalls) {
+            items.push({
+                title: translate('Calls'),
+                href: route('calls.index'),
+                icon: Phone,
+                group: translate('Team & Collaboration')
+            });
+        }
+
+// Team activity stream
+        if (canManageStream) {
+            items.push({
+                title: translate('Streams'),
+                href: route('stream.index'),
+                icon: Activity,
+                group: translate('Team & Collaboration')
+            });
+        }
+
+// Notes
+        if (canManageNotes) {
+            items.push({
+                title: translate('Notes'),
+                href: route('notes.index'),
+                icon: NotebookPen,
+                group: translate('Team & Collaboration')
+            });
+        }
+
+// Announcements
+        const announcementChildren = [];
+
+        if (canManageAnnouncements) {
+            announcementChildren.push({
+                title: translate('Announcements'),
+                href: route('announcements.index')
+            });
+        }
+
+        if (canManageAnnouncementCategories) {
+            announcementChildren.push({
+                title: translate('Categories'),
+                href: route('announcement-categories.index')
+            });
+        }
+
+        if (announcementChildren.length > 0) {
+            items.push({
+                title: translate('Announcements'),
+                icon: Megaphone,
+                group: translate('Team & Collaboration'),
+                children: announcementChildren
+            });
+        }
+
+// Tasks and projects
+        const projectChildren = [];
+
+        if (canManageProjects) {
+            projectChildren.push({
+                title: translate('Projects'),
+                href: route('projects.index')
+            });
+        }
+
+        if (canManageProjectTasks) {
+            projectChildren.push({
+                title: translate('Tasks'),
+                href: route('project-tasks.index')
+            });
+        }
+
+        if (canManageTaskStatuses) {
+            projectChildren.push({
+                title: translate('Task Statuses'),
+                href: route('task-statuses.index')
+            });
+        }
+
+        if (projectChildren.length > 0) {
+            items.push({
+                title: translate('Tasks & Projects'),
+                icon: Briefcase,
+                group: translate('Team & Collaboration'),
+                children: projectChildren
+            });
+        }
+
+// Documents
+        const documentChildren = [];
+
+        if (canManageDocuments) {
+            documentChildren.push({
+                title: translate('Documents'),
+                href: route('documents.index')
+            });
+        }
+
+        if (canManageDocumentTypes) {
+            documentChildren.push({
+                title: translate('Document Types'),
+                href: route('document-types.index')
+            });
+        }
+
+        if (documentChildren.length > 0) {
+            items.push({
+                title: translate('Documents'),
+                icon: Folder,
+                group: translate('Team & Collaboration'),
+                children: documentChildren
+            });
+        }
+
+        if (canManageMedia) {
+            items.push({
+                title: translate('Media Library'),
+                href: route('media-library.media.index'),
+                icon: Image,
+                group: translate('Team & Collaboration')
+            });
+        }
+
+// 10. Administration
+
+// Users and roles
+        const staffChildren = [];
+
+        if (canManageUsers) {
+            staffChildren.push({
+                title: translate('Users'),
+                href: route('users-permissions.users.index')
+            });
+        }
+
+        if (canManageRoles) {
+            staffChildren.push({
+                title: translate('Roles & Permissions'),
+                href: route('users-permissions.roles.index')
+            });
+        }
+
+        if (staffChildren.length > 0) {
+            items.push({
+                title: translate('Users & Access'),
+                icon: Users,
+                group: translate('Administration'),
+                children: staffChildren
+            });
+        }
+
+// Platform subscription plans
+        const planChildren = [];
+
+        if (canManagePlans) {
+            planChildren.push({
+                title: translate('Subscription Plans'),
+                href: route('subscriptions.plans.index')
+            });
+        }
+
+        if (canManagePlanRequests) {
+            planChildren.push({
+                title: translate('Plan Requests'),
+                href: route('subscriptions.plan-requests.index')
+            });
+        }
+
+        if (canManagePlanOrders) {
+            planChildren.push({
+                title: translate('Plan Orders'),
+                href: route('subscriptions.plan-orders.index')
+            });
+        }
+
+        if (planChildren.length > 0) {
+            items.push({
+                title: translate('Subscription Plans'),
+                icon: CreditCard,
+                group: translate('Administration'),
+                children: planChildren
+            });
+        }
+
+// Referral programme
+        if (canManageReferral) {
+            items.push({
+                title: translate('Referral Programme'),
+                href: route('referral.index'),
+                icon: Gift,
+                group: translate('Administration')
+            });
+        }
+
+// Notification templates
+        if (canManageNotificationTemplates) {
+            items.push({
+                title: translate('Notification Templates'),
+                href: route('notification-templates.index'),
+                icon: Mail,
+                group: translate('Administration')
+            });
+        }
+
+// General settings
         if (canManageSettings) {
             items.push({
                 title: translate('Settings'),
                 href: route('settings.index'),
                 icon: Settings,
+                group: translate('Administration')
             });
         }
 
-        return items;
+        // Turn the existing flat, permission-filtered items into focused submenus.
+        // Keep `group` as the visual section heading rendered by NavMain.
+        const wrapItems = (
+            source: NavItem[],
+            section: string,
+            parentTitle: string,
+            childTitles: string[],
+            icon: NavItem['icon']
+        ): NavItem[] => {
+            const matching = source.filter((item) => item.group === section && childTitles.includes(item.title));
+
+            // Avoid adding a submenu for a single item; direct links are quicker to reach.
+            if (matching.length < 2) return source;
+
+            const firstIndex = source.findIndex((item) => matching.includes(item));
+            const remaining = source.filter((item) => !matching.includes(item));
+            const insertIndex = source.slice(0, firstIndex).filter((item) => !matching.includes(item)).length;
+            remaining.splice(insertIndex, 0, {
+                title: parentTitle,
+                icon,
+                group: section,
+                children: matching.map(({ group: _group, ...item }) => item)
+            });
+
+            return remaining;
+        };
+
+        let navigation = [...items];
+
+        // Sales: group order and billing records together.
+        navigation = wrapItems(
+            navigation,
+            translate('Sales'),
+            translate('Order & Billing Management'),
+            [translate('Sales Orders'), translate('Invoices'), translate('Receipts')],
+            FileText
+        );
+
+        // Insurance: keep product setup separate from policy lifecycle and commissions.
+        navigation = wrapItems(
+            navigation,
+            translate('Insurance Operations'),
+            translate('Products & Distribution'),
+            [
+                translate('Product Catalogue'),
+                translate('Product Setup'),
+                translate('Insurance Providers'),
+                translate('Product Listings & Availability'),
+                translate('Distribution Channels'),
+                translate('Partners & Integrations')
+            ],
+            Package
+        );
+        navigation = wrapItems(
+            navigation,
+            translate('Insurance Operations'),
+            translate('Policy Management'),
+            [
+                translate('Policies'),
+                translate('Policy Issuance'),
+                translate('Renewals'),
+                translate('Endorsements & Amendments'),
+                translate('Cancellations')
+            ],
+            FileText
+        );
+        navigation = wrapItems(
+            navigation,
+            translate('Insurance Operations'),
+            translate('Commissions'),
+            [
+                translate('Commissions'),
+                translate('Commission Rules'),
+                translate('Commission Statements'),
+                translate('Reconciliation')
+            ],
+            Settings
+        );
+
+        // Fulfillment: group delivery exceptions and provider configuration.
+        navigation = wrapItems(
+            navigation,
+            translate('Fulfillment & Document Delivery'),
+            translate('Delivery Management'),
+            [
+                translate('Returns & Undelivered Items'),
+                translate('Shipping Providers'),
+                translate('Delivery Tracking')
+            ],
+            Truck
+        );
+
+        return navigation;
     };
+
 
     const mainNavItems = userRole === 'super_admin' ? getSuperAdminNavItems() : getOrganizationNavItems();
 
@@ -1028,7 +1073,7 @@ export default function AppSidebar() {
 
     const handleLogoError = useCallback(() => {
         updateBrandSettings({
-            [getCurrentTheme() === 'dark' ? 'logoDark' : 'logoLight']: '',
+            [getCurrentTheme() === 'dark' ? 'logoDark' : 'logoLight']: ''
         });
     }, [updateBrandSettings, getCurrentTheme]);
 

@@ -327,7 +327,7 @@ class DashboardController extends Controller
         }
 
         $customerDistribution = [];
-        $colors = ['#A12582', '#10b77f', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#84cc16', '#ec4899', '#6366f1'];
+        $colors = ['#a12582', '#10b77f', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#84cc16', '#ec4899', '#6366f1'];
         foreach ($customerTypes as $index => $type) {
             $customerDistribution[] = [
                 'name' => $type->accountType->name ?? 'Other',

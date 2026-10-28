@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Documents() {
     const { t: translate } = useTranslation();
-    const color = '#A12582';
+    const color = '#a12582';
     const { auth, rootFolders = [], parentFolders = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const flash = (usePage().props as any).flash || {};

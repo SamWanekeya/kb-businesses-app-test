@@ -91,7 +91,7 @@ interface Invoice {
 }
 
 const templates = {
-    1: { primary: '#A12582', secondary: '#1d4ed8' },
+    1: { primary: '#a12582', secondary: '#1d4ed8' },
     2: { primary: '#6b7280', secondary: '#374151' },
     3: { primary: '#059669', secondary: '#047857' },
     4: { primary: '#ea580c', secondary: '#c2410c' },
@@ -140,8 +140,8 @@ export default function PublicInvoice({
         }
     }, [props.flash, t]);
 
-    const themeColors = { blue: '#A12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
-    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#A12582';
+    const themeColors = { blue: '#a12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
+    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#a12582';
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     // Calculate paid amount from completed payments

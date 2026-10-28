@@ -29,7 +29,7 @@ class CalendarController extends Controller
                         'start' => $startDateTime,
                         'end' => $endDateTime,
                         'type' => 'meeting',
-                        'backgroundColor' => '#A12582',
+                        'backgroundColor' => '#a12582',
                         'borderColor' => '#2563eb',
                         'meeting_id' => $meeting->id,
                         'description' => $meeting->description,
