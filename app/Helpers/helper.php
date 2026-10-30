@@ -1289,7 +1289,6 @@ if (!function_exists('defaultSettings')) {
             'float_number' => true,
             'currency_symbol_space' => true,
             'currency_symbol_position' => 'before',
-            'working_days' => '[1,2,3,4,5]',
         ];
     }
 }

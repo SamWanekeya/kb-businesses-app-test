@@ -37,7 +37,7 @@ export const PAYMENT_METHOD_LABELS = {
     // [PAYMENT_METHODS.PAYPAL]: 'PayPal',
     // [PAYMENT_METHODS.RAZORPAY]: 'Razorpay',
     // [PAYMENT_METHODS.MERCADOPAGO]: 'Mercado Pago',
-    [PAYMENT_METHODS.PAYSTACK]: 'Paystack',
+    [PAYMENT_METHODS.PAYSTACK]: 'Debit/Credit card',
     // [PAYMENT_METHODS.FLUTTERWAVE]: 'Flutterwave',
     [PAYMENT_METHODS.BANK]: 'Bank Transfer',
     // [PAYMENT_METHODS.PAYTABS]: 'PayTabs',
