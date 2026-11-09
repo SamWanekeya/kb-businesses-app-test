@@ -250,13 +250,11 @@ export default function AccountIndustries() {
 
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -269,11 +267,11 @@ export default function AccountIndustries() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="color">{translate('Color')}</Label>
                                 <div className="flex items-center gap-2">
                                     <Input
                                         inputIdentifier="color"
                                         type="color"
+                                        label={translate('Color')}
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });

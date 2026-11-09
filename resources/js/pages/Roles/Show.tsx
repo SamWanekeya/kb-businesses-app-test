@@ -91,9 +91,7 @@ export default function RolesShow() {
                                     return (
                                         <div key={module} className="overflow-hidden rounded-lg border dark:border-gray-700">
                                             <div className="flex items-center justify-between border-b bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
-                                                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
-                                                    {formatTitleCase(module)}
-                                                </span>
+                                                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{formatTitleCase(module)}</span>
                                                 <span className="rounded-full border bg-white px-2 py-0.5 text-xs text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
                                                     {assignedInModule.length} / {modulePermissions.length}
                                                 </span>

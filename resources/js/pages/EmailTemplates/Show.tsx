@@ -4,7 +4,6 @@ import { Badge } from '@components/UserInterface/Badge';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { RichTextField } from '@components/UserInterface/RichTextField';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { Head, router } from '@inertiajs/react';
@@ -129,18 +128,16 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                         </CardHeader>
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
                             <div className="grid gap-2">
-                                <Label>{translate('Template Name')}</Label>
-                                <Input value={template.name} disabled className="bg-muted" />
+                                <Input value={template.name} label={translate('Template name')} disabled className="bg-muted" />
                                 <p className="text-foreground/75 text-xs">{translate('Template name cannot be changed')}</p>
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="from" required>
-                                    {translate('From Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="from"
                                     value={fromName}
+                                    label={translate('From name')}
+                                    required
                                     onChange={(e) => {
                                         setFromName(e.target.value);
                                     }}
@@ -210,12 +207,10 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
 
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
-                                                <Label htmlFor={`subject-${language.code}`} className="text-sm" required>
-                                                    {translate('Email Subject')}
-                                                </Label>
                                                 <Input
                                                     id={`subject-${language.code}`}
                                                     value={templateLangs[language.code]?.subject || ''}
+                                                    label={translate('Email subject')}
                                                     onChange={(e) => {
                                                         handleSubjectChange(language.code, e.target.value);
                                                     }}

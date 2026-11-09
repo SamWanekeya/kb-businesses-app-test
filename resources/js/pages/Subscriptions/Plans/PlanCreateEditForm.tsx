@@ -331,14 +331,11 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div className="space-y-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name" required>
-                                        {translate('Plan name')}
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="name"
                                         inputType="text"
                                         inputMode="text"
+                                        label={translate('Name')}
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
@@ -356,15 +353,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="price" required>
-                                        {translate('Monthly price')}
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="price"
                                         name="price"
                                         inputType="number"
                                         inputMode="decimal"
+                                        label={translate('Monthly price')}
                                         min={0}
                                         step="0.01"
                                         value={formData.price}
@@ -383,15 +377,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="yearly_price">
-                                        {translate('Yearly price')} <span className="text-foreground/75 text-sm">({translate('Optional')})</span>
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="yearly_price"
                                         name="yearly_price"
                                         inputType="number"
                                         inputMode="decimal"
+                                        label={translate('Yearly price')}
                                         min={0}
                                         step="0.01"
                                         value={formData.yearly_price ?? ''}
@@ -427,15 +418,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
 
                             <div className="space-y-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="maximum_users" required>
-                                        {translate('Maximum users')}
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="maximum_users"
                                         name="maximum_users"
                                         inputType="number"
                                         inputMode="numeric"
+                                        label={translate('Maximum users')}
                                         min={1}
                                         step={1}
                                         value={formData.maximum_users}
@@ -454,15 +442,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="maximum_staffs" required>
-                                        {translate('Maximum staff members')}
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="maximum_staffs"
                                         name="maximum_staffs"
                                         inputType="number"
                                         inputMode="numeric"
+                                        label={translate('Maximum staff members')}
                                         min={1}
                                         step={1}
                                         value={formData.maximum_staffs}
@@ -481,15 +466,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="storage_limit" required>
-                                        {translate('Storage limit (GB)')}
-                                    </Label>
-
                                     <Input
                                         inputIdentifier="storage_limit"
                                         name="storage_limit"
                                         inputType="number"
                                         inputMode="decimal"
+                                        label={translate('Storage limit (GB)')}
                                         min={0}
                                         step="0.01"
                                         value={formData.storage_limit}
@@ -508,13 +490,12 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="trial_days">{translate('Trial days')}</Label>
-
                                     <Input
                                         inputIdentifier="trial_days"
                                         name="trial_days"
                                         inputType="number"
                                         inputMode="numeric"
+                                        label={translate('Trial days')}
                                         min={0}
                                         step={1}
                                         value={formData.trial_days}

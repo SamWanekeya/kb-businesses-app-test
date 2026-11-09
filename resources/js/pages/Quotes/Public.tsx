@@ -788,9 +788,7 @@ export default function PublicQuote({
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
                                                     <span className="text-sm text-gray-500">{translate('Discount')}</span>
-                                                    <span className="font-mono text-sm font-bold text-red-500">
-                                                        -{formatCurrency(totalDiscount)}
-                                                    </span>
+                                                    <span className="font-mono text-sm font-bold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
                                                     <span className="text-sm text-gray-500">{translate('Total Tax')}</span>

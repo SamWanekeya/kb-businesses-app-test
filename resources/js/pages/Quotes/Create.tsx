@@ -254,10 +254,13 @@ export default function QuoteCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-3">
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                            <Label className="text-sm" required>
-                                {translate('Quote Name')}
-                            </Label>
-                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={data.name}
+                                label={translate('Name')}
+                                required
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
@@ -405,7 +408,6 @@ export default function QuoteCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Valid Until')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -420,6 +422,7 @@ export default function QuoteCreate() {
                                 <Input
                                     type="date"
                                     value={data.valid_until}
+                                    label={translate('Valid until')}
                                     onChange={(e) => set('valid_until', e.target.value)}
                                     className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
                                 />
@@ -546,12 +549,11 @@ export default function QuoteCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Quantity')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Quantity')}
+                                                        required
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -564,12 +566,11 @@ export default function QuoteCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Unit price')}
+                                                        required
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
@@ -603,12 +604,10 @@ export default function QuoteCreate() {
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Val')}
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Discount val')}
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}
@@ -620,9 +619,7 @@ export default function QuoteCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Tax')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const p = productOptions.find((p: any) => String(p.id) === row.product_id);
                                                         return (
@@ -635,9 +632,7 @@ export default function QuoteCreate() {
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Total')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -715,11 +710,10 @@ export default function QuoteCreate() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm" required>
-                                            {translate('City')}
-                                        </Label>
                                         <Input
                                             value={data.billing_city}
+                                            label={translate('City')}
+                                            required
                                             onChange={(e) => {
                                                 set('billing_city', e.target.value);
                                                 if (sameAsBilling) setData('shipping_city' as any, e.target.value);
@@ -729,11 +723,10 @@ export default function QuoteCreate() {
                                         {errors.billing_city && <p className="text-xs text-red-500">{errors.billing_city}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm" required>
-                                            {translate('State')}
-                                        </Label>
                                         <Input
                                             value={data.billing_state}
+                                            label={translate('State')}
+                                            required
                                             onChange={(e) => {
                                                 set('billing_state', e.target.value);
                                                 if (sameAsBilling) setData('shipping_state' as any, e.target.value);
@@ -743,11 +736,10 @@ export default function QuoteCreate() {
                                         {errors.billing_state && <p className="text-xs text-red-500">{errors.billing_state}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm" required>
-                                            {translate('Country')}
-                                        </Label>
                                         <Input
                                             value={data.billing_country}
+                                            label={translate('Country')}
+                                            required
                                             onChange={(e) => {
                                                 set('billing_country', e.target.value);
                                                 if (sameAsBilling) setData('shipping_country' as any, e.target.value);
@@ -757,11 +749,10 @@ export default function QuoteCreate() {
                                         {errors.billing_country && <p className="text-xs text-red-500">{errors.billing_country}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm" required>
-                                            {translate('Postal Code')}
-                                        </Label>
                                         <Input
                                             value={data.billing_postal_code}
+                                            label={translate('Postal code')}
+                                            required
                                             onChange={(e) => {
                                                 set('billing_postal_code', e.target.value);
                                                 if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value);
@@ -782,20 +773,32 @@ export default function QuoteCreate() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm">{translate('City')}</Label>
-                                        <Input value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
+                                        <Input
+                                            value={data.shipping_city}
+                                            label={translate('City')}
+                                            onChange={(e) => set('shipping_city', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm">{translate('State')}</Label>
-                                        <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
+                                        <Input
+                                            value={data.shipping_state}
+                                            label={translate('State')}
+                                            onChange={(e) => set('shipping_state', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm">{translate('Country')}</Label>
-                                        <Input value={data.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} />
+                                        <Input
+                                            value={data.shipping_country}
+                                            label={translate('Country')}
+                                            onChange={(e) => set('shipping_country', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm">{translate('Postal Code')}</Label>
-                                        <Input value={data.shipping_postal_code} onChange={(e) => set('shipping_postal_code', e.target.value)} />
+                                        <Input
+                                            value={data.shipping_postal_code}
+                                            label={translate('Postal code')}
+                                            onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                        />
                                     </div>
                                 </div>
                             </div>

@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import AccountButton from '@components/Account/AccountButton';
 import TextLink from '@components/TextLink';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 
 interface ResetPasswordProps {
@@ -167,12 +166,11 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
         <AuthLayout title={translate('Change your password')}>
             <form autoComplete="off" noValidate onSubmit={handleSubmit} className="space-y-3">
                 <div className="space-y-2">
-                    <Label htmlFor="email">{translate('Your work email')}</Label>
-
                     <Input
                         inputIdentifier="email"
                         inputType="email"
                         inputMode="email"
+                        label={translate('Your work email')}
                         readOnly
                         value={data.email}
                         autoComplete="email"
@@ -182,16 +180,10 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="password">
-                        {translate('Your password')}{' '}
-                        <span aria-hidden="true" className="text-destructive">
-                            *
-                        </span>
-                    </Label>
-
                     <Input
                         inputIdentifier="password"
                         inputType="password"
+                        label={translate('Your password')}
                         required
                         autoComplete="new-password"
                         value={data.password}
@@ -213,16 +205,10 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="password_confirmation">
-                        {translate('Confirm new password')}{' '}
-                        <span aria-hidden="true" className="text-destructive">
-                            *
-                        </span>
-                    </Label>
-
                     <Input
                         inputIdentifier="password_confirmation"
                         inputType="password"
+                        label={translate('Confirm new password')}
                         required
                         autoComplete="new-password"
                         value={data.password_confirmation}

@@ -622,9 +622,7 @@ export default function PublicInvoice({
                                                                         <div className="text-sm text-gray-400 line-through">
                                                                             {formatCurrency(lineTotal)}
                                                                         </div>
-                                                                        <div className="font-bold text-fuchsia-600">
-                                                                            {formatCurrency(finalTotal)}
-                                                                        </div>
+                                                                        <div className="font-bold text-fuchsia-600">{formatCurrency(finalTotal)}</div>
                                                                     </div>
                                                                 ) : (
                                                                     <span className="font-bold text-fuchsia-600">{formatCurrency(lineTotal)}</span>

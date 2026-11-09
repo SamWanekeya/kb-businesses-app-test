@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { AlertCircle, Lock, Mail, Send, Server, User } from 'lucide-react';
+import { AlertCircle, Lock, Mail, Send } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -141,14 +141,10 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Server className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="driver" className="font-medium" required>
-                                                {translate('Mail Driver')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="driver"
+                                            label={translate('Mail driver')}
+                                            required
                                             value={emailSettings.driver}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('driver', e.target.value);
@@ -157,14 +153,10 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Server className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="host" className="font-medium" required>
-                                                {translate('SMTP Host')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="host"
+                                            label={translate('SMTP host')}
+                                            required
                                             value={emailSettings.host}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('host', e.target.value);
@@ -174,10 +166,6 @@ export default function EmailSettings() {
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-center gap-2">
-                                            <Server className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="port" className="font-medium" required>
-                                                {translate('SMTP Port')}
-                                            </Label>
                                             <TooltipProvider>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
@@ -191,6 +179,8 @@ export default function EmailSettings() {
                                         </div>
                                         <Input
                                             inputIdentifier="port"
+                                            label={translate('SMTP port')}
+                                            required
                                             value={emailSettings.port}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('port', e.target.value);
@@ -199,14 +189,10 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <User className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="username" className="font-medium" required>
-                                                {translate('SMTP Username')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="username"
+                                            label={translate('SMTP username')}
+                                            required
                                             value={emailSettings.username}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('username', e.target.value);
@@ -215,14 +201,9 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Lock className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="password" className="font-medium">
-                                                {translate('SMTP Password')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="password"
+                                            label={translate('SMTP password')}
                                             inputType="password"
                                             value={emailSettings.password}
                                             onChange={(e) => {
@@ -256,14 +237,10 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Mail className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="fromAddress" className="font-medium" required>
-                                                {translate('From Address')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="fromAddress"
+                                            label={translate('From address')}
+                                            required
                                             value={emailSettings.fromAddress}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromAddress', e.target.value);
@@ -272,14 +249,10 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <User className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="fromName" className="font-medium" required>
-                                                {translate('From Name')}
-                                            </Label>
-                                        </div>
                                         <Input
                                             inputIdentifier="fromName"
+                                            label={translate('From name')}
+                                            required
                                             value={emailSettings.fromName}
                                             onChange={(e) => {
                                                 handleEmailSettingsChange('fromName', e.target.value);
@@ -303,11 +276,9 @@ export default function EmailSettings() {
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="testEmail" className="font-medium">
-                                        {translate('Send Test To')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="testEmail"
+                                        label={translate('Send test email to')}
                                         inputType="email"
                                         inputMode="email"
                                         value={testEmail}

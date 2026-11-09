@@ -263,14 +263,11 @@ export default function BrandSettings() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             {/* Legal name */}
                             <div className="grid gap-2">
-                                <Label required htmlFor="organization_name">
-                                    {translate('Legal name')}
-                                </Label>
-
                                 <Input
                                     required
                                     id="organization_name"
                                     name="organization_name"
+                                    label={translate('Legal name')}
                                     value={form.organization_name}
                                     onChange={(event) => {
                                         handleOrganizationChange('organization_name', event.target.value);
@@ -280,12 +277,11 @@ export default function BrandSettings() {
 
                             {/* Tax ID / PIN number */}
                             <div className="grid gap-2">
-                                <Label htmlFor="organization_tax_id_pin_number">{translate('Tax ID/PIN number')}</Label>
-
                                 <Input
                                     inputIdentifier="organization_tax_id_pin_number"
                                     name="organization_tax_id_pin_number"
                                     value={form.organization_tax_id_pin_number}
+                                    label={translate('Tax ID/PIN number')}
                                     onChange={(event) => {
                                         handleOrganizationChange('organization_tax_id_pin_number', event.target.value);
                                     }}
@@ -294,11 +290,10 @@ export default function BrandSettings() {
 
                             {/* Phone number */}
                             <div className="grid gap-2">
-                                <Label htmlFor="organization_phone_number">{translate('Phone number')}</Label>
-
                                 <Input
                                     inputIdentifier="organization_phone_number"
                                     name="organization_phone_number"
+                                    label={translate('Phone number')}
                                     inputType="tel"
                                     value={form.organization_phone_number}
                                     onChange={(event) => {
@@ -309,11 +304,10 @@ export default function BrandSettings() {
 
                             {/* Email */}
                             <div className="grid gap-2">
-                                <Label htmlFor="organization_email">{translate('Email')}</Label>
-
                                 <Input
                                     inputIdentifier="organization_email"
                                     name="organization_email"
+                                    label={translate('Email')}
                                     inputType="email"
                                     inputMode="email"
                                     value={form.organization_email}

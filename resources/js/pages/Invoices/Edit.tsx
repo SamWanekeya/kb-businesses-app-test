@@ -313,13 +313,13 @@ export default function InvoiceEdit() {
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-4">
                         {/* Row 1: Invoice Name, Sales Order */}
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={translate('Invoice Name')} required error={errors.name}>
-                                <Input
-                                    value={form.name}
-                                    onChange={(e) => set('name', e.target.value)}
-                                    className={errors.name ? 'border-red-500' : ''}
-                                />
-                            </Field>
+                            <Input
+                                value={form.name}
+                                label={translate('Invoice name')}
+                                required
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
                             <Field label={translate('Sales Order')} required error={errors.sales_order_id}>
@@ -404,46 +404,46 @@ export default function InvoiceEdit() {
                         </Field>
 
                         {/* Row 3: Invoice Date, Due Date, Status, Assign To */}
-                        <Field label={translate('Invoice Date')} required error={errors.invoice_date}>
-                            <div
-                                className="cursor-pointer"
-                                onClick={(e) => {
-                                    const input = (e.currentTarget as HTMLElement).querySelector('input');
-                                    try {
-                                        (input as any)?.showPicker?.();
-                                    } catch {
-                                        input?.focus();
-                                    }
-                                }}
-                            >
-                                <Input
-                                    type="date"
-                                    value={form.invoice_date}
-                                    onChange={(e) => set('invoice_date', e.target.value)}
-                                    className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`}
-                                />
-                            </div>
-                        </Field>
-                        <Field label={translate('Due Date')} required error={errors.due_date}>
-                            <div
-                                className="cursor-pointer"
-                                onClick={(e) => {
-                                    const input = (e.currentTarget as HTMLElement).querySelector('input');
-                                    try {
-                                        (input as any)?.showPicker?.();
-                                    } catch {
-                                        input?.focus();
-                                    }
-                                }}
-                            >
-                                <Input
-                                    type="date"
-                                    value={form.due_date}
-                                    onChange={(e) => set('due_date', e.target.value)}
-                                    className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
-                                />
-                            </div>
-                        </Field>
+                        <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                                const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                try {
+                                    (input as any)?.showPicker?.();
+                                } catch {
+                                    input?.focus();
+                                }
+                            }}
+                        >
+                            <Input
+                                type="date"
+                                value={form.invoice_date}
+                                label={translate('Invoice date')}
+                                required
+                                onChange={(e) => set('invoice_date', e.target.value)}
+                                className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`}
+                            />
+                        </div>
+                        <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                                const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                try {
+                                    (input as any)?.showPicker?.();
+                                } catch {
+                                    input?.focus();
+                                }
+                            }}
+                        >
+                            <Input
+                                type="date"
+                                value={form.due_date}
+                                label={translate('Due date')}
+                                required
+                                onChange={(e) => set('due_date', e.target.value)}
+                                className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
+                            />
+                        </div>
                         <Field label={translate('Status')} error={errors.status}>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger>
@@ -510,34 +510,34 @@ export default function InvoiceEdit() {
                             />
                         </Field>
                         <div className="grid grid-cols-2 gap-4">
-                            <Field label={translate('City')} required error={errors.billing_city}>
-                                <Input
-                                    value={form.billing_city}
-                                    onChange={(e) => set('billing_city', e.target.value)}
-                                    className={errors.billing_city ? 'border-red-500' : ''}
-                                />
-                            </Field>
-                            <Field label={translate('State')} required error={errors.billing_state}>
-                                <Input
-                                    value={form.billing_state}
-                                    onChange={(e) => set('billing_state', e.target.value)}
-                                    className={errors.billing_state ? 'border-red-500' : ''}
-                                />
-                            </Field>
-                            <Field label={translate('Country')} required error={errors.billing_country}>
-                                <Input
-                                    value={form.billing_country}
-                                    onChange={(e) => set('billing_country', e.target.value)}
-                                    className={errors.billing_country ? 'border-red-500' : ''}
-                                />
-                            </Field>
-                            <Field label={translate('Postal Code')} required error={errors.billing_postal_code}>
-                                <Input
-                                    value={form.billing_postal_code}
-                                    onChange={(e) => set('billing_postal_code', e.target.value)}
-                                    className={errors.billing_postal_code ? 'border-red-500' : ''}
-                                />
-                            </Field>
+                            <Input
+                                value={form.billing_city}
+                                label={translate('City')}
+                                required
+                                onChange={(e) => set('billing_city', e.target.value)}
+                                className={errors.billing_city ? 'border-red-500' : ''}
+                            />
+                            <Input
+                                value={form.billing_state}
+                                label={translate('Billing state')}
+                                required
+                                onChange={(e) => set('billing_state', e.target.value)}
+                                className={errors.billing_state ? 'border-red-500' : ''}
+                            />
+                            <Input
+                                value={form.billing_country}
+                                label={translate('Billing country')}
+                                required
+                                onChange={(e) => set('billing_country', e.target.value)}
+                                className={errors.billing_country ? 'border-red-500' : ''}
+                            />
+                            <Input
+                                value={form.billing_postal_code}
+                                label={translate('Postal code')}
+                                required
+                                onChange={(e) => set('billing_postal_code', e.target.value)}
+                                className={errors.billing_postal_code ? 'border-red-500' : ''}
+                            />
                         </div>
                         <Field label={translate('Terms')} error={errors.terms}>
                             <Textarea value={form.terms} onChange={(e) => set('terms', e.target.value)} rows={2} />
@@ -628,12 +628,11 @@ export default function InvoiceEdit() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Quantity')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Quantity')}
+                                                        required
                                                         min="1"
                                                         value={line.quantity}
                                                         disabled={isPaidOrCancelled}
@@ -697,9 +696,7 @@ export default function InvoiceEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Tax')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Tax')}</span>
                                                     <span className="text-foreground/75 text-sm">
                                                         {prod?.tax
                                                             ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
@@ -707,9 +704,7 @@ export default function InvoiceEdit() {
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-bold xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Total')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Total')}</span>
                                                     <span className="font-mono">{fmt(c.total)}</span>
                                                 </td>
                                                 {!isPaidOrCancelled && (

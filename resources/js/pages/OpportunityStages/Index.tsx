@@ -250,13 +250,11 @@ export default function OpportunityStages() {
 
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Stage Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -269,13 +267,12 @@ export default function OpportunityStages() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="color" required>
-                                    {translate('Color')}
-                                </Label>
                                 <div className="flex items-center gap-2">
                                     <Input
                                         inputIdentifier="color"
                                         type="color"
+                                        label={translate('Color')}
+                                        required
                                         value={formData.color}
                                         onChange={(e) => {
                                             setFormData({ ...formData, color: e.target.value });
@@ -299,13 +296,12 @@ export default function OpportunityStages() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="probability" required>
-                                    {translate('Probability (%)')}
-                                </Label>
                                 <Input
                                     inputIdentifier="probability"
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Probability(%)')}
+                                    required
                                     min={0}
                                     max={100}
                                     value={formData.probability}

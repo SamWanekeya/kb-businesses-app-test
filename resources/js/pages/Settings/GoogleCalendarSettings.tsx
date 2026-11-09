@@ -100,12 +100,10 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
 
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="googleCalendarId">
-                                    {translate('Google Calendar ID')}
-                                    <span className="ml-1 text-red-500">*</span>
-                                </Label>
                                 <Input
                                     inputIdentifier="googleCalendarId"
+                                    label={translate('Google calendar ID')}
+                                    required
                                     inputType="text"
                                     inputMode="text"
                                     value={formData.googleCalendarId}
@@ -117,9 +115,9 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="googleCalendarJson">{translate('Service Account JSON File')}</Label>
                                 <Input
                                     inputIdentifier="googleCalendarJson"
+                                    label={translate('Service account JSON file')}
                                     inputType="file"
                                     accept=".json"
                                     onChange={(e) => {

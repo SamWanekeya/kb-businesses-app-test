@@ -162,13 +162,11 @@ export default function OpportunityCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" className="text-sm" required>
-                                    {translate('Opportunity Name')}
-                                </Label>
                                 <Input
                                     inputType="text"
                                     inputMode="text"
                                     inputIdentifier="name"
+                                    label={translate('Name')}
                                     value={data.name}
                                     onChange={(e) => {
                                         handleInputChange('name', e.target.value);
@@ -196,9 +194,6 @@ export default function OpportunityCreate() {
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="close_date" className="text-sm">
-                                        {translate('Close Date')}
-                                    </Label>
                                     <div
                                         className="cursor-pointer"
                                         onClick={(e) => {
@@ -213,6 +208,7 @@ export default function OpportunityCreate() {
                                         <Input
                                             id="close_date"
                                             type="date"
+                                            label={translate('Close date')}
                                             value={data.close_date}
                                             onChange={(e) => {
                                                 handleInputChange('close_date', e.target.value);
@@ -615,10 +611,10 @@ export default function OpportunityCreate() {
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
-                                                            <label className="text-foreground/75 mb-1 block text-xs">{translate('Quantity')} *</label>
                                                             <Input
                                                                 inputType="number"
                                                                 inputMode="decimal"
+                                                                label={translate('Quantity')}
                                                                 min="1"
                                                                 value={row.quantity}
                                                                 onChange={(e) => {
@@ -637,6 +633,8 @@ export default function OpportunityCreate() {
                                                             <Input
                                                                 inputType="number"
                                                                 inputMode="decimal"
+                                                                label={translate('Unit price')}
+                                                                required
                                                                 step="0.01"
                                                                 min="0"
                                                                 value={row.unit_price}
@@ -682,7 +680,9 @@ export default function OpportunityCreate() {
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
                                     <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
-                                    <span className="font-mono text-base font-extrabold text-fuchsia-600 dark:text-fuchsia-400">{fmt(grandTotal)}</span>
+                                    <span className="font-mono text-base font-extrabold text-fuchsia-600 dark:text-fuchsia-400">
+                                        {fmt(grandTotal)}
+                                    </span>
                                 </div>
                             </div>
                         </div>

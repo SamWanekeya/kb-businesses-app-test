@@ -103,8 +103,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                         </CardHeader>
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
                             <div className="grid gap-2">
-                                <Label>{translate('Template Name')}</Label>
-                                <Input value={template.name} disabled />
+                                <Input value={template.name} label={translate('Template name')} disabled />
                             </div>
                         </CardContent>
                     </Card>

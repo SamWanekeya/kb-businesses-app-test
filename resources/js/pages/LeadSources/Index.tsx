@@ -252,13 +252,11 @@ export default function LeadSources() {
 
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Source Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });

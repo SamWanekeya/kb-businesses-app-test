@@ -212,10 +212,12 @@ export default function DeliveryOrderCreate() {
                     <SectionHeader title={translate('Order Details')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Order Name')} <span className="text-red-500">*</span>
-                            </Label>
-                            <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={form.name}
+                                label={translate('Delivery order name')}
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             <FieldError message={errors.name} />
                         </div>
 
@@ -333,9 +335,6 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Date')} <span className="text-red-500">*</span>
-                            </Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -350,6 +349,8 @@ export default function DeliveryOrderCreate() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
+                                    label={translate('Delivery date')}
+                                    required
                                     onChange={(e) => set('delivery_date', e.target.value)}
                                     className={`cursor-pointer ${errors.delivery_date ? 'border-red-500' : ''}`}
                                 />
@@ -372,6 +373,8 @@ export default function DeliveryOrderCreate() {
                             >
                                 <Input
                                     type="date"
+                                    label={translate('Expected delivery date')}
+                                    required
                                     value={form.expected_delivery_date}
                                     onChange={(e) => set('expected_delivery_date', e.target.value)}
                                     className="cursor-pointer"
@@ -396,11 +399,11 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Shipping cost')}
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
@@ -531,12 +534,10 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                            {translate('Quantity')} <span className="text-red-500">*</span>
-                                                        </span>
                                                         <Input
                                                             inputType="number"
                                                             inputMode="decimal"
+                                                            label={translate('Quantity')}
                                                             min="1"
                                                             value={row.quantity}
                                                             onChange={(e) => {
@@ -549,12 +550,10 @@ export default function DeliveryOrderCreate() {
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                            {translate('Unit Weight (kg)')}
-                                                        </span>
                                                         <Input
                                                             inputType="number"
                                                             inputMode="decimal"
+                                                            label={translate('Unit weight (KG)')}
                                                             min="0"
                                                             step="0.01"
                                                             value={row.unit_weight}
@@ -626,11 +625,10 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery City')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_city}
+                                label={translate('Delivery city')}
+                                required
                                 onChange={(e) => set('delivery_city', e.target.value)}
                                 className={errors.delivery_city ? 'border-red-500' : ''}
                             />
@@ -638,11 +636,9 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery State')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_state}
+                                label={translate('Delivery state')}
                                 onChange={(e) => set('delivery_state', e.target.value)}
                                 className={errors.delivery_state ? 'border-red-500' : ''}
                             />
@@ -650,22 +646,19 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Country')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_country}
+                                label={translate('Delivery country')}
+                                required
                                 onChange={(e) => set('delivery_country', e.target.value)}
                                 className={errors.delivery_country ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_country} />
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Postal Code')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_postal_code}
+                                label={translate('Delivery postal code')}
                                 onChange={(e) => set('delivery_postal_code', e.target.value)}
                                 className={errors.delivery_postal_code ? 'border-red-500' : ''}
                             />

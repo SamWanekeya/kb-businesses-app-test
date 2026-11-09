@@ -428,13 +428,13 @@ export default function SalesOrderCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="md:col-span-2">
-                            <Field label={translate('Order Name')} required error={errors.name}>
-                                <Input
-                                    value={form.name}
-                                    onChange={(e) => set('name', e.target.value)}
-                                    className={errors.name ? 'border-red-500' : ''}
-                                />
-                            </Field>
+                            <Input
+                                value={form.name}
+                                label={translate('Name')}
+                                required
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                         </div>
                         <div className="md:col-span-2">
                             <Field label={translate('Description')} error={errors.description}>
@@ -490,46 +490,45 @@ export default function SalesOrderCreate() {
                                 </p>
                             )}
                         </Field>
-                        <Field label={translate('Order Date')} required error={errors.order_date}>
-                            <div
+                        <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                                const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                try {
+                                    (input as any)?.showPicker?.();
+                                } catch {
+                                    input?.focus();
+                                }
+                            }}
+                        >
+                            <Input
+                                type="date"
+                                value={form.order_date}
+                                label={translate('Order date')}
+                                required
+                                onChange={(e) => set('order_date', e.target.value)}
+                                className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
+                            />
+                        </div>
+                        <div
+                            className="cursor-pointer"
+                            onClick={(e) => {
+                                const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                try {
+                                    (input as any)?.showPicker?.();
+                                } catch {
+                                    input?.focus();
+                                }
+                            }}
+                        >
+                            <Input
+                                type="date"
+                                value={form.delivery_date}
+                                label={translate('Delivery date')}
+                                onChange={(e) => set('delivery_date', e.target.value)}
                                 className="cursor-pointer"
-                                onClick={(e) => {
-                                    const input = (e.currentTarget as HTMLElement).querySelector('input');
-                                    try {
-                                        (input as any)?.showPicker?.();
-                                    } catch {
-                                        input?.focus();
-                                    }
-                                }}
-                            >
-                                <Input
-                                    type="date"
-                                    value={form.order_date}
-                                    onChange={(e) => set('order_date', e.target.value)}
-                                    className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
-                                />
-                            </div>
-                        </Field>
-                        <Field label={translate('Delivery Date')} error={errors.delivery_date}>
-                            <div
-                                className="cursor-pointer"
-                                onClick={(e) => {
-                                    const input = (e.currentTarget as HTMLElement).querySelector('input');
-                                    try {
-                                        (input as any)?.showPicker?.();
-                                    } catch {
-                                        input?.focus();
-                                    }
-                                }}
-                            >
-                                <Input
-                                    type="date"
-                                    value={form.delivery_date}
-                                    onChange={(e) => set('delivery_date', e.target.value)}
-                                    className="cursor-pointer"
-                                />
-                            </div>
-                        </Field>
+                            />
+                        </div>
                         <Field label={translate('Status')} error={errors.status}>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
                                 <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
@@ -786,9 +785,7 @@ export default function SalesOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Tax')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const prod = products?.find((p: any) => String(p.id) === String(line.product_id));
                                                         return (
@@ -801,9 +798,7 @@ export default function SalesOrderCreate() {
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Total')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(c.net + c.tax)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -886,36 +881,36 @@ export default function SalesOrderCreate() {
                                             />
                                         </Field>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={translate('Billing City')} required error={errors.billing_city}>
-                                                <Input
-                                                    value={form.billing_city}
-                                                    onChange={(e) => set('billing_city', e.target.value)}
-                                                    className={errors.billing_city ? 'border-red-500' : ''}
-                                                />
-                                            </Field>
-                                            <Field label={translate('Billing State')} required error={errors.billing_state}>
-                                                <Input
-                                                    value={form.billing_state}
-                                                    onChange={(e) => set('billing_state', e.target.value)}
-                                                    className={errors.billing_state ? 'border-red-500' : ''}
-                                                />
-                                            </Field>
+                                            <Input
+                                                value={form.billing_city}
+                                                label={translate('Billing city')}
+                                                required
+                                                onChange={(e) => set('billing_city', e.target.value)}
+                                                className={errors.billing_city ? 'border-red-500' : ''}
+                                            />
+                                            <Input
+                                                value={form.billing_state}
+                                                label={translate('Billing state')}
+                                                required
+                                                onChange={(e) => set('billing_state', e.target.value)}
+                                                className={errors.billing_state ? 'border-red-500' : ''}
+                                            />
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={translate('Billing Country')} required error={errors.billing_country}>
-                                                <Input
-                                                    value={form.billing_country}
-                                                    onChange={(e) => set('billing_country', e.target.value)}
-                                                    className={errors.billing_country ? 'border-red-500' : ''}
-                                                />
-                                            </Field>
-                                            <Field label={translate('Billing Postal Code')} required error={errors.billing_postal_code}>
-                                                <Input
-                                                    value={form.billing_postal_code}
-                                                    onChange={(e) => set('billing_postal_code', e.target.value)}
-                                                    className={errors.billing_postal_code ? 'border-red-500' : ''}
-                                                />
-                                            </Field>
+                                            <Input
+                                                value={form.billing_country}
+                                                label={translate('Billing country')}
+                                                required
+                                                onChange={(e) => set('billing_country', e.target.value)}
+                                                className={errors.billing_country ? 'border-red-500' : ''}
+                                            />
+                                            <Input
+                                                value={form.billing_postal_code}
+                                                label={translate('Billing postal code')}
+                                                required
+                                                onChange={(e) => set('billing_postal_code', e.target.value)}
+                                                className={errors.billing_postal_code ? 'border-red-500' : ''}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -932,23 +927,28 @@ export default function SalesOrderCreate() {
                                             />
                                         </Field>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={translate('Shipping City')} error={errors.shipping_city}>
-                                                <Input value={form.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
-                                            </Field>
-                                            <Field label={translate('Shipping State')} error={errors.shipping_state}>
-                                                <Input value={form.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
-                                            </Field>
+                                            <Input
+                                                value={form.shipping_city}
+                                                label={translate('City')}
+                                                onChange={(e) => set('shipping_city', e.target.value)}
+                                            />
+                                            <Input
+                                                value={form.shipping_state}
+                                                label={translate('State')}
+                                                onChange={(e) => set('shipping_state', e.target.value)}
+                                            />
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={translate('Shipping Country')} error={errors.shipping_country}>
-                                                <Input value={form.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} />
-                                            </Field>
-                                            <Field label={translate('Shipping Postal Code')} error={errors.shipping_postal_code}>
-                                                <Input
-                                                    value={form.shipping_postal_code}
-                                                    onChange={(e) => set('shipping_postal_code', e.target.value)}
-                                                />
-                                            </Field>
+                                            <Input
+                                                value={form.shipping_country}
+                                                label={translate('Country')}
+                                                onChange={(e) => set('shipping_country', e.target.value)}
+                                            />
+                                            <Input
+                                                value={form.shipping_postal_code}
+                                                label={translate('Postal code')}
+                                                onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>

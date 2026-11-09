@@ -443,7 +443,12 @@ export default function ProjectShow() {
                                             >
                                                 <div className="flex items-start space-x-3">
                                                     <div className="mt-1 flex-shrink-0">
-                                                        <svg className="h-4 w-4 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg
+                                                            className="h-4 w-4 text-fuchsia-600"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
                                                             <path
                                                                 strokeLinecap="round"
                                                                 strokeLinejoin="round"

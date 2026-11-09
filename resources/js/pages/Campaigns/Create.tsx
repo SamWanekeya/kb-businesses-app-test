@@ -93,10 +93,13 @@ export default function CampaignCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
-                            <Label className="text-sm" required>
-                                {translate('Campaign Name')}
-                            </Label>
-                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={data.name}
+                                label={translate('Campaign name')}
+                                required
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
@@ -155,9 +158,6 @@ export default function CampaignCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('Start Date')}
-                            </Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -172,6 +172,8 @@ export default function CampaignCreate() {
                                 <Input
                                     type="date"
                                     value={data.start_date}
+                                    label={translate('Start date')}
+                                    required
                                     onChange={(e) => set('start_date', e.target.value)}
                                     className={`cursor-pointer ${errors.start_date ? 'border-red-500' : ''}`}
                                 />
@@ -180,9 +182,6 @@ export default function CampaignCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('End Date')}
-                            </Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -197,6 +196,8 @@ export default function CampaignCreate() {
                                 <Input
                                     type="date"
                                     value={data.end_date}
+                                    label={translate('End date')}
+                                    required
                                     onChange={(e) => set('end_date', e.target.value)}
                                     className={`cursor-pointer ${errors.end_date ? 'border-red-500' : ''}`}
                                 />
@@ -258,12 +259,12 @@ export default function CampaignCreate() {
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Budget')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Budget')}
                                     step="0.01"
                                     min="0"
                                     value={data.budget}
@@ -274,12 +275,12 @@ export default function CampaignCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Actual Cost')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Actual cost')}
                                     step="0.01"
                                     min="0"
                                     value={data.actual_cost}
@@ -290,10 +291,10 @@ export default function CampaignCreate() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Expected Response')}</Label>
                             <Input
                                 inputType="number"
                                 inputMode="decimal"
+                                label={translate('Expected response')}
                                 min="0"
                                 value={data.expected_response}
                                 onChange={(e) => set('expected_response', e.target.value)}

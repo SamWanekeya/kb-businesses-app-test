@@ -215,10 +215,12 @@ export default function DeliveryOrderEdit() {
                     <SectionHeader title={translate('Order Details')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Order Name')} <span className="text-red-500">*</span>
-                            </Label>
-                            <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={form.name}
+                                label={translate('Delivery order name')}
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             <FieldError message={errors.name} />
                         </div>
 
@@ -321,6 +323,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
+                                    label={translate('Delivery date')}
                                     onChange={(e) => set('delivery_date', e.target.value)}
                                     className={`cursor-pointer ${errors.delivery_date ? 'border-red-500' : ''}`}
                                 />
@@ -329,7 +332,6 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected Delivery Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -344,6 +346,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.expected_delivery_date}
+                                    label={translate('Expected delivery date')}
                                     onChange={(e) => set('expected_delivery_date', e.target.value)}
                                     className="cursor-pointer"
                                 />
@@ -367,11 +370,11 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Shipping cost')}
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
@@ -589,11 +592,10 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('DeliveryCity')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_city}
+                                label={translate('Delivery city')}
+                                required
                                 onChange={(e) => set('delivery_city', e.target.value)}
                                 className={errors.delivery_city ? 'border-red-500' : ''}
                             />
@@ -601,11 +603,10 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery State')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_state}
+                                label={translate('Delivery state')}
+                                required
                                 onChange={(e) => set('delivery_state', e.target.value)}
                                 className={errors.delivery_state ? 'border-red-500' : ''}
                             />
@@ -618,6 +619,8 @@ export default function DeliveryOrderEdit() {
                             </Label>
                             <Input
                                 value={form.delivery_country}
+                                label={translate('Delivery country')}
+                                required
                                 onChange={(e) => set('delivery_country', e.target.value)}
                                 className={errors.delivery_country ? 'border-red-500' : ''}
                             />
@@ -625,11 +628,10 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Postal Code')} <span className="text-red-500">*</span>
-                            </Label>
                             <Input
                                 value={form.delivery_postal_code}
+                                label={translate('Delivery postal code')}
+                                required
                                 onChange={(e) => set('delivery_postal_code', e.target.value)}
                                 className={errors.delivery_postal_code ? 'border-red-500' : ''}
                             />

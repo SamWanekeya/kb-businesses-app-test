@@ -5,21 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Link, router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Building2, ChevronRight, CreditCard, DollarSign, RefreshCw } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    Area,
-    AreaChart,
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Cell,
-    LabelList,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis
-} from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface SuperAdminDashboardData {
     stats: {
@@ -58,7 +46,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [selectedYear, setSelectedYear] = useState<number>(() => dashboardData?.revenueYear ?? new Date().getFullYear());
     const [selectedOrganizationsYear, setSelectedOrganizationsYear] = useState<number>(
-        () => dashboardData?.organizationsYear ?? new Date().getFullYear()
+        () => dashboardData?.organizationsYear ?? new Date().getFullYear(),
     );
 
     const handleRefresh = () => {
@@ -74,8 +62,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
             label: translate('Refresh'),
             icon: <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />,
             variant: 'outline' as const,
-            onClick: handleRefresh
-        }
+            onClick: handleRefresh,
+        },
     ];
 
     const stats = dashboardData?.stats || {
@@ -86,7 +74,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         activePlans: 0,
         pendingRequests: 0,
         monthlyGrowth: 0,
-        activeDiscounts: 0
+        activeDiscounts: 0,
     };
 
     const recentActivity = dashboardData?.recentActivity || [];
@@ -101,7 +89,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         router.reload({
             data: { revenueYear: year, organizationsYear: selectedOrganizationsYear },
             only: ['dashboardData'],
-            preserveState: true
+            preserveState: true,
         });
     };
 
@@ -110,12 +98,11 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         router.reload({
             data: { revenueYear: selectedYear, organizationsYear: year },
             only: ['dashboardData'],
-            preserveState: true
+            preserveState: true,
         });
     };
 
     const formatCurrency = (val: number) => window.kbSettings.formatCurrency(val) ?? `$${val.toLocaleString()}`;
-
 
     return (
         <PageTemplate
@@ -126,35 +113,31 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         >
             <div className="space-y-6">
                 {/* Page overview */}
-                <section
-                    className="flex flex-col gap-4 rounded-lg border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
+                <section className="bg-card flex flex-col gap-4 rounded-lg border p-5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground">{translate('Here’s the latest for')}</p>
-                        <h2 className="mt-1 text-2xl font-normal tracking-tight text-foreground sm:text-3xl">
-                            {auth?.user?.name}
-                        </h2>
-                        <p className="mt-3 text-sm text-muted-foreground">
-                            <span
-                                className="font-medium text-foreground">{stats.totalActivePlanOrganizations.toLocaleString()}</span>{' '}
+                        <p className="text-muted-foreground text-sm">{translate('Here’s the latest for')}</p>
+                        <h2 className="text-foreground mt-1 text-2xl font-normal tracking-tight sm:text-3xl">{auth?.user?.name}</h2>
+                        <p className="text-muted-foreground mt-3 text-sm">
+                            <span className="text-foreground font-medium">{stats.totalActivePlanOrganizations.toLocaleString()}</span>{' '}
                             {translate('organizations with active plans')}
                         </p>
                     </div>
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
                         <Link
                             href={route('discounts.index')}
-                            className="rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Discounts')}
                         </Link>
                         <Link
                             href={route('referral-program.index')}
-                            className="rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Referral program')}
                         </Link>
                         <Link
                             href={route('settings.index')}
-                            className="rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Settings')}
                         </Link>
@@ -163,50 +146,57 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
                 {/* Key metrics */}
                 <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                    <Link href={route('subscriptions.plan-orders.index')}
-                          className="group rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40">
-                        <p className="text-sm text-muted-foreground">{translate('Total Revenue')}</p>
+                    <Link
+                        href={route('subscriptions.plan-orders.index')}
+                        className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
+                    >
+                        <p className="text-muted-foreground text-sm">{translate('Total Revenue')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{formatCurrency(stats.totalRevenue)}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{translate('from approved orders')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('from approved orders')}</p>
                     </Link>
 
-                    <Link href={route('organizations.index')}
-                          className="group rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40">
-                        <p className="text-sm text-muted-foreground">{translate('Total Organizations')}</p>
+                    <Link href={route('organizations.index')} className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors">
+                        <p className="text-muted-foreground text-sm">{translate('Total Organizations')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.totalOrganizations.toLocaleString()}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                            {stats.monthlyGrowth > 0 ? '+' : ''}{stats.monthlyGrowth}% {translate('this month')}
+                        <p className="text-muted-foreground mt-1 text-xs">
+                            {stats.monthlyGrowth > 0 ? '+' : ''}
+                            {stats.monthlyGrowth}% {translate('this month')}
                         </p>
                     </Link>
 
-                    <Link href={route('subscriptions.plans.index')}
-                          className="group rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40">
-                        <p className="text-sm text-muted-foreground">{translate('Active Plans')}</p>
+                    <Link
+                        href={route('subscriptions.plans.index')}
+                        className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
+                    >
+                        <p className="text-muted-foreground text-sm">{translate('Active Plans')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.activePlans.toLocaleString()}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{translate('subscription plans')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('subscription plans')}</p>
                     </Link>
 
-                    <div className="rounded-lg border bg-card p-4">
-                        <p className="text-sm text-muted-foreground">{translate('Total Users')}</p>
+                    <div className="bg-card rounded-lg border p-4">
+                        <p className="text-muted-foreground text-sm">{translate('Total Users')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.totalUsers.toLocaleString()}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{translate('registered users')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('registered users')}</p>
                     </div>
 
-                    <Link href={route('subscriptions.plan-requests.index')}
-                          className="group rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40">
+                    <Link
+                        href={route('subscriptions.plan-requests.index')}
+                        className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
+                    >
                         <div className="flex items-center justify-between gap-2">
-                            <p className="text-sm text-muted-foreground">{translate('Pending Requests')}</p>
+                            <p className="text-muted-foreground text-sm">{translate('Pending Requests')}</p>
                             {stats.pendingRequests > 0 && (
-                                <span
-                                    className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                <span className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
                                     {translate('Action needed')}
                                 </span>
                             )}
                         </div>
-                        <p className={`mt-2 text-2xl font-semibold tracking-tight tabular-nums ${stats.pendingRequests > 0 ? 'text-amber-700 dark:text-amber-400' : ''}`}>
+                        <p
+                            className={`mt-2 text-2xl font-semibold tracking-tight tabular-nums ${stats.pendingRequests > 0 ? 'text-amber-700 dark:text-amber-400' : ''}`}
+                        >
                             {stats.pendingRequests.toLocaleString()}
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground">{translate('awaiting approval')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('awaiting approval')}</p>
                     </Link>
                 </section>
 
@@ -217,9 +207,10 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle
-                                        className="text-base font-bold">{translate('Recently Registered Organizations')}</CardTitle>
-                                    <p className="mt-0.5 text-xs text-muted-foreground">{translate('Latest organizations that joined the platform')}</p>
+                                    <CardTitle className="text-base font-bold">{translate('Recently Registered Organizations')}</CardTitle>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                        {translate('Latest organizations that joined the platform')}
+                                    </p>
                                 </div>
                                 <Link
                                     href={route('organizations.index')}
@@ -235,7 +226,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     {recentActivity.map((organization, i) => (
                                         <div
                                             key={organization.id}
-                                            className="flex items-center gap-3 border-b px-5 py-3.5 last:border-b-0 transition-colors hover:bg-muted/40"
+                                            className="hover:bg-muted/40 flex items-center gap-3 border-b px-5 py-3.5 transition-colors last:border-b-0"
                                         >
                                             <div className="relative h-9 w-9 shrink-0">
                                                 {organization.avatar ? (
@@ -254,25 +245,23 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-bold">{organization.name}</p>
-                                                <p className="mt-0.5 truncate text-xs text-muted-foreground">{organization.email}</p>
+                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">{organization.email}</p>
                                             </div>
                                             <div className="flex shrink-0 flex-col items-end gap-1">
-                                                <span
-                                                    className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-foreground">
+                                                <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-1 text-xs font-medium">
                                                     {translate('Active')}
                                                 </span>
-                                                <span
-                                                    className="text-xs text-muted-foreground">{organization.registered_at}</span>
+                                                <span className="text-muted-foreground text-xs">{organization.registered_at}</span>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                    <div className="rounded-full bg-muted p-4">
-                                        <Building2 className="h-6 w-6 text-muted-foreground" />
+                                    <div className="bg-muted rounded-full p-4">
+                                        <Building2 className="text-muted-foreground h-6 w-6" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground">{translate('No organizations registered yet')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No organizations registered yet')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -284,7 +273,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex items-center justify-between">
                                 <div>
                                     <CardTitle className="text-base font-bold">{translate('Top Plans')}</CardTitle>
-                                    <p className="mt-0.5 text-xs text-muted-foreground">{translate('By revenue generated')}</p>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">{translate('By revenue generated')}</p>
                                 </div>
                                 <Link
                                     href={route('subscriptions.plans.index')}
@@ -302,26 +291,26 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                         return (
                                             <div
                                                 key={plan.name}
-                                                className="flex items-center gap-3 border-b px-5 py-4 last:border-b-0 transition-colors hover:bg-muted/40"
+                                                className="hover:bg-muted/40 flex items-center gap-3 border-b px-5 py-4 transition-colors last:border-b-0"
                                             >
                                                 <UserInitials name={`${index + 1}`} />
                                                 <div className="min-w-0 flex-1">
                                                     <div className="mb-1.5 flex items-center gap-2">
                                                         <p className="truncate text-sm font-bold">{plan.name}</p>
                                                     </div>
-                                                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                                                    <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
                                                         <div
-                                                            className="h-1.5 rounded-full bg-primary transition-all"
+                                                            className="bg-primary h-1.5 rounded-full transition-all"
                                                             style={{ width: `${barPct}%` }}
                                                         />
                                                     </div>
-                                                    <p className="mt-1 text-xs text-muted-foreground">
+                                                    <p className="text-muted-foreground mt-1 text-xs">
                                                         {plan.subscribers} {translate('subscribers')}
                                                     </p>
                                                 </div>
                                                 <div className="shrink-0 text-right">
                                                     <p className="font-mono text-sm font-extrabold">{formatCurrency(plan.revenue)}</p>
-                                                    <p className="text-xs text-muted-foreground">{translate('revenue')}</p>
+                                                    <p className="text-muted-foreground text-xs">{translate('revenue')}</p>
                                                 </div>
                                             </div>
                                         );
@@ -329,10 +318,10 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                 </div>
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                    <div className="rounded-full bg-muted p-4">
-                                        <CreditCard className="h-6 w-6 text-muted-foreground" />
+                                    <div className="bg-muted rounded-full p-4">
+                                        <CreditCard className="text-muted-foreground h-6 w-6" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground">{translate('No plan data available')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No plan data available')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -345,15 +334,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle
-                                        className="text-base font-bold">{translate('New Organizations Registered')}</CardTitle>
-                                    <p className="mt-0.5 text-xs text-muted-foreground">
+                                    <CardTitle className="text-base font-bold">{translate('New Organizations Registered')}</CardTitle>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
                                         {translate('Organizations joined per month')} — {selectedOrganizationsYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span
-                                        className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">
+                                    <span className="bg-muted text-muted-foreground inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs">
                                         {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {translate('total')}
                                     </span>
                                     <Select
@@ -384,8 +371,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                         margin={{ top: 20, right: 8, left: 0, bottom: 0 }}
                                         accessibilityLayer={false}
                                     >
-                                        <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.12}
-                                                       vertical={false} />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.12} vertical={false} />
                                         <XAxis
                                             dataKey="short"
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
@@ -407,13 +393,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                 borderRadius: 8,
                                                 border: '1px solid hsl(var(--border))',
                                                 backgroundColor: 'hsl(var(--popover))',
-                                                color: 'hsl(var(--popover-foreground))'
+                                                color: 'hsl(var(--popover-foreground))',
                                             }}
                                             formatter={(value: number) => [value, translate('Organizations')]}
                                             labelFormatter={(label, payload) => payload?.[0]?.payload?.month ?? label}
                                         />
-                                        <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={30}
-                                             isAnimationActive={false}>
+                                        <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={30} isAnimationActive={false}>
                                             <LabelList
                                                 dataKey="count"
                                                 position="top"
@@ -428,10 +413,10 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                 </ResponsiveContainer>
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                    <div className="rounded-full bg-muted p-4">
-                                        <Building2 className="h-6 w-6 text-muted-foreground" />
+                                    <div className="bg-muted rounded-full p-4">
+                                        <Building2 className="text-muted-foreground h-6 w-6" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground">{translate('No organization data available')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No organization data available')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -444,15 +429,13 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle
-                                        className="text-base font-bold">{translate('Monthly Revenue')}</CardTitle>
-                                    <p className="mt-0.5 text-xs text-muted-foreground">
+                                    <CardTitle className="text-base font-bold">{translate('Monthly Revenue')}</CardTitle>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
                                         {translate('Approved plan orders')} — {selectedYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span
-                                        className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 font-mono text-xs text-foreground">
+                                    <span className="bg-muted text-foreground inline-flex items-center gap-1 rounded-md px-2 py-1 font-mono text-xs">
                                         {formatCurrency(monthlyRevenue.reduce((s, m) => s + m.revenue, 0))}
                                     </span>
                                     <Select
@@ -478,16 +461,14 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardContent className="p-4 pt-5">
                             {monthlyRevenue.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
-                                    <AreaChart data={monthlyRevenue} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}
-                                               accessibilityLayer={false}>
+                                    <AreaChart data={monthlyRevenue} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} accessibilityLayer={false}>
                                         <defs>
                                             <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
                                                 <stop offset="5%" stopColor="#a12582" stopOpacity={0.2} />
                                                 <stop offset="95%" stopColor="#a12582" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.12}
-                                                       vertical={false} />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.12} vertical={false} />
                                         <XAxis
                                             dataKey="short"
                                             tick={{ fontSize: 11, fill: 'currentColor' }}
@@ -509,7 +490,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                 borderRadius: 8,
                                                 border: '1px solid hsl(var(--border))',
                                                 background: 'hsl(var(--popover))',
-                                                color: 'hsl(var(--popover-foreground))'
+                                                color: 'hsl(var(--popover-foreground))',
                                             }}
                                             formatter={(value: number) => [formatCurrency(value), translate('Revenue')]}
                                             labelFormatter={(label, payload) => payload?.[0]?.payload?.month ?? label}
@@ -527,10 +508,10 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                 </ResponsiveContainer>
                             ) : (
                                 <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                    <div className="rounded-full bg-muted p-4">
-                                        <DollarSign className="h-6 w-6 text-muted-foreground" />
+                                    <div className="bg-muted rounded-full p-4">
+                                        <DollarSign className="text-muted-foreground h-6 w-6" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground">{translate('No revenue data available')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No revenue data available')}</p>
                                 </div>
                             )}
                         </CardContent>

@@ -113,13 +113,11 @@ export default function LeadEdit() {
                         <div className="space-y-4 p-6">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="name" className="text-sm" required>
-                                        {translate('Lead Name')}
-                                    </Label>
                                     <Input
                                         inputType="text"
                                         inputMode="text"
                                         inputIdentifier="name"
+                                        label={translate('Name')}
                                         value={data.name}
                                         onChange={(e) => {
                                             handleInputChange('name', e.target.value);
@@ -130,13 +128,12 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="email" className="text-sm" required>
-                                        {translate('Email')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="email"
                                         inputType="email"
                                         inputMode="email"
+                                        label={translate('Email')}
+                                        required
                                         value={data.email}
                                         onChange={(e) => {
                                             handleInputChange('email', e.target.value);
@@ -147,12 +144,11 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="phone" className="text-sm" required>
-                                        {translate('Phone')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="phone"
                                         value={data.phone}
+                                        label={translate('Phone')}
+                                        required
                                         onChange={(e) => {
                                             handleInputChange('phone', e.target.value);
                                         }}
@@ -162,12 +158,10 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="position" className="text-sm">
-                                        {translate('Position')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="position"
                                         value={data.position}
+                                        label={translate('Position')}
                                         onChange={(e) => {
                                             handleInputChange('position', e.target.value);
                                         }}
@@ -177,12 +171,11 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="organization" className="text-sm" required>
-                                        {translate('Organization')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="organization"
                                         value={data.organization}
+                                        label={translate('Organization')}
+                                        required
                                         onChange={(e) => {
                                             handleInputChange('organization', e.target.value);
                                         }}
@@ -192,12 +185,11 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="account_name" className="text-sm">
-                                        {translate('Account Name')}
-                                    </Label>
+                                    -
                                     <Input
                                         inputIdentifier="account_name"
                                         value={data.account_name}
+                                        label={translate('Account name')}
                                         onChange={(e) => {
                                             handleInputChange('account_name', e.target.value);
                                         }}
@@ -207,12 +199,10 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="website" className="text-sm">
-                                        {translate('Website')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="website"
                                         value={data.website}
+                                        label={translate('Website')}
                                         onChange={(e) => {
                                             handleInputChange('website', e.target.value);
                                         }}
@@ -222,13 +212,12 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="value" className="text-sm" required>
-                                        {translate('Lead Value')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="value"
                                         inputType="number"
                                         inputMode="decimal"
+                                        label={translate('Lead value')}
+                                        required
                                         step="0.01"
                                         min="0"
                                         value={data.value}

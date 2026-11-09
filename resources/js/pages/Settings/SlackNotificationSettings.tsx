@@ -6,7 +6,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Bell, Link, MessagesCircle, Send } from 'lucide-react';
+import { Bell, MessagesCircle, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -138,13 +138,10 @@ export default function SlackNotificationSettings() {
                         <div className="rounded-lg border border-gray-200 bg-white p-6">
                             <div className="grid grid-cols-1 gap-6">
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
-                                        <Link className="h-4 w-4" />
-                                        {translate('Webhook URL')}
-                                    </Label>
                                     <Input
                                         value={slackWebhookUrl}
-                                        required={true}
+                                        label={translate('Webhook URL')}
+                                        required
                                         onChange={(e) => {
                                             setSlackWebhookUrl(e.target.value);
                                         }}

@@ -306,11 +306,10 @@ export default function ReturnOrderEdit() {
                         </div>
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm" required>
-                                    {translate('Return Order Name')}
-                                </Label>
                                 <Input
                                     value={form.name}
+                                    label={translate('Name')}
+                                    required
                                     onChange={(e) => set('name', e.target.value)}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
@@ -394,9 +393,6 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Return Date')}
-                                </Label>
                                 <div
                                     className="cursor-pointer"
                                     onClick={(e) => {
@@ -411,6 +407,8 @@ export default function ReturnOrderEdit() {
                                     <Input
                                         type="date"
                                         value={form.return_date}
+                                        label={translate('Return date')}
+                                        required
                                         onChange={(e) => set('return_date', e.target.value)}
                                         className={`cursor-pointer ${errors.return_date ? 'border-red-500' : ''}`}
                                     />
@@ -713,7 +711,9 @@ export default function ReturnOrderEdit() {
                                         </div>
                                         <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-extrabold dark:border-gray-700">
                                             <span className="text-gray-900 dark:text-white">{translate('Total Return Amount')}</span>
-                                            <span className="font-mono text-fuchsia-600 dark:text-fuchsia-400">{fmt(totals.subtotal + totals.tax)}</span>
+                                            <span className="font-mono text-fuchsia-600 dark:text-fuchsia-400">
+                                                {fmt(totals.subtotal + totals.tax)}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

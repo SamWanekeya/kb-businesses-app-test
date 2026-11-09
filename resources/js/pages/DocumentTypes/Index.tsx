@@ -194,13 +194,11 @@ export default function DocumentTypes() {
                         </div>
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="type_name" required>
-                                    {translate('Type Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="type_name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.type_name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, type_name: e.target.value });
@@ -432,9 +430,7 @@ export default function DocumentTypes() {
                                                         <FileText className="h-5 w-5" />
                                                     </div>
                                                     <div className="min-w-0 flex-1">
-                                                        <h4 className="truncate text-sm font-bold text-gray-900 dark:text-white">
-                                                            {item.type_name}
-                                                        </h4>
+                                                        <h4 className="truncate text-sm font-bold text-gray-900 dark:text-white">{item.type_name}</h4>
                                                         <div className="mt-1">
                                                             <span
                                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${item.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}

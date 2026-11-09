@@ -61,7 +61,9 @@ export default function View({ record }: ViewProps) {
                         <div className="mt-1">
                             <span
                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
-                                    record.is_default ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-gray-50 text-gray-700 ring-gray-600/20'
+                                    record.is_default
+                                        ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
+                                        : 'bg-gray-50 text-gray-700 ring-gray-600/20'
                                 }`}
                             >
                                 {record.is_default ? translate('Yes') : translate('No')}

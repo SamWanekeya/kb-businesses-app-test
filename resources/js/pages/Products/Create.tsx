@@ -203,18 +203,18 @@ export default function ProductCreate() {
                                     {/* Row 1: Name + SKU */}
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Name')}</Label>
                                             <Input
                                                 value={data.name}
+                                                label={translate('Name')}
                                                 onChange={(e) => set('name', e.target.value)}
                                                 className={errors.name ? 'border-red-500' : ''}
                                             />
                                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('SKU')}</Label>
                                             <Input
                                                 value={data.sku}
+                                                label={translate('SKU')}
                                                 onChange={(e) => set('sku', e.target.value)}
                                                 className={errors.sku ? 'border-red-500' : ''}
                                             />
@@ -291,10 +291,11 @@ export default function ProductCreate() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Price')}</Label>
                                             <Input
                                                 inputType="number"
                                                 inputMode="decimal"
+                                                label={translate('Price')}
+                                                required
                                                 step="0.01"
                                                 value={data.price}
                                                 onChange={(e) => set('price', e.target.value)}
@@ -303,10 +304,11 @@ export default function ProductCreate() {
                                             {errors.price && <p className="text-xs text-red-500">{errors.price}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Stock Quantity')}</Label>
                                             <Input
                                                 inputType="number"
                                                 inputMode="decimal"
+                                                label={translate('Stock quantity')}
+                                                required
                                                 value={data.stock_quantity}
                                                 onChange={(e) => set('stock_quantity', e.target.value)}
                                                 className={errors.stock_quantity ? 'border-red-500' : ''}

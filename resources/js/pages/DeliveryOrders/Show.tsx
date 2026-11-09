@@ -262,9 +262,7 @@ export default function DeliveryOrderShow() {
                                                             <p className="text-foreground text-sm font-bold">{product.pivot?.quantity ?? 0}</p>
                                                         </TableCell>
                                                         <TableCell className="py-3 text-center">
-                                                            <p className="text-foreground text-sm font-bold">
-                                                                {product.pivot?.unit_weight ?? 0} kg
-                                                            </p>
+                                                            <p className="text-foreground text-sm font-bold">{product.pivot?.unit_weight ?? 0} kg</p>
                                                         </TableCell>
                                                         <TableCell className="py-3 text-end">
                                                             <p className="text-sm font-extrabold text-emerald-600">

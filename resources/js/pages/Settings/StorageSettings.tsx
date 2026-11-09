@@ -293,9 +293,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             {renderFileTypeSelector()}
 
             <div className="space-y-2">
-                <Label htmlFor="maxUploadSize">{translate('Max Upload Size (KB)')}</Label>
                 <Input
                     inputIdentifier="maxUploadSize"
+                    label={translate('Maximum upload size (KB)')}
                     inputType="number"
                     inputMode="decimal"
                     value={storageSettings.maxUploadSize}
@@ -311,9 +311,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
         <div className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="awsAccessKeyId">{translate('AWS Access Key ID')}</Label>
                     <Input
                         inputIdentifier="awsAccessKeyId"
+                        label={translate('AWS access key ID')}
                         value={storageSettings.awsAccessKeyId}
                         onChange={(e) => {
                             handleSettingChange('awsAccessKeyId', e.target.value);
@@ -322,9 +322,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsSecretAccessKey">{translate('AWS Secret Access Key')}</Label>
                     <Input
                         inputIdentifier="awsSecretAccessKey"
+                        label={translate('AWS secret access key')}
                         inputType="password"
                         value={storageSettings.awsSecretAccessKey}
                         onChange={(e) => {
@@ -334,9 +334,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsDefaultRegion">{translate('AWS Default Region')}</Label>
                     <Input
                         inputIdentifier="awsDefaultRegion"
+                        label={translate('AWS default region')}
                         value={storageSettings.awsDefaultRegion}
                         onChange={(e) => {
                             handleSettingChange('awsDefaultRegion', e.target.value);
@@ -345,9 +345,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsBucket">{translate('AWS Bucket')}</Label>
                     <Input
                         inputIdentifier="awsBucket"
+                        label={translate('AWS bucket')}
                         value={storageSettings.awsBucket}
                         onChange={(e) => {
                             handleSettingChange('awsBucket', e.target.value);
@@ -356,9 +356,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsUrl">{translate('AWS URL')}</Label>
                     <Input
                         inputIdentifier="awsUrl"
+                        label={translate('AWS URL')}
                         value={storageSettings.awsUrl}
                         onChange={(e) => {
                             handleSettingChange('awsUrl', e.target.value);
@@ -367,9 +367,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsEndpoint">{translate('AWS Endpoint')}</Label>
                     <Input
                         inputIdentifier="awsEndpoint"
+                        label={translate('AWS endpoint')}
                         value={storageSettings.awsEndpoint}
                         onChange={(e) => {
                             handleSettingChange('awsEndpoint', e.target.value);
@@ -382,9 +382,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 {renderFileTypeSelector()}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <Label htmlFor="awsMaxUploadSize">{translate('Max Upload Size (KB)')}</Label>
                         <Input
-                            id="awsMaxUploadSize"
+                            inputIdentifier="awsMaxUploadSize"
+                            label={translate('Maximum upload size (KB)')}
                             inputType="number"
                             inputMode="decimal"
                             value={storageSettings.maxUploadSize}
@@ -402,9 +402,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
         <div className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiAccessKey">{translate('Wasabi Access Key')}</Label>
                     <Input
                         inputIdentifier="wasabiAccessKey"
+                        label={translate('Wasabi access key')}
                         value={storageSettings.wasabiAccessKey}
                         onChange={(e) => {
                             handleSettingChange('wasabiAccessKey', e.target.value);
@@ -413,9 +413,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiSecretKey">{translate('Wasabi Secret Key')}</Label>
                     <Input
                         inputIdentifier="wasabiSecretKey"
+                        label={translate('Wasabi secret key')}
                         inputType="password"
                         value={storageSettings.wasabiSecretKey}
                         onChange={(e) => {
@@ -425,9 +425,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiRegion">{translate('Wasabi Region')}</Label>
                     <Input
                         inputIdentifier="wasabiRegion"
+                        label={translate('Wasabi region')}
                         value={storageSettings.wasabiRegion}
                         onChange={(e) => {
                             handleSettingChange('wasabiRegion', e.target.value);
@@ -436,9 +436,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiBucket">{translate('Wasabi Bucket')}</Label>
                     <Input
                         inputIdentifier="wasabiBucket"
+                        label={translate('Wasabi bucket')}
                         value={storageSettings.wasabiBucket}
                         onChange={(e) => {
                             handleSettingChange('wasabiBucket', e.target.value);
@@ -447,9 +447,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiUrl">{translate('Wasabi URL')}</Label>
                     <Input
                         inputIdentifier="wasabiUrl"
+                        label={translate('Wasabi URL')}
                         value={storageSettings.wasabiUrl}
                         onChange={(e) => {
                             handleSettingChange('wasabiUrl', e.target.value);
@@ -458,9 +458,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiRoot">{translate('Wasabi Root')}</Label>
                     <Input
                         inputIdentifier="wasabiRoot"
+                        label={translate('Wasabi root')}
                         value={storageSettings.wasabiRoot}
                         onChange={(e) => {
                             handleSettingChange('wasabiRoot', e.target.value);
@@ -472,9 +472,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             <div className="space-y-6">
                 {renderFileTypeSelector()}
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiMaxUploadSize">{translate('Max Upload Size (KB)')}</Label>
                     <Input
                         inputIdentifier="wasabiMaxUploadSize"
+                        label={translate('Maximum upload size(KB)')}
                         inputType="number"
                         inputMode="decimal"
                         value={storageSettings.maxUploadSize}

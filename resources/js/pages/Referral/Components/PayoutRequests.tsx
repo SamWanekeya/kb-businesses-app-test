@@ -176,11 +176,11 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                 </DialogHeader>
                                 <form autoComplete="off" onSubmit={handleCreatePayout} className="space-y-4">
                                     <div>
-                                        <Label htmlFor="amount">{translate('Amount')}</Label>
                                         <Input
                                             id="amount"
                                             inputType="number"
                                             inputMode="decimal"
+                                            label={translate('Amount')}
                                             step="0.01"
                                             min={settings.threshold_amount}
                                             max={stats.availableBalance}

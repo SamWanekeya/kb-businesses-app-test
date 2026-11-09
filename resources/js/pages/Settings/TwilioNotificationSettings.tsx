@@ -6,7 +6,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Bell, Key, MessageSquare, Phone, Send } from 'lucide-react';
+import { Bell, MessageSquare, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -151,12 +151,9 @@ export default function TwilioNotificationSettings() {
                         <div className="rounded-lg border border-gray-200 bg-white p-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
-                                        <Key className="h-4 w-4" />
-                                        {translate('Account SID')}
-                                    </Label>
                                     <Input
                                         value={twilioSettings.twilio_sid}
+                                        label={translate('Account SID')}
                                         onChange={(e) => {
                                             handleConfigChange('twilio_sid', e.target.value);
                                         }}
@@ -164,12 +161,9 @@ export default function TwilioNotificationSettings() {
                                     />
                                 </div>
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
-                                        <Key className="h-4 w-4" />
-                                        {translate('Auth Token')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="password"
+                                        label={translate('Auth token')}
                                         inputType="password"
                                         value={twilioSettings.twilio_token}
                                         onChange={(e) => {
@@ -179,11 +173,9 @@ export default function TwilioNotificationSettings() {
                                     />
                                 </div>
                                 <div>
-                                    <Label className="mb-2 flex items-center gap-2 text-sm text-gray-700">
-                                        <Phone className="h-4 w-4" />
-                                        {translate('From Phone Number')}
-                                    </Label>
                                     <Input
+                                        inputIdentifier="twilio_from"
+                                        label={translate('From phone number')}
                                         value={twilioSettings.twilio_from}
                                         onChange={(e) => {
                                             handleConfigChange('twilio_from', e.target.value);
@@ -229,9 +221,9 @@ export default function TwilioNotificationSettings() {
                         </div>
                         <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
                             <div>
-                                <Label className="block text-sm text-gray-700">{translate('Send Test To')}</Label>
                                 <Input
                                     value={testPhone}
+                                    label={translate('Send test to')}
                                     onChange={(e) => {
                                         setTestPhone(e.target.value);
                                     }}

@@ -221,9 +221,7 @@ export default function SalesReports() {
                       <UserInitials name={sale.account?.name || sale.name || 'Unknown'} />
                     </div> */}
                                         <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm leading-tight font-bold">
-                                                {sale.account?.name || sale.name || 'Unknown'}
-                                            </p>
+                                            <p className="truncate text-sm leading-tight font-bold">{sale.account?.name || sale.name || 'Unknown'}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">{sale.order_number}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">

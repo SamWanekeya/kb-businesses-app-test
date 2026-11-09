@@ -235,10 +235,12 @@ export default function PurchaseOrderCreate() {
                     <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
                         {/* PO Name */}
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('Purchase Order Name')}
-                            </Label>
-                            <Input value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={data.name}
+                                label={translate('Name')}
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
@@ -373,9 +375,6 @@ export default function PurchaseOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Order Date')}
-                                </Label>
                                 <div
                                     className="cursor-pointer"
                                     onClick={(e) => {
@@ -390,6 +389,7 @@ export default function PurchaseOrderCreate() {
                                     <Input
                                         type="date"
                                         value={data.order_date}
+                                        label={translate('Order date')}
                                         onChange={(e) => set('order_date', e.target.value)}
                                         className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
                                     />
@@ -401,7 +401,6 @@ export default function PurchaseOrderCreate() {
                         {/* Expected Delivery Date + Assign To */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm">{translate('Expected Delivery Date')}</Label>
                                 <div
                                     className="cursor-pointer"
                                     onClick={(e) => {
@@ -416,6 +415,7 @@ export default function PurchaseOrderCreate() {
                                     <Input
                                         type="date"
                                         value={data.expected_delivery_date}
+                                        label={translate('Expected delivery date')}
                                         onChange={(e) => set('expected_delivery_date', e.target.value)}
                                         className={`cursor-pointer ${errors.expected_delivery_date ? 'border-red-500' : ''}`}
                                     />
@@ -610,9 +610,7 @@ export default function PurchaseOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Tax')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Tax')}</span>
                                                     <span className="text-foreground/75 text-sm">
                                                         {(() => {
                                                             const p = productOptions.find((p: any) => String(p.id) === row.product_id);
@@ -623,9 +621,7 @@ export default function PurchaseOrderCreate() {
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Total')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">

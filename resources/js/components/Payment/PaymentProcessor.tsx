@@ -67,13 +67,7 @@ interface CommonPaymentProps {
  * - Render the payment form associated with the selected provider.
  * - Coordinate payment cancellation and completion with the parent modal.
  */
-export default function PaymentProcessor({
-    plan,
-    billingCycle,
-    paymentMethods,
-    onSuccess,
-    onCancel,
-}: PaymentProcessorProps) {
+export default function PaymentProcessor({ plan, billingCycle, paymentMethods, onSuccess, onCancel }: PaymentProcessorProps) {
     const { t: translate } = useTranslation();
     const { csrfToken } = usePage().props;
 
@@ -93,9 +87,7 @@ export default function PaymentProcessor({
 
     const finalPrice = Math.max(0, originalPrice - discountAmount);
 
-    const enabledPaymentMethods = paymentMethods.filter(
-        (method) => method.enabled,
-    );
+    const enabledPaymentMethods = paymentMethods.filter((method) => method.enabled);
 
     /**
      * Validates and applies the entered coupon code.
@@ -110,26 +102,21 @@ export default function PaymentProcessor({
 
         setCouponLoading(true);
 
-        const toastId = toast.loading(
-            translate('Validating provided coupon...'),
-        );
+        const toastId = toast.loading(translate('Validating provided coupon...'));
 
         try {
-            const response = await fetch(
-                route('subscriptions.coupons.validate'),
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                    body: JSON.stringify({
-                        coupon_code: normalizedCouponCode,
-                        plan_id: plan.id,
-                        amount: originalPrice,
-                    }),
+            const response = await fetch(route('subscriptions.coupons.validate'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
-            );
+                body: JSON.stringify({
+                    coupon_code: normalizedCouponCode,
+                    plan_id: plan.id,
+                    amount: originalPrice,
+                }),
+            });
 
             const data = (await response.json()) as CouponValidationResponse;
 
@@ -203,22 +190,14 @@ export default function PaymentProcessor({
 
         switch (selectedPaymentMethod) {
             case 'bank':
-                return (
-                    <BankTransferForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        bankDetails={paymentSettings.bank_detail || ''}
-                    />
-                );
+                return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={paymentSettings.bank_detail || ''} />;
 
             case 'paystack':
                 return (
                     <PaystackPaymentForm
                         {...commonProps}
                         planPrice={finalPrice}
-                        paystackKey={
-                            paymentSettings.paystack_public_key || ''
-                        }
+                        paystackKey={paymentSettings.paystack_public_key || ''}
                         currency={paymentSettings.currency || 'USD'}
                     />
                 );
@@ -237,34 +216,24 @@ export default function PaymentProcessor({
             {/* Selected plan */}
             <section aria-labelledby="checkout-plan-heading">
                 <div className="mb-3">
-                    <h2
-                        id="checkout-plan-heading"
-                        className="text-sm font-semibold text-foreground"
-                    >
+                    <h2 id="checkout-plan-heading" className="text-foreground text-sm font-semibold">
                         {translate('Selected plan')}
                     </h2>
                 </div>
 
-                <Card className="rounded-xl border-border bg-card shadow-none">
+                <Card className="border-border bg-card rounded-xl shadow-none">
                     <CardContent className="flex items-center justify-between gap-4 p-4 sm:p-5">
                         <div className="min-w-0">
-                            <h3 className="truncate font-semibold text-foreground">
-                                {plan.name}
-                            </h3>
+                            <h3 className="text-foreground truncate font-semibold">{plan.name}</h3>
 
-                            <p className="mt-1 text-sm text-muted-foreground">
-                                {translate('Pay')}{' '}
-                                {translate(formatSentenceCase(billingCycle))}
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {translate('Pay')} {translate(formatSentenceCase(billingCycle))}
                             </p>
                         </div>
 
                         <div className="shrink-0 text-right">
-                            <p className="text-xl font-semibold tracking-tight text-foreground tabular-nums">
-                                {formatCurrencySimple(
-                                    originalPrice,
-                                    'USD',
-                                    'en-US',
-                                )}
+                            <p className="text-foreground text-xl font-semibold tracking-tight tabular-nums">
+                                {formatCurrencySimple(originalPrice, 'USD', 'en-US')}
                             </p>
                         </div>
                     </CardContent>
@@ -272,47 +241,32 @@ export default function PaymentProcessor({
             </section>
 
             {/* Payment methods */}
-            <section
-                aria-labelledby="payment-method-label"
-                className="space-y-3"
-            >
+            <section aria-labelledby="payment-method-label" className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
-                    <Label
-                        id="payment-method-label"
-                        className="text-sm font-semibold text-foreground"
-                    >
+                    <Label id="payment-method-label" className="text-foreground text-sm font-semibold">
                         {translate('Payment method')}
                     </Label>
                 </div>
 
                 {enabledPaymentMethods.length === 0 ? (
-                    <div className="rounded-lg border border-border bg-muted/30 px-4 py-3">
-                        <p className="text-sm text-muted-foreground">
-                            {translate('No payment methods available')}
-                        </p>
+                    <div className="border-border bg-muted/30 rounded-lg border px-4 py-3">
+                        <p className="text-muted-foreground text-sm">{translate('No payment methods available')}</p>
                     </div>
                 ) : (
-                    <div
-                        className="grid grid-cols-1 gap-2.5 sm:grid-cols-2"
-                        role="group"
-                        aria-labelledby="payment-method-label"
-                    >
+                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2" role="group" aria-labelledby="payment-method-label">
                         {enabledPaymentMethods.map((method) => {
-                            const isSelected =
-                                selectedPaymentMethod === method.id;
+                            const isSelected = selectedPaymentMethod === method.id;
 
                             return (
                                 <button
                                     key={method.id}
                                     type="button"
                                     aria-pressed={isSelected}
-                                    onClick={() =>
-                                        handlePaymentMethodSelect(method.id)
-                                    }
+                                    onClick={() => handlePaymentMethodSelect(method.id)}
                                     className={[
                                         'flex min-h-16 w-full items-center gap-3 rounded-xl border px-4 py-3 text-left',
                                         'transition-colors duration-150',
-                                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                                        'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                                         isSelected
                                             ? 'border-primary bg-primary/5'
                                             : 'border-border bg-card hover:border-foreground/20 hover:bg-muted/30',
@@ -321,9 +275,7 @@ export default function PaymentProcessor({
                                     <span
                                         className={[
                                             'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
-                                            isSelected
-                                                ? 'bg-primary/10 text-primary'
-                                                : 'bg-muted text-muted-foreground',
+                                            isSelected ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground',
                                         ].join(' ')}
                                         aria-hidden="true"
                                     >
@@ -331,12 +283,9 @@ export default function PaymentProcessor({
                                     </span>
 
                                     <span
-                                        className={[
-                                            'min-w-0 flex-1 text-sm font-medium',
-                                            isSelected
-                                                ? 'text-foreground'
-                                                : 'text-foreground/90',
-                                        ].join(' ')}
+                                        className={['min-w-0 flex-1 text-sm font-medium', isSelected ? 'text-foreground' : 'text-foreground/90'].join(
+                                            ' ',
+                                        )}
                                     >
                                         {method.name}
                                     </span>
@@ -344,15 +293,11 @@ export default function PaymentProcessor({
                                     <span
                                         className={[
                                             'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
-                                            isSelected
-                                                ? 'border-primary'
-                                                : 'border-muted-foreground/40',
+                                            isSelected ? 'border-primary' : 'border-muted-foreground/40',
                                         ].join(' ')}
                                         aria-hidden="true"
                                     >
-                                        {isSelected && (
-                                            <span className="h-2 w-2 rounded-full bg-primary" />
-                                        )}
+                                        {isSelected && <span className="bg-primary h-2 w-2 rounded-full" />}
                                     </span>
                                 </button>
                             );
@@ -362,19 +307,14 @@ export default function PaymentProcessor({
             </section>
 
             {/* Discount code */}
-            <section
-                aria-labelledby="discount-code-heading"
-                className="space-y-3"
-            >
+            <section aria-labelledby="discount-code-heading" className="space-y-3">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
                     <div className="min-w-0 flex-1">
                         <Input
                             id="coupon"
                             label={translate('Discount code')}
                             value={couponCode}
-                            onChange={(event) =>
-                                setCouponCode(event.target.value)
-                            }
+                            onChange={(event) => setCouponCode(event.target.value)}
                             disabled={Boolean(appliedCoupon)}
                         />
                     </div>
@@ -390,10 +330,7 @@ export default function PaymentProcessor({
                         >
                             {couponLoading ? (
                                 <>
-                                    <Loader2
-                                        aria-hidden="true"
-                                        className="mr-2 h-4 w-4 animate-spin"
-                                    />
+                                    <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />
                                     {translate('Apply')}
                                 </>
                             ) : (
@@ -401,13 +338,7 @@ export default function PaymentProcessor({
                             )}
                         </Button>
                     ) : (
-                        <Button
-                            type="button"
-                            size="lg"
-                            variant="outline"
-                            onClick={handleRemoveCoupon}
-                            className="h-14"
-                        >
+                        <Button type="button" size="lg" variant="outline" onClick={handleRemoveCoupon} className="h-14">
                             {translate('Remove')}
                         </Button>
                     )}
@@ -419,24 +350,15 @@ export default function PaymentProcessor({
                         role="status"
                     >
                         <div className="min-w-0">
-                            <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                                {translate('Coupon applied')}
-                            </p>
+                            <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">{translate('Coupon applied')}</p>
 
-                            <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                                {appliedCoupon.code}
-                            </p>
+                            <p className="text-muted-foreground mt-0.5 truncate text-xs">{appliedCoupon.code}</p>
                         </div>
 
-                        <span
-                            className="shrink-0 text-sm font-semibold tabular-nums text-emerald-700 dark:text-emerald-400">
+                        <span className="shrink-0 text-sm font-semibold text-emerald-700 tabular-nums dark:text-emerald-400">
                             {appliedCoupon.type === 'percentage'
                                 ? `${appliedCoupon.value}%`
-                                : formatCurrencySimple(
-                                    appliedCoupon.value,
-                                    'USD',
-                                    'en-US',
-                                )}
+                                : formatCurrencySimple(appliedCoupon.value, 'USD', 'en-US')}
                         </span>
                     </div>
                 )}
@@ -444,62 +366,38 @@ export default function PaymentProcessor({
 
             {/* Order summary */}
             <section aria-labelledby="order-summary-heading">
-                <Card className="rounded-xl border-border bg-card shadow-none">
+                <Card className="border-border bg-card rounded-xl shadow-none">
                     <CardContent className="p-4 sm:p-5">
-                        <h2
-                            id="order-summary-heading"
-                            className="text-sm font-semibold text-foreground"
-                        >
+                        <h2 id="order-summary-heading" className="text-foreground text-sm font-semibold">
                             {translate('Order summary')}
                         </h2>
 
                         <dl className="mt-5 space-y-3">
                             <div className="flex items-center justify-between gap-4 text-sm">
-                                <dt className="text-muted-foreground">
-                                    {translate('Subtotal')}
-                                </dt>
+                                <dt className="text-muted-foreground">{translate('Subtotal')}</dt>
 
-                                <dd className="font-medium tabular-nums text-foreground">
-                                    {formatCurrencySimple(
-                                        originalPrice,
-                                        'USD',
-                                        'en-US',
-                                    )}
-                                </dd>
+                                <dd className="text-foreground font-medium tabular-nums">{formatCurrencySimple(originalPrice, 'USD', 'en-US')}</dd>
                             </div>
 
                             {appliedCoupon && (
                                 <div className="flex items-center justify-between gap-4 text-sm">
-                                    <dt className="text-muted-foreground">
-                                        {translate('Discount')}
-                                    </dt>
+                                    <dt className="text-muted-foreground">{translate('Discount')}</dt>
 
-                                    <dd className="font-medium tabular-nums text-emerald-700 dark:text-emerald-400">
-                                        −
-                                        {formatCurrencySimple(
-                                            discountAmount,
-                                            'USD',
-                                            'en-US',
-                                        )}
+                                    <dd className="font-medium text-emerald-700 tabular-nums dark:text-emerald-400">
+                                        −{formatCurrencySimple(discountAmount, 'USD', 'en-US')}
                                     </dd>
                                 </div>
                             )}
                         </dl>
 
-                        <div className="mt-5 border-t border-border pt-4">
+                        <div className="border-border mt-5 border-t pt-4">
                             <div className="flex items-end justify-between gap-4">
                                 <div>
-                                    <p className="text-sm font-semibold text-foreground">
-                                        {translate('Total')}
-                                    </p>
+                                    <p className="text-foreground text-sm font-semibold">{translate('Total')}</p>
                                 </div>
 
-                                <p className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
-                                    {formatCurrencySimple(
-                                        finalPrice,
-                                        'USD',
-                                        'en-US',
-                                    )}
+                                <p className="text-foreground text-2xl font-semibold tracking-tight tabular-nums">
+                                    {formatCurrencySimple(finalPrice, 'USD', 'en-US')}
                                 </p>
                             </div>
                         </div>
@@ -513,8 +411,7 @@ export default function PaymentProcessor({
                     {translate('Cancel')}
                 </Button>
 
-                <Button type="button" size="lg" onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0}
-                        className="w-full">
+                <Button type="button" size="lg" onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0} className="w-full">
                     {translate('Pay now')}
                 </Button>
             </footer>

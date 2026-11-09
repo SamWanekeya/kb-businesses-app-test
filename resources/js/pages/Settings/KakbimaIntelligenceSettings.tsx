@@ -93,12 +93,11 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
                     <form id="kakbima-intelligence-settings-form" onSubmit={submitKakbimaIntelligenceSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="kakbima_intelligence_key" required>
-                                    {translate('Kakbima Intelligence Key')}
-                                </Label>
                                 <Input
                                     inputIdentifier="kakbima_intelligence_key"
                                     inputType="password"
+                                    label={translate('Kakbima Intelligence key')}
+                                    required
                                     value={kakbimaIntelligenceSettings.kakbima_intelligence_key}
                                     onChange={(e) => {
                                         handleSettingsChange('kakbima_intelligence_key', e.target.value);

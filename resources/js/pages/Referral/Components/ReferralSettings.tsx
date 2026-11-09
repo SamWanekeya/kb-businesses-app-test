@@ -62,13 +62,12 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                            <Label htmlFor="commission_percentage" required>
-                                {translate('Commission Percentage (%)')}
-                            </Label>
                             <Input
                                 id="commission_percentage"
                                 inputType="number"
                                 inputMode="decimal"
+                                label={translate('Commission(%)')}
+                                required
                                 step="0.01"
                                 min="0"
                                 max="100"
@@ -81,13 +80,12 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                         </div>
 
                         <div>
-                            <Label htmlFor="threshold_amount" required>
-                                {translate('Minimum Threshold Amount')} {currency_symbol}
-                            </Label>
                             <Input
                                 id="threshold_amount"
                                 inputType="number"
                                 inputMode="decimal"
+                                label={translate('Minimum threshold amount')}
+                                required
                                 step="0.01"
                                 min="0"
                                 value={data.threshold_amount}

@@ -94,11 +94,9 @@ export default function RolesEdit() {
                     <CardContent>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1.5">
-                                <Label required htmlFor="label">
-                                    {translate('Role Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="label"
+                                    label={translate('name')}
                                     required
                                     value={label}
                                     onChange={(e) => {

@@ -58,7 +58,9 @@ export default function View({ record }: ViewProps) {
                     <div className="mt-1">
                         <span
                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${
-                                record.status === 'active' ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'
+                                record.status === 'active'
+                                    ? 'bg-fuchsia-50 text-fuchsia-700 ring-fuchsia-600/20'
+                                    : 'bg-red-50 text-red-700 ring-red-600/20'
                             }`}
                         >
                             {record.status === 'active' ? translate('Active') : translate('Inactive')}

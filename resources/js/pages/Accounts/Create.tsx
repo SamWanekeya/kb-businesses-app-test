@@ -139,13 +139,11 @@ export default function AccountCreate() {
                     <SectionTitle title={translate('Basic Information')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="name" required>
-                                {translate('Account Name')}
-                            </Label>
                             <Input
                                 inputType="text"
                                 inputMode="text"
                                 inputIdentifier="name"
+                                label={translate('Name')}
                                 value={data.name}
                                 onChange={(e) => set('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
@@ -154,13 +152,12 @@ export default function AccountCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="email" required>
-                                {translate('Email')}
-                            </Label>
                             <Input
                                 inputIdentifier="email"
                                 inputType="email"
                                 inputMode="email"
+                                required
+                                label={translate('Email')}
                                 value={data.email}
                                 onChange={(e) => set('email', e.target.value)}
                                 className={errors.email ? 'border-red-500' : ''}
@@ -169,11 +166,9 @@ export default function AccountCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="phone" required>
-                                {translate('Phone')}
-                            </Label>
                             <Input
                                 id="phone"
+                                label={translate('Phone')}
                                 value={data.phone}
                                 onChange={(e) => set('phone', e.target.value)}
                                 className={errors.phone ? 'border-red-500' : ''}
@@ -182,9 +177,9 @@ export default function AccountCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="website">{translate('Website')}</Label>
                             <Input
                                 id="website"
+                                label={translate('Website')}
                                 value={data.website}
                                 onChange={(e) => set('website', e.target.value)}
                                 className={errors.website ? 'border-red-500' : ''}
@@ -313,11 +308,10 @@ export default function AccountCreate() {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_city" required>
-                                        {translate('Billing City')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="billing_city"
+                                        label={translate('Billing city')}
+                                        required
                                         value={data.billing_city}
                                         onChange={(e) => set('billing_city', e.target.value)}
                                         className={errors.billing_city ? 'border-red-500' : ''}
@@ -325,11 +319,10 @@ export default function AccountCreate() {
                                     <FieldError message={errors.billing_city} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_state" required>
-                                        {translate('State')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="billing_state"
+                                        label={translate('State')}
+                                        required
                                         value={data.billing_state}
                                         onChange={(e) => set('billing_state', e.target.value)}
                                         className={errors.billing_state ? 'border-red-500' : ''}
@@ -337,11 +330,10 @@ export default function AccountCreate() {
                                     <FieldError message={errors.billing_state} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_country" required>
-                                        {translate('Billing Country')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="billing_country"
+                                        label={translate('Billing country')}
+                                        required
                                         value={data.billing_country}
                                         onChange={(e) => set('billing_country', e.target.value)}
                                         className={errors.billing_country ? 'border-red-500' : ''}
@@ -349,11 +341,9 @@ export default function AccountCreate() {
                                     <FieldError message={errors.billing_country} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_postal_code" required>
-                                        {translate('Billing Postal Code')}
-                                    </Label>
                                     <Input
                                         inputIdentifier="billing_postal_code"
+                                        label={translate('Billing postal code')}
                                         value={data.billing_postal_code}
                                         onChange={(e) => set('billing_postal_code', e.target.value)}
                                         className={errors.billing_postal_code ? 'border-red-500' : ''}
@@ -409,26 +399,34 @@ export default function AccountCreate() {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_city">{translate('Shipping City')}</Label>
-                                    <Input id="shipping_city" value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} />
+                                    <Input
+                                        id="shipping_city"
+                                        value={data.shipping_city}
+                                        label={translate('Shipping city')}
+                                        onChange={(e) => set('shipping_city', e.target.value)}
+                                    />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_state">{translate('Shipping State')}</Label>
-                                    <Input id="shipping_state" value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} />
+                                    <Input
+                                        id="shipping_state"
+                                        value={data.shipping_state}
+                                        label={translate('Shipping state')}
+                                        onChange={(e) => set('shipping_state', e.target.value)}
+                                    />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_country">{translate('Shipping Country')}</Label>
                                     <Input
                                         inputIdentifier="shipping_country"
                                         value={data.shipping_country}
+                                        label={translate('Shipping country')}
                                         onChange={(e) => set('shipping_country', e.target.value)}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_postal_code">{translate('Shipping Postal Code')}</Label>
                                     <Input
                                         inputIdentifier="shipping_postal_code"
                                         value={data.shipping_postal_code}
+                                        label={translate('Shipping postal code')}
                                         onChange={(e) => set('shipping_postal_code', e.target.value)}
                                     />
                                 </div>

@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 
 import AccountButton from '@components/Account/AccountButton';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { route } from '@utils/Routes';
 
@@ -104,16 +103,10 @@ export default function ConfirmPassword() {
         <AuthLayout title={translate('Confirm your password')} description={translate('Re-enter your password to continue with this secure action.')}>
             <form onSubmit={handleSubmit} noValidate className="space-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="password" className="font-medium text-neutral-700 dark:text-neutral-300">
-                        {translate('Your password')}
-                        <span aria-hidden="true" className="ml-1 text-red-600 dark:text-red-400">
-                            *
-                        </span>
-                    </Label>
-
                     <Input
                         inputIdentifier="password"
                         inputType="password"
+                        label={translate('Your password')}
                         required
                         autoComplete="password"
                         value={data.password}

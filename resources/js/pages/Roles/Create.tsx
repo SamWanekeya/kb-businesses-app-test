@@ -92,11 +92,9 @@ export default function RolesCreate() {
                     <CardContent>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1.5">
-                                <Label required htmlFor="label">
-                                    {translate('Role Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="label"
+                                    label={translate('Name')}
                                     required
                                     value={label}
                                     onChange={(e) => {

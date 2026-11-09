@@ -246,13 +246,11 @@ export default function Taxes() {
                         </div>
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Tax Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -282,13 +280,12 @@ export default function Taxes() {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="rate" required>
-                                    {translate('Rate')}
-                                </Label>
                                 <Input
                                     inputIdentifier="rate"
                                     inputType="number"
                                     inputMode="decimal"
+                                    label={translate('Rate')}
+                                    required
                                     step="0.0001"
                                     min="0"
                                     max="999.9999"

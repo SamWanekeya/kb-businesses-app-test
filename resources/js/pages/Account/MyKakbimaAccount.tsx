@@ -488,10 +488,10 @@ export default function MyKakbimaAccount({ mustVerifyEmail = false, status }: My
 
                                     <div className="grid gap-2">
                                         <Input
+                                            inputIdentifier="name"
                                             inputType="text"
                                             inputMode="text"
                                             label={translate('Full name')}
-                                            inputIdentifier="name"
                                             value={profileData.name}
                                             onChange={(event) => handleProfileFieldChange('name', event.target.value)}
                                             onValidate={(valid, message) => handleProfileValidate('name', valid, message)}

@@ -237,13 +237,11 @@ export default function Brands() {
                         </div>
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Brand Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -255,11 +253,11 @@ export default function Brands() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="website">{translate('Website')}</Label>
                                 <Input
                                     inputIdentifier="website"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Website')}
                                     value={formData.website}
                                     onChange={(e) => {
                                         setFormData({ ...formData, website: e.target.value });

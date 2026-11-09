@@ -143,6 +143,7 @@ export function PayTRPaymentForm({
                             inputType="text"
                             inputMode="text"
                             inputIdentifier="name"
+                            label={translate('Full name')}
                             value={customerDetails.name}
                             onChange={(e) => {
                                 setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));

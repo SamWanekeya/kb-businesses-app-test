@@ -273,10 +273,13 @@ export default function ReceiptOrderCreate() {
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 p-6 md:grid-cols-2">
                         {/* Name + Description */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Receipt Order Name')} <span className="text-red-500">*</span>
-                            </Label>
-                            <Input value={form.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} />
+                            <Input
+                                value={form.name}
+                                label={translate('Name')}
+                                required
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                            />
                             <FieldError message={errors.name} />
                         </div>
 
@@ -392,9 +395,6 @@ export default function ReceiptOrderCreate() {
 
                         {/* Receipt Date + Expected Date */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Receipt Date')} <span className="text-red-500">*</span>
-                            </Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -408,6 +408,7 @@ export default function ReceiptOrderCreate() {
                             >
                                 <Input
                                     type="date"
+                                    label={translate('Receipt date')}
                                     value={form.receipt_date}
                                     onChange={(e) => set('receipt_date', e.target.value)}
                                     className={`cursor-pointer ${errors.receipt_date ? 'border-red-500' : ''}`}
@@ -417,7 +418,6 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -431,6 +431,7 @@ export default function ReceiptOrderCreate() {
                             >
                                 <Input
                                     type="date"
+                                    label={translate('Expected date')}
                                     value={form.expected_date}
                                     onChange={(e) => set('expected_date', e.target.value)}
                                     className={`cursor-pointer ${errors.expected_date ? 'border-red-500' : ''}`}
@@ -565,12 +566,11 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Quantity')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Quantity')}
+                                                        required
                                                         min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => {
@@ -580,12 +580,11 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Unit price')}
+                                                        required
                                                         min="0"
                                                         step="0.01"
                                                         value={row.unit_price}
@@ -617,12 +616,10 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Value')}
-                                                    </span>
                                                     <Input
                                                         inputType="number"
                                                         inputMode="decimal"
+                                                        label={translate('Discount value')}
                                                         min="0"
                                                         step="0.01"
                                                         value={row.discount_value}
@@ -635,9 +632,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Tax')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const prod = products.find((p: any) => String(p.id) === String(row.product_id));
                                                         return (
@@ -651,9 +646,7 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                        {translate('Total')}
-                                                    </span>
+                                                    <span className="text-foreground/75 block text-xs font-bold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(c.net + c.tax)}</span>
                                                 </td>
 

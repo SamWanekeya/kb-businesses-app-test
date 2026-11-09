@@ -343,9 +343,7 @@ export default function DocumentFolderView() {
                                 {subFolders.length === 0 && docsList.length === 0 && (
                                     <div className="col-span-full flex flex-col items-center justify-center gap-3" style={{ minHeight: '390px' }}>
                                         <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600" strokeWidth={1} />
-                                        <p className="text-base font-bold text-gray-500 dark:text-gray-400">
-                                            {translate('This folder is empty')}
-                                        </p>
+                                        <p className="text-base font-bold text-gray-500 dark:text-gray-400">{translate('This folder is empty')}</p>
                                         <p className="text-sm text-gray-400 dark:text-gray-500">{translate('No subfolders or documents found')}</p>
                                     </div>
                                 )}

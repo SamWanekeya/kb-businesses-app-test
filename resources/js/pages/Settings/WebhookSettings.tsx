@@ -305,11 +305,10 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="url" required>
-                                            {translate('URL')}
-                                        </Label>
                                         <Input
                                             inputIdentifier="url"
+                                            label={translate('URL')}
+                                            required
                                             inputType="url"
                                             value={formData.url}
                                             onChange={(e) => {

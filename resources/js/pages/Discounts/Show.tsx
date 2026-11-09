@@ -128,9 +128,7 @@ export default function DiscountDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-foreground/75 text-sm">{translate('Discount Value')}</p>
-                                    <h3 className="mt-2 font-mono text-xl font-bold">
-                                        {formatDiscount(discount.type, discount.discount_amount)}
-                                    </h3>
+                                    <h3 className="mt-2 font-mono text-xl font-bold">{formatDiscount(discount.type, discount.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
                                     <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />

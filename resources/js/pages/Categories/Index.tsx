@@ -233,13 +233,11 @@ export default function Categories() {
                         </div>
                         <form autoComplete="off" onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="name" required>
-                                    {translate('Category Name')}
-                                </Label>
                                 <Input
                                     inputIdentifier="name"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Name')}
                                     value={formData.name}
                                     onChange={(e) => {
                                         setFormData({ ...formData, name: e.target.value });
@@ -251,20 +249,18 @@ export default function Categories() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="slug" required>
-                                    {translate('Slug')}
-                                </Label>
                                 <Input
                                     inputIdentifier="slug"
                                     inputType="text"
                                     inputMode="text"
+                                    label={translate('Slug')}
+                                    required
                                     value={formData.slug}
                                     onChange={(e) => {
                                         setFormData({ ...formData, slug: e.target.value });
                                     }}
                                     className={formErrors.slug ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
-                                    required
                                 />
                                 {formErrors.slug && <p className="text-sm text-red-500">{formErrors.slug}</p>}
                             </div>

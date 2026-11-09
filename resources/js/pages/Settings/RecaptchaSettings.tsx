@@ -134,11 +134,10 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="recaptchaSiteKey" required>
-                                    {translate('Site Key')}
-                                </Label>
                                 <Input
                                     inputIdentifier="recaptchaSiteKey"
+                                    label={translate('Site key')}
+                                    required
                                     name="recaptchaSiteKey"
                                     inputType="text"
                                     inputMode="text"
@@ -150,11 +149,10 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                             </div>
 
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="recaptchaSecretKey" required>
-                                    {translate('Secret Key')}
-                                </Label>
                                 <Input
                                     inputIdentifier="recaptchaSecretKey"
+                                    label={translate('Secret key')}
+                                    required
                                     name="recaptchaSecretKey"
                                     inputType="password"
                                     value={recaptchaSettings.recaptchaSecretKey}

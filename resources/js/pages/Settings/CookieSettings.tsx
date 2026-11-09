@@ -153,13 +153,12 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             {/* Cookie Title */}
                             <div className="grid gap-2">
-                                <Label htmlFor="cookieTitle" required>
-                                    {translate('Cookie Title')}
-                                </Label>
                                 <Input
                                     inputIdentifier="cookieTitle"
+                                    label={translate('Cookie title')}
                                     inputType="text"
                                     inputMode="text"
+                                    required
                                     value={cookieSettings.cookieTitle}
                                     onChange={(e) => {
                                         handleCookieSettingsChange('cookieTitle', e.target.value);
@@ -169,11 +168,10 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
                             {/* Strictly Cookie Title */}
                             <div className="grid gap-2">
-                                <Label htmlFor="strictlyCookieTitle" required>
-                                    {translate('Strictly Cookie Title')}
-                                </Label>
                                 <Input
                                     inputIdentifier="strictlyCookieTitle"
+                                    label={translate('Strictly cookie title')}
+                                    required
                                     inputType="text"
                                     inputMode="text"
                                     value={cookieSettings.strictlyCookieTitle}
@@ -234,11 +232,10 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
                             {/* Contact Us URL */}
                             <div className="grid gap-2">
-                                <Label htmlFor="contactUsUrl" required>
-                                    {translate('Contact Us URL')}
-                                </Label>
                                 <Input
                                     inputIdentifier="contactUsUrl"
+                                    label={translate('Contact us URL')}
+                                    required
                                     inputType="url"
                                     value={cookieSettings.contactUsUrl}
                                     onChange={(e) => {
