@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <CircleDot className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Task Status Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Task status details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -31,7 +31,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <CircleDot className="h-4 w-4" />
-                            {translate('Status Name')}
+                            {translate('Status name')}
                         </label>
                         <div className="mt-1 flex items-center gap-2">
                             <p className="text-sm text-gray-900 dark:text-white">{record.name || '-'}</p>

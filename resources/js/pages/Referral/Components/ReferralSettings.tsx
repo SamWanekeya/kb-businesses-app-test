@@ -45,7 +45,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base font-bold">{translate('Referral Program Settings')}</CardTitle>
+                <CardTitle className="text-base font-bold">{translate('Referral program settings')}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
@@ -57,7 +57,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                                 setData('is_enabled', checked);
                             }}
                         />
-                        <Label htmlFor="is_enabled">{translate('Enable Referral Program')}</Label>
+                        <Label htmlFor="is_enabled">{translate('Enable referral program')}</Label>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -99,7 +99,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
 
                     <div>
                         <Label htmlFor="guidelines" required>
-                            {translate('Referral Guidelines')}
+                            {translate('Referral guidelines')}
                         </Label>
                         <Textarea
                             id="guidelines"
@@ -115,7 +115,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                     <div className="flex justify-end">
                         <Button type="submit" disabled={processing} size="sm">
                             <Save className="me-2 h-4 w-4" />
-                            {processing ? translate('Saving...') : translate('Save Settings')}
+                            {processing ? translate('Saving...') : translate('Save settings')}
                         </Button>
                     </div>
                 </form>

@@ -162,17 +162,17 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             {userType === 'organization' && (
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="text-base font-bold">{translate('Create Payout Request')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Create payout request')}</CardTitle>
                         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                             <DialogTrigger asChild>
                                 <Button disabled={stats.availableBalance < settings.threshold_amount}>
                                     <Plus className="me-2 h-4 w-4" />
-                                    {translate('Request Payout')}
+                                    {translate('Request payout')}
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>{translate('Create Payout Request')}</DialogTitle>
+                                    <DialogTitle>{translate('Create payout request')}</DialogTitle>
                                 </DialogHeader>
                                 <form autoComplete="off" onSubmit={handleCreatePayout} className="space-y-4">
                                     <div>
@@ -194,14 +194,14 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                     </div>
                                     <div className="text-foreground/75 text-sm">
                                         <p>
-                                            {translate('Available Balance')}:{' '}
+                                            {translate('Available balance')}:{' '}
                                             <span className="font-mono">
                                                 {currency_symbol}
                                                 {stats.availableBalance}
                                             </span>
                                         </p>
                                         <p>
-                                            {translate('Minimum Amount')}:{' '}
+                                            {translate('Minimum amount')}:{' '}
                                             <span className="font-mono">
                                                 {currency_symbol}
                                                 {settings.threshold_amount}
@@ -219,7 +219,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                             {translate('Cancel')}
                                         </Button>
                                         <Button type="submit" disabled={processing}>
-                                            {translate('Submit Request')}
+                                            {translate('Submit request')}
                                         </Button>
                                     </DialogFooter>
                                 </form>
@@ -241,7 +241,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base font-bold">
-                        {userType === 'super_admin' ? translate('All Payout Requests') : translate('Your Payout Requests')}
+                        {userType === 'super_admin' ? translate('All payout requests') : translate('Your payout requests')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -262,20 +262,20 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             <Dialog open={isRejectModalOpen} onOpenChange={setIsRejectModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{translate('Reject Payout Request')}</DialogTitle>
+                        <DialogTitle>{translate('Reject payout request')}</DialogTitle>
                     </DialogHeader>
                     <form
                         autoComplete="off"
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
-                            const notes = formData.getranslate('notes') as string;
+                            const notes = formData.get('notes') as string;
                             handleRejectConfirm(notes);
                         }}
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="notes">{translate('Rejection Reason (Optional)')}</Label>
+                                <Label htmlFor="notes">{translate('Rejection reason (optional)')}</Label>
                                 <Textarea id="notes" name="notes" className="mt-1" />
                             </div>
                         </div>

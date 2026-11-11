@@ -58,7 +58,7 @@ export default function Template6({ salesOrder, items, taxesData, settings, colo
                                         margin: '0',
                                     }}
                                 >
-                                    {translate('SALES ORDER')}
+                                    {translate('Sales order')}
                                 </h3>
                             </td>
                             <td style={{ padding: '15px 30px', verticalAlign: 'top', textAlign: 'right' }}>
@@ -90,7 +90,7 @@ export default function Template6({ salesOrder, items, taxesData, settings, colo
                         </tr>
                         <tr>
                             <td style={{ fontSize: '13px', verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.billing_contact?.name)}
                                     <br />
@@ -107,7 +107,7 @@ export default function Template6({ salesOrder, items, taxesData, settings, colo
                                 </p>
                             </td>
                             <td style={{ fontSize: '13px', verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.shipping_contact?.name)}
                                     <br />
@@ -159,9 +159,9 @@ export default function Template6({ salesOrder, items, taxesData, settings, colo
                                         <tr>
                                             <td style={{ padding: '0' }}></td>
                                             <td style={{ padding: '0', textAlign: 'right' }}>
-                                                {translate('Order Date')}: {formatValue(salesOrder.order_date)}
+                                                {translate('Order date')}: {formatValue(salesOrder.order_date)}
                                                 <br />
-                                                {translate('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
+                                                {translate('Delivery date')}: {formatValue(salesOrder.delivery_date)}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -193,7 +193,7 @@ export default function Template6({ salesOrder, items, taxesData, settings, colo
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

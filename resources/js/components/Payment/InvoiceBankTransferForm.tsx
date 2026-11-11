@@ -85,7 +85,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
         <div className="space-y-4">
             <Card>
                 <CardContent className="p-4">
-                    <h3 className="mb-3 font-medium">{translate('Bank Transfer Details')}</h3>
+                    <h3 className="mb-3 font-medium">{translate('Bank transfer details')}</h3>
                     <div className="space-y-3 text-sm">
                         <div className="whitespace-pre-line">{bankDetails}</div>
                         <div className="flex items-center justify-between rounded bg-gray-50 p-2">
@@ -112,7 +112,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
                     <div className="flex items-start gap-2">
                         <CheckCircle className="mt-0.5 h-5 w-5 text-orange-600" />
                         <div className="text-sm text-orange-800">
-                            <p className="mb-1 font-medium">{translate('Important Instructions')}</p>
+                            <p className="mb-1 font-medium">{translate('Important instructions')}</p>
                             <ul className="space-y-1 text-xs">
                                 <li>• {translate('Transfer the exact amount shown above')}</li>
                                 <li>• {translate('Include your invoice number in the transfer description')}</li>
@@ -127,7 +127,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
             {/* Receipt Upload */}
             <div className="space-y-2">
                 <Label htmlFor="bank-receipt" required>
-                    {translate('Bank Transfer Receipt')}
+                    {translate('Bank transfer receipt')}
                 </Label>
                 <Input
                     id="bank-receipt"

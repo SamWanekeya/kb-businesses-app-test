@@ -38,7 +38,7 @@ export default function QuoteShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Quotes'), href: route('quotes.index') },
-        { title: translate('View Quote') },
+        { title: translate('View quote') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -119,7 +119,7 @@ export default function QuoteShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -137,7 +137,7 @@ export default function QuoteShow() {
                                                 <p className="text-foreground text-sm">{quote.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                 <p className="text-foreground text-sm">{quote.billing_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@ export default function QuoteShow() {
                                     </div>
                                 </div>
                                 <div className="xl:border-s xl:ps-6">
-                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -166,7 +166,7 @@ export default function QuoteShow() {
                                                 <p className="text-foreground text-sm">{quote.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                 <p className="text-foreground text-sm">{quote.shipping_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
@@ -199,7 +199,7 @@ export default function QuoteShow() {
                                                         {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
-                                                        {translate('Unit Price')}
+                                                        {translate('Unit price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Discount')}
@@ -326,11 +326,11 @@ export default function QuoteShow() {
                                                 <span className="font-mono text-sm font-bold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand total')}</span>
                                                 <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(grandTotal)}
                                                 </span>
@@ -374,7 +374,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-bold">
                                     <MessageCircle className="text-foreground/75 me-3 h-5 w-5" />
-                                    {translate('Activity Stream')}
+                                    {translate('Activity stream')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -641,13 +641,13 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Summary & Actions')}
+                                {translate('Summary & actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 sm:p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(quote.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(quote.status)}</div>
@@ -662,7 +662,7 @@ export default function QuoteShow() {
                                         }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
-                                        {translate('Edit Quote')}
+                                        {translate('Edit quote')}
                                     </Button>
                                 )}
                             </div>
@@ -675,7 +675,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Customer Info')}
+                                    {translate('Customer information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -718,7 +718,7 @@ export default function QuoteShow() {
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
                                         <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
                                             <User className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
-                                            {translate('Billing Contact')}
+                                            {translate('Billing contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -755,7 +755,7 @@ export default function QuoteShow() {
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
                                         <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs">
                                             <User className="text-foreground/75 h-3.5 w-3.5 shrink-0" />
-                                            {translate('Shipping Contact')}
+                                            {translate('Shipping contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -796,21 +796,21 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Quote Details')}
+                                {translate('Quote details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-4 sm:p-5">
                             <div className="flex items-start gap-3">
                                 <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Quote Number')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Quote number')}</p>
                                     <p className="text-foreground text-sm">{quote.quote_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Quote Date')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Quote date')}</p>
                                     <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(quote.quote_date || quote.created_at)}
                                     </p>
@@ -819,13 +819,13 @@ export default function QuoteShow() {
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Valid Until')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Valid until')}</p>
                                     <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
                                 </div>
                             </div>
                             {quote.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.assigned_user.avatar} alt={quote.assigned_user.name} />
@@ -844,7 +844,7 @@ export default function QuoteShow() {
                             )}
                             {quote.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.creator.avatar} alt={quote.creator.name} />
@@ -868,7 +868,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="text-foreground/75 me-2 h-4 w-4" />
-                                    {translate('Related Records')}
+                                    {translate('Related records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-4 sm:p-5">
@@ -907,7 +907,7 @@ export default function QuoteShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping provider')}</p>
                                             <p className="text-foreground truncate text-sm">{quote.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -925,7 +925,7 @@ export default function QuoteShow() {
                                 {quote.shipping_provider_type && !useHasPermission('view-shipping-provider-types') && (
                                     <div className="flex items-center justify-between rounded-lg border p-2.5">
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping provider')}</p>
                                             <p className="text-foreground truncate text-sm">{quote.shipping_provider_type.name}</p>
                                         </div>
                                     </div>
@@ -950,8 +950,8 @@ export default function QuoteShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={translate('this activity')}
-                entityName={translate('activity')}
+                itemName={translate('This activity')}
+                entityName={translate('Activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -966,8 +966,8 @@ export default function QuoteShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={translate('all activities for {{name}}', { name: quote.name })}
-                entityName={translate('activities')}
+                itemName={translate('All activities for {{name}}', { name: quote.name })}
+                entityName={translate('Activities')}
             />
         </PageTemplate>
     );

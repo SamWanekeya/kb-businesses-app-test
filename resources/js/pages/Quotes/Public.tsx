@@ -291,7 +291,7 @@ export default function PublicQuote({
                     <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center print:hidden">
                         <div className="mb-4 sm:mb-0">
                             <h1 className="text-2xl font-extrabold text-gray-900">
-                                {translate('Quote Details')} - {quote.quote_number}
+                                {translate('Quote details')} - {quote.quote_number}
                             </h1>
                             <p className="mt-1 text-gray-600">{translate('View your quote')}</p>
                         </div>
@@ -302,7 +302,7 @@ export default function PublicQuote({
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-fuchsia-600" /> : <Copy className="mr-2 h-4 w-4" />}
-                                    {copied ? translate('Copied!') : translate('Copy Link')}
+                                    {copied ? translate('Copied!') : translate('Copy link')}
                                 </button>
                             )}
                             <button
@@ -314,7 +314,7 @@ export default function PublicQuote({
                                 }}
                             >
                                 <Printer className="mr-2 h-4 w-4" />
-                                {translate('Print Quote')}
+                                {translate('Print quote')}
                             </button>
                         </div>
                     </div>
@@ -355,7 +355,7 @@ export default function PublicQuote({
                             {(
                                 [
                                     {
-                                        label: translate('Total Amount'),
+                                        label: translate('Total amount'),
                                         value: <span className="font-mono">{formatCurrency(quote.total_amount)}</span>,
                                         icon: DollarSign,
                                         iconCls: 'text-emerald-600',
@@ -369,7 +369,7 @@ export default function PublicQuote({
                                         blobCls: 'bg-blue-50',
                                     },
                                     {
-                                        label: translate('Valid Until'),
+                                        label: translate('Valid until'),
                                         value: window.kbSettings.formatDateTimeSimple(quote.valid_until),
                                         icon: Calendar,
                                         iconCls: 'text-orange-600',
@@ -407,13 +407,13 @@ export default function PublicQuote({
                         {/* Quote Information */}
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
-                                <h3 className="text-lg font-bold">{translate('Quote Information')}</h3>
+                                <h3 className="text-lg font-bold">{translate('Quote information')}</h3>
                             </div>
                             <div className="p-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Quote Number')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Quote number')}</label>
                                             <p className="mt-1 text-sm">{quote.quote_number}</p>
                                         </div>
                                         <div>
@@ -421,7 +421,7 @@ export default function PublicQuote({
                                             <div className="mt-1">{getStatusBadge(quote.status)}</div>
                                         </div>
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Created By')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Created by')}</label>
                                             {quote.creator ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -442,7 +442,7 @@ export default function PublicQuote({
                                             )}
                                         </div>
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Assigned To')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Assigned to')}</label>
                                             {quote.assigned_user ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -465,7 +465,7 @@ export default function PublicQuote({
                                     </div>
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Valid Until')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Valid until')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
@@ -483,11 +483,11 @@ export default function PublicQuote({
                                             <p className="mt-1 text-sm">{formatCurrency(quote.subtotal)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Discount Amount')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Discount amount')}</label>
                                             <p className="mt-1 text-sm">-{formatCurrency(totalDiscount)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-foreground/75 text-sm">{translate('Total Tax')}</label>
+                                            <label className="text-foreground/75 text-sm">{translate('Total tax')}</label>
                                             <p className="mt-1 text-sm">{formatCurrency(totalTax)}</p>
                                         </div>
                                     </div>
@@ -501,7 +501,7 @@ export default function PublicQuote({
                                 <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-bold">
                                         <User className="mr-3 h-5 w-5 text-gray-400" />
-                                        {translate('Related Data')}
+                                        {translate('Related data')}
                                     </h3>
                                 </div>
                                 <div className="p-6">
@@ -536,7 +536,7 @@ export default function PublicQuote({
                                         )}
                                         {quote.shipping_provider_type && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs text-gray-500">{translate('Shipping Provider')}</p>
+                                                <p className="mb-3 text-xs text-gray-500">{translate('Shipping provider')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50">
                                                         <Truck className="h-4 w-4 text-orange-500" />
@@ -566,14 +566,14 @@ export default function PublicQuote({
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                                         />
                                     </svg>
-                                    {translate('Billing & Shipping Details')}
+                                    {translate('Billing & shipping details')}
                                 </h3>
                             </div>
                             <div className="p-6">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     {/* Billing */}
                                     <div>
-                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing address')}</p>
                                         {quote.billing_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.billing_contact.name} />
@@ -602,7 +602,7 @@ export default function PublicQuote({
                                                     <p className="text-foreground text-sm">{quote.billing_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                     <p className="text-foreground text-sm">{quote.billing_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
@@ -614,7 +614,7 @@ export default function PublicQuote({
                                     </div>
                                     {/* Shipping */}
                                     <div className="sm:border-s sm:ps-6">
-                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping Address')}</p>
+                                        <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping address')}</p>
                                         {quote.shipping_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={quote.shipping_contact.name} />
@@ -643,7 +643,7 @@ export default function PublicQuote({
                                                     <p className="text-foreground text-sm">{quote.shipping_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                     <p className="text-foreground text-sm">{quote.shipping_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
@@ -674,7 +674,7 @@ export default function PublicQuote({
                                                     <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1]">
                                                         <TableHead className="py-2.5 font-bold">{translate('Product')}</TableHead>
                                                         <TableHead className="py-2.5 text-center font-bold">{translate('Quantity')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Unit Price')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-bold">{translate('Unit price')}</TableHead>
                                                         <TableHead className="py-2.5 text-center font-bold">{translate('Discount')}</TableHead>
                                                         <TableHead className="py-2.5 text-center font-bold">{translate('Tax')}</TableHead>
                                                         <TableHead className="py-2.5 text-right font-bold">{translate('Total')}</TableHead>
@@ -791,11 +791,11 @@ export default function PublicQuote({
                                                     <span className="font-mono text-sm font-bold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm text-gray-500">{translate('Total Tax')}</span>
+                                                    <span className="text-sm text-gray-500">{translate('Total tax')}</span>
                                                     <span className="font-mono text-sm font-bold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
-                                                    <span className="text-sm font-extrabold text-gray-900">{translate('Grand Total')}</span>
+                                                    <span className="text-sm font-extrabold text-gray-900">{translate('Grand total')}</span>
                                                     <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                         {formatCurrency(grandTotal)}
                                                     </span>
@@ -820,7 +820,7 @@ export default function PublicQuote({
                                 <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-bold">
                                         <MessageCircle className="mr-3 h-5 w-5 text-gray-400" />
-                                        {translate('Activity Stream')}
+                                        {translate('Activity stream')}
                                     </h3>
                                 </div>
                                 <div className="max-h-[520px] overflow-y-auto p-6">

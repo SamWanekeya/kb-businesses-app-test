@@ -204,13 +204,13 @@ export default function TargetLists() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Campaign Management') },
-        { title: translate('Target Lists') },
+        { title: translate('Campaign management') },
+        { title: translate('Target lists') },
     ];
 
     return (
         <PageTemplate
-            title={translate('Target Lists')}
+            title={translate('Target lists')}
             description={translate('Manage target lists for your campaigns.')}
             url="/target-lists"
             breadcrumbs={breadcrumbs}
@@ -221,7 +221,7 @@ export default function TargetLists() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Target List') : translate('Edit Target List')}
+                                {formMode === 'create' ? translate('Add new target list') : translate('Edit target list')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -281,7 +281,7 @@ export default function TargetLists() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Target List') : translate('Update Target List')}
+                                        {formMode === 'create' ? translate('Add target list') : translate('Update target list')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -334,7 +334,7 @@ export default function TargetLists() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -347,7 +347,7 @@ export default function TargetLists() {
                         {(targetLists?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Target Lists')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Target lists')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage target lists for your campaigns.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
@@ -357,10 +357,10 @@ export default function TargetLists() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {translate('Target List')}
+                                                        {translate('Target list')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -635,7 +635,7 @@ export default function TargetLists() {
                                             to={targetLists?.to || 0}
                                             total={targetLists?.total || 0}
                                             links={targetLists?.links}
-                                            entityName={translate('target lists')}
+                                            entityName={translate('Target lists')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -672,7 +672,7 @@ export default function TargetLists() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('target list')}
+                entityName={translate('Target list')}
             />
         </PageTemplate>
     );

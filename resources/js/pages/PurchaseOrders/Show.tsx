@@ -52,8 +52,8 @@ export default function PurchaseOrderShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
-        { title: translate('View Purchase Order ') },
+        { title: translate('Purchase orders'), href: route('purchase-orders.index') },
+        { title: translate('View purchase order ') },
     ];
 
     const PO_STATUS_STEPS = ['draft', 'sent', 'confirmed', 'received', 'cancelled'];
@@ -176,7 +176,7 @@ export default function PurchaseOrderShow() {
                         </CardHeader>
                         <CardContent className="px-6 py-5">
                             {/* Order Progress */}
-                            <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Order Progress')}</p>
+                            <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Order progress')}</p>
                             <div className="flex flex-wrap items-center gap-y-2">
                                 {PO_STATUS_STEPS.map((step, i) => {
                                     const s = poStatusConfig[step];
@@ -219,7 +219,7 @@ export default function PurchaseOrderShow() {
                             </div>
                             <div className="mt-5 grid grid-cols-1 gap-6 border-t pt-5 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Billing address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -237,7 +237,7 @@ export default function PurchaseOrderShow() {
                                                 <p className="text-foreground text-sm">{purchaseOrder.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                 <p className="text-foreground text-sm">{purchaseOrder.billing_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
@@ -248,7 +248,7 @@ export default function PurchaseOrderShow() {
                                     </div>
                                 </div>
                                 <div className="border-t pt-6 xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0">
-                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping Address')}</p>
+                                    <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Shipping address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
@@ -266,7 +266,7 @@ export default function PurchaseOrderShow() {
                                                 <p className="text-foreground text-sm">{purchaseOrder.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                                <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                                 <p className="text-foreground text-sm">{purchaseOrder.shipping_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
@@ -300,7 +300,7 @@ export default function PurchaseOrderShow() {
                                                         {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
-                                                        {translate('Unit Price')}
+                                                        {translate('Unit price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Discount')}
@@ -429,13 +429,13 @@ export default function PurchaseOrderShow() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(purchaseOrder.tax_amount ?? totalTax)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand total')}</span>
                                                 <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(purchaseOrder.total_amount ?? grandTotal)}
                                                 </span>
@@ -479,7 +479,7 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-bold">
                                     <MessageCircle className="text-foreground/75 me-3 h-5 w-5" />
-                                    {translate('Activity Stream')}
+                                    {translate('Activity stream')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -746,13 +746,13 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Summary & Actions')}
+                                {translate('Summary & actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(purchaseOrder.total_amount)}</p>
                                 </div>
                             </div>
@@ -766,7 +766,7 @@ export default function PurchaseOrderShow() {
                                         }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
-                                        {translate('Edit Purchase Order')}
+                                        {translate('Edit purchase order')}
                                     </Button>
                                 )}
                             </div>
@@ -779,7 +779,7 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Customer Info')}
+                                    {translate('Customer information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -822,7 +822,7 @@ export default function PurchaseOrderShow() {
                                                 <div>
                                                     <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                        {translate('Billing Contact')}
+                                                        {translate('Billing contact')}
                                                     </p>
                                                     <div className="flex min-w-0 items-center justify-between">
                                                         <div className="flex min-w-0 items-center gap-2">
@@ -862,7 +862,7 @@ export default function PurchaseOrderShow() {
                                                 <div>
                                                     <p className="text-foreground/75 mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                        {translate('Shipping Contact')}
+                                                        {translate('Shipping contact')}
                                                     </p>
                                                     <div className="flex min-w-0 items-center justify-between">
                                                         <div className="flex min-w-0 items-center gap-2">
@@ -910,28 +910,28 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Order Details')}
+                                {translate('Order details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
                                 <FileText className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Order Number')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Order number')}</p>
                                     <p className="text-foreground text-sm">{purchaseOrder.order_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Order Date')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Order date')}</p>
                                     <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(purchaseOrder.order_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Expected Delivery')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Expected delivery')}</p>
                                     <p className="text-foreground text-sm">
                                         {purchaseOrder.expected_delivery_date
                                             ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date)
@@ -941,7 +941,7 @@ export default function PurchaseOrderShow() {
                             </div>
                             {purchaseOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.assigned_user.avatar} alt={purchaseOrder.assigned_user.name} />
@@ -960,7 +960,7 @@ export default function PurchaseOrderShow() {
                             )}
                             {purchaseOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.creator.avatar} alt={purchaseOrder.creator.name} />
@@ -986,7 +986,7 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
-                                    {translate('Related Records')}
+                                    {translate('Related records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
@@ -996,7 +996,7 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales order')}</p>
                                             <p className="text-foreground truncate text-sm">{purchaseOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -1017,7 +1017,7 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping provider')}</p>
                                             <p className="text-foreground truncate text-sm">{purchaseOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -1057,8 +1057,8 @@ export default function PurchaseOrderShow() {
                     );
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={translate('this activity')}
-                entityName={translate('activity')}
+                itemName={translate('This activity')}
+                entityName={translate('Activity')}
             />
 
             <CrudDeleteModal
@@ -1070,8 +1070,8 @@ export default function PurchaseOrderShow() {
                     router.delete(route('purchase-orders.delete-activities', purchaseOrder.id), { preserveScroll: true });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={translate('all activities for {{name}}', { name: purchaseOrder.name })}
-                entityName={translate('activities')}
+                itemName={translate('All activities for {{name}}', { name: purchaseOrder.name })}
+                entityName={translate('Activities')}
             />
         </PageTemplate>
     );

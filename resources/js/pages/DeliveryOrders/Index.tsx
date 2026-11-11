@@ -198,7 +198,7 @@ export default function DeliveryOrders() {
 
     if (useHasPermission('create-delivery-orders')) {
         pageActions.push({
-            label: translate('Add Delivery Order'),
+            label: translate('Add delivery order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -206,7 +206,7 @@ export default function DeliveryOrders() {
             },
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: translate('Add Delivery Order'),
+            tooltip: translate('Add delivery order'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
@@ -216,13 +216,13 @@ export default function DeliveryOrders() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Delivery Orders') },
+        { title: translate('Delivery orders') },
     ];
 
     const columns = [
         {
             key: 'delivery_number',
-            label: translate('Delivery Number'),
+            label: translate('Delivery number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -245,7 +245,7 @@ export default function DeliveryOrders() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -265,13 +265,13 @@ export default function DeliveryOrders() {
         },
         {
             key: 'sales_order',
-            label: translate('Sales Order'),
+            label: translate('Sales order'),
             className: 'whitespace-nowrap',
             render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || translate('-')}</span>,
         },
         {
             key: 'delivery_date',
-            label: translate('Delivery Date'),
+            label: translate('Delivery date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -298,7 +298,7 @@ export default function DeliveryOrders() {
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -307,7 +307,7 @@ export default function DeliveryOrders() {
 
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -337,21 +337,21 @@ export default function DeliveryOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'pending', label: translate('Pending') },
-        { value: 'in_transit', label: translate('In Transit') },
+        { value: 'in_transit', label: translate('In transit') },
         { value: 'delivered', label: translate('Delivered') },
         { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     const accountOptions = [
-        { value: 'all', label: translate('All Accounts') },
+        { value: 'all', label: translate('All accounts') },
         ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     return (
         <PageTemplate
-            title={translate('Delivery Orders')}
+            title={translate('Delivery orders')}
             description={translate('Manage your delivery orders.')}
             url="/delivery-orders"
             actions={pageActions}
@@ -382,13 +382,13 @@ export default function DeliveryOrders() {
                         },
                         {
                             name: 'sales_order_id',
-                            label: translate('Sales Order'),
+                            label: translate('Sales order'),
                             type: 'select',
                             searchable: true,
                             value: selectedSalesOrder,
                             onChange: setSelectedSalesOrder,
                             options: [
-                                { value: 'all', label: translate('All Sales Orders') },
+                                { value: 'all', label: translate('All sales orders') },
                                 ...(salesOrders?.map((so: any) => ({
                                     value: so.id.toString(),
                                     label: `${so.order_number} - ${so.name}`,
@@ -397,13 +397,13 @@ export default function DeliveryOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -440,7 +440,7 @@ export default function DeliveryOrders() {
                     to={deliveryOrders?.to || 0}
                     total={deliveryOrders?.total || 0}
                     links={deliveryOrders?.links}
-                    entityName={translate('delivery orders')}
+                    entityName={translate('Delivery orders')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -481,7 +481,7 @@ export default function DeliveryOrders() {
                             required: true,
                             options: [
                                 { value: 'pending', label: translate('Pending') },
-                                { value: 'in_transit', label: translate('In Transit') },
+                                { value: 'in_transit', label: translate('In transit') },
                                 { value: 'delivered', label: translate('Delivered') },
                                 { value: 'cancelled', label: translate('Cancelled') },
                             ],
@@ -490,7 +490,7 @@ export default function DeliveryOrders() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Delivery Order Status')}
+                title={translate('Change delivery order status')}
                 mode="edit"
             />
 
@@ -501,7 +501,7 @@ export default function DeliveryOrders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('delivery order')}
+                entityName={translate('Delivery order')}
             />
         </PageTemplate>
     );

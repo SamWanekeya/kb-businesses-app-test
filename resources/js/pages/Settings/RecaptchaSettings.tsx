@@ -57,7 +57,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
         e.preventDefault();
         setProcessing(true);
 
-        const toastId = toast.loading(translate('Updating ReCAPTCHA settings...'));
+        const toastId = toast.loading(translate('Updating reCAPTCHA settings...'));
         router.post(route('settings.recaptcha.update'), recaptchaSettings, {
             preserveScroll: true,
             onSuccess: () => {
@@ -74,7 +74,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
 
     return (
         <SettingsSection
-            title={translate('reCAPTCHA Settings')}
+            title={translate('reCAPTCHA settings')}
             description={translate('Configure Google reCAPTCHA settings for form protection')}
             action={
                 <Button type="submit" disabled={processing} form="recaptcha-settings-form" size="sm">
@@ -93,7 +93,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                             rel="noopener noreferrer"
                             className="underline hover:no-underline"
                         >
-                            {translate('How to Get Google reCAPTCHA Site and Secret key')}
+                            {translate('How to get Google reCAPTCHA site and secret key')}
                         </a>
                     </div>
 
@@ -116,7 +116,7 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="recaptchaVersion">{translate('Google reCAPTCHA Version')}</Label>
+                                <Label htmlFor="recaptchaVersion">{translate('Google reCAPTCHA version')}</Label>
                                 <Select
                                     value={recaptchaSettings.recaptchaVersion}
                                     onValueChange={(value) => {

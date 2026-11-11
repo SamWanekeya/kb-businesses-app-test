@@ -77,7 +77,7 @@ export function InvoiceCoingatePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Coins className="h-5 w-5" />
-                    {translate('CoinGate Payment')}
+                    {translate('CoinGate payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -85,11 +85,11 @@ export function InvoiceCoingatePaymentForm({
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm">{translate('Payment Amount')}:</span>
+                            <span className="text-sm">{translate('Payment amount')}:</span>
                             <span className="font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-foreground/75 text-sm">{translate('Payment Type')}:</span>
+                            <span className="text-foreground/75 text-sm">{translate('Payment type')}:</span>
                             <span className="text-sm capitalize">
                                 {paymentType} {translate('Payment')}
                             </span>
@@ -101,9 +101,9 @@ export function InvoiceCoingatePaymentForm({
                         <div className="flex items-start gap-2">
                             <Coins className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-600" />
                             <div className="text-sm">
-                                <p className="font-medium text-orange-900 dark:text-orange-100">{translate('Secure Cryptocurrency Payment')}</p>
+                                <p className="font-medium text-orange-900 dark:text-orange-100">{translate('Secure cryptocurrency payment')}</p>
                                 <p className="mt-1 text-orange-700 dark:text-orange-300">
-                                    {translate('You will be redirected to CoinGate to complete your payment with cryptocurrency.')}
+                                    {translate('You will be redirected to CoinGate to complete your payment with Cryptocurrency.')}
                                 </p>
                                 <p className="mt-1 text-xs text-orange-600 dark:text-orange-400">
                                     {translate('Supports Bitcoin, Ethereum, Litecoin and 70+ other cryptocurrencies')}
@@ -116,9 +116,9 @@ export function InvoiceCoingatePaymentForm({
                         <div className="flex items-start gap-2">
                             <Coins className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-xs text-blue-800">
-                                <p className="mb-1 font-medium">{translate('Payment Process:')}</p>
+                                <p className="mb-1 font-medium">{translate('Payment process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{translate('Click "Pay with Crypto" to proceed to CoinGate')}</li>
+                                    <li>{translate('Click "pay with Crypto" to proceed to CoinGate')}</li>
                                     <li>{translate('Complete payment using your selected cryptocurrency')}</li>
                                     <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>

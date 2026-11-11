@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <FileIcon className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Document Type Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Document type details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -30,7 +30,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <FileIcon className="h-4 w-4" />
-                            {translate('Type Name')}
+                            {translate('Type name')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.type_name || '-'}</p>
                     </div>

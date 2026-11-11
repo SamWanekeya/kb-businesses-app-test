@@ -25,7 +25,7 @@ export default function ProductShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Items'), href: route('products.index') },
-        { title: translate('View Product') },
+        { title: translate('View product') },
     ];
 
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
@@ -57,7 +57,7 @@ export default function ProductShow() {
                         <CardHeader className="px-4 pt-4 pb-2">
                             <CardTitle className="text-foreground/75 flex items-center gap-2 text-sm">
                                 <Package className="h-4 w-4" />
-                                {translate('Product Image')}
+                                {translate('Product image')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="px-4 pb-4">
@@ -78,7 +78,7 @@ export default function ProductShow() {
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-foreground/75 flex items-center gap-2 text-sm">
                                         <Package className="h-4 w-4" />
-                                        {translate('Additional Images')}
+                                        {translate('Additional images')}
                                     </CardTitle>
                                     <div className="flex items-center gap-2">
                                         <span className="text-foreground/75 text-xs">
@@ -140,7 +140,7 @@ export default function ProductShow() {
                         {(
                             [
                                 {
-                                    label: translate('Sale Price'),
+                                    label: translate('Sale price'),
                                     value: formatCurrency(product.price),
                                     icon: DollarSign,
                                     iconCls: 'text-emerald-600',
@@ -192,7 +192,7 @@ export default function ProductShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <FileText className="text-foreground/75 me-2 h-4 w-4" />
-                                    {translate('Basic Information')}
+                                    {translate('Basic information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
@@ -235,12 +235,12 @@ export default function ProductShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Users className="text-foreground/75 me-2 h-4 w-4" />
-                                    {translate('Additional Information')}
+                                    {translate('Additional information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
                                 <div>
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                     {product.assigned_user ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
@@ -261,7 +261,7 @@ export default function ProductShow() {
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                     {product.creator ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">

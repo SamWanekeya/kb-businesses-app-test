@@ -11,7 +11,7 @@ export default function ShippingProviderTypeShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Shipping Provider Types'), href: route('shipping-provider-types.index') },
+        { title: translate('Shipping provider types'), href: route('shipping-provider-types.index') },
         { title: shippingProviderType.name },
     ];
 
@@ -72,7 +72,7 @@ export default function ShippingProviderTypeShow() {
                 {/* Shipping Provider Type Information */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-bold">{translate('Shipping Provider Type Information')}</CardTitle>
+                        <CardTitle className="text-lg font-bold">{translate('Shipping provider type information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -107,7 +107,7 @@ export default function ShippingProviderTypeShow() {
                                 <div className="flex items-center space-x-3">
                                     <User className="text-foreground/75 h-4 w-4" />
                                     <div>
-                                        <label className="text-foreground/75 text-sm">{translate('Created By')}</label>
+                                        <label className="text-foreground/75 text-sm">{translate('Created by')}</label>
                                         <p className="mt-1 text-sm">{shippingProviderType.creator?.name || translate('-')}</p>
                                     </div>
                                 </div>
@@ -119,19 +119,19 @@ export default function ShippingProviderTypeShow() {
                 {/* Timestamps */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-bold">{translate('Record Information')}</CardTitle>
+                        <CardTitle className="text-lg font-bold">{translate('Record information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-foreground/75 text-sm">{translate('Created At')}</label>
+                                <label className="text-foreground/75 text-sm">{translate('Created at')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.kbSettings.formatDateTime(shippingProviderType.created_at, false) ||
                                         new Date(shippingProviderType.created_at).toLocaleDateString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="text-foreground/75 text-sm">{translate('Updated At')}</label>
+                                <label className="text-foreground/75 text-sm">{translate('Updated at')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.kbSettings.formatDateTime(shippingProviderType.updated_at, false) ||
                                         new Date(shippingProviderType.updated_at).toLocaleDateString()}

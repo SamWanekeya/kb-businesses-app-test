@@ -42,7 +42,7 @@ export default function OpportunityCreate() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Opportunity Management') },
+        { title: translate('Opportunity management') },
         { title: translate('Opportunities'), href: route('opportunities.index') },
         { title: translate('Create') },
     ];
@@ -96,12 +96,12 @@ export default function OpportunityCreate() {
     const fmt = (v: number) => window.kbSettings.formatCurrency(v) || `$${v.toFixed(2)}`;
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
-        { name: 'name', label: translate('Opportunity Name') },
+        { name: 'name', label: translate('Opportunity name') },
         { name: 'account_id', label: translate('Account') },
         { name: 'contact_id', label: translate('Contact') },
         { name: 'opportunity_stage_id', label: translate('Stage') },
         { name: 'opportunity_source_id', label: translate('Source') },
-        { name: 'assigned_to', label: translate('Assign To') },
+        { name: 'assigned_to', label: translate('Assign to') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -138,7 +138,7 @@ export default function OpportunityCreate() {
 
     return (
         <PageTemplate
-            title={translate('Create Opportunity')}
+            title={translate('Create opportunity')}
             description={translate('Fill in the details to create a new opportunity')}
             breadcrumbs={breadcrumbs}
             actions={[
@@ -158,7 +158,7 @@ export default function OpportunityCreate() {
                     {/* Basic Information */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -353,7 +353,7 @@ export default function OpportunityCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('opportunity-stages.index')} className="font-medium underline">
-                                            {translate('Opportunity Stages')}
+                                            {translate('Opportunity stages')}
                                         </a>
                                     </p>
                                 )}
@@ -385,7 +385,7 @@ export default function OpportunityCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('opportunity-sources.index')} className="font-medium underline">
-                                            {translate('Opportunity Sources')}
+                                            {translate('Opportunity sources')}
                                         </a>
                                     </p>
                                 )}
@@ -400,7 +400,7 @@ export default function OpportunityCreate() {
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Products')}</h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
-                            {translate('Add Product')}
+                            {translate('Add product')}
                         </Button>
                     </div>
                     <div className="p-6">
@@ -415,7 +415,7 @@ export default function OpportunityCreate() {
                                     <PackagePlus className="text-primary h-7 w-7" />
                                 </div>
                                 <p className="text-foreground text-sm font-bold">{translate('No products added yet')}</p>
-                                <p className="text-foreground/75 mt-1 text-xs">{translate('Click here or use the Add Product button above')}</p>
+                                <p className="text-foreground/75 mt-1 text-xs">{translate('Click here or use the add product button above')}</p>
                             </div>
                         ) : (
                             <>
@@ -431,10 +431,10 @@ export default function OpportunityCreate() {
                                                     {translate('Quantity')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-20 px-3 py-2 text-left">
-                                                    {translate('Unit Price')} <span className="text-red-500">*</span>
+                                                    {translate('Unit price')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-40 px-3 py-2 text-left">{translate('Tax')}</th>
-                                                <th className="w-32 px-3 py-2 text-left">{translate('Line Total')}</th>
+                                                <th className="w-32 px-3 py-2 text-left">{translate('Line total')}</th>
                                                 <th className="w-10 px-3 py-2"></th>
                                             </tr>
                                         </thead>
@@ -515,7 +515,7 @@ export default function OpportunityCreate() {
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
                                                             <span className="text-foreground/75 text-sm">
-                                                                {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
+                                                                {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No tax')}
                                                             </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
@@ -628,7 +628,7 @@ export default function OpportunityCreate() {
                                                         </div>
                                                         <div>
                                                             <label className="text-foreground/75 mb-1 block text-xs">
-                                                                {translate('Unit Price')} *
+                                                                {translate('Unit price')} *
                                                             </label>
                                                             <Input
                                                                 inputType="number"
@@ -651,7 +651,7 @@ export default function OpportunityCreate() {
                                                     <div className="mt-2 flex items-center justify-between border-t pt-2 text-xs">
                                                         <span className="text-foreground/75">
                                                             {translate('Tax')}:{' '}
-                                                            {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
+                                                            {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No tax')}
                                                         </span>
                                                         <span className="text-foreground font-mono font-bold">
                                                             {translate('Total')}: {fmt(lineTotal + taxAmt)}
@@ -679,7 +679,7 @@ export default function OpportunityCreate() {
                                     <span className="font-mono text-sm text-gray-900 dark:text-white">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
-                                    <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
+                                    <span className="text-sm font-extrabold text-gray-900 dark:text-white">{translate('Grand total')}</span>
                                     <span className="font-mono text-base font-extrabold text-fuchsia-600 dark:text-fuchsia-400">
                                         {fmt(grandTotal)}
                                     </span>
@@ -698,7 +698,7 @@ export default function OpportunityCreate() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <Label className="text-sm" required>
-                                    {translate('Assign To')}
+                                    {translate('Assign to')}
                                 </Label>
                                 <Select
                                     value={data.assigned_to}

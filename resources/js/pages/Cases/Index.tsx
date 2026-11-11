@@ -246,7 +246,7 @@ export default function Cases() {
     // Add the "Add Case" button if user has permission
     if (useHasPermission('create-cases')) {
         pageActions.push({
-            label: translate('Add Case'),
+            label: translate('Add case'),
             icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -254,7 +254,7 @@ export default function Cases() {
             },
             className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
             labelClassName: 'hidden min-[360px]:inline',
-            tooltip: translate('Add Case'),
+            tooltip: translate('Add case'),
             tooltipClassName: 'min-[360px]:hidden',
         });
     }
@@ -288,7 +288,7 @@ export default function Cases() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -360,7 +360,7 @@ export default function Cases() {
         // },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -370,7 +370,7 @@ export default function Cases() {
     // Define table actions
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -401,7 +401,7 @@ export default function Cases() {
 
     // Prepare filter options
     const accountOptions = [
-        { value: 'all', label: translate('All Accounts') },
+        { value: 'all', label: translate('All accounts') },
         ...allAccounts.map((account: any) => ({
             value: account.id.toString(),
             label: account.name,
@@ -409,7 +409,7 @@ export default function Cases() {
     ];
 
     const priorityOptions = [
-        { value: 'all', label: translate('All Priorities') },
+        { value: 'all', label: translate('All priorities') },
         { value: 'low', label: translate('Low') },
         { value: 'medium', label: translate('Medium') },
         { value: 'high', label: translate('High') },
@@ -417,19 +417,19 @@ export default function Cases() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'new', label: translate('New') },
-        { value: 'in_progress', label: translate('In Progress') },
+        { value: 'in_progress', label: translate('In progress') },
         { value: 'pending', label: translate('Pending') },
         { value: 'resolved', label: translate('Resolved') },
         { value: 'closed', label: translate('Closed') },
     ];
 
     const caseTypeOptions = [
-        { value: 'all', label: translate('All Types') },
+        { value: 'all', label: translate('All types') },
         { value: 'support', label: translate('Support') },
         { value: 'bug', label: translate('Bug') },
-        { value: 'feature_request', label: translate('Feature Request') },
+        { value: 'feature_request', label: translate('Feature request') },
         { value: 'complaint', label: translate('Complaint') },
         { value: 'inquiry', label: translate('Inquiry') },
     ];
@@ -484,13 +484,13 @@ export default function Cases() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
@@ -549,7 +549,7 @@ export default function Cases() {
                         to={cases?.to || 0}
                         total={cases?.total || 0}
                         links={cases?.links}
-                        entityName={translate('cases')}
+                        entityName={translate('Cases')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -629,7 +629,7 @@ export default function Cases() {
                                                             }}
                                                         >
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            <span>{translate('View Case')}</span>
+                                                            <span>{translate('View case')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-cases') && (
@@ -639,7 +639,7 @@ export default function Cases() {
                                                             }}
                                                         >
                                                             <RefreshCw className="mr-2 h-4 w-4" />
-                                                            <span>{translate('Change Status')}</span>
+                                                            <span>{translate('Change status')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-cases') && (
@@ -768,7 +768,7 @@ export default function Cases() {
                             to={cases?.to || 0}
                             total={cases?.total || 0}
                             links={cases?.links}
-                            entityName={translate('cases')}
+                            entityName={translate('Cases')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -862,7 +862,7 @@ export default function Cases() {
                             type: 'select',
                             options: [
                                 { value: 'new', label: translate('New') },
-                                { value: 'in_progress', label: translate('In Progress') },
+                                { value: 'in_progress', label: translate('In progress') },
                                 { value: 'pending', label: translate('Pending') },
                                 { value: 'resolved', label: translate('Resolved') },
                                 { value: 'closed', label: translate('Closed') },
@@ -871,13 +871,13 @@ export default function Cases() {
                         },
                         {
                             name: 'case_type',
-                            label: translate('Case Type'),
+                            label: translate('Case type'),
                             type: 'select',
                             required: true,
                             options: [
                                 { value: 'support', label: translate('Support') },
                                 { value: 'bug', label: translate('Bug') },
-                                { value: 'feature_request', label: translate('Feature Request') },
+                                { value: 'feature_request', label: translate('Feature request') },
                                 { value: 'complaint', label: translate('Complaint') },
                                 { value: 'inquiry', label: translate('Inquiry') },
                             ],
@@ -885,7 +885,7 @@ export default function Cases() {
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -910,7 +910,7 @@ export default function Cases() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Case') : formMode === 'edit' ? translate('Edit Case') : translate('View Case')}
+                title={formMode === 'create' ? translate('Add case') : formMode === 'edit' ? translate('Edit case') : translate('View case')}
                 mode={formMode}
             />
 
@@ -931,7 +931,7 @@ export default function Cases() {
                             required: true,
                             options: [
                                 { value: 'new', label: translate('New') },
-                                { value: 'in_progress', label: translate('In Progress') },
+                                { value: 'in_progress', label: translate('In progress') },
                                 { value: 'pending', label: translate('Pending') },
                                 { value: 'resolved', label: translate('Resolved') },
                                 { value: 'closed', label: translate('Closed') },
@@ -941,7 +941,7 @@ export default function Cases() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Case Status')}
+                title={translate('Change case status')}
                 mode="edit"
             />
 
@@ -953,7 +953,7 @@ export default function Cases() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.subject || ''}
-                entityName={translate('case')}
+                entityName={translate('Case')}
             />
         </PageTemplate>
     );

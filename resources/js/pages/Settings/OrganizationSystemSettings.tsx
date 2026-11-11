@@ -100,7 +100,7 @@ export default function OrganizationSystemSettings({
 
     return (
         <SettingsSection
-            title={translate('System Settings')}
+            title={translate('System settings')}
             description={translate('Configure system-wide settings for your organization')}
             action={
                 <Button type="submit" disabled={processing} form="organization-system-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -113,7 +113,7 @@ export default function OrganizationSystemSettings({
                     <form id="organization-system-settings-form" onSubmit={submitSystemSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="defaultLanguage">{translate('Default Language')}</Label>
+                                <Label htmlFor="defaultLanguage">{translate('Default language')}</Label>
                                 <Select
                                     value={systemSettings.defaultLanguage}
                                     onValueChange={(value) => {
@@ -148,7 +148,7 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="dateFormat">{translate('Date Format')}</Label>
+                                <Label htmlFor="dateFormat">{translate('Date format')}</Label>
                                 <Select
                                     value={systemSettings.dateFormat}
                                     onValueChange={(value) => {
@@ -181,7 +181,7 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="timeFormat">{translate('Time Format')}</Label>
+                                <Label htmlFor="timeFormat">{translate('Time format')}</Label>
                                 <Select
                                     value={systemSettings.timeFormat}
                                     onValueChange={(value) => {
@@ -213,7 +213,7 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="defaultTimezone">{translate('Default Timezone')}</Label>
+                                <Label htmlFor="defaultTimezone">{translate('Default timezone')}</Label>
                                 <Select
                                     value={systemSettings.defaultTimezone}
                                     onValueChange={(value) => {

@@ -74,7 +74,7 @@ export function IyzipayPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('en-US', {
+        return new Intl.NumberFormat('En-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -85,7 +85,7 @@ export function IyzipayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('IyziPay Payment')}
+                    {translate('IyziPay payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -98,15 +98,15 @@ export function IyzipayPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
@@ -146,7 +146,7 @@ export function IyzipayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-foreground/75 text-center text-xs">{translate('Powered by IyziPay - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by IyziPay - secure payment processing')}</div>
             </CardContent>
         </Card>
     );

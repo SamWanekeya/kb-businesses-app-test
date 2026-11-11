@@ -74,7 +74,7 @@ export function InvoiceIyzipayPaymentForm({
     const formatPrice = (price: number) => {
         return (
             window.kbSettings.formatCurrency(Number(price || 0)) ||
-            new Intl.NumberFormatranslate('en-US', {
+            new Intl.NumberFormat('En-US', {
                 style: 'currency',
                 currency: currency,
             }).format(price)
@@ -86,7 +86,7 @@ export function InvoiceIyzipayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('IyziPay Payment')}
+                    {translate('IyziPay payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -99,11 +99,11 @@ export function InvoiceIyzipayPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Payment Amount')}</span>
+                        <span className="font-medium">{translate('Payment amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Payment Type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
+                        {translate('Payment type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
 
@@ -142,7 +142,7 @@ export function InvoiceIyzipayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-foreground/75 text-center text-xs">{translate('Powered by IyziPay - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by IyziPay - secure payment processing')}</div>
             </CardContent>
         </Card>
     );

@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Truck className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Shipping Provider Type Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Shipping provider type details')}</DialogTitle>
                 </div>
             </DialogHeader>
 

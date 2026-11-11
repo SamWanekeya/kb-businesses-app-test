@@ -151,7 +151,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                             marginBottom: '15px',
                                         }}
                                     >
-                                        {translate('SALES ORDER')}
+                                        {translate('Sales order')}
                                     </h3>
                                     <table className="no-space" style={{ width: '100%' }}>
                                         <tbody>
@@ -162,9 +162,9 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                             </tr>
                                             <tr>
                                                 <td style={{ ...styles.noSpace }}>
-                                                    {translate('Order Date')}: {formatValue(salesOrder.order_date)}
+                                                    {translate('Order date')}: {formatValue(salesOrder.order_date)}
                                                     <br />
-                                                    {translate('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
+                                                    {translate('Delivery date')}: {formatValue(salesOrder.delivery_date)}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -185,7 +185,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.billing_contact?.name}
                                         <br />
@@ -201,7 +201,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.shipping_contact?.name}
                                         <br />
@@ -236,7 +236,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                             fontSize: '12px',
                                         }}
                                     >
-                                        {translate('before tax & discount')}
+                                        {translate('Before tax & discount')}
                                     </small>
                                 </th>
                             </tr>

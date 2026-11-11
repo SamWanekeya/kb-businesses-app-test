@@ -210,12 +210,12 @@ export default function Products() {
     // Add the "Add Product" button if user has permission
     if (useHasPermission('create-products')) {
         pageActions.push({
-            label: translate('Add Product'),
+            label: translate('Add product'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: translate('Add Product'),
+            tooltip: translate('Add product'),
             tooltipClassName: 'min-[500px]:hidden',
             onClick: () => {
                 router.visit(route('products.create'));
@@ -296,13 +296,13 @@ export default function Products() {
                               : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value} {value === 1 ? translate('unit') : translate('units')}
+                    {value} {value === 1 ? translate('Unit') : translate('Units')}
                 </span>
             ),
         },
         // {
         //     key: 'assigned_user',
-        //     label: translate('Assigned To'),
+        //     label: translate('Assigned to'),
         //     className: 'whitespace-nowrap',
         //     render: (value: any) => value ? (
         //         <div className="flex items-center gap-2">
@@ -357,7 +357,7 @@ export default function Products() {
     // Define table actions
     const actions = [
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -388,7 +388,7 @@ export default function Products() {
 
     // Prepare filter options
     const categoryOptions = [
-        { value: 'all', label: translate('All Categories') },
+        { value: 'all', label: translate('All categories') },
         ...(allCategories || []).map((category: any) => ({
             value: category.id.toString(),
             label: category.name,
@@ -396,7 +396,7 @@ export default function Products() {
     ];
 
     const brandOptions = [
-        { value: 'all', label: translate('All Brands') },
+        { value: 'all', label: translate('All brands') },
         ...(allBrands || []).map((brand: any) => ({
             value: brand.id.toString(),
             label: brand.name,
@@ -404,7 +404,7 @@ export default function Products() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'active', label: translate('Active') },
         { value: 'inactive', label: translate('Inactive') },
     ];
@@ -452,13 +452,13 @@ export default function Products() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
@@ -519,7 +519,7 @@ export default function Products() {
                         to={products?.to || 0}
                         total={products?.total || 0}
                         links={products?.links}
-                        entityName={translate('products')}
+                        entityName={translate('Products')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -600,7 +600,7 @@ export default function Products() {
                                         {product.stock_quantity === 0 && (
                                             <div className="absolute bottom-3 left-3">
                                                 <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs text-red-700 ring-1 ring-red-600/20 ring-inset">
-                                                    {translate('Out of Stock')}
+                                                    {translate('Out of stock')}
                                                 </span>
                                             </div>
                                         )}
@@ -648,9 +648,9 @@ export default function Products() {
                                                     </p>
                                                 </div>
                                                 <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 dark:border-red-700 dark:bg-red-900/20">
-                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('In Stock')}</p>
+                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('In stock')}</p>
                                                     <p className="text-sm font-extrabold text-orange-500">
-                                                        {product.stock_quantity} {translate('units')}
+                                                        {product.stock_quantity} {translate('Units')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -754,7 +754,7 @@ export default function Products() {
                             to={products?.to || 0}
                             total={products?.total || 0}
                             links={products?.links}
-                            entityName={translate('products')}
+                            entityName={translate('Products')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -790,7 +790,7 @@ export default function Products() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('product')}
+                entityName={translate('Product')}
             />
 
             {/* Import Modal */}
@@ -799,11 +799,11 @@ export default function Products() {
                 onClose={() => {
                     setIsImportModalOpen(false);
                 }}
-                title={translate('Import Products from CSV/Excel')}
+                title={translate('Import products from CSV/Excel')}
                 importRoute="products.import"
                 parseRoute="products.parse"
                 samplePath={samplePath}
-                importNotes={translate('Ensure that the values entered for Category, Brand, Tax match the existing records in your system.')}
+                importNotes={translate('Ensure that the values entered for category, brand, tax match the existing records in your system.')}
                 databaseFields={[
                     { key: 'name', required: true },
                     { key: 'sku', required: true },

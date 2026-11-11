@@ -20,7 +20,7 @@ export default function CallShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Calls'), href: route('calls.index') },
-        { title: translate('View Call') },
+        { title: translate('View call') },
     ];
 
     const formatDateTime = (date: string, time: string) => {
@@ -51,14 +51,14 @@ export default function CallShow() {
                     {/* Call Details */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h2 className="text-lg font-bold">{translate('Call Details')}</h2>
+                            <h2 className="text-lg font-bold">{translate('Call details')}</h2>
                         </div>
                         <div className="p-6">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
-                                        <p className="font-medium">{translate('Date & Time')}</p>
+                                        <p className="font-medium">{translate('Date & time')}</p>
                                         <p className="text-foreground/75 text-sm">
                                             {window.kbSettings.formatDateTime(call.start_date, false) ||
                                                 new Date(call.start_date).toLocaleDateString()}{' '}
@@ -94,7 +94,7 @@ export default function CallShow() {
                                             : call.status === 'held'
                                               ? translate('Held')
                                               : call.status === 'not_held'
-                                                ? translate('Not Held')
+                                                ? translate('Not held')
                                                 : call.status}
                                     </span>
                                 </div>
@@ -147,11 +147,11 @@ export default function CallShow() {
                     {/* Call Info */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="font-bold">{translate('Call Information')}</h3>
+                            <h3 className="font-bold">{translate('Call information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Created By')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created by')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {call.creator ? (
                                         <>
@@ -174,7 +174,7 @@ export default function CallShow() {
 
                             {call.assigned_user && (
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Assigned to')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={call.assigned_user.avatar} alt={call.assigned_user.name} />
@@ -193,7 +193,7 @@ export default function CallShow() {
                             )}
 
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Created At')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created at')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -204,7 +204,7 @@ export default function CallShow() {
 
                             {call.updated_at !== call.created_at && (
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Last Updated')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Last updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -241,7 +241,7 @@ export default function CallShow() {
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
                                         <Building2 className="text-foreground/75 h-4 w-4" />
-                                        <h3 className="text-base font-bold">{translate('Related To')}</h3>
+                                        <h3 className="text-base font-bold">{translate('Related to')}</h3>
                                     </div>
                                     <div className="p-4">
                                         {useHasPermission(viewRoute) ? (

@@ -26,12 +26,12 @@ export default function SalesReports() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
-        { title: translate('Sales Reports') },
+        { title: translate('Sales reports') },
     ];
 
     const summaryCards = [
         {
-            title: translate('Total Sales'),
+            title: translate('Total sales'),
             value: (
                 <span className="font-mono">
                     {window.kbSettings.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}
@@ -41,13 +41,13 @@ export default function SalesReports() {
             iconColor: 'bg-fuchsia-100',
         },
         {
-            title: translate('Total Orders'),
+            title: translate('Total orders'),
             value: summary.total_orders.toLocaleString(),
             icon: <ShoppingCart className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: translate('Average Order Value'),
+            title: translate('Average order value'),
             value: (
                 <span className="font-mono">
                     {window.kbSettings.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`}
@@ -57,7 +57,7 @@ export default function SalesReports() {
             iconColor: 'bg-purple-100',
         },
         {
-            title: translate('Growth Rate'),
+            title: translate('Growth rate'),
             value: `${summary.growth_rate.toFixed(2)}%`,
             icon: <TrendingUp className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
@@ -66,7 +66,7 @@ export default function SalesReports() {
 
     return (
         <PageTemplate
-            title={translate('Sales Reports')}
+            title={translate('Sales reports')}
             description={translate('View and analyze sales reports to track revenue and performance.')}
             url="/reports/sales"
             breadcrumbs={breadcrumbs}
@@ -80,7 +80,7 @@ export default function SalesReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('Sales Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Sales trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -152,7 +152,7 @@ export default function SalesReports() {
                 <div className="col-span-full">
                     <Card className="border-border overflow-hidden border shadow-sm">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-bold">{translate('Sales by Status')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Sales by status')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 pt-5" dir="ltr">
                             <ResponsiveContainer width="100%" height={300}>
@@ -198,7 +198,7 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-bold">{translate('Recent Sales')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Recent sales')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Latest sales orders')}</p>
                             </div>
                             <Link
@@ -249,7 +249,7 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-bold">{translate('Top Selling Products')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Top selling products')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest revenue products')}</p>
                             </div>
                             <Link
@@ -307,7 +307,7 @@ export default function SalesReports() {
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">
-                                                {product.total_quantity} {translate('units sold')}
+                                                {product.total_quantity} {translate('Units sold')}
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">

@@ -131,15 +131,15 @@ export default function Notes() {
 
     const columns = [
         { key: 'title', label: translate('Title'), sortable: true },
-        { key: 'creator', label: translate('Created By'), render: (value: any) => value?.name || '-' },
+        { key: 'creator', label: translate('Created by'), render: (value: any) => value?.name || '-' },
         {
             key: 'shared_users',
-            label: translate('Shared With'),
+            label: translate('Shared with'),
             render: (value: any[]) => (value?.length ? `${value.length} users` : translate('Not shared')),
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             render: (value: string) => new Date(value).toLocaleDateString(),
         },
@@ -182,12 +182,12 @@ export default function Notes() {
                 useHasPermission('create-notes')
                     ? [
                           {
-                              label: translate('Add Note'),
+                              label: translate('Add note'),
                               variant: 'default',
                               icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
                               className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
                               labelClassName: 'hidden min-[360px]:inline',
-                              tooltip: translate('Add Note'),
+                              tooltip: translate('Add note'),
                               tooltipClassName: 'min-[360px]:hidden',
                               onClick: () => {
                                   setCurrentItem(null);
@@ -211,7 +211,7 @@ export default function Notes() {
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{translate('Total Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Total notes')}</p>
                             <p className="text-2xl font-extrabold">{totalPersonalNotes + totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
@@ -222,7 +222,7 @@ export default function Notes() {
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{translate('Personal Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Personal notes')}</p>
                             <p className="text-2xl font-extrabold">{totalPersonalNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-fuchsia-100">
@@ -233,7 +233,7 @@ export default function Notes() {
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{translate('Shared Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Shared notes')}</p>
                             <p className="text-2xl font-extrabold">{totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
@@ -250,13 +250,13 @@ export default function Notes() {
                     filters={[
                         {
                             name: 'created_by',
-                            label: translate('Created By'),
+                            label: translate('Created by'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedCreator,
                             onChange: setSelectedCreator,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -312,7 +312,7 @@ export default function Notes() {
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
                             <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-bold md:mb-4 md:text-base">
                                 <Users className="h-4 w-4 md:h-5 md:w-5" />
-                                {translate('Personal Notes')} ({myNotesData.length})
+                                {translate('Personal notes')} ({myNotesData.length})
                             </h3>
                             <div className="flex-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 space-y-2 overflow-y-auto pr-1 md:pr-2">
                                 {myNotesData.map((note: any) => (
@@ -378,7 +378,7 @@ export default function Notes() {
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
                             <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-bold md:mb-4 md:text-base">
                                 <Share2 className="h-4 w-4 md:h-5 md:w-5" />
-                                {translate('Shared Notes')} ({sharedNotesData.length})
+                                {translate('Shared notes')} ({sharedNotesData.length})
                             </h3>
                             <div className="flex-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 space-y-2 overflow-y-auto pr-1 md:pr-2">
                                 {sharedNotesData.map((note: any) => (
@@ -453,7 +453,7 @@ export default function Notes() {
                     <div className="mb-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
                             <Users className="h-5 w-5" />
-                            {translate('Personal Notes')} <span className="text-gray-500">({myNotesData.length})</span>
+                            {translate('Personal notes')} <span className="text-gray-500">({myNotesData.length})</span>
                         </h3>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                             {myNotesData.map((note: any) => (
@@ -549,7 +549,7 @@ export default function Notes() {
                     <div>
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
                             <Share2 className="h-5 w-5" />
-                            {translate('Shared Notes')} <span className="text-gray-500">({sharedNotesData.length})</span>
+                            {translate('Shared notes')} <span className="text-gray-500">({sharedNotesData.length})</span>
                         </h3>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                             {sharedNotesData.map((note: any) => (
@@ -648,7 +648,7 @@ export default function Notes() {
                             to={myNotes?.to || 0}
                             total={myNotes?.total || 0}
                             links={myNotes?.links}
-                            entityName={translate('notes')}
+                            entityName={translate('Notes')}
                             onPageChange={(url) => {
                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
                             }}
@@ -681,7 +681,7 @@ export default function Notes() {
                         },
                         {
                             name: 'shared_users',
-                            label: translate('Share With'),
+                            label: translate('Share with'),
                             type: 'multi-select',
                             options: users
                                 .filter((u: any) => u.id !== auth.user.id)
@@ -703,7 +703,7 @@ export default function Notes() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Note') : translate('Edit Note')}
+                title={formMode === 'create' ? translate('Add note') : translate('Edit note')}
                 mode={formMode}
             />
 
@@ -719,7 +719,7 @@ export default function Notes() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={translate('note')}
+                entityName={translate('Note')}
             />
         </PageTemplate>
     );

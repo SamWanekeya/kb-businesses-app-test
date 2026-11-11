@@ -60,7 +60,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                                         margin: '0 0 10px 0',
                                     }}
                                 >
-                                    {translate('QUOTE')}
+                                    {translate('Quote')}
                                 </h3>
                                 <table style={{ width: '70%', borderCollapse: 'collapse' }}>
                                     <tbody>
@@ -71,7 +71,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '0', fontSize: '13px', fontWeight: '600' }}>
-                                                {translate('Valid Until')}: {formatValue(quote.valid_until)}
+                                                {translate('Valid until')}: {formatValue(quote.valid_until)}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -136,7 +136,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.billing_contact?.name)}
                                     <br />
@@ -152,7 +152,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.shipping_contact?.name)}
                                     <br />
@@ -194,7 +194,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

@@ -79,8 +79,8 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
 
     return (
         <SettingsSection
-            title={translate('Kakbima Intelligence Settings')}
-            description={translate('Configure Kakbima Intelligence integration settings for AI-powered features')}
+            title={translate('Kakbima Intelligence settings')}
+            description={translate('Configure Kakbima Intelligence integration settings for ai-powered features')}
             action={
                 <Button type="submit" disabled={processing} form="kakbima-intelligence-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
@@ -106,7 +106,7 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="kakbima_intelligence_model">{translate('Kakbima Intelligence Model Name')}</Label>
+                                <Label htmlFor="kakbima_intelligence_model">{translate('Kakbima Intelligence model name')}</Label>
                                 <Select
                                     value={kakbimaIntelligenceSettings.kakbima_intelligence_model}
                                     onValueChange={(value) => {

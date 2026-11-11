@@ -145,7 +145,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                         <CardHeader className="border-b">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Calendar className="text-primary me-3 h-5 w-5" />
-                                {translate('Activity Stream')}
+                                {translate('Activity stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -295,8 +295,8 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                 });
                             }
                         }}
-                        itemName={translate('this activity')}
-                        entityName={translate('activity')}
+                        itemName={translate('This activity')}
+                        entityName={translate('Activity')}
                     />
                 </>
             )}

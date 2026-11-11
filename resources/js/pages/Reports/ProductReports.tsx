@@ -22,24 +22,24 @@ export default function ProductReports() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
-        { title: translate('Product Reports') },
+        { title: translate('Product reports') },
     ];
 
     const summaryCards = [
         {
-            title: translate('Total Products'),
+            title: translate('Total products'),
             value: summary.total_products.toLocaleString(),
             icon: <Package className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: translate('Active Products'),
+            title: translate('Active products'),
             value: summary.active_products.toLocaleString(),
             icon: <CheckCircle className="h-6 w-6 text-fuchsia-600" />,
             iconColor: 'bg-fuchsia-100',
         },
         {
-            title: translate('Total Revenue'),
+            title: translate('Total revenue'),
             value: (
                 <span className="font-mono">
                     {window.kbSettings.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`}
@@ -49,7 +49,7 @@ export default function ProductReports() {
             iconColor: 'bg-purple-100',
         },
         {
-            title: translate('Best Seller'),
+            title: translate('Best seller'),
             value: summary.best_seller || translate('-'),
             icon: <Award className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
@@ -60,7 +60,7 @@ export default function ProductReports() {
 
     return (
         <PageTemplate
-            title={translate('Product Reports')}
+            title={translate('Product reports')}
             description={translate('View and analyze product reports to track performance and sales.')}
             url={route('reports.product-reports')}
             breadcrumbs={breadcrumbs}
@@ -71,7 +71,7 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6">
                 <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Top Products by Revenue')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Top products by revenue')}</CardTitle>
                     </CardHeader>
                     <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={400}>
@@ -120,7 +120,7 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-bold">{translate('Low Stock Products')}</h3>
+                        <h3 className="text-base font-bold">{translate('Low stock products')}</h3>
 
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory between 1 and 10')}</p>
                     </div>
@@ -172,7 +172,7 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
 
-                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/a')}</p>
                                             </div>
                                         </div>
 
@@ -192,7 +192,7 @@ export default function ProductReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-bold">{translate('Out of Stock Products')}</h3>
+                        <h3 className="text-base font-bold">{translate('Out of stock products')}</h3>
 
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Inventory at 0')}</p>
                     </div>
@@ -245,7 +245,7 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
 
-                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
+                                                <p className="text-foreground/75 mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/a')}</p>
                                             </div>
                                         </div>
 
@@ -265,7 +265,7 @@ export default function ProductReports() {
 
                 <Card className="border-border col-span-full overflow-hidden border shadow-sm">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-bold">{translate('Top 5 Products by Quantity Sold')}</h3>
+                        <h3 className="text-base font-bold">{translate('Top 5 products by quantity sold')}</h3>
                         <p className="text-foreground/75 mt-0.5 text-xs">{translate('Highest moving inventory')}</p>
                     </div>
                     <div className="p-0">
@@ -315,7 +315,7 @@ export default function ProductReports() {
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-bold">{product.name}</p>
                                             <p className="text-foreground/75 mt-0.5 truncate text-xs">
-                                                {product.quantity} {translate('units sold')}
+                                                {product.quantity} {translate('Units sold')}
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">

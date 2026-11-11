@@ -334,7 +334,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
 
     return (
         <SettingsSection
-            title={translate('Payment Settings')}
+            title={translate('Payment settings')}
             description={translate('Configure payment gateway for subscription plans')}
             action={
                 <Button type="submit" form="payment-settings-form" size="sm" disabled={processing} className="max-[1300px]:px-2.5">
@@ -347,7 +347,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                     {/* Payment Methods */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{translate('Payment Methods')}</CardTitle>
+                            <CardTitle>{translate('Payment methods')}</CardTitle>
                             <CardDescription>{translate('Configure available payment methods for subscription plans')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -386,9 +386,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Methods')}</SelectItem>
-                                        <SelectItem value="enabled">{translate('Enabled Only')}</SelectItem>
-                                        <SelectItem value="disabled">{translate('Disabled Only')}</SelectItem>
+                                        <SelectItem value="all">{translate('All methods')}</SelectItem>
+                                        <SelectItem value="enabled">{translate('Enabled only')}</SelectItem>
+                                        <SelectItem value="disabled">{translate('Disabled only')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -478,7 +478,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     }}
                                 >
                                     <div className="space-y-2">
-                                        <Label htmlFor="bank_details">{translate('Bank Details')}</Label>
+                                        <Label htmlFor="bank_details">{translate('Bank details')}</Label>
                                         <Textarea
                                             id="bank_details"
                                             value={data.bank_details}
@@ -508,14 +508,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="stripe_key"*/}
-                            {/*                label={translate('Publishable Key')}*/}
+                            {/*                label={translate('Publishable key')}*/}
                             {/*                value={data.stripe_key}*/}
                             {/*                onChange={(value) => setData('stripe_key', value)}*/}
                             {/*                error={errors.stripe_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="stripe_secret"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.stripe_secret}*/}
                             {/*                onChange={(value) => setData('stripe_secret', value)}*/}
                             {/*                isSecret*/}
@@ -551,7 +551,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paypal_secret_key"*/}
-                            {/*                    label={translate('Secret Key')}*/}
+                            {/*                    label={translate('Secret key')}*/}
                             {/*                    value={data.paypal_secret_key}*/}
                             {/*                    onChange={(value) => setData('paypal_secret_key', value)}*/}
                             {/*                    isSecret*/}
@@ -582,7 +582,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="razorpay_secret"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.razorpay_secret}*/}
                             {/*                onChange={(value) => setData('razorpay_secret', value)}*/}
                             {/*                isSecret*/}
@@ -610,7 +610,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="mercadopago_access_token"*/}
-                            {/*                label={translate('Access Token')}*/}
+                            {/*                label={translate('Access token')}*/}
                             {/*                value={data.mercadopago_access_token}*/}
                             {/*                onChange={(value) => setData('mercadopago_access_token', value)}*/}
                             {/*                placeholder={data.mercadopago_mode === 'sandbox' ? 'TEST-' : 'APP_USR-'}*/}
@@ -649,7 +649,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <PaymentInputField
                                             id="paystack_public_key"
-                                            label={translate('Public Key')}
+                                            label={translate('Public key')}
                                             value={data.paystack_public_key}
                                             onChange={(value) => {
                                                 setData('paystack_public_key', value);
@@ -658,7 +658,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                         />
                                         <PaymentInputField
                                             id="paystack_secret_key"
-                                            label={translate('Secret Key')}
+                                            label={translate('Secret key')}
                                             value={data.paystack_secret_key}
                                             onChange={(value) => {
                                                 setData('paystack_secret_key', value);
@@ -683,14 +683,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="flutterwave_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.flutterwave_public_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_public_key', value)}*/}
                             {/*                error={errors.flutterwave_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="flutterwave_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.flutterwave_secret_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -726,7 +726,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paytabs_server_key"*/}
-                            {/*                    label={translate('Server Key')}*/}
+                            {/*                    label={translate('Server key')}*/}
                             {/*                    value={data.paytabs_server_key}*/}
                             {/*                    onChange={(value) => setData('paytabs_server_key', value)}*/}
                             {/*                    isSecret*/}
@@ -737,11 +737,11 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                <Label htmlFor="paytabs_region">{translate('Region')}</Label>*/}
                             {/*                <Select value={data.paytabs_region} onValueChange={(value) => setData('paytabs_region', value)}>*/}
                             {/*                    <SelectTrigger>*/}
-                            {/*                        <SelectValue placeholder={translate('Select Region')} />*/}
+                            {/*                        <SelectValue placeholder={translate('Select region')} />*/}
                             {/*                    </SelectTrigger>*/}
                             {/*                    <SelectContent>*/}
-                            {/*                        <SelectItem value="ARE">{translate('UAE')}</SelectItem>*/}
-                            {/*                        <SelectItem value="SAU">{translate('Saudi Arabia')}</SelectItem>*/}
+                            {/*                        <SelectItem value="ARE">{translate('Uae')}</SelectItem>*/}
+                            {/*                        <SelectItem value="SAU">{translate('Saudi arabia')}</SelectItem>*/}
                             {/*                        <SelectItem value="OMN">{translate('Oman')}</SelectItem>*/}
                             {/*                        <SelectItem value="JOR">{translate('Jordan')}</SelectItem>*/}
                             {/*                        <SelectItem value="EGY">{translate('Egypt')}</SelectItem>*/}
@@ -775,7 +775,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="skrill_secret_word"*/}
-                            {/*                label={translate('Secret Word')}*/}
+                            {/*                label={translate('Secret word')}*/}
                             {/*                value={data.skrill_secret_word}*/}
                             {/*                onChange={(value) => setData('skrill_secret_word', value)}*/}
                             {/*                isSecret*/}
@@ -803,7 +803,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="coingate_api_token"*/}
-                            {/*                label={translate('API Token')}*/}
+                            {/*                label={translate('API token')}*/}
                             {/*                value={data.coingate_api_token}*/}
                             {/*                onChange={(value) => setData('coingate_api_token', value)}*/}
                             {/*                isSecret*/}
@@ -839,7 +839,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="payfast_merchant_key"*/}
-                            {/*                    label={translate('Merchant Key')}*/}
+                            {/*                    label={translate('Merchant key')}*/}
                             {/*                    value={data.payfast_merchant_key}*/}
                             {/*                    onChange={(value) => setData('payfast_merchant_key', value)}*/}
                             {/*                    isSecret*/}
@@ -869,7 +869,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="tap_secret_key"*/}
-                            {/*            label={translate('Secret Key')}*/}
+                            {/*            label={translate('Secret key')}*/}
                             {/*            value={data.tap_secret_key}*/}
                             {/*            onChange={(value) => setData('tap_secret_key', value)}*/}
                             {/*            isSecret*/}
@@ -890,7 +890,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="xendit_api_key"*/}
-                            {/*            label={translate('API Key')}*/}
+                            {/*            label={translate('API key')}*/}
                             {/*            value={data.xendit_api_key}*/}
                             {/*            onChange={(value) => setData('xendit_api_key', value)}*/}
                             {/*            isSecret*/}
@@ -919,7 +919,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="paytr_merchant_key"*/}
-                            {/*                label={translate('Merchant Key')}*/}
+                            {/*                label={translate('Merchant key')}*/}
                             {/*                value={data.paytr_merchant_key}*/}
                             {/*                onChange={(value) => setData('paytr_merchant_key', value)}*/}
                             {/*                isSecret*/}
@@ -928,7 +928,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        </div>*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="paytr_merchant_salt"*/}
-                            {/*            label={translate('Merchant Salt')}*/}
+                            {/*            label={translate('Merchant salt')}*/}
                             {/*            value={data.paytr_merchant_salt}*/}
                             {/*            onChange={(value) => setData('paytr_merchant_salt', value)}*/}
                             {/*            isSecret*/}
@@ -949,7 +949,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="mollie_api_key"*/}
-                            {/*            label={translate('API Key')}*/}
+                            {/*            label={translate('API key')}*/}
                             {/*            value={data.mollie_api_key}*/}
                             {/*            onChange={(value) => setData('mollie_api_key', value)}*/}
                             {/*            isSecret*/}
@@ -971,14 +971,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="toyyibpay_category_code"*/}
-                            {/*                label={translate('Category Code')}*/}
+                            {/*                label={translate('Category code')}*/}
                             {/*                value={data.toyyibpay_category_code}*/}
                             {/*                onChange={(value) => setData('toyyibpay_category_code', value)}*/}
                             {/*                error={errors.toyyibpay_category_code}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="toyyibpay_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.toyyibpay_secret_key}*/}
                             {/*                onChange={(value) => setData('toyyibpay_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -996,7 +996,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_benefit_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_benefit_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.BENEFIT]}*/}
-                            {/*        helpText={translate('Get your Benefit API credentials from your')}*/}
+                            {/*        helpText={translate('Get your benefit API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.benefit_mode as 'sandbox' | 'live'}*/}
@@ -1006,14 +1006,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="benefit_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.benefit_public_key}*/}
                             {/*                onChange={(value) => setData('benefit_public_key', value)}*/}
                             {/*                error={errors.benefit_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="benefit_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.benefit_secret_key}*/}
                             {/*                onChange={(value) => setData('benefit_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1026,7 +1026,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* IyziPay *!/*/}
                             {/*{shouldShowMethod('iyzipay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={translate('IyziPay')}*/}
+                            {/*        title={translate('Iyzipay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_iyzipay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_iyzipay_payment_mode_enabled', checked)}*/}
@@ -1041,14 +1041,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="iyzipay_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.iyzipay_public_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_public_key', value)}*/}
                             {/*                error={errors.iyzipay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="iyzipay_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.iyzipay_secret_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1105,7 +1105,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        />*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="midtrans_secret_key"*/}
-                            {/*            label={translate('Secret Key')}*/}
+                            {/*            label={translate('Secret key')}*/}
                             {/*            value={data.midtrans_secret_key}*/}
                             {/*            onChange={(value) => setData('midtrans_secret_key', value)}*/}
                             {/*            isSecret*/}
@@ -1134,7 +1134,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="yookassa_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.yookassa_secret_key}*/}
                             {/*                onChange={(value) => setData('yookassa_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1219,14 +1219,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cinetpay_api_key"*/}
-                            {/*                label={translate('API Key')}*/}
+                            {/*                label={translate('API key')}*/}
                             {/*                value={data.cinetpay_api_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_api_key', value)}*/}
                             {/*                error={errors.cinetpay_api_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cinetpay_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.cinetpay_secret_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1261,7 +1261,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_merchant_secret"*/}
-                            {/*                label={translate('Merchant Secret')}*/}
+                            {/*                label={translate('Merchant secret')}*/}
                             {/*                value={data.payhere_merchant_secret}*/}
                             {/*                onChange={(value) => setData('payhere_merchant_secret', value)}*/}
                             {/*                isSecret*/}
@@ -1276,7 +1276,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_app_secret"*/}
-                            {/*                label={translate('App Secret')}*/}
+                            {/*                label={translate('App secret')}*/}
                             {/*                value={data.payhere_app_secret}*/}
                             {/*                onChange={(value) => setData('payhere_app_secret', value)}*/}
                             {/*                isSecret*/}
@@ -1304,14 +1304,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="fedapay_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.fedapay_public_key}*/}
                             {/*                onChange={(value) => setData('fedapay_public_key', value)}*/}
                             {/*                error={errors.fedapay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="fedapay_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.fedapay_secret_key}*/}
                             {/*                onChange={(value) => setData('fedapay_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1346,7 +1346,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="authorizenet_transaction_key"*/}
-                            {/*                label={translate('Transaction Key')}*/}
+                            {/*                label={translate('Transaction key')}*/}
                             {/*                value={data.authorizenet_transaction_key}*/}
                             {/*                onChange={(value) => setData('authorizenet_transaction_key', value)}*/}
                             {/*                isSecret*/}
@@ -1364,19 +1364,19 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_khalti_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_khalti_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.KHALTI]}*/}
-                            {/*        helpText={translate('Get your Khalti API credentials from your')}*/}
+                            {/*        helpText={translate('Get your khalti API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="khalti_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.khalti_public_key}*/}
                             {/*                onChange={(value) => setData('khalti_public_key', value)}*/}
                             {/*                error={errors.khalti_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="khalti_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.khalti_secret_key}*/}
                             {/*                onChange={(value) => setData('khalti_secret_key', value)}*/}
                             {/*                isSecret*/}
@@ -1399,14 +1399,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="easebuzz_merchant_key"*/}
-                            {/*                label={translate('Merchant Key')}*/}
+                            {/*                label={translate('Merchant key')}*/}
                             {/*                value={data.easebuzz_merchant_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_merchant_key', value)}*/}
                             {/*                error={errors.easebuzz_merchant_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="easebuzz_salt_key"*/}
-                            {/*                label={translate('Salt Key')}*/}
+                            {/*                label={translate('Salt key')}*/}
                             {/*                value={data.easebuzz_salt_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_salt_key', value)}*/}
                             {/*                isSecret*/}
@@ -1441,14 +1441,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_site_key"*/}
-                            {/*                label={translate('Site Key')}*/}
+                            {/*                label={translate('Site key')}*/}
                             {/*                value={data.ozow_site_key}*/}
                             {/*                onChange={(value) => setData('ozow_site_key', value)}*/}
                             {/*                error={errors.ozow_site_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_private_key"*/}
-                            {/*                label={translate('Private Key')}*/}
+                            {/*                label={translate('Private key')}*/}
                             {/*                value={data.ozow_private_key}*/}
                             {/*                onChange={(value) => setData('ozow_private_key', value)}*/}
                             {/*                isSecret*/}
@@ -1456,7 +1456,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_api_key"*/}
-                            {/*                label={translate('API Key')}*/}
+                            {/*                label={translate('API key')}*/}
                             {/*                value={data.ozow_api_key}*/}
                             {/*                onChange={(value) => setData('ozow_api_key', value)}*/}
                             {/*                error={errors.ozow_api_key}*/}
@@ -1483,14 +1483,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cashfree_public_key"*/}
-                            {/*                label={translate('Public Key')}*/}
+                            {/*                label={translate('Public key')}*/}
                             {/*                value={data.cashfree_public_key}*/}
                             {/*                onChange={(value) => setData('cashfree_public_key', value)}*/}
                             {/*                error={errors.cashfree_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cashfree_secret_key"*/}
-                            {/*                label={translate('Secret Key')}*/}
+                            {/*                label={translate('Secret key')}*/}
                             {/*                value={data.cashfree_secret_key}*/}
                             {/*                onChange={(value) => setData('cashfree_secret_key', value)}*/}
                             {/*                isSecret*/}

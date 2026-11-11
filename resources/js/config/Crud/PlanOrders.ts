@@ -15,31 +15,31 @@ export const usePlanOrdersConfig: CrudConfig = {
     description: translate('View plan orders and subscription history for your team'),
     table: {
         columns: [
-            { key: 'order_number', label: translate('Order Number'), sortable: true },
+            { key: 'order_number', label: translate('Order number'), sortable: true },
             {
                 key: 'ordered_at',
-                label: translate('Order Date'),
+                label: translate('Order date'),
                 sortable: true,
                 render: (value) => `${window.kbSettings.formatDateTime(value, false) || '-'}`,
             },
             {
                 key: 'user.name',
-                label: translate('User Name'),
+                label: translate('User name'),
                 sortable: false,
             },
             {
                 key: 'plan.name',
-                label: translate('Plan Name'),
+                label: translate('Plan name'),
                 sortable: false,
             },
             {
                 key: 'original_price',
-                label: translate('Original Price'),
+                label: translate('Original price'),
                 render: (value) => `${window.kbSettings.formatCurrency(value)}`,
             },
             {
                 key: 'discount_code',
-                label: translate('Discount Code'),
+                label: translate('Discount code'),
                 render: (value) => value || '-',
             },
             {
@@ -49,7 +49,7 @@ export const usePlanOrdersConfig: CrudConfig = {
             },
             {
                 key: 'final_price',
-                label: translate('Final Price'),
+                label: translate('Final price'),
                 render: (value) => `${window.kbSettings.formatCurrency(value)}`,
             },
             {
@@ -82,7 +82,7 @@ export const usePlanOrdersConfig: CrudConfig = {
             label: translate('Status'),
             type: 'select',
             options: [
-                { value: 'all', label: translate('All Status') },
+                { value: 'all', label: translate('All status') },
                 { value: 'pending', label: translate('Pending') },
                 { value: 'approved', label: translate('Approved') },
                 { value: 'rejected', label: translate('Rejected') },

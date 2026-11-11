@@ -41,12 +41,12 @@ export default function ProjectShow() {
 
     if (useHasPermission('view-project-tasks')) {
         pageActions.push({
-            label: translate('Kanban View'),
+            label: translate('Kanban view'),
             icon: <LayoutGrid className="mr-0 h-4 w-4 min-[1100px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1100px]:h-9 min-[1100px]:w-auto px-0 min-[1100px]:px-4',
             labelClassName: 'hidden min-[1100px]:inline',
-            tooltip: translate('Kanban View'),
+            tooltip: translate('Kanban view'),
             tooltipClassName: 'min-[1100px]:hidden',
             onClick: () => {
                 router.get(route('projects.kanban', project.id));
@@ -54,12 +54,12 @@ export default function ProjectShow() {
         });
 
         pageActions.push({
-            label: translate('Gantt View'),
+            label: translate('Gantt view'),
             icon: <BarChart3 className="mr-0 h-4 w-4 min-[1100px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1100px]:h-9 min-[1100px]:w-auto px-0 min-[1100px]:px-4',
             labelClassName: 'hidden min-[1100px]:inline',
-            tooltip: translate('Gantt View'),
+            tooltip: translate('Gantt view'),
             tooltipClassName: 'min-[1100px]:hidden',
             onClick: () => {
                 router.get(route('projects.gantt', project.id));
@@ -69,9 +69,9 @@ export default function ProjectShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Project Management') },
+        { title: translate('Project management') },
         { title: translate('Projects'), href: route('projects.index') },
-        { title: translate('View Project') },
+        { title: translate('View project') },
     ];
 
     const getPriorityColor = (priority: string) => {
@@ -166,11 +166,11 @@ export default function ProjectShow() {
                 {totalTasks > 0 && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-bold">{translate('Task Progress')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Task progress')}</h3>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{translate('Overall Progress')}</span>
+                                <span className="text-sm text-gray-600 dark:text-gray-400">{translate('Overall progress')}</span>
                                 <span className="text-primary text-lg font-extrabold">{progressPercentage}%</span>
                             </div>
                             <div className="h-3 w-full rounded-full bg-gray-200">
@@ -199,7 +199,7 @@ export default function ProjectShow() {
                                 ))}
                             </div>
                             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-                                {completedTasks} {translate('of')} {totalTasks} {translate('tasks completed')}
+                                {completedTasks} {translate('Of')} {totalTasks} {translate('Tasks completed')}
                             </div>
                         </div>
                     </Card>
@@ -211,7 +211,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <Building2 className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-bold">{translate('Account Information')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Account information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             {project.account ? (
@@ -242,7 +242,7 @@ export default function ProjectShow() {
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Start Date')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Start date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-foreground/75 h-3.5 w-3.5" />
                                     <p className="text-sm">
@@ -254,7 +254,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('End Date')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('End date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-foreground/75 h-3.5 w-3.5" />
                                     <p className="text-sm">
@@ -282,7 +282,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <DollarSign className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-bold">{translate('Budget & Assignment')}</h3>
+                            <h3 className="text-lg font-bold">{translate('Budget & assignment')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
@@ -297,7 +297,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Assigned to')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.assigned_user ? (
                                         <>
@@ -320,7 +320,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Created By')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created by')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.creator ? (
                                         <>

@@ -30,7 +30,7 @@ export function InvoicePaymentModal({ isOpen, onClose, invoice, amount, onAmount
             <DialogContent className="flex max-h-[90vh] max-w-lg flex-col print:hidden">
                 <DialogHeader className="flex-shrink-0">
                     <DialogTitle>
-                        {translate('Pay Invoice')} #{invoice.invoice_number}
+                        {translate('Pay invoice')} #{invoice.invoice_number}
                     </DialogTitle>
                 </DialogHeader>
 

@@ -70,7 +70,7 @@ export default function EmailTemplatesIndex() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Email Templates') },
+        { title: translate('Email templates') },
     ];
 
     const columns = [
@@ -92,7 +92,7 @@ export default function EmailTemplatesIndex() {
 
     return (
         <PageTemplate
-            title={translate('Email Templates')}
+            title={translate('Email templates')}
             description={translate('Manage your email templates.')}
             url={route('email-templates.index')}
             breadcrumbs={breadcrumbs}
@@ -139,7 +139,7 @@ export default function EmailTemplatesIndex() {
                     to={templates?.to || 0}
                     total={templates?.total || 0}
                     links={templates?.links}
-                    entityName={translate('templates')}
+                    entityName={translate('Templates')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}

@@ -363,7 +363,7 @@ export default function MediaLibraryDemo() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentMedia = filteredMedia.slice(startIndex, startIndex + itemsPerPage);
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: '/dashboard' }, { title: translate('Media Library') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: '/dashboard' }, { title: translate('Media library') }];
 
     const canCreate = !planLimits || planLimits.can_create;
     const pageActions = useHasPermission('create-media')
@@ -375,7 +375,7 @@ export default function MediaLibraryDemo() {
                                 current: formatFileSize(planLimits.current_storage),
                                 max: formatFileSize(planLimits.maximum_storage),
                             })
-                          : translate('Upload Media'),
+                          : translate('Upload media'),
                   icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
                   variant: canCreate ? ('default' as const) : ('outline' as const),
                   onClick: canCreate
@@ -391,7 +391,7 @@ export default function MediaLibraryDemo() {
                   disabled: !canCreate,
                   className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
                   labelClassName: 'hidden min-[400px]:inline',
-                  tooltip: translate('Upload Media'),
+                  tooltip: translate('Upload media'),
                   tooltipClassName: 'min-[400px]:hidden',
               },
           ]
@@ -403,7 +403,7 @@ export default function MediaLibraryDemo() {
 
     return (
         <PageTemplate
-            title={translate('Media Library')}
+            title={translate('Media library')}
             url="/media-library"
             breadcrumbs={breadcrumbs}
             description={translate('Manage all your media files in one place.')}
@@ -493,7 +493,7 @@ export default function MediaLibraryDemo() {
                                         size="lg"
                                     >
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {translate('Upload Files')}
+                                        {translate('Upload files')}
                                     </Button>
                                 )}
                             </div>
@@ -574,9 +574,9 @@ export default function MediaLibraryDemo() {
                                 {totalPages > 1 && (
                                     <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row">
                                         <div className="text-foreground/75 text-sm">
-                                            {translate('Showing')} <span className="font-bold">{startIndex + 1}</span> {translate('to')}{' '}
+                                            {translate('Showing')} <span className="font-bold">{startIndex + 1}</span> {translate('To')}{' '}
                                             <span className="font-bold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
-                                            {translate('of')} <span className="font-bold">{filteredMedia.length}</span> {translate('results')}
+                                            {translate('Of')} <span className="font-bold">{filteredMedia.length}</span> {translate('Results')}
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -720,7 +720,7 @@ export default function MediaLibraryDemo() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Upload className="h-5 w-5" />
-                                {translate('Upload Files')}
+                                {translate('Upload files')}
                             </DialogTitle>
                         </DialogHeader>
 
@@ -767,7 +767,7 @@ export default function MediaLibraryDemo() {
                                         ) : (
                                             <>
                                                 <Plus className="mr-2 h-4 w-4" />
-                                                {translate('Choose Files')}
+                                                {translate('Choose files')}
                                             </>
                                         )}
                                     </Button>
@@ -785,7 +785,7 @@ export default function MediaLibraryDemo() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Image className="h-5 w-5" />
-                                {translate('Media Details')}
+                                {translate('Media details')}
                             </DialogTitle>
                         </DialogHeader>
 
@@ -821,11 +821,11 @@ export default function MediaLibraryDemo() {
                                 <div className="space-y-4 lg:col-span-1">
                                     {/* File Information */}
                                     <div className="space-y-3">
-                                        <h3 className="text-foreground text-sm font-bold">{translate('File Information')}</h3>
+                                        <h3 className="text-foreground text-sm font-bold">{translate('File information')}</h3>
 
                                         <div className="space-y-2.5">
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Name')}</span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File name')}</span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.file_name}
                                                 </p>
@@ -833,7 +833,7 @@ export default function MediaLibraryDemo() {
 
                                             <div className="space-y-0.5">
                                                 <span className="text-foreground/75 text-xs tracking-wide uppercase">
-                                                    {translate('Display Name')}
+                                                    {translate('Display name')}
                                                 </span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.name}
@@ -841,14 +841,14 @@ export default function MediaLibraryDemo() {
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Type')}</span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File type')}</span>
                                                 <Badge variant="secondary" className="font-mono text-xs">
                                                     {selectedMediaInfo.mime_type}
                                                 </Badge>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File Size')}</span>
+                                                <span className="text-foreground/75 text-xs tracking-wide uppercase">{translate('File size')}</span>
                                                 <p className="text-foreground text-sm font-bold">{formatFileSize(selectedMediaInfo.size)}</p>
                                             </div>
 

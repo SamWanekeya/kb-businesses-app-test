@@ -224,7 +224,7 @@ export default function Contacts() {
                       current: planLimits?.current_contacts || 0,
                       max: planLimits?.maximum_contacts || 0,
                   })
-                : translate('Add Contact'),
+                : translate('Add contact'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
@@ -238,7 +238,7 @@ export default function Contacts() {
                       current: planLimits?.current_contacts || 0,
                       max: planLimits?.maximum_contacts || 0,
                   })
-                : translate('Add Contact'),
+                : translate('Add contact'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
@@ -310,7 +310,7 @@ export default function Contacts() {
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             type: 'date',
             // render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
@@ -320,7 +320,7 @@ export default function Contacts() {
     // Define table actions
     const actions = [
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -372,7 +372,7 @@ export default function Contacts() {
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: translate('All Accounts') },
+                                { value: 'all', label: translate('All accounts') },
                                 ...allAccounts.map((account: any) => ({
                                     value: account.id.toString(),
                                     label: account.name,
@@ -386,20 +386,20 @@ export default function Contacts() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -456,7 +456,7 @@ export default function Contacts() {
                         to={contacts?.to || 0}
                         total={contacts?.total || 0}
                         links={contacts?.links}
-                        entityName={translate('contacts')}
+                        entityName={translate('Contacts')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -510,7 +510,7 @@ export default function Contacts() {
                                                         }}
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{translate('View Contact')}</span>
+                                                        <span>{translate('View contact')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-contacts') && (
@@ -634,7 +634,7 @@ export default function Contacts() {
                             to={contacts?.to || 0}
                             total={contacts?.total || 0}
                             links={contacts?.links}
-                            entityName={translate('contacts')}
+                            entityName={translate('Contacts')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -672,7 +672,7 @@ export default function Contacts() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: translate('Contact Name'), type: 'text', required: true },
+                        { name: 'name', label: translate('Contact name'), type: 'text', required: true },
                         { name: 'email', label: translate('Email'), type: 'email', required: true },
                         { name: 'phone', label: translate('Phone'), type: 'text' },
                         { name: 'position', label: translate('Position'), type: 'text' },
@@ -706,7 +706,7 @@ export default function Contacts() {
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -746,11 +746,11 @@ export default function Contacts() {
                         ? {
                               ...currentItem,
                               assigned_user_name: currentItem.assigned_user?.name || translate('Unassigned'),
-                              account_name: currentItem.account?.name || translate('No Account'),
+                              account_name: currentItem.account?.name || translate('No account'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Contact') : formMode === 'edit' ? translate('Edit Contact') : translate('View Contact')}
+                title={formMode === 'create' ? translate('Add contact') : formMode === 'edit' ? translate('Edit contact') : translate('View contact')}
                 mode={formMode}
             />
 
@@ -762,7 +762,7 @@ export default function Contacts() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('contact')}
+                entityName={translate('Contact')}
             />
         </PageTemplate>
     );

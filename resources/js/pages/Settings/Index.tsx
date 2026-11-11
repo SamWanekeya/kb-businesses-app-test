@@ -94,7 +94,7 @@ export default function Settings() {
             permission: 'manage-email-settings',
         },
         {
-            title: translate('Email Notification'),
+            title: translate('Email notification'),
             href: '#email-notification-settings',
             icon: <Bell className="mr-2 h-4 w-4" />,
             permission: 'manage-email-notifications',
@@ -124,21 +124,21 @@ export default function Settings() {
             permission: 'settings',
         },
         {
-            title: translate('Quote Templates'),
+            title: translate('Quote templates'),
             href: '#quote-templates',
             icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',
             permission: 'manage-quotes-settings',
         },
         {
-            title: translate('Sales Order Templates'),
+            title: translate('Sales order templates'),
             href: '#sales-order-templates',
             icon: <ShoppingBag className="mr-2 h-4 w-4" />,
             role: 'organization',
             permission: 'manage-sales-orders-settings',
         },
         {
-            title: translate('Invoice Templates'),
+            title: translate('Invoice templates'),
             href: '#invoice-templates',
             icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',

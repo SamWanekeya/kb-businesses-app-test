@@ -122,7 +122,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Notification Templates') },
+        { title: translate('Notification templates') },
     ];
 
     const columns = [{ key: 'name', label: translate('Name'), sortable: true }];
@@ -131,12 +131,12 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
 
     return (
         <PageTemplate
-            title={translate('Notification Templates')}
+            title={translate('Notification templates')}
             description={translate('Manage your notification templates.')}
             url={route('notification-templates.index')}
             breadcrumbs={breadcrumbs}
         >
-            <Head title={translate('Notification Templates')} />
+            <Head title={translate('Notification templates')} />
 
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <div className="w-full p-3">
@@ -205,7 +205,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                     to={templates?.to || 0}
                     total={templates?.total || 0}
                     links={templates?.links}
-                    entityName={translate('templates')}
+                    entityName={translate('Templates')}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(

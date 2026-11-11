@@ -7,7 +7,7 @@ import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface InvoiceAamarpayPaymentFormProps {
+interface InvoiceAamarPayPaymentFormProps {
     invoiceId: number;
     amount: number;
     paymentType: 'full' | 'partial';
@@ -17,7 +17,7 @@ interface InvoiceAamarpayPaymentFormProps {
     onCancel: () => void;
 }
 
-export function InvoiceAamarpayPaymentForm({
+export function InvoiceAamarPayPaymentForm({
     invoiceId,
     amount,
     paymentType,
@@ -25,7 +25,7 @@ export function InvoiceAamarpayPaymentForm({
     currency = 'BDT',
     onSuccess,
     onCancel,
-}: InvoiceAamarpayPaymentFormProps) {
+}: InvoiceAamarPayPaymentFormProps) {
     const { t: translate } = useTranslation();
     const { csrfToken } = usePage().props;
 
@@ -73,7 +73,7 @@ export function InvoiceAamarpayPaymentForm({
     const formatPrice = (price: number) => {
         return (
             window.kbSettings.formatCurrency(Number(price || 0)) ||
-            new Intl.NumberFormatranslate('en-US', {
+            new Intl.NumberFormat('En-US', {
                 style: 'currency',
                 currency: currency,
             }).format(price)
@@ -85,7 +85,7 @@ export function InvoiceAamarpayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('AamarPay Payment')}
+                    {translate('AamarPay payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -98,11 +98,11 @@ export function InvoiceAamarpayPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Payment Amount')}</span>
+                        <span className="font-medium">{translate('Payment amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Payment Type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
+                        {translate('Payment type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
 
@@ -141,7 +141,7 @@ export function InvoiceAamarpayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-foreground/75 text-center text-xs">{translate('Powered by AamarPay - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by AamarPay - secure payment processing')}</div>
             </CardContent>
         </Card>
     );

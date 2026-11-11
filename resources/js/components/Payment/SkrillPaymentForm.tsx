@@ -78,13 +78,13 @@ export function SkrillPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Wallet className="h-5 w-5" />
-                    {translate('Skrill Payment')}
+                    {translate('Skrill payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email address')}</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"

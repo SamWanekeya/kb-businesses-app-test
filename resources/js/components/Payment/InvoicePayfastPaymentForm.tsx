@@ -123,14 +123,14 @@ export function InvoicePayfastPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('PayFast Payment')}
+                    {translate('PayFast payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="firstName">{translate('First Name')}</Label>
+                            <Label htmlFor="firstName">{translate('First name')}</Label>
                             <Input
                                 id="firstName"
                                 value={customerDetails.firstName}
@@ -146,7 +146,7 @@ export function InvoicePayfastPaymentForm({
                             {errors.firstName && <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="lastName">{translate('Last Name')}</Label>
+                            <Label htmlFor="lastName">{translate('Last name')}</Label>
                             <Input
                                 id="lastName"
                                 value={customerDetails.lastName}
@@ -164,7 +164,7 @@ export function InvoicePayfastPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email address')}</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"
@@ -196,11 +196,11 @@ export function InvoicePayfastPaymentForm({
 
                     <div className="bg-muted rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm">{translate('Payment Amount')}</span>
+                            <span className="text-sm">{translate('Payment amount')}</span>
                             <span className="text-sm font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-foreground/75 text-xs">{translate('Payment Type')}</span>
+                            <span className="text-foreground/75 text-xs">{translate('Payment type')}</span>
                             <span className="text-xs capitalize">{paymentType}</span>
                         </div>
                         <p className="text-foreground/75 mt-2 text-xs">{translate('Secure payment processing via PayFast')}</p>

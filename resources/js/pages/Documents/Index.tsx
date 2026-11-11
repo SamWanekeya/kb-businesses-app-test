@@ -97,12 +97,12 @@ export default function Documents() {
     const pageActions: any[] = [];
     if (useHasPermission('create-document-folders')) {
         pageActions.push({
-            label: translate('Create Folder'),
+            label: translate('Create folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[790px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[790px]:h-9 min-[790px]:w-auto px-0 min-[790px]:px-4',
             labelClassName: 'hidden min-[790px]:inline',
-            tooltip: translate('Create Folder'),
+            tooltip: translate('Create folder'),
             tooltipClassName: 'min-[790px]:hidden',
             onClick: () => {
                 setCurrentFolder(null);
@@ -114,19 +114,19 @@ export default function Documents() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Management') },
+        { title: translate('Document management') },
         { title: translate('Documents') },
     ];
 
     const folderFormFields = [
-        { name: 'name', label: translate('Folder Name'), type: 'text', required: true },
+        { name: 'name', label: translate('Folder name'), type: 'text', required: true },
         {
             name: 'parent_folder_id',
-            label: translate('Parent Folder'),
+            label: translate('Parent folder'),
             type: 'select',
             searchable: true,
             options: [
-                { value: 'null', label: translate('Root Folder') },
+                { value: 'null', label: translate('Root folder') },
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
@@ -269,7 +269,7 @@ export default function Documents() {
                     to={rootFolders?.to || 0}
                     total={rootFolders?.total || 0}
                     links={rootFolders?.links || []}
-                    entityName={translate('documents')}
+                    entityName={translate('Documents')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -306,7 +306,7 @@ export default function Documents() {
                           }
                         : { parent_folder_id: 'null' }
                 }
-                title={folderFormMode === 'create' ? translate('Create Folder') : translate('Edit Folder')}
+                title={folderFormMode === 'create' ? translate('Create folder') : translate('Edit folder')}
                 mode={folderFormMode}
             />
 
@@ -318,7 +318,7 @@ export default function Documents() {
                 }}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentFolder?.name || ''}
-                entityName={translate('folder')}
+                entityName={translate('Folder')}
             />
         </PageTemplate>
     );

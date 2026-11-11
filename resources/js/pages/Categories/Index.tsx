@@ -206,7 +206,7 @@ export default function Categories() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Product Setup') },
+        { title: translate('Product setup') },
         { title: translate('Categories') },
     ];
 
@@ -223,7 +223,7 @@ export default function Categories() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Category') : translate('Edit Category')}
+                                {formMode === 'create' ? translate('Add new category') : translate('Edit category')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -299,7 +299,7 @@ export default function Categories() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Category') : translate('Update Category')}
+                                        {formMode === 'create' ? translate('Add category') : translate('Update category')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -352,7 +352,7 @@ export default function Categories() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -375,7 +375,7 @@ export default function Categories() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
                                                         {translate('Category')}
@@ -663,7 +663,7 @@ export default function Categories() {
                                             to={categories?.to || 0}
                                             total={categories?.total || 0}
                                             links={categories?.links}
-                                            entityName={translate('categories')}
+                                            entityName={translate('Categories')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -700,7 +700,7 @@ export default function Categories() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('category')}
+                entityName={translate('Category')}
             />
         </PageTemplate>
     );

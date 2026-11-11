@@ -41,7 +41,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
         auth?.user?.type === 'super_admin'
             ? { title: translate('Organizations'), href: route('organizations.index') }
             : { title: translate('User'), href: route('users-permissions.users.index') },
-        { title: translate('User Logs') },
+        { title: translate('User logs') },
     ];
 
     // Check if any filters are active
@@ -148,7 +148,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
     };
 
     return (
-        <PageTemplate title={translate('User Logs')} url="/users-logs" breadcrumbs={breadcrumbs}>
+        <PageTemplate title={translate('User logs')} url="/users-logs" breadcrumbs={breadcrumbs}>
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -186,10 +186,10 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                                     {translate('User')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {translate('IP Address')}
+                                    {translate('IP address')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {translate('Location & Device')}
+                                    {translate('Location & device')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs tracking-wider text-gray-500 uppercase dark:text-gray-300">
                                     {translate('Role')}
@@ -253,7 +253,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
                     to={loginHistories?.to || 0}
                     total={loginHistories?.total || 0}
                     links={loginHistories?.links}
-                    entityName={translate('logs')}
+                    entityName={translate('Logs')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -264,7 +264,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters }: Pr
             <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
                 <DialogContent className="max-h-[80vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>{translate('Sign in Details')}</DialogTitle>
+                        <DialogTitle>{translate('Sign in details')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                         {selectedLogDetails &&

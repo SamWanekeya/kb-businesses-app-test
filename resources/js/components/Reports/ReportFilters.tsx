@@ -46,7 +46,7 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
             >
                 <div className="flex w-full flex-1 flex-col items-stretch gap-3 min-[1070px]:flex-row min-[1070px]:items-center">
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('From Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('From date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_from"
@@ -60,7 +60,7 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                         </div>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('To Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm min-[1070px]:w-auto">{translate('To date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_to"
@@ -77,10 +77,10 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                 </div>
                 <div className="mt-2 flex shrink-0 items-center justify-end gap-2 min-[1070px]:mt-0">
                     <Button type="submit" size="sm" className="h-9 w-full min-[1070px]:w-auto">
-                        {translate('Apply Filters')}
+                        {translate('Apply filters')}
                     </Button>
                     <Button type="button" size="sm" className="h-9 w-full min-[1070px]:w-auto" variant="outline" onClick={handleClearFilters}>
-                        {translate('Clear Filters')}
+                        {translate('Clear filters')}
                     </Button>
                 </div>
             </form>

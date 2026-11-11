@@ -61,7 +61,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                                         margin: '0',
                                     }}
                                 >
-                                    {translate('QUOTE')}
+                                    {translate('Quote')}
                                 </h3>
                                 <div
                                     style={{
@@ -92,7 +92,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                         <tr style={{ verticalAlign: 'top' }}>
                             <td style={{ padding: '0', verticalAlign: 'top' }}>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
-                                    <b style={{ color: borderColor }}>{translate('FROM')}:</b>
+                                    <b style={{ color: borderColor }}>{translate('From')}:</b>
                                     <br />
                                     {formatValue(quote.creator?.name) && (
                                         <>
@@ -143,7 +143,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                                                     fontWeight: '600',
                                                 }}
                                             >
-                                                <b>{translate('Valid Until')}:</b> {formatValue(quote.valid_until)}
+                                                <b>{translate('Valid until')}:</b> {formatValue(quote.valid_until)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -162,7 +162,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.billing_contact?.name)}
                                     <br />
@@ -178,7 +178,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.shipping_contact?.name)}
                                     <br />
@@ -219,7 +219,7 @@ export default function Template10({ quote, items, taxesData, settings, color, q
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

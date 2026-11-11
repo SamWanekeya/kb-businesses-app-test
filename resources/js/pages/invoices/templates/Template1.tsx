@@ -141,7 +141,7 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        {translate('INVOICE')}
+                                        {translate('Invoice')}
                                     </h3>
                                 </td>
                             </tr>
@@ -175,9 +175,9 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
                                             <tr>
                                                 <td style={styles.noSpace}></td>
                                                 <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right', paddingLeft: '10px' }}>
-                                                    {translate('Invoice Date')}: {formatValue(invoice.invoice_date)}
+                                                    {translate('Invoice date')}: {formatValue(invoice.invoice_date)}
                                                     <br />
-                                                    {translate('Due Date')}: {formatValue(invoice.due_date)}
+                                                    {translate('Due date')}: {formatValue(invoice.due_date)}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -202,7 +202,7 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {formatValue(invoice.account?.name || invoice.contact?.name)}
                                         <br />
@@ -219,7 +219,7 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {formatValue(invoice.creator?.name)}
                                         <br />
@@ -247,7 +247,7 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
                                             fontSize: '12px',
                                         }}
                                     >
-                                        {translate('before tax & discount')}
+                                        {translate('Before tax & discount')}
                                     </small>
                                 </th>
                             </tr>

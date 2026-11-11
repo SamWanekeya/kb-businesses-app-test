@@ -193,7 +193,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
 
                             <div className="grid grid-cols-1 gap-4 rounded-lg bg-gray-50 p-4 md:grid-cols-3">
                                 <div>
-                                    <p className="text-sm text-gray-600">{translate('Payment Type')}</p>
+                                    <p className="text-sm text-gray-600">{translate('Payment type')}</p>
                                     <p className="font-bold capitalize">{translate('{{paymentType}} Payment', { paymentType })}</p>
                                 </div>
                                 <div>
@@ -201,7 +201,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                                     <p className="font-bold">{formatCurrency(amount)}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600">{translate('Total Invoice')}</p>
+                                    <p className="text-sm text-gray-600">{translate('Total invoice')}</p>
                                     <p className="font-bold">{formatCurrency(invoice.total_amount)}</p>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <CreditCard className="h-5 w-5" />
-                                {translate('Payment Details')}
+                                {translate('Payment details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>

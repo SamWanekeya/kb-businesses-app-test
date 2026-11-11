@@ -193,7 +193,7 @@ export default function ReceiptOrders() {
 
     if (useHasPermission('create-receipt-orders')) {
         pageActions.push({
-            label: translate('Add Receipt Order'),
+            label: translate('Add receipt order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -201,7 +201,7 @@ export default function ReceiptOrders() {
             },
             className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
             labelClassName: 'hidden min-[470px]:inline',
-            tooltip: translate('Add Receipt Order'),
+            tooltip: translate('Add receipt order'),
             tooltipClassName: 'min-[470px]:hidden',
         });
     }
@@ -211,13 +211,13 @@ export default function ReceiptOrders() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Receipt Orders') },
+        { title: translate('Receipt orders') },
     ];
 
     const columns = [
         {
             key: 'receipt_number',
-            label: translate('Receipt Number'),
+            label: translate('Receipt number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -234,7 +234,7 @@ export default function ReceiptOrders() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -260,14 +260,14 @@ export default function ReceiptOrders() {
         },
         {
             key: 'receipt_date',
-            label: translate('Receipt Date'),
+            label: translate('Receipt date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
         },
         {
             key: 'total_amount',
-            label: translate('Total Amount'),
+            label: translate('Total amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -300,7 +300,7 @@ export default function ReceiptOrders() {
 
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -330,7 +330,7 @@ export default function ReceiptOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'pending', label: translate('Pending') },
         { value: 'received', label: translate('Received') },
         { value: 'partial', label: translate('Partial') },
@@ -339,13 +339,13 @@ export default function ReceiptOrders() {
     ];
 
     const accountOptions = [
-        { value: 'all', label: translate('All Accounts') },
+        { value: 'all', label: translate('All accounts') },
         ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     return (
         <PageTemplate
-            title={translate('Receipt Orders')}
+            title={translate('Receipt orders')}
             description={translate('Manage your receipt orders.')}
             url="/receipt-orders"
             actions={pageActions}
@@ -376,13 +376,13 @@ export default function ReceiptOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
@@ -420,7 +420,7 @@ export default function ReceiptOrders() {
                     to={receiptOrders?.to || 0}
                     total={receiptOrders?.total || 0}
                     links={receiptOrders?.links}
-                    entityName={translate('receipt orders')}
+                    entityName={translate('Receipt orders')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -470,7 +470,7 @@ export default function ReceiptOrders() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Receipt Order Status')}
+                title={translate('Change receipt order status')}
                 mode="edit"
             />
 
@@ -481,7 +481,7 @@ export default function ReceiptOrders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('receipt order')}
+                entityName={translate('Receipt order')}
             />
         </PageTemplate>
     );

@@ -54,7 +54,7 @@ export function MolliePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Mollie Payment')}
+                    {translate('Mollie payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -66,7 +66,7 @@ export function MolliePaymentForm({
                     <input type="hidden" name="payment_id" value={`mollie_${Date.now()}`} />
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="firstName">{translate('First Name')}</Label>
+                            <Label htmlFor="firstName">{translate('First name')}</Label>
                             <Input
                                 id="firstName"
                                 name="customer_details[firstName]"
@@ -78,7 +78,7 @@ export function MolliePaymentForm({
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="lastName">{translate('Last Name')}</Label>
+                            <Label htmlFor="lastName">{translate('Last name')}</Label>
                             <Input
                                 id="lastName"
                                 name="customer_details[lastName]"
@@ -92,7 +92,7 @@ export function MolliePaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email address')}</Label>
                         <Input
                             inputIdentifier="email"
                             name="customer_details[email]"

@@ -144,7 +144,7 @@ export default function ReturnOrders() {
 
     if (useHasPermission('create-return-orders')) {
         pageActions.push({
-            label: translate('Add Return Order'),
+            label: translate('Add return order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -152,7 +152,7 @@ export default function ReturnOrders() {
             },
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: translate('Add Return Order'),
+            tooltip: translate('Add return order'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
@@ -162,13 +162,13 @@ export default function ReturnOrders() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Return Orders') },
+        { title: translate('Return orders') },
     ];
 
     const columns = [
         {
             key: 'return_number',
-            label: translate('Return Number'),
+            label: translate('Return number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -191,7 +191,7 @@ export default function ReturnOrders() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -211,7 +211,7 @@ export default function ReturnOrders() {
         },
         {
             key: 'sales_order',
-            label: translate('Sales Order'),
+            label: translate('Sales order'),
             className: 'whitespace-nowrap',
             render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || translate('-')}</span>,
         },
@@ -239,7 +239,7 @@ export default function ReturnOrders() {
         },
         {
             key: 'total_amount',
-            label: translate('Total Amount'),
+            label: translate('Total amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -249,7 +249,7 @@ export default function ReturnOrders() {
         },
         {
             key: 'return_date',
-            label: translate('Return Date'),
+            label: translate('Return date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -281,7 +281,7 @@ export default function ReturnOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Status') },
+        { value: 'all', label: translate('All status') },
         { value: 'pending', label: translate('Pending') },
         { value: 'approved', label: translate('Approved') },
         { value: 'shipped', label: translate('Shipped') },
@@ -292,7 +292,7 @@ export default function ReturnOrders() {
 
     return (
         <PageTemplate
-            title={translate('Return Orders')}
+            title={translate('Return orders')}
             description={translate('Manage your return orders.')}
             url="/return-orders"
             actions={pageActions}
@@ -314,13 +314,13 @@ export default function ReturnOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -357,7 +357,7 @@ export default function ReturnOrders() {
                     to={returnOrders?.to || 0}
                     total={returnOrders?.total || 0}
                     links={returnOrders?.links}
-                    entityName={translate('return orders')}
+                    entityName={translate('Return orders')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -387,7 +387,7 @@ export default function ReturnOrders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('return order')}
+                entityName={translate('Return order')}
             />
         </PageTemplate>
     );

@@ -267,7 +267,7 @@ export default function InvoiceTemplateSettings() {
 
     return (
         <SettingsSection
-            title={translate('Invoice Templates')}
+            title={translate('Invoice templates')}
             description={translate('Configure invoice template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="invoice-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -281,7 +281,7 @@ export default function InvoiceTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="invoice_template">{translate('Invoice Template')}</Label>
+                                    <Label htmlFor="invoice_template">{translate('Invoice template')}</Label>
                                     <Select
                                         value={data.invoiceTemplate}
                                         onValueChange={(value) => {
@@ -304,7 +304,7 @@ export default function InvoiceTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="invoice_qr_enabled" className="text-sm">
-                                        {translate('QR Display?')}
+                                        {translate('QR display?')}
                                     </Label>
                                     <Switch
                                         id="invoice_qr_enabled"
@@ -316,7 +316,7 @@ export default function InvoiceTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{translate('Color Input')}</Label>
+                                    <Label>{translate('Color input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -342,7 +342,7 @@ export default function InvoiceTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="invoiceLogo">{translate('Invoice Logo')}</Label>
+                                    <Label htmlFor="invoiceLogo">{translate('Invoice logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.invoiceLogoId || ''}

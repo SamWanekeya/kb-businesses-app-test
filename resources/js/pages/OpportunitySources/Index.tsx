@@ -211,13 +211,13 @@ export default function OpportunitySources() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Opportunity Management') },
-        { title: translate('Opportunity Sources') },
+        { title: translate('Opportunity management') },
+        { title: translate('Opportunity sources') },
     ];
 
     return (
         <PageTemplate
-            title={translate('Opportunity Sources')}
+            title={translate('Opportunity sources')}
             description={translate('Manage opportunity sources for your pipeline.')}
             url="/opportunity-sources"
             breadcrumbs={breadcrumbs}
@@ -228,7 +228,7 @@ export default function OpportunitySources() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Opportunity Source') : translate('Edit Opportunity Source')}
+                                {formMode === 'create' ? translate('Add new opportunity source') : translate('Edit opportunity source')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -293,7 +293,7 @@ export default function OpportunitySources() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Opportunity Source') : translate('Update Opportunity Source')}
+                                        {formMode === 'create' ? translate('Add opportunity source') : translate('Update opportunity source')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -347,7 +347,7 @@ export default function OpportunitySources() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -361,7 +361,7 @@ export default function OpportunitySources() {
                         {(opportunitySources?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Opportunity Sources')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Opportunity sources')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage opportunity source categories for your pipeline.')}</p>
                                 </div> */}
 
@@ -372,10 +372,10 @@ export default function OpportunitySources() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {translate('Opportunity Source')}
+                                                        {translate('Opportunity source')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -652,7 +652,7 @@ export default function OpportunitySources() {
                                             to={opportunitySources?.to || 0}
                                             total={opportunitySources?.total || 0}
                                             links={opportunitySources?.links}
-                                            entityName={translate('opportunity sources')}
+                                            entityName={translate('Opportunity sources')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -692,7 +692,7 @@ export default function OpportunitySources() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('opportunity source')}
+                entityName={translate('Opportunity source')}
             />
         </PageTemplate>
     );

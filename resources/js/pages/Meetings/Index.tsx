@@ -194,12 +194,12 @@ export default function Meetings() {
     const pageActions = [];
     if (useHasPermission('create-meetings')) {
         pageActions.push({
-            label: translate('Add Meeting'),
+            label: translate('Add meeting'),
             icon: <Plus className="mr-0 h-4 w-4 min-[350px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[350px]:h-9 min-[350px]:w-auto px-0 min-[350px]:px-4',
             labelClassName: 'hidden min-[350px]:inline',
-            tooltip: translate('Add Meeting'),
+            tooltip: translate('Add meeting'),
             tooltipClassName: 'min-[350px]:hidden',
             onClick: () => {
                 handleAddNew();
@@ -235,7 +235,7 @@ export default function Meetings() {
             case 'held':
                 return translate('Held');
             case 'not_held':
-                return translate('Not Held');
+                return translate('Not held');
             default:
                 return status;
         }
@@ -348,14 +348,14 @@ export default function Meetings() {
     const renderSummary = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Meeting Summary')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Meeting summary')}</p>
                 <span className="text-foreground/75 text-xs">({formatSelectedDate(selectedDateObj)})</span>
             </div>
             <div className="space-y-2.5 p-4">
                 {[
                     { label: translate('Planned'), color: 'bg-blue-500', count: summary.planned },
                     { label: translate('Held'), color: 'bg-fuchsia-500', count: summary.held },
-                    { label: translate('Not Held'), color: 'bg-red-500', count: summary.not_held },
+                    { label: translate('Not held'), color: 'bg-red-500', count: summary.not_held },
                 ].map((item) => (
                     <div key={item.label} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -367,7 +367,7 @@ export default function Meetings() {
                 ))}
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 dark:border-gray-700">
-                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Total Meetings')}</span>
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Total meetings')}</span>
                 <span className="text-sm font-extrabold text-gray-900 dark:text-gray-100">
                     {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)}
                 </span>
@@ -379,7 +379,7 @@ export default function Meetings() {
     const renderQuickFilters = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Quick Filters')}</p>
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-200">{translate('Quick filters')}</p>
             </div>
             <div className="space-y-1 p-4">
                 {(['yesterday', 'today', 'tomorrow'] as const).map((f) => {
@@ -558,7 +558,7 @@ export default function Meetings() {
                                                                         <RefreshCw className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{translate('Change Status')}</TooltipContent>
+                                                                <TooltipContent>{translate('Change status')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -688,7 +688,7 @@ export default function Meetings() {
                     fields: [
                         {
                             name: 'title',
-                            label: translate('Meeting Title'),
+                            label: translate('Meeting title'),
                             type: 'text' as const,
                             required: true,
                         },
@@ -703,13 +703,13 @@ export default function Meetings() {
                             type: 'text' as const,
                             required: true,
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' as const, required: true },
-                        { name: 'end_date', label: translate('End Date'), type: 'date' as const, required: true },
-                        { name: 'start_time', label: translate('Start Time'), type: 'time' as const, required: true },
-                        { name: 'end_time', label: translate('End Time'), type: 'time' as const, required: true },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' as const, required: true },
+                        { name: 'end_date', label: translate('End date'), type: 'date' as const, required: true },
+                        { name: 'start_time', label: translate('Start time'), type: 'time' as const, required: true },
+                        { name: 'end_time', label: translate('End time'), type: 'time' as const, required: true },
                         {
                             name: 'parent_module',
-                            label: translate('Related To'),
+                            label: translate('Related to'),
                             type: 'select' as const,
                             required: true,
                             options: [
@@ -723,7 +723,7 @@ export default function Meetings() {
                         },
                         {
                             name: 'parent_id',
-                            label: translate('Select Record'),
+                            label: translate('Select record'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
@@ -773,7 +773,7 @@ export default function Meetings() {
                                 },
                                 {
                                     name: 'id',
-                                    label: translate('Select Person'),
+                                    label: translate('Select person'),
                                     type: 'select' as const,
                                     required: true,
                                     searchable: true,
@@ -800,7 +800,7 @@ export default function Meetings() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
@@ -819,7 +819,7 @@ export default function Meetings() {
                             options: [
                                 { value: 'planned', label: translate('Planned') },
                                 { value: 'held', label: translate('Held') },
-                                { value: 'not_held', label: translate('Not Held') },
+                                { value: 'not_held', label: translate('Not held') },
                             ],
                             defaultValue: 'planned',
                         },
@@ -849,7 +849,7 @@ export default function Meetings() {
                           }
                         : {}
                 }
-                title={formMode === 'create' ? translate('Add Meeting') : formMode === 'edit' ? translate('Edit Meeting') : translate('View Meeting')}
+                title={formMode === 'create' ? translate('Add meeting') : formMode === 'edit' ? translate('Edit meeting') : translate('View meeting')}
                 mode={formMode}
             />
 
@@ -871,14 +871,14 @@ export default function Meetings() {
                             options: [
                                 { value: 'planned', label: translate('Planned') },
                                 { value: 'held', label: translate('Held') },
-                                { value: 'not_held', label: translate('Not Held') },
+                                { value: 'not_held', label: translate('Not held') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Meeting Status')}
+                title={translate('Change meeting status')}
                 mode="edit"
             />
 
@@ -889,7 +889,7 @@ export default function Meetings() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={translate('meeting')}
+                entityName={translate('Meeting')}
             />
         </PageTemplate>
     );

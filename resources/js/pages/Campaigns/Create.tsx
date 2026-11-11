@@ -38,12 +38,12 @@ export default function CampaignCreate() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name.trim()) errs.name = translate('Campaign Name is required');
-        if (!data.start_date) errs.start_date = translate('Start Date is required');
-        if (!data.end_date) errs.end_date = translate('End Date is required');
-        if (!data.campaign_type_id) errs.campaign_type_id = translate('Campaign Type is required');
-        if (!data.target_list_id) errs.target_list_id = translate('Target List is required');
-        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
+        if (!data.name.trim()) errs.name = translate('Campaign name is required');
+        if (!data.start_date) errs.start_date = translate('Start date is required');
+        if (!data.end_date) errs.end_date = translate('End date is required');
+        if (!data.campaign_type_id) errs.campaign_type_id = translate('Campaign type is required');
+        if (!data.target_list_id) errs.target_list_id = translate('Target list is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign to is required');
 
         if (Object.keys(errs).length > 0) {
             Object.entries(errs).forEach(([k, v]) => {
@@ -71,8 +71,8 @@ export default function CampaignCreate() {
 
     return (
         <PageTemplate
-            title={translate('Create Campaign')}
-            description={translate('Fill in the details to create a new Campaigns')}
+            title={translate('Create campaign')}
+            description={translate('Fill in the details to create a new campaigns')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
@@ -89,7 +89,7 @@ export default function CampaignCreate() {
                 {/* Card 1 — Campaign Information */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Campaign Information')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Campaign information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
@@ -105,7 +105,7 @@ export default function CampaignCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Campaign Type')}
+                                {translate('Campaign type')}
                             </Label>
                             <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
                                 <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
@@ -124,7 +124,7 @@ export default function CampaignCreate() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('campaign-types.index')} className="font-medium underline">
-                                        {translate('Campaign Types')}
+                                        {translate('Campaign types')}
                                     </a>
                                 </p>
                             )}
@@ -132,7 +132,7 @@ export default function CampaignCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Target List')}
+                                {translate('Target list')}
                             </Label>
                             <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
                                 <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
@@ -151,7 +151,7 @@ export default function CampaignCreate() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('target-lists.index')} className="font-medium underline">
-                                        {translate('Target Lists')}
+                                        {translate('Target lists')}
                                     </a>
                                 </p>
                             )}
@@ -220,7 +220,7 @@ export default function CampaignCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Assign To')}
+                                {translate('Assign to')}
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -255,7 +255,7 @@ export default function CampaignCreate() {
                 {/* Card 2 — Budget & Performance */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Budget & Performance')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Budget & performance')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">

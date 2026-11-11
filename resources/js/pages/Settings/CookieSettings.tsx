@@ -106,7 +106,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
     return (
         <SettingsSection
-            title={translate('Cookie Settings')}
+            title={translate('Cookie settings')}
             description={translate('Configure cookie consent and privacy settings for your application')}
             action={
                 <Button type="submit" disabled={processing} form="cookie-settings-form" size="sm">
@@ -122,7 +122,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Enable Logging Switch */}
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="enable_logging">{translate('Enable Logging')}</Label>
+                                    <Label htmlFor="enable_logging">{translate('Enable logging')}</Label>
                                     <p className="text-foreground/75 text-sm">{translate('Enable cookie activity logging')}</p>
                                 </div>
                                 <Switch
@@ -137,7 +137,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Strictly Necessary Cookies Switch */}
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="strictlyNecessaryCookies">{translate('Strictly Necessary Cookies')}</Label>
+                                    <Label htmlFor="strictlyNecessaryCookies">{translate('Strictly necessary cookies')}</Label>
                                     <p className="text-foreground/75 text-sm">{translate('Enable strictly necessary cookies')}</p>
                                 </div>
                                 <Switch
@@ -186,7 +186,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Cookie Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="cookieDescription" required>
-                                    {translate('Cookie Description')}
+                                    {translate('Cookie description')}
                                 </Label>
                                 <Textarea
                                     id="cookieDescription"
@@ -201,7 +201,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Strictly Cookie Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="strictlyCookieDescription" required>
-                                    {translate('Strictly Cookie Description')}
+                                    {translate('Strictly cookie description')}
                                 </Label>
                                 <Textarea
                                     id="strictlyCookieDescription"
@@ -218,7 +218,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Contact Us Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="contactUsDescription" required>
-                                    {translate('Contact Us Description')}
+                                    {translate('Contact us description')}
                                 </Label>
                                 <Textarea
                                     id="contactUsDescription"
@@ -249,7 +249,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         <div className="border-t pt-4">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h4 className="text-sm">{translate('Download Accepted Cookies')}</h4>
+                                    <h4 className="text-sm">{translate('Download accepted cookies')}</h4>
                                     <p className="text-foreground/75 text-sm">Download a CSV file of accepted cookie preferences</p>
                                 </div>
                                 <TooltipProvider>

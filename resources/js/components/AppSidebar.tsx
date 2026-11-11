@@ -215,15 +215,15 @@ export default function AppSidebar() {
 
         if (canManageReports) {
             items.push({
-                title: translate('Reports & Analytics'),
+                title: translate('Reports & analytics'),
                 icon: TrendingUp,
                 group: translate('Overview'),
                 children: [
-                    { title: translate('Lead Reports'), href: route('reports.leads') },
-                    { title: translate('Sales Reports'), href: route('reports.sales') },
-                    { title: translate('Product Reports'), href: route('reports.product-reports') },
-                    { title: translate('Contact Reports'), href: route('reports.customers') },
-                    { title: translate('Project Reports'), href: route('reports.projects') },
+                    { title: translate('Lead reports'), href: route('reports.leads') },
+                    { title: translate('Sales reports'), href: route('reports.sales') },
+                    { title: translate('Product reports'), href: route('reports.product-reports') },
+                    { title: translate('Contact reports'), href: route('reports.customers') },
+                    { title: translate('Project reports'), href: route('reports.projects') },
                 ],
             });
         }
@@ -242,14 +242,14 @@ export default function AppSidebar() {
 
         if (canManageLeadSources) {
             leadChildren.push({
-                title: translate('Lead Sources'),
+                title: translate('Lead sources'),
                 href: route('lead-sources.index'),
             });
         }
 
         if (canManageLeadStatuses) {
             leadChildren.push({
-                title: translate('Lead Statuses'),
+                title: translate('Lead statuses'),
                 href: route('lead-statuses.index'),
             });
         }
@@ -258,7 +258,7 @@ export default function AppSidebar() {
             items.push({
                 title: translate('Leads'),
                 icon: Users,
-                group: translate('Customers & Relationships'),
+                group: translate('Customers & relationships'),
                 children: leadChildren,
             });
         }
@@ -269,7 +269,7 @@ export default function AppSidebar() {
                 title: translate('Contacts'),
                 href: route('contacts.index'),
                 icon: Users,
-                group: translate('Customers & Relationships'),
+                group: translate('Customers & relationships'),
             });
         }
 
@@ -285,14 +285,14 @@ export default function AppSidebar() {
 
         if (canManageAccountTypes) {
             accountChildren.push({
-                title: translate('Account Types'),
+                title: translate('Account types'),
                 href: route('account-types.index'),
             });
         }
 
         if (canManageAccountIndustries) {
             accountChildren.push({
-                title: translate('Account Industries'),
+                title: translate('Account industries'),
                 href: route('account-industries.index'),
             });
         }
@@ -301,7 +301,7 @@ export default function AppSidebar() {
             items.push({
                 title: translate('Accounts'),
                 icon: Building2,
-                group: translate('Customers & Relationships'),
+                group: translate('Customers & relationships'),
                 children: accountChildren,
             });
         }
@@ -318,14 +318,14 @@ export default function AppSidebar() {
 
         if (canManageTargetLists) {
             campaignChildren.push({
-                title: translate('Target Lists'),
+                title: translate('Target lists'),
                 href: route('target-lists.index'),
             });
         }
 
         if (canManageCampaignTypes) {
             campaignChildren.push({
-                title: translate('Campaign Types'),
+                title: translate('Campaign types'),
                 href: route('campaign-types.index'),
             });
         }
@@ -334,7 +334,7 @@ export default function AppSidebar() {
             items.push({
                 title: translate('Campaigns'),
                 icon: Megaphone,
-                group: translate('Customers & Relationships'),
+                group: translate('Customers & relationships'),
                 children: campaignChildren,
             });
         }
@@ -342,10 +342,10 @@ export default function AppSidebar() {
         // Customer cases
         if (canManageCases) {
             items.push({
-                title: translate('Cases & Support'),
+                title: translate('Cases & support'),
                 href: route('cases.index'),
                 icon: FileText,
-                group: translate('Customers & Relationships'),
+                group: translate('Customers & relationships'),
             });
         }
 
@@ -363,14 +363,14 @@ export default function AppSidebar() {
 
         if (canManageOpportunitySources) {
             opportunityChildren.push({
-                title: translate('Opportunity Sources'),
+                title: translate('Opportunity sources'),
                 href: route('opportunity-sources.index'),
             });
         }
 
         if (canManageOpportunityStages) {
             opportunityChildren.push({
-                title: translate('Opportunity Stages'),
+                title: translate('Opportunity stages'),
                 href: route('opportunity-stages.index'),
             });
         }
@@ -397,7 +397,7 @@ export default function AppSidebar() {
         // Sales orders
         if (canManageSalesOrders) {
             items.push({
-                title: translate('Sales Orders'),
+                title: translate('Sales orders'),
                 href: route('sales-orders.index'),
                 icon: ShoppingBag,
                 group: translate('Sales'),
@@ -435,17 +435,17 @@ export default function AppSidebar() {
         //         title: translate('Policies'),
         //         href: route('policies.index'),
         //         icon: ShieldCheck,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Policy issuance:
         // if (canManagePolicyIssuance) {
         //     items.push({
-        //         title: translate('Policy Issuance'),
+        //         title: translate('Policy issuance'),
         //         href: route('policy-issuance.index'),
         //         icon: FileCheck,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
@@ -455,17 +455,17 @@ export default function AppSidebar() {
         //         title: translate('Renewals'),
         //         href: route('renewals.index'),
         //         icon: RefreshCw,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Endorsements and amendments:
         // if (canManagePolicyEndorsements) {
         //     items.push({
-        //         title: translate('Endorsements & Amendments'),
+        //         title: translate('Endorsements & amendments'),
         //         href: route('policy-endorsements.index'),
         //         icon: FileEdit,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
@@ -475,7 +475,7 @@ export default function AppSidebar() {
         //         title: translate('Cancellations'),
         //         href: route('policy-cancellations.index'),
         //         icon: FileX,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
 
@@ -488,7 +488,7 @@ export default function AppSidebar() {
         //         title: translate('Claims'),
         //         href: route('claims.index'),
         //         icon: ClipboardList,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
 
@@ -497,10 +497,10 @@ export default function AppSidebar() {
         // Insurance product catalogue
         if (canManageProducts) {
             items.push({
-                title: translate('Product Catalogue'),
+                title: translate('Product catalogue'),
                 href: route('products.index'),
                 icon: Package,
-                group: translate('Insurance Operations'),
+                group: translate('Insurance operations'),
             });
         }
 
@@ -523,16 +523,16 @@ export default function AppSidebar() {
 
         if (canManageCategories) {
             productSetupChildren.push({
-                title: translate('Product Categories'),
+                title: translate('Product categories'),
                 href: route('categories.index'),
             });
         }
 
         if (productSetupChildren.length > 0) {
             items.push({
-                title: translate('Product Setup'),
+                title: translate('Product setup'),
                 icon: Settings,
-                group: translate('Insurance Operations'),
+                group: translate('Insurance operations'),
                 children: productSetupChildren,
             });
         }
@@ -542,40 +542,40 @@ export default function AppSidebar() {
         // Insurance Providers:
         // if (canManageInsuranceProviders) {
         //     items.push({
-        //         title: translate('Insurance Providers'),
+        //         title: translate('Insurance providers'),
         //         href: route('insurance-providers.index'),
         //         icon: Building2,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Product Listings & Availability:
         // if (canManageProductListings) {
         //     items.push({
-        //         title: translate('Product Listings & Availability'),
+        //         title: translate('Product listings & availability'),
         //         href: route('product-listings.index'),
         //         icon: Package,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Distribution Channels:
         // if (canManageDistributionChannels) {
         //     items.push({
-        //         title: translate('Distribution Channels'),
+        //         title: translate('Distribution channels'),
         //         href: route('distribution-channels.index'),
         //         icon: Network,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Partners & Integrations:
         // if (canManagePartnersIntegrations) {
         //     items.push({
-        //         title: translate('Partners & Integrations'),
+        //         title: translate('Partners & integrations'),
         //         href: route('partners-integrations.index'),
         //         icon: Plug,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
 
@@ -584,37 +584,37 @@ export default function AppSidebar() {
         // Existing purchase orders retained for physical fulfillment.
         if (canManagePurchaseOrders) {
             items.push({
-                title: translate('Fulfillment Orders'),
+                title: translate('Fulfillment orders'),
                 href: route('purchase-orders.index'),
                 icon: ShoppingBag,
-                group: translate('Fulfillment & Document Delivery'),
+                group: translate('Fulfillment & document delivery'),
             });
         }
 
         if (canManageDeliveryOrders) {
             items.push({
-                title: translate('Delivery Orders'),
+                title: translate('Delivery orders'),
                 href: route('delivery-orders.index'),
                 icon: Truck,
-                group: translate('Fulfillment & Document Delivery'),
+                group: translate('Fulfillment & document delivery'),
             });
         }
 
         if (canManageReturnOrders) {
             items.push({
-                title: translate('Returns & Undelivered Items'),
+                title: translate('Returns & undelivered items'),
                 href: route('return-orders.index'),
                 icon: Package,
-                group: translate('Fulfillment & Document Delivery'),
+                group: translate('Fulfillment & document delivery'),
             });
         }
 
         if (canManageShippingProviderTypes) {
             items.push({
-                title: translate('Shipping Providers'),
+                title: translate('Shipping providers'),
                 href: route('shipping-provider-types.index'),
                 icon: Truck,
-                group: translate('Fulfillment & Document Delivery'),
+                group: translate('Fulfillment & document delivery'),
             });
         }
 
@@ -624,20 +624,20 @@ export default function AppSidebar() {
         // Document Dispatch:
         // if (canManageDocumentDispatch) {
         //     items.push({
-        //         title: translate('Document Dispatch'),
+        //         title: translate('Document dispatch'),
         //         href: route('document-dispatch.index'),
         //         icon: FileCheck,
-        //         group: translate('Fulfillment & Document Delivery')
+        //         group: translate('Fulfillment & document delivery')
         //     });
         // }
         //
         // Delivery Tracking:
         // if (canManageDeliveryTracking) {
         //     items.push({
-        //         title: translate('Delivery Tracking'),
+        //         title: translate('Delivery tracking'),
         //         href: route('delivery-tracking.index'),
         //         icon: Truck,
-        //         group: translate('Fulfillment & Document Delivery')
+        //         group: translate('Fulfillment & document delivery')
         //     });
         // }
 
@@ -651,27 +651,27 @@ export default function AppSidebar() {
         //         title: translate('Commissions'),
         //         href: route('commissions.index'),
         //         icon: Wallet,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Commission Rules:
         // if (canManageCommissionRules) {
         //     items.push({
-        //         title: translate('Commission Rules'),
+        //         title: translate('Commission rules'),
         //         href: route('commission-rules.index'),
         //         icon: Settings,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
         // Commission Statements:
         // if (canManageCommissionStatements) {
         //     items.push({
-        //         title: translate('Commission Statements'),
+        //         title: translate('Commission statements'),
         //         href: route('commission-statements.index'),
         //         icon: FileText,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
@@ -681,7 +681,7 @@ export default function AppSidebar() {
         //         title: translate('Reconciliation'),
         //         href: route('commission-reconciliation.index'),
         //         icon: ClipboardList,
-        //         group: translate('Insurance Operations')
+        //         group: translate('Insurance operations')
         //     });
         // }
         //
@@ -696,7 +696,7 @@ export default function AppSidebar() {
                 title: translate('Meetings'),
                 href: route('meetings.index'),
                 icon: CalendarDays,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
             });
         }
 
@@ -706,7 +706,7 @@ export default function AppSidebar() {
                 title: translate('Calls'),
                 href: route('calls.index'),
                 icon: Phone,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
             });
         }
 
@@ -716,7 +716,7 @@ export default function AppSidebar() {
                 title: translate('Streams'),
                 href: route('stream.index'),
                 icon: Activity,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
             });
         }
 
@@ -726,7 +726,7 @@ export default function AppSidebar() {
                 title: translate('Notes'),
                 href: route('notes.index'),
                 icon: NotebookPen,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
             });
         }
 
@@ -751,7 +751,7 @@ export default function AppSidebar() {
             items.push({
                 title: translate('Announcements'),
                 icon: Megaphone,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
                 children: announcementChildren,
             });
         }
@@ -775,16 +775,16 @@ export default function AppSidebar() {
 
         if (canManageTaskStatuses) {
             projectChildren.push({
-                title: translate('Task Statuses'),
+                title: translate('Task statuses'),
                 href: route('task-statuses.index'),
             });
         }
 
         if (projectChildren.length > 0) {
             items.push({
-                title: translate('Tasks & Projects'),
+                title: translate('Tasks & projects'),
                 icon: Briefcase,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
                 children: projectChildren,
             });
         }
@@ -801,7 +801,7 @@ export default function AppSidebar() {
 
         if (canManageDocumentTypes) {
             documentChildren.push({
-                title: translate('Document Types'),
+                title: translate('Document types'),
                 href: route('document-types.index'),
             });
         }
@@ -810,17 +810,17 @@ export default function AppSidebar() {
             items.push({
                 title: translate('Documents'),
                 icon: Folder,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
                 children: documentChildren,
             });
         }
 
         if (canManageMedia) {
             items.push({
-                title: translate('Media Library'),
+                title: translate('Media library'),
                 href: route('media-library.media.index'),
                 icon: Image,
-                group: translate('Team & Collaboration'),
+                group: translate('Team & collaboration'),
             });
         }
 
@@ -838,14 +838,14 @@ export default function AppSidebar() {
 
         if (canManageRoles) {
             staffChildren.push({
-                title: translate('Roles & Permissions'),
+                title: translate('Roles & permissions'),
                 href: route('users-permissions.roles.index'),
             });
         }
 
         if (staffChildren.length > 0) {
             items.push({
-                title: translate('Users & Access'),
+                title: translate('Users & access'),
                 icon: Users,
                 group: translate('Administration'),
                 children: staffChildren,
@@ -857,28 +857,28 @@ export default function AppSidebar() {
 
         if (canManagePlans) {
             planChildren.push({
-                title: translate('Subscription Plans'),
+                title: translate('Subscription plans'),
                 href: route('subscriptions.plans.index'),
             });
         }
 
         if (canManagePlanRequests) {
             planChildren.push({
-                title: translate('Plan Requests'),
+                title: translate('Plan requests'),
                 href: route('subscriptions.plan-requests.index'),
             });
         }
 
         if (canManagePlanOrders) {
             planChildren.push({
-                title: translate('Plan Orders'),
+                title: translate('Plan orders'),
                 href: route('subscriptions.plan-orders.index'),
             });
         }
 
         if (planChildren.length > 0) {
             items.push({
-                title: translate('Subscription Plans'),
+                title: translate('Subscription plans'),
                 icon: CreditCard,
                 group: translate('Administration'),
                 children: planChildren,
@@ -888,7 +888,7 @@ export default function AppSidebar() {
         // Referral programme
         if (canManageReferral) {
             items.push({
-                title: translate('Referral Programme'),
+                title: translate('Referral programme'),
                 href: route('referral.index'),
                 icon: Gift,
                 group: translate('Administration'),
@@ -898,7 +898,7 @@ export default function AppSidebar() {
         // Notification templates
         if (canManageNotificationTemplates) {
             items.push({
-                title: translate('Notification Templates'),
+                title: translate('Notification templates'),
                 href: route('notification-templates.index'),
                 icon: Mail,
                 group: translate('Administration'),
@@ -942,53 +942,53 @@ export default function AppSidebar() {
         navigation = wrapItems(
             navigation,
             translate('Sales'),
-            translate('Order & Billing Management'),
-            [translate('Sales Orders'), translate('Invoices'), translate('Receipts')],
+            translate('Order & billing management'),
+            [translate('Sales orders'), translate('Invoices'), translate('Receipts')],
             FileText,
         );
 
         // Insurance: keep product setup separate from policy lifecycle and commissions.
         navigation = wrapItems(
             navigation,
-            translate('Insurance Operations'),
-            translate('Products & Distribution'),
+            translate('Insurance operations'),
+            translate('Products & distribution'),
             [
-                translate('Product Catalogue'),
-                translate('Product Setup'),
-                translate('Insurance Providers'),
-                translate('Product Listings & Availability'),
-                translate('Distribution Channels'),
-                translate('Partners & Integrations'),
+                translate('Product catalogue'),
+                translate('Product setup'),
+                translate('Insurance providers'),
+                translate('Product listings & availability'),
+                translate('Distribution channels'),
+                translate('Partners & integrations'),
             ],
             Package,
         );
         navigation = wrapItems(
             navigation,
-            translate('Insurance Operations'),
-            translate('Policy Management'),
+            translate('Insurance operations'),
+            translate('Policy management'),
             [
                 translate('Policies'),
-                translate('Policy Issuance'),
+                translate('Policy issuance'),
                 translate('Renewals'),
-                translate('Endorsements & Amendments'),
+                translate('Endorsements & amendments'),
                 translate('Cancellations'),
             ],
             FileText,
         );
         navigation = wrapItems(
             navigation,
-            translate('Insurance Operations'),
+            translate('Insurance operations'),
             translate('Commissions'),
-            [translate('Commissions'), translate('Commission Rules'), translate('Commission Statements'), translate('Reconciliation')],
+            [translate('Commissions'), translate('Commission rules'), translate('Commission statements'), translate('Reconciliation')],
             Settings,
         );
 
         // Fulfillment: group delivery exceptions and provider configuration.
         navigation = wrapItems(
             navigation,
-            translate('Fulfillment & Document Delivery'),
-            translate('Delivery Management'),
-            [translate('Returns & Undelivered Items'), translate('Shipping Providers'), translate('Delivery Tracking')],
+            translate('Fulfillment & document delivery'),
+            translate('Delivery management'),
+            [translate('Returns & undelivered items'), translate('Shipping providers'), translate('Delivery tracking')],
             Truck,
         );
 

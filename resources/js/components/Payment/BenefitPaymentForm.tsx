@@ -73,7 +73,7 @@ export function BenefitPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('en-BH', {
+        return new Intl.NumberFormat('En-BH', {
             style: 'currency',
             currency: currency,
             minimumFractionDigits: 3,
@@ -85,7 +85,7 @@ export function BenefitPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Benefit Payment')}
+                    {translate('Benefit payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -98,15 +98,15 @@ export function BenefitPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
@@ -121,12 +121,12 @@ export function BenefitPaymentForm({
                 </Alert>
 
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported payment methods')}</h4>
                     <ul className="space-y-1 text-sm text-blue-800">
-                        <li>• {translate('Benefit Debit Cards')}</li>
-                        <li>• {translate('Visa Credit/Debit Cards')}</li>
-                        <li>• {translate('Mastercard Credit/Debit Cards')}</li>
-                        <li>• {translate('Benefit Pay Mobile Wallet')}</li>
+                        <li>• {translate('Benefit debit cards')}</li>
+                        <li>• {translate('Visa credit/debit cards')}</li>
+                        <li>• {translate('Mastercard credit/debit cards')}</li>
+                        <li>• {translate('Benefit pay mobile wallet')}</li>
                     </ul>
                 </div>
 
@@ -143,7 +143,7 @@ export function BenefitPaymentForm({
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {translate('Pay with Benefit')}
+                                {translate('Pay with benefit')}
                             </>
                         )}
                     </Button>

@@ -180,15 +180,15 @@ export default function ProjectKanban() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Project Management') },
+        { title: translate('Project management') },
         { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
-        { title: translate('Kanban View') },
+        { title: translate('Kanban view') },
     ];
 
     return (
         <PageTemplate
-            title={`${project.name} - ${translate('Kanban View')}`}
+            title={`${project.name} - ${translate('Kanban view')}`}
             description={translate('Manage project tasks using a kanban board')}
             url={`/projects/${project.id}/kanban`}
             actions={pageActions}
@@ -211,7 +211,7 @@ export default function ProjectKanban() {
                             onChange: setSelectedStatus,
                             searchable: true,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 ...statuses.map((status: any) => ({ value: status.id, label: status.name })),
                             ],
                         },
@@ -222,7 +222,7 @@ export default function ProjectKanban() {
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: translate('All Priority') },
+                                { value: 'all', label: translate('All priority') },
                                 { value: 'low', label: translate('Low') },
                                 { value: 'medium', label: translate('Medium') },
                                 { value: 'high', label: translate('High') },
@@ -258,9 +258,9 @@ export default function ProjectKanban() {
                                 <LayoutGrid className="text-primary h-10 w-10" />
                             </div>
                             <div className="space-y-1.5">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No task status yet')}</h3>
                                 <p className="text-foreground/75 text-sm leading-relaxed">
-                                    {translate('Set up task statuses to start organizing your work in a Kanban board.')}
+                                    {translate('Set up task statuses to start organizing your work in a kanban board.')}
                                 </p>
                             </div>
                             {useHasPermission('manage-task-statuses') && (
@@ -271,7 +271,7 @@ export default function ProjectKanban() {
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
-                                    {translate('Add Task Status')}
+                                    {translate('Add task status')}
                                 </button>
                             )}
                         </div>
@@ -345,7 +345,7 @@ export default function ProjectKanban() {
                                                 handleAddTask(status.id);
                                             }}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                            title={translate('Add Task')}
+                                            title={translate('Add task')}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </button>
@@ -533,10 +533,10 @@ export default function ProjectKanban() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'title', label: translate('Task Title'), type: 'text', required: true },
+                        { name: 'title', label: translate('Task title'), type: 'text', required: true },
                         { name: 'description', label: translate('Description'), type: 'textarea' },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
-                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due date'), type: 'date' },
                         {
                             name: 'priority',
                             label: translate('Priority'),
@@ -562,7 +562,7 @@ export default function ProjectKanban() {
                                 formMode === 'create' ? (prefilledStatus ? prefilledStatus.toString() : statuses[0]?.id?.toString()) : undefined,
                             hidden: formMode === 'create' && !!prefilledStatus,
                         },
-                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5' },
+                        { name: 'estimated_hours', label: translate('Estimated hours'), type: 'number', step: '0.5' },
                         {
                             name: 'progress',
                             label: translate('Progress (%)'),
@@ -575,7 +575,7 @@ export default function ProjectKanban() {
                             ? [
                                   {
                                       name: 'assigned_to',
-                                      label: translate('Assign To'),
+                                      label: translate('Assign to'),
                                       type: 'select',
                                       searchable: true,
                                       options: [
@@ -600,7 +600,7 @@ export default function ProjectKanban() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Task') : formMode === 'edit' ? translate('Edit Task') : translate('View Task')}
+                title={formMode === 'create' ? translate('Add task') : formMode === 'edit' ? translate('Edit task') : translate('View task')}
                 mode={formMode}
             />
 

@@ -141,7 +141,7 @@ export default function CurrencySettings() {
 
     return (
         <SettingsSection
-            title={translate('Currency Settings')}
+            title={translate('Currency settings')}
             description={translate('Configure how currency values are displayed throughout the application')}
             action={
                 <Button type="submit" disabled={processing} form="currency-settings-form" size="sm">
@@ -159,7 +159,7 @@ export default function CurrencySettings() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
                                         <DollarSign className="text-primary h-5 w-5" />
-                                        <h3 className="text-base font-medium">{translate('Format Options')}</h3>
+                                        <h3 className="text-base font-medium">{translate('Format options')}</h3>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -204,7 +204,7 @@ export default function CurrencySettings() {
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="default_currency" className="font-medium">
-                                                    {translate('Default Currency')}
+                                                    {translate('Default currency')}
                                                 </Label>
                                                 <Badge variant="outline" className="font-mono">
                                                     {currencySettings.default_currency}
@@ -243,7 +243,7 @@ export default function CurrencySettings() {
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="decimal_format" className="font-medium">
-                                                    {translate('Decimal Places')}
+                                                    {translate('Decimal places')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -278,7 +278,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="currency_symbol_position" className="font-medium">
-                                                    {translate('Symbol Position')}
+                                                    {translate('Symbol position')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -320,7 +320,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="decimal_separator" className="font-medium">
-                                                    {translate('Decimal Separator')}
+                                                    {translate('Decimal separator')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -362,7 +362,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="thousands_separator" className="font-medium">
-                                                    {translate('Thousands Separator')}
+                                                    {translate('Thousands separator')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -397,7 +397,7 @@ export default function CurrencySettings() {
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <Label htmlFor="float_number" className="font-medium">
-                                                        {translate('Show Decimals')}
+                                                        {translate('Show decimals')}
                                                     </Label>
                                                     <p className="text-foreground/75 mt-1 text-xs">
                                                         {translate('Display decimal places in amounts')}
@@ -417,7 +417,7 @@ export default function CurrencySettings() {
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <Label htmlFor="currency_symbol_space" className="font-medium">
-                                                        {translate('Add Space')}
+                                                        {translate('Add space')}
                                                     </Label>
                                                     <p className="text-foreground/75 mt-1 text-xs">{translate('Space between amount and symbol')}</p>
                                                 </div>

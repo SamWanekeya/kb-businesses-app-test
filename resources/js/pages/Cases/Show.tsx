@@ -44,7 +44,7 @@ export default function CaseShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Cases'), href: route('cases.index') },
-        { title: translate('View Case') },
+        { title: translate('View case') },
     ];
 
     const statusSteps = ['new', 'in_progress', 'pending', 'resolved', 'closed'];
@@ -70,7 +70,7 @@ export default function CaseShow() {
             dot: 'bg-blue-500',
         },
         in_progress: {
-            label: translate('In Progress'),
+            label: translate('In progress'),
             icon: Loader,
             color: 'text-yellow-600',
             bg: 'bg-yellow-50 dark:bg-yellow-900/20',
@@ -118,13 +118,13 @@ export default function CaseShow() {
             bg: 'bg-blue-50 dark:bg-blue-900/20',
         },
         bug: {
-            label: translate('Bug Report'),
+            label: translate('Bug report'),
             icon: AlertTriangle,
             color: 'text-red-600',
             bg: 'bg-red-50 dark:bg-red-900/20',
         },
         feature_request: {
-            label: translate('Feature Request'),
+            label: translate('Feature request'),
             icon: Layers,
             color: 'text-purple-600',
             bg: 'bg-purple-50 dark:bg-purple-900/20',
@@ -239,7 +239,7 @@ export default function CaseShow() {
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: translate('Case Type'),
+                                label: translate('Case type'),
                                 value: caseType.label,
                                 icon: Tag,
                                 iconCls: 'text-purple-600',
@@ -278,7 +278,7 @@ export default function CaseShow() {
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-bold">
                             <Loader className="text-foreground/75 mr-3 h-5 w-5" />
-                            {translate('Case Progress')}
+                            {translate('Case progress')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="overflow-x-auto px-6 py-5">
@@ -331,7 +331,7 @@ export default function CaseShow() {
                         </CardHeader>
                         <CardContent className="flex items-center justify-center p-5" style={{ minHeight: '100px' }}>
                             <div className="w-full">
-                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                 {caseData.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -386,7 +386,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Building className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Account')}
+                                {translate('Related account')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -432,7 +432,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Contact')}
+                                {translate('Related contact')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -480,7 +480,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Meetings & Calls')}
+                                {translate('Meetings & calls')}
                                 <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                     {meetings.length}
                                 </span>

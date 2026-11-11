@@ -141,14 +141,14 @@ export function ToyyibPayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('toyyibPay Payment')}
+                    {translate('ToyyibPay payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <Alert className="mb-4">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                        {translate('You will be redirected to ToyyibPay to complete your payment securely via FPX (Malaysian Online Banking)')}
+                        {translate('You will be redirected to ToyyibPay to complete your payment securely via FPX (Malaysian online banking)')}
                     </AlertDescription>
                 </Alert>
 
@@ -171,7 +171,7 @@ export function ToyyibPayPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')} *</Label>
+                        <Label htmlFor="email">{translate('Email address')} *</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"
@@ -188,7 +188,7 @@ export function ToyyibPayPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="phone">{translate('Phone Number')} *</Label>
+                        <Label htmlFor="phone">{translate('Phone number')} *</Label>
                         <Input
                             id="phone"
                             value={customerDetails.phone}
@@ -208,7 +208,7 @@ export function ToyyibPayPaymentForm({
                     <div className="bg-muted rounded-lg p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <CreditCard className="text-primary h-4 w-4" />
-                            <p className="text-sm">{translate('Payment Method: FPX (Online Banking)')}</p>
+                            <p className="text-sm">{translate('Payment method: FPX (online banking)')}</p>
                         </div>
                         <p className="text-foreground/75 text-xs">
                             {translate('Secure payment via Malaysian banks including Maybank, CIMB, Public Bank, RHB, and more')}
@@ -217,7 +217,7 @@ export function ToyyibPayPaymentForm({
 
                     <div className="border-t pt-4">
                         <div className="mb-4 flex items-center justify-between">
-                            <span className="text-foreground/75 text-sm">{translate('Total Amount')}:</span>
+                            <span className="text-foreground/75 text-sm">{translate('Total amount')}:</span>
                             <span className="text-lg font-extrabold">
                                 {currency} {planPrice.toFixed(2)}
                             </span>
@@ -236,7 +236,7 @@ export function ToyyibPayPaymentForm({
                                 ) : (
                                     <>
                                         <CreditCard className="mr-2 h-4 w-4" />
-                                        {translate('Pay Now')}
+                                        {translate('Pay now')}
                                     </>
                                 )}
                             </Button>

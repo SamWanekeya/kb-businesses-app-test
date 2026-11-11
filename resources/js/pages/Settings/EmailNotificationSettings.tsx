@@ -74,7 +74,7 @@ export default function EmailNotificationSettings() {
 
     return (
         <SettingsSection
-            title={translate('Email Notification Settings')}
+            title={translate('Email notification settings')}
             description={translate('Configure which email notifications are sent')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">

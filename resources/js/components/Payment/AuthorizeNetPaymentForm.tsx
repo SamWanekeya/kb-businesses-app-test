@@ -117,7 +117,7 @@ export function AuthorizeNetPaymentForm({
         }
 
         if (!validateCVV(cardData.cvv)) {
-            errors.cvv = translate('Please enter a valid CVV (3-4 digits)');
+            errors.cvv = translate('Please enter a valid CCV (3-4 digits)');
         }
 
         if (!validateCardholderName(cardData.cardholder_name)) {
@@ -164,7 +164,7 @@ export function AuthorizeNetPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('en-US', {
+        return new Intl.NumberFormat('En-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -175,7 +175,7 @@ export function AuthorizeNetPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('AuthorizeNet Payment')}
+                    {translate('AuthorizeNet payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -188,22 +188,22 @@ export function AuthorizeNetPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
 
                 <div className="space-y-4">
                     <div>
-                        <Label htmlFor="cardholder_name">{translate('Cardholder Name')}</Label>
+                        <Label htmlFor="cardholder_name">{translate('Cardholder name')}</Label>
                         <Input
                             id="cardholder_name"
                             value={cardData.cardholder_name}
@@ -216,7 +216,7 @@ export function AuthorizeNetPaymentForm({
                     </div>
 
                     <div>
-                        <Label htmlFor="card_number">{translate('Card Number')}</Label>
+                        <Label htmlFor="card_number">{translate('Card number')}</Label>
                         <Input
                             id="card_number"
                             value={cardData.card_number}
@@ -296,7 +296,7 @@ export function AuthorizeNetPaymentForm({
                         <Alert>
                             <Info className="h-4 w-4" />
                             <AlertDescription>
-                                {translate('Test Mode: This is a sandbox transaction. No real money will be charged.')}
+                                {translate('Test mode: this is a sandbox transaction. No real money will be charged.')}
                             </AlertDescription>
                         </Alert>
                     )}
@@ -304,7 +304,7 @@ export function AuthorizeNetPaymentForm({
                     <div className="text-foreground/75 space-y-1 text-center text-xs">
                         <div className="flex items-center justify-center gap-1">
                             <CheckCircle className="text-primary h-3 w-3" />
-                            {translate('Powered by AuthorizeNet - Secure payment processing')}
+                            {translate('Powered by AuthorizeNet - secure payment processing')}
                         </div>
                         <div>
                             {translate('Supported currencies')}: {supportedCurrencies.join(', ')}

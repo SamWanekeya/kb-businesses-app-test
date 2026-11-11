@@ -182,7 +182,7 @@ export default function Quotes() {
 
     if (useHasPermission('create-quotes')) {
         pageActions.push({
-            label: translate('Add Quote'),
+            label: translate('Add quote'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -190,7 +190,7 @@ export default function Quotes() {
             },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: translate('Add Quote'),
+            tooltip: translate('Add quote'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
@@ -206,7 +206,7 @@ export default function Quotes() {
     const columns = [
         {
             key: 'quote_number',
-            label: translate('Quote Number'),
+            label: translate('Quote number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) =>
@@ -234,7 +234,7 @@ export default function Quotes() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -294,14 +294,14 @@ export default function Quotes() {
 
     const actions = [
         {
-            label: translate('Copy Quote Link'),
+            label: translate('Copy quote link'),
             icon: 'Copy',
             action: 'copy-link',
             className: 'text-purple-500',
             requiredPermission: 'view-quotes',
         },
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -331,7 +331,7 @@ export default function Quotes() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'draft', label: translate('Draft') },
         { value: 'sent', label: translate('Sent') },
         { value: 'accepted', label: translate('Accepted') },
@@ -369,7 +369,7 @@ export default function Quotes() {
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: translate('All Accounts') },
+                                { value: 'all', label: translate('All accounts') },
                                 ...(allAccounts?.map((acc: any) => ({
                                     value: acc.id.toString(),
                                     label: acc.name,
@@ -384,7 +384,7 @@ export default function Quotes() {
                             value: selectedOpportunity,
                             onChange: setSelectedOpportunity,
                             options: [
-                                { value: 'all', label: translate('All Opportunities') },
+                                { value: 'all', label: translate('All opportunities') },
                                 ...(allOpportunities?.map((opp: any) => ({
                                     value: opp.id.toString(),
                                     label: opp.name,
@@ -393,13 +393,13 @@ export default function Quotes() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -435,7 +435,7 @@ export default function Quotes() {
                     to={quotes?.to || 0}
                     total={quotes?.total || 0}
                     links={quotes?.links}
-                    entityName={translate('quotes')}
+                    entityName={translate('Quotes')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -486,7 +486,7 @@ export default function Quotes() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Quote Status')}
+                title={translate('Change quote status')}
                 mode="edit"
             />
 
@@ -497,7 +497,7 @@ export default function Quotes() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('quote')}
+                entityName={translate('Quote')}
             />
         </PageTemplate>
     );

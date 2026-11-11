@@ -223,13 +223,13 @@ export default function LeadStatuses() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Lead Management') },
-        { title: translate('Lead Status') },
+        { title: translate('Lead management') },
+        { title: translate('Lead status') },
     ];
 
     return (
         <PageTemplate
-            title={translate('Lead Status')}
+            title={translate('Lead status')}
             description={translate('Manage lead status categories for your leads.')}
             url="/lead-statuses"
             breadcrumbs={breadcrumbs}
@@ -240,7 +240,7 @@ export default function LeadStatuses() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Lead Status') : translate('Edit Lead Status')}
+                                {formMode === 'create' ? translate('Add new lead status') : translate('Edit lead status')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -334,7 +334,7 @@ export default function LeadStatuses() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Lead Status') : translate('Update Lead Status')}
+                                        {formMode === 'create' ? translate('Add lead status') : translate('Update lead status')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -388,7 +388,7 @@ export default function LeadStatuses() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -402,7 +402,7 @@ export default function LeadStatuses() {
                         {(leadStatuses?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Lead Status')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Lead status')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage lead status categories for your leads.')}</p>
                                 </div> */}
 
@@ -413,10 +413,10 @@ export default function LeadStatuses() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {translate('Lead Status')}
+                                                        {translate('Lead status')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -699,7 +699,7 @@ export default function LeadStatuses() {
                                             to={leadStatuses?.to || 0}
                                             total={leadStatuses?.total || 0}
                                             links={leadStatuses?.links}
-                                            entityName={translate('lead status')}
+                                            entityName={translate('Lead status')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -737,7 +737,7 @@ export default function LeadStatuses() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('lead status')}
+                entityName={translate('Lead status')}
             />
         </PageTemplate>
     );

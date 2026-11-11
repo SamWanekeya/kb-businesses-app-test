@@ -214,7 +214,7 @@ export default function DocumentFolders() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Management') },
+        { title: translate('Document management') },
         { title: translate('Folders') },
     ];
 
@@ -226,7 +226,7 @@ export default function DocumentFolders() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Folder') : translate('Edit Folder')}
+                                {formMode === 'create' ? translate('Add new folder') : translate('Edit folder')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -252,7 +252,7 @@ export default function DocumentFolders() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="parent_folder_id">{translate('Parent Folder')}</Label>
+                                <Label htmlFor="parent_folder_id">{translate('Parent folder')}</Label>
                                 <Select
                                     value={formData.parent_folder_id}
                                     onValueChange={(value) => {
@@ -264,7 +264,7 @@ export default function DocumentFolders() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
-                                        <SelectItem value="null">{translate('Root Folder')}</SelectItem>
+                                        <SelectItem value="null">{translate('Root folder')}</SelectItem>
                                         {parentFolders.map((folder: any) => (
                                             <SelectItem key={folder.id} value={String(folder.id)}>
                                                 {folder.display_name || folder.name}
@@ -309,7 +309,7 @@ export default function DocumentFolders() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Folder') : translate('Update Folder')}
+                                        {formMode === 'create' ? translate('Add folder') : translate('Update folder')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -356,8 +356,8 @@ export default function DocumentFolders() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
-                                        <SelectItem value="all">{translate('All Folders')}</SelectItem>
-                                        <SelectItem value="null">{translate('Root Folders')}</SelectItem>
+                                        <SelectItem value="all">{translate('All folders')}</SelectItem>
+                                        <SelectItem value="null">{translate('Root folders')}</SelectItem>
                                         {parentFolders.map((folder: any) => (
                                             <SelectItem key={folder.id} value={String(folder.id)}>
                                                 {folder.display_name || folder.name}
@@ -370,7 +370,7 @@ export default function DocumentFolders() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -383,7 +383,7 @@ export default function DocumentFolders() {
                         {(documentFolders?.data || []).length > 0 ? (
                             <>
                                 <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Document Folders')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Document folders')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                         {translate('Manage folders for organizing your documents.')}
                                     </p>
@@ -395,7 +395,7 @@ export default function DocumentFolders() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
                                                         {translate('Folder')}
@@ -411,7 +411,7 @@ export default function DocumentFolders() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {translate('Parent Folder')}
+                                                    {translate('Parent folder')}
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs tracking-wider text-gray-500 dark:text-gray-300">
                                                     {translate('Status')}
@@ -469,7 +469,7 @@ export default function DocumentFolders() {
                                                         </div>
                                                     </td>
                                                     <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
-                                                        {item.parent_folder?.name || translate('Root Folder')}
+                                                        {item.parent_folder?.name || translate('Root folder')}
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <span
@@ -661,9 +661,9 @@ export default function DocumentFolders() {
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Parent Folder')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Parent folder')}</p>
                                                     <span className="text-sm text-gray-900 dark:text-white">
-                                                        {item.parent_folder?.name || translate('Root Folder')}
+                                                        {item.parent_folder?.name || translate('Root folder')}
                                                     </span>
                                                 </div>
                                                 <div>
@@ -685,7 +685,7 @@ export default function DocumentFolders() {
                                             to={documentFolders?.to || 0}
                                             total={documentFolders?.total || 0}
                                             links={documentFolders?.links}
-                                            entityName={translate('document folders')}
+                                            entityName={translate('Document folders')}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
                                             }}
@@ -721,7 +721,7 @@ export default function DocumentFolders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('document folder')}
+                entityName={translate('Document folder')}
             />
         </PageTemplate>
     );

@@ -110,7 +110,7 @@ export default function RolesPage() {
     const pageActions = [];
     if (useHasPermission('create-roles')) {
         pageActions.push({
-            label: translate('Add Role'),
+            label: translate('Add role'),
             icon: <Plus className="mr-0 h-4 w-4 min-[420px]:mr-2" />,
             variant: 'default' as const,
             onClick: () => {
@@ -118,7 +118,7 @@ export default function RolesPage() {
             },
             className: 'h-8 w-8 min-[420px]:h-9 min-[420px]:w-auto px-0 min-[420px]:px-4',
             labelClassName: 'hidden min-[420px]:inline',
-            tooltip: translate('Add Role'),
+            tooltip: translate('Add role'),
             tooltipClassName: 'min-[420px]:hidden',
         });
     }
@@ -137,7 +137,7 @@ export default function RolesPage() {
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             type: 'date',
             // render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
@@ -223,7 +223,7 @@ export default function RolesPage() {
                     to={roles?.to || 0}
                     total={roles?.total || 0}
                     links={roles?.links}
-                    entityName={translate('roles')}
+                    entityName={translate('Roles')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}

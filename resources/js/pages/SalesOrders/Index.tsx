@@ -179,7 +179,7 @@ export default function SalesOrders() {
 
     if (useHasPermission('create-sales-orders')) {
         pageActions.push({
-            label: translate('Add Sales Order'),
+            label: translate('Add sales order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -187,7 +187,7 @@ export default function SalesOrders() {
             },
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: translate('Add Sales Order'),
+            tooltip: translate('Add sales order'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
@@ -197,13 +197,13 @@ export default function SalesOrders() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Sales Orders') },
+        { title: translate('Sales orders') },
     ];
 
     const columns = [
         {
             key: 'order_number',
-            label: translate('Order Number'),
+            label: translate('Order number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -226,7 +226,7 @@ export default function SalesOrders() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -246,14 +246,14 @@ export default function SalesOrders() {
         },
         {
             key: 'order_date',
-            label: translate('Order Date'),
+            label: translate('Order date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
         },
         {
             key: 'total_amount',
-            label: translate('Total Amount'),
+            label: translate('Total amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -285,7 +285,7 @@ export default function SalesOrders() {
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -294,13 +294,13 @@ export default function SalesOrders() {
 
     const actions = [
         {
-            label: translate('Copy Sales Order Link'),
+            label: translate('Copy sales order link'),
             icon: 'Copy',
             action: 'copy-link',
             className: 'text-purple-500',
         },
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -330,7 +330,7 @@ export default function SalesOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'draft', label: translate('Draft') },
         { value: 'confirmed', label: translate('Confirmed') },
         { value: 'processing', label: translate('Processing') },
@@ -340,19 +340,19 @@ export default function SalesOrders() {
     ];
 
     const accountOptions = [
-        { value: 'all', label: translate('All Accounts') },
+        { value: 'all', label: translate('All accounts') },
         ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     const assigneeOptions = [
-        { value: 'all', label: translate('All Users') },
+        { value: 'all', label: translate('All users') },
         { value: 'unassigned', label: translate('Unassigned') },
         ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
     ];
 
     return (
         <PageTemplate
-            title={translate('Sales Orders')}
+            title={translate('Sales orders')}
             description={translate('Manage your sales orders.')}
             url="/sales-orders"
             actions={pageActions}
@@ -383,7 +383,7 @@ export default function SalesOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
@@ -423,7 +423,7 @@ export default function SalesOrders() {
                     to={salesOrders?.to || 0}
                     total={salesOrders?.total || 0}
                     links={salesOrders?.links}
-                    entityName={translate('sales orders')}
+                    entityName={translate('Sales orders')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -474,7 +474,7 @@ export default function SalesOrders() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Sales Order Status')}
+                title={translate('Change sales order status')}
                 mode="edit"
             />
 
@@ -485,7 +485,7 @@ export default function SalesOrders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('sales order')}
+                entityName={translate('Sales order')}
             />
         </PageTemplate>
     );

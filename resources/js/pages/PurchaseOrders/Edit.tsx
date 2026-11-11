@@ -56,7 +56,7 @@ export default function PurchaseOrderEdit() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
+        { title: translate('Purchase orders'), href: route('purchase-orders.index') },
         { title: translate('Edit') },
     ];
 
@@ -176,13 +176,13 @@ export default function PurchaseOrderEdit() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name) errs.name = translate('Purchase Order Name is required');
-        if (!data.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!data.name) errs.name = translate('Purchase order name is required');
+        if (!data.sales_order_id) errs.sales_order_id = translate('Sales order is required');
         if (!data.account_id) errs.account_id = translate('Account is required');
-        if (!data.billing_contact_id) errs.billing_contact_id = translate('Billing Contact is required');
-        if (!data.shipping_contact_id) errs.shipping_contact_id = translate('Shipping Contact is required');
-        if (!data.order_date) errs.order_date = translate('Order Date is required');
-        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
+        if (!data.billing_contact_id) errs.billing_contact_id = translate('Billing contact is required');
+        if (!data.shipping_contact_id) errs.shipping_contact_id = translate('Shipping contact is required');
+        if (!data.order_date) errs.order_date = translate('Order date is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign to is required');
 
         if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = translate('At least one product is required');
 
@@ -213,7 +213,7 @@ export default function PurchaseOrderEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Purchase Order')}
+            title={translate('Edit purchase order')}
             description={translate('Update purchase order details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
@@ -231,7 +231,7 @@ export default function PurchaseOrderEdit() {
                 <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     {/* ── PURCHASE ORDER DETAILS ── */}
                     <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                        <p className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Purchase Order Details')}</p>
+                        <p className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Purchase order details')}</p>
                     </div>
 
                     <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
@@ -255,7 +255,7 @@ export default function PurchaseOrderEdit() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Sales Order')}
+                                    {translate('Sales order')}
                                 </Label>
                                 <Select value={data.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
@@ -296,7 +296,7 @@ export default function PurchaseOrderEdit() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Billing Contact')}
+                                    {translate('Billing contact')}
                                 </Label>
                                 <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                     <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
@@ -315,7 +315,7 @@ export default function PurchaseOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Shipping Contact')}
+                                    {translate('Shipping contact')}
                                 </Label>
                                 <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                     <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
@@ -403,7 +403,7 @@ export default function PurchaseOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Assign To')}
+                                    {translate('Assign to')}
                                 </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -427,7 +427,7 @@ export default function PurchaseOrderEdit() {
                         <p className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Products')}</p>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
-                            {translate('Add Product')}
+                            {translate('Add product')}
                         </Button>
                     </div>
 
@@ -445,10 +445,10 @@ export default function PurchaseOrderEdit() {
                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {translate('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-36 px-4 py-3 text-left">{translate('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Val')}</th>
+                                        <th className="w-36 px-4 py-3 text-left">{translate('Discount type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount val')}</th>
                                         <th className="w-32 px-4 py-3 text-left">{translate('Tax')}</th>
                                         <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
                                         <th className="w-10 px-4 py-3"></th>
@@ -522,7 +522,7 @@ export default function PurchaseOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -543,7 +543,7 @@ export default function PurchaseOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Type')}
+                                                        {translate('Discount type')}
                                                     </span>
                                                     <Select
                                                         value={row.discount_type}
@@ -557,13 +557,13 @@ export default function PurchaseOrderEdit() {
                                                         <SelectContent>
                                                             <SelectItem value="none">{translate('None')}</SelectItem>
                                                             <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Val')}
+                                                        {translate('Discount val')}
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -586,7 +586,7 @@ export default function PurchaseOrderEdit() {
                                                             const p = productOptions.find((p: any) => String(p.id) === row.product_id);
                                                             return p?.tax
                                                                 ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)`
-                                                                : translate('No Tax');
+                                                                : translate('No tax');
                                                         })()}
                                                     </span>
                                                 </td>
@@ -629,7 +629,7 @@ export default function PurchaseOrderEdit() {
                                         <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                     </div>
                                     <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900">
-                                        <span>{translate('Grand Total')}</span>
+                                        <span>{translate('Grand total')}</span>
                                         <span className="font-mono text-lg text-fuchsia-600">{fmt(grandTotal)}</span>
                                     </div>
                                 </div>

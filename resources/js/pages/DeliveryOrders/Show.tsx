@@ -44,8 +44,8 @@ export default function DeliveryOrderShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Delivery Orders'), href: route('delivery-orders.index') },
-        { title: translate('View Delivery Order') },
+        { title: translate('Delivery orders'), href: route('delivery-orders.index') },
+        { title: translate('View delivery order') },
     ];
 
     const statusConfig: Record<string, { label: string; cls: string; dot: string; icon: React.ReactNode }> = {
@@ -56,7 +56,7 @@ export default function DeliveryOrderShow() {
             icon: <Clock className="h-3.5 w-3.5" />,
         },
         in_transit: {
-            label: translate('In Transit'),
+            label: translate('In transit'),
             cls: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-400',
             dot: 'bg-blue-400',
             icon: <Truck className="h-3.5 w-3.5" />,
@@ -121,7 +121,7 @@ export default function DeliveryOrderShow() {
                         </CardHeader>
                         <CardContent className="p-5">
                             <div>
-                                <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Delivery Address')}</p>
+                                <p className="text-foreground/75 mb-3 text-xs font-bold">{translate('Delivery address')}</p>
                                 <div className="space-y-2">
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
@@ -139,7 +139,7 @@ export default function DeliveryOrderShow() {
                                             <p className="text-foreground text-sm">{deliveryOrder.delivery_state || translate('-')}</p>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-foreground/75 text-xs">{translate('Postal Code')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
                                             <p className="text-foreground text-sm">{deliveryOrder.delivery_postal_code || translate('-')}</p>
                                         </div>
                                     </div>
@@ -158,7 +158,7 @@ export default function DeliveryOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-bold">
                                     <StickyNote className="text-foreground/75 me-3 h-5 w-5" />
-                                    {translate('Delivery Notes')}
+                                    {translate('Delivery notes')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -215,10 +215,10 @@ export default function DeliveryOrderShow() {
                                                         {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
-                                                        {translate('Unit Weight')}
+                                                        {translate('Unit weight')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-end font-bold whitespace-nowrap">
-                                                        {translate('Total Weight')}
+                                                        {translate('Total weight')}
                                                     </TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -277,7 +277,7 @@ export default function DeliveryOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-extrabold">{translate('Total Weight')}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Total weight')}</span>
                                                 <span className="text-lg font-extrabold text-emerald-600">{deliveryOrder.total_weight ?? 0} kg</span>
                                             </div>
                                         </div>
@@ -303,13 +303,13 @@ export default function DeliveryOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <Truck className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Summary & Actions')}
+                                {translate('Summary & actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Shipping Cost')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Shipping cost')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(deliveryOrder.shipping_cost)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
@@ -328,7 +328,7 @@ export default function DeliveryOrderShow() {
                                         }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
-                                        {translate('Edit Delivery Order')}
+                                        {translate('Edit delivery order')}
                                     </Button>
                                 )}
                             </div>
@@ -341,7 +341,7 @@ export default function DeliveryOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Customer Info')}
+                                    {translate('Customer information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -427,28 +427,28 @@ export default function DeliveryOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Order Details')}
+                                {translate('Order details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
                                 <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Delivery Number')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Delivery number')}</p>
                                     <p className="text-foreground font-mono text-sm">{deliveryOrder.delivery_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Delivery Date')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Delivery date')}</p>
                                     <p className="text-foreground text-sm">{window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Expected Delivery')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Expected delivery')}</p>
                                     <p className="text-foreground text-sm">
                                         {window.kbSettings.formatDateTimeSimple(deliveryOrder.expected_delivery_date)}
                                     </p>
@@ -457,13 +457,13 @@ export default function DeliveryOrderShow() {
                             <div className="flex items-start gap-3">
                                 <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-foreground/75 text-xs">{translate('Tracking Number')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Tracking number')}</p>
                                     <p className="text-foreground font-mono text-sm">{deliveryOrder.tracking_number || translate('-')}</p>
                                 </div>
                             </div>
                             {deliveryOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.assigned_user.avatar} alt={deliveryOrder.assigned_user.name} />
@@ -482,7 +482,7 @@ export default function DeliveryOrderShow() {
                             )}
                             {deliveryOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={deliveryOrder.creator.avatar} alt={deliveryOrder.creator.name} />
@@ -508,7 +508,7 @@ export default function DeliveryOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
-                                    {translate('Related Records')}
+                                    {translate('Related records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
@@ -518,7 +518,7 @@ export default function DeliveryOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales order')}</p>
                                             <p className="text-foreground truncate text-sm">{deliveryOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -539,7 +539,7 @@ export default function DeliveryOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping provider')}</p>
                                             <p className="text-foreground truncate text-sm">{deliveryOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>

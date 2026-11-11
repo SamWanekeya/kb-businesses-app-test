@@ -222,13 +222,13 @@ export default function AccountIndustries() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Account Management') },
-        { title: translate('Account Industries') },
+        { title: translate('Account management') },
+        { title: translate('Account industries') },
     ];
 
     return (
         <PageTemplate
-            title={translate('Account Industries')}
+            title={translate('Account industries')}
             description={translate('Manage account industry categories for your accounts.')}
             url="/account-industries"
             breadcrumbs={breadcrumbs}
@@ -239,7 +239,7 @@ export default function AccountIndustries() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Account Industry') : translate('Edit Account Industry')}
+                                {formMode === 'create' ? translate('Add new account industry') : translate('Edit account industry')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -332,7 +332,7 @@ export default function AccountIndustries() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Account Industry') : translate('Update Account Industry')}
+                                        {formMode === 'create' ? translate('Add account industry') : translate('Update account industry')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -386,7 +386,7 @@ export default function AccountIndustries() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -400,7 +400,7 @@ export default function AccountIndustries() {
                         {(accountIndustries?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Account Industries')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Account industries')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage industry categories for your accounts.')}</p>
                                 </div> */}
 
@@ -411,10 +411,10 @@ export default function AccountIndustries() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {translate('Account Industry')}
+                                                        {translate('Account industry')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -697,7 +697,7 @@ export default function AccountIndustries() {
                                             to={accountIndustries?.to || 0}
                                             total={accountIndustries?.total || 0}
                                             links={accountIndustries?.links}
-                                            entityName={translate('account industries')}
+                                            entityName={translate('Account industries')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -735,7 +735,7 @@ export default function AccountIndustries() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('account industry')}
+                entityName={translate('Account industry')}
             />
         </PageTemplate>
     );

@@ -105,13 +105,13 @@ export default function AnnouncementShow() {
                         <div className="text-foreground/75 mt-4 flex items-center gap-6 text-sm">
                             {announcement.start_date && (
                                 <div className="flex items-center gap-2">
-                                    <CalendarDays className="h-4 w-4" /> <span className="font-extrabold">{translate('Start Date')}:</span>{' '}
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-extrabold">{translate('Start date')}:</span>{' '}
                                     {window.kbSettings.formatDateTime(announcement.start_date, false) || '-'}
                                 </div>
                             )}
                             {announcement.end_date && (
                                 <div className="flex items-center gap-2">
-                                    <CalendarDays className="h-4 w-4" /> <span className="font-extrabold">{translate('End Date')}:</span>{' '}
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-extrabold">{translate('End date')}:</span>{' '}
                                     {window.kbSettings.formatDateTime(announcement.end_date, false) || '-'}
                                 </div>
                             )}
@@ -132,7 +132,7 @@ export default function AnnouncementShow() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={announcement.title || ''}
-                entityName={translate('announcement')}
+                entityName={translate('Announcement')}
             />
         </PageTemplate>
     );

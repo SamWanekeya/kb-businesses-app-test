@@ -24,7 +24,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Receipt className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Tax Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Tax details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -34,7 +34,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Receipt className="h-4 w-4" />
-                            {translate('Tax Name')}
+                            {translate('Tax name')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.name || '-'}</p>
                     </div>
@@ -55,7 +55,7 @@ export default function View({ record }: ViewProps) {
                             {translate('Type')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                            {record.type === 'percentage' ? translate('Percentage') : translate('Fixed Amount')}
+                            {record.type === 'percentage' ? translate('Percentage') : translate('Fixed amount')}
                         </p>
                     </div>
                     <div>

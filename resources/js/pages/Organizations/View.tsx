@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Building2 className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Organization Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Organization details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -31,7 +31,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Building2 className="h-4 w-4" />
-                            {translate('Organization Name')}
+                            {translate('Organization name')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.name || '-'}</p>
                     </div>
@@ -66,7 +66,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Calendar className="h-4 w-4" />
-                            {translate('Created At')}
+                            {translate('Created at')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
                             {record.created_at ? window.kbSettings.formatDateTime(record.created_at, false) || record.created_at : '-'}
@@ -83,7 +83,7 @@ export default function View({ record }: ViewProps) {
                         </label>
                         <div className="mt-1">
                             <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
-                                {record.plan_name || translate('No Plan')}
+                                {record.plan_name || translate('No plan')}
                             </span>
                         </div>
                     </div>
@@ -91,7 +91,7 @@ export default function View({ record }: ViewProps) {
                         <div>
                             <label className="flex items-center gap-2 text-sm text-gray-500">
                                 <Calendar className="h-4 w-4" />
-                                {translate('Plan Expires')}
+                                {translate('Plan expires')}
                             </label>
                             <p className="mt-1 text-sm text-gray-900 dark:text-white">
                                 {window.kbSettings.formatDateTime(record.plan_expiry_date, false) || record.plan_expiry_date}

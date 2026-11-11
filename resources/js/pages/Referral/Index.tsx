@@ -24,7 +24,7 @@ export default function Referral() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Referral Program') },
+        { title: translate('Referral program') },
     ];
     const sidebarNavItems: NavItem[] = [
         {
@@ -33,12 +33,12 @@ export default function Referral() {
             icon: <BarChart3 className="me-2 h-4 w-4" />,
         },
         {
-            title: translate('Referred Users'),
+            title: translate('Referred users'),
             href: '#referred-users',
             icon: <Users className="me-2 h-4 w-4" />,
         },
         {
-            title: translate('Payout Requests'),
+            title: translate('Payout requests'),
             href: '#payout-requests',
             icon: <DollarSign className="me-2 h-4 w-4" />,
         },
@@ -120,7 +120,7 @@ export default function Referral() {
     return (
         <PageTemplate
             breadcrumbs={breadcrumbs}
-            title={translate('Referral Program')}
+            title={translate('Referral program')}
             url="/referral"
             description={translate('Manage your referral program.')}
         >
@@ -167,7 +167,7 @@ export default function Referral() {
                     </section>
 
                     <section id="referred-users" ref={referredUsersRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-bold">{translate('Referred Users')}</h2>
+                        <h2 className="mb-4 text-xl font-bold">{translate('Referred users')}</h2>
                         <ReferredUsersSection
                             referredUsers={props.referredUsers}
                             usersWithPlans={props.usersWithPlans}
@@ -178,7 +178,7 @@ export default function Referral() {
                     </section>
 
                     <section id="payout-requests" ref={payoutRequestsRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-bold">{translate('Payout Requests')}</h2>
+                        <h2 className="mb-4 text-xl font-bold">{translate('Payout requests')}</h2>
                         <PayoutRequests
                             userType={userType}
                             payoutRequests={payoutRequests}

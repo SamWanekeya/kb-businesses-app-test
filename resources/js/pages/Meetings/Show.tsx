@@ -20,7 +20,7 @@ export default function MeetingShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Meetings'), href: route('meetings.index') },
-        { title: translate('View Meeting') },
+        { title: translate('View meeting') },
     ];
 
     return (
@@ -46,14 +46,14 @@ export default function MeetingShow() {
                     {/* Meeting Details */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h2 className="text-lg font-bold">{translate('Meeting Details')}</h2>
+                            <h2 className="text-lg font-bold">{translate('Meeting details')}</h2>
                         </div>
                         <div className="p-6">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
-                                        <p className="font-medium">{translate('Date & Time')}</p>
+                                        <p className="font-medium">{translate('Date & time')}</p>
                                         <p className="text-foreground/75 text-sm">
                                             {window.kbSettings.formatDateTime(meeting.start_date, false) ||
                                                 new Date(meeting.start_date).toLocaleDateString()}{' '}
@@ -100,7 +100,7 @@ export default function MeetingShow() {
                                             : meeting.status === 'held'
                                               ? translate('Held')
                                               : meeting.status === 'not_held'
-                                                ? translate('Not Held')
+                                                ? translate('Not held')
                                                 : meeting.status}
                                     </span>
                                 </div>
@@ -153,12 +153,12 @@ export default function MeetingShow() {
                     {/* Meeting Info */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="font-bold">{translate('Meeting Information')}</h3>
+                            <h3 className="font-bold">{translate('Meeting information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             {meeting.assigned_user && (
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Assigned to')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={meeting.assigned_user.avatar} alt={meeting.assigned_user.name} />
@@ -177,7 +177,7 @@ export default function MeetingShow() {
                             )}
 
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Created At')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Created at')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -189,7 +189,7 @@ export default function MeetingShow() {
 
                             {meeting.updated_at !== meeting.created_at && (
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Last Updated')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Last updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -226,7 +226,7 @@ export default function MeetingShow() {
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
                                         <Building2 className="text-foreground/75 h-4 w-4" />
-                                        <h3 className="text-base font-bold">{translate('Related To')}</h3>
+                                        <h3 className="text-base font-bold">{translate('Related to')}</h3>
                                     </div>
                                     <div className="p-4">
                                         {useHasPermission(viewRoute) ? (

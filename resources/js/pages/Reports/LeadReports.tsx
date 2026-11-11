@@ -56,12 +56,12 @@ export default function LeadReports() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
-        { title: translate('Lead Reports') },
+        { title: translate('Lead reports') },
     ];
 
     const summaryCards = [
         {
-            title: translate('Total Leads'),
+            title: translate('Total leads'),
             value: summary.total_leads.toLocaleString(),
             icon: <Users />,
             iconColor: 'bg-indigo-100/50',
@@ -69,7 +69,7 @@ export default function LeadReports() {
             blobCls: 'bg-indigo-50 dark:bg-indigo-900/30',
         },
         {
-            title: translate('Converted Leads'),
+            title: translate('Converted leads'),
             value: summary.converted_leads.toLocaleString(),
             icon: <TrendingUp />,
             iconColor: 'bg-emerald-100/50',
@@ -77,7 +77,7 @@ export default function LeadReports() {
             blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
         },
         {
-            title: translate('Conversion Rate'),
+            title: translate('Conversion rate'),
             value: `${summary.conversion_rate.toFixed(2)}%`,
             icon: <Target />,
             iconColor: 'bg-amber-100/50',
@@ -85,7 +85,7 @@ export default function LeadReports() {
             blobCls: 'bg-amber-50 dark:bg-amber-900/30',
         },
         {
-            title: translate('Avg Conversion Time'),
+            title: translate('Avg conversion time'),
             value: `${summary.avg_conversion_time} days`,
             icon: <Clock />,
             iconColor: 'bg-rose-100/50',
@@ -98,7 +98,7 @@ export default function LeadReports() {
 
     return (
         <PageTemplate
-            title={translate('Lead Reports')}
+            title={translate('Lead reports')}
             description={translate('View and analyze lead reports to track performance and conversion rates.')}
             url="/reports/leads"
             breadcrumbs={breadcrumbs}
@@ -113,7 +113,7 @@ export default function LeadReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('Lead Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Lead trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -181,7 +181,7 @@ export default function LeadReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm">
                     <CardHeader className="border-border flex shrink-0 flex-row items-center border-b px-5" style={{ minHeight: '64px' }}>
-                        <CardTitle className="text-base font-bold">{translate('Leads by Source')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Leads by source')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={300}>
@@ -219,7 +219,7 @@ export default function LeadReports() {
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 py-3.5">
                         <div className="flex w-full items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-bold">{translate('Recent Leads')}</CardTitle>
+                                <CardTitle className="text-base font-bold">{translate('Recent leads')}</CardTitle>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Most recently created leads')}</p>
                             </div>
                             <Link

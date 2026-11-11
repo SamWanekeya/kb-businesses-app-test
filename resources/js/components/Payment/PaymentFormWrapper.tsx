@@ -170,7 +170,7 @@ export function PaymentFormWrapper({ planId, planPrice, discountCode = '', billi
     return (
         <Card>
             <CardHeader>
-                <CardTitle>{translate('Choose Payment Method')}</CardTitle>
+                <CardTitle>{translate('Choose payment method')}</CardTitle>
                 <CardDescription>{translate('Select your preferred payment method to complete the subscription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

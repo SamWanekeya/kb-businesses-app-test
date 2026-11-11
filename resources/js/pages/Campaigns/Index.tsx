@@ -188,7 +188,7 @@ export default function Campaigns() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedCampaignType('all');
-        setSelectedTargetListranslate('all');
+        setSelectedTargetList('all');
         setSelectedStatus('all');
         setSelectedAssignee('all');
         router.get(route('campaigns.index'), { view: activeView });
@@ -200,7 +200,7 @@ export default function Campaigns() {
     // Add the "Add Campaign" button if user has permission
     if (useHasPermission('create-campaigns')) {
         pageActions.push({
-            label: translate('Add Campaign'),
+            label: translate('Add campaign'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -208,14 +208,14 @@ export default function Campaigns() {
             },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: translate('Add Campaign'),
+            tooltip: translate('Add campaign'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Campaign Management'), href: route('campaigns.index') },
+        { title: translate('Campaign management'), href: route('campaigns.index') },
         { title: translate('Campaigns') },
     ];
 
@@ -234,7 +234,7 @@ export default function Campaigns() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -284,7 +284,7 @@ export default function Campaigns() {
         },
         {
             key: 'actual_cost',
-            label: translate('Actual Cost'),
+            label: translate('Actual cost'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: any) => (
@@ -295,7 +295,7 @@ export default function Campaigns() {
         },
         {
             key: 'target_list',
-            label: translate('Target List'),
+            label: translate('Target list'),
             render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>,
         },
         {
@@ -316,7 +316,7 @@ export default function Campaigns() {
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -326,7 +326,7 @@ export default function Campaigns() {
     // Define table actions
     const actions = [
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -357,7 +357,7 @@ export default function Campaigns() {
 
     // Prepare filter options
     const campaignTypeOptions = [
-        { value: 'all', label: translate('All Campaign Types') },
+        { value: 'all', label: translate('All campaign types') },
         ...(allCampaignTypes || []).map((type: any) => ({
             value: type.id.toString(),
             label: type.name,
@@ -365,7 +365,7 @@ export default function Campaigns() {
     ];
 
     const targetListOptions = [
-        { value: 'all', label: translate('All Target Lists') },
+        { value: 'all', label: translate('All target lists') },
         ...(allTargetLists || []).map((list: any) => ({
             value: list.id.toString(),
             label: list.name,
@@ -373,7 +373,7 @@ export default function Campaigns() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'active', label: translate('Active') },
         { value: 'inactive', label: translate('Inactive') },
     ];
@@ -395,7 +395,7 @@ export default function Campaigns() {
                     filters={[
                         {
                             name: 'campaign_type_id',
-                            label: translate('Campaign Type'),
+                            label: translate('Campaign type'),
                             type: 'select',
                             searchable: true,
                             value: selectedCampaignType,
@@ -404,7 +404,7 @@ export default function Campaigns() {
                         },
                         {
                             name: 'target_list_id',
-                            label: translate('Target List'),
+                            label: translate('Target list'),
                             type: 'select',
                             searchable: true,
                             value: selectedTargetList,
@@ -421,13 +421,13 @@ export default function Campaigns() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...(allUsers || []).map((user: any) => ({
                                     value: user.id.toString(),
@@ -488,7 +488,7 @@ export default function Campaigns() {
                         to={campaigns?.to || 0}
                         total={campaigns?.total || 0}
                         links={campaigns?.links}
-                        entityName={translate('campaigns')}
+                        entityName={translate('Campaigns')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -576,7 +576,7 @@ export default function Campaigns() {
                                                             }}
                                                         >
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            <span>{translate('View Campaign')}</span>
+                                                            <span>{translate('View campaign')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-campaigns') && (
@@ -675,7 +675,7 @@ export default function Campaigns() {
                                         {budget > 0 && (
                                             <div className="mb-3">
                                                 <div className="mb-1 flex items-center justify-between">
-                                                    <span className="text-[10px] text-gray-500">{translate('Budget Used')}</span>
+                                                    <span className="text-[10px] text-gray-500">{translate('Budget used')}</span>
                                                     <span
                                                         className={`text-[10px] font-bold ${
                                                             spendPct >= 90 ? 'text-red-600' : spendPct >= 70 ? 'text-amber-600' : 'text-emerald-600'
@@ -753,7 +753,7 @@ export default function Campaigns() {
                             to={campaigns?.to || 0}
                             total={campaigns?.total || 0}
                             links={campaigns?.links}
-                            entityName={translate('campaigns')}
+                            entityName={translate('Campaigns')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -790,7 +790,7 @@ export default function Campaigns() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('campaign')}
+                entityName={translate('Campaign')}
             />
         </PageTemplate>
     );

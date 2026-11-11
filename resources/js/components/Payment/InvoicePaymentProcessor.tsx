@@ -569,7 +569,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
             //     );
             // case 'aamarpay':
             //     return (
-            //         <InvoiceAamarpayPaymentForm
+            //         <InvoiceAamarPayPaymentForm
             //             invoiceId={invoice.id}
             //             amount={amount}
             //             paymentType={paymentType}
@@ -722,7 +722,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         return (
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-medium">{translate('Complete Payment')}</h3>
+                    <h3 className="font-medium">{translate('Complete payment')}</h3>
                     <Button variant="outline" size="sm" onClick={handlePaymentCancel}>
                         {translate('Back')}
                     </Button>
@@ -752,7 +752,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
 
             {/* Payment Amount */}
             <div className="space-y-3">
-                <Label htmlFor="amount">{translate('Payment Amount')}</Label>
+                <Label htmlFor="amount">{translate('Payment amount')}</Label>
                 <Input
                     id="amount"
                     inputType="number"
@@ -774,7 +774,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
 
             {/* Payment Methods */}
             <div className="space-y-3">
-                <Label>{translate('Select Payment Method')}</Label>
+                <Label>{translate('Select payment method')}</Label>
                 {paymentMethods.length === 0 ? (
                     <div className="bg-muted/50 rounded-md border p-4 text-center">
                         <p className="text-foreground/75 mb-2 text-sm">{translate('No payment methods configured')}</p>

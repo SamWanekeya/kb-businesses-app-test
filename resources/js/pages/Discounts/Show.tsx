@@ -44,7 +44,7 @@ export default function DiscountDetailsPage() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Discounts'), href: route('discounts.index') },
-        { title: translate('Discount Details') },
+        { title: translate('Discount details') },
     ];
 
     const usageColumns = [
@@ -53,17 +53,17 @@ export default function DiscountDetailsPage() {
         { key: 'order_id', label: translate('Order ID'), sortable: true },
         {
             key: 'amount',
-            label: translate('Order Amount'),
+            label: translate('Order amount'),
             render: (value: number) => <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'discount_amount',
-            label: translate('Discount Applied'),
+            label: translate('Discount applied'),
             render: (value: number) => <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'used_at',
-            label: translate('Used At'),
+            label: translate('Used at'),
             sortable: true,
             render: (value: string) => (
                 <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
@@ -92,7 +92,7 @@ export default function DiscountDetailsPage() {
 
     const getTypeBadge = (type: string) => {
         const className = type === 'percentage' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' : 'bg-fuchsia-50 text-fuchsia-700 ring-blue-600/20';
-        const label = type === 'percentage' ? translate('Percentage') : translate('Flat Amount');
+        const label = type === 'percentage' ? translate('Percentage') : translate('Flat amount');
         return <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset ${className}`}>{label}</span>;
     };
     return (
@@ -115,7 +115,7 @@ export default function DiscountDetailsPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div>
-                            <p className="text-l font-extrabold">{translate('Discount Details & Usage History')}</p>
+                            <p className="text-l font-extrabold">{translate('Discount details & usage history')}</p>
                         </div>
                     </div>
                     {getStatusBadge(discount.status)}
@@ -127,7 +127,7 @@ export default function DiscountDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Discount Value')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Discount value')}</p>
                                     <h3 className="mt-2 font-mono text-xl font-bold">{formatDiscount(discount.type, discount.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -141,7 +141,7 @@ export default function DiscountDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('Times Used')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('Times used')}</p>
                                     <h3 className="mt-2 text-xl font-bold">
                                         {discount.used_count}
                                         {discount.use_limit_per_discount && ` / ${discount.use_limit_per_discount}`}
@@ -158,7 +158,7 @@ export default function DiscountDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-foreground/75 text-sm">{translate('User Limit')}</p>
+                                    <p className="text-foreground/75 text-sm">{translate('User limit')}</p>
                                     <h3 className="mt-2 text-xl font-bold"> {discount.use_limit_per_user || translate('Unlimited')}</h3>
                                 </div>
                                 <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
@@ -190,11 +190,11 @@ export default function DiscountDetailsPage() {
 
                 {/* Discount Details */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-bold">{translate('Discount Information')}</h2>
+                    <h2 className="mb-4 text-lg font-bold">{translate('Discount information')}</h2>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-extrabold">{translate('Discount Code')}</label>
+                                <label className="text-sm font-extrabold">{translate('Discount code')}</label>
                                 <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{discount.code}</p>
                             </div>
                             <div>
@@ -205,7 +205,7 @@ export default function DiscountDetailsPage() {
                         <div className="space-y-4">
                             {discount.minimum_spend && (
                                 <div>
-                                    <label className="text-sm font-extrabold">{translate('Minimum Spend')}</label>
+                                    <label className="text-sm font-extrabold">{translate('Minimum spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.kbSettings.formatCurrency(discount.minimum_spend) || `$${discount.minimum_spend.toFixed(2)}`}
                                     </p>
@@ -213,7 +213,7 @@ export default function DiscountDetailsPage() {
                             )}
                             {discount.maximum_spend && (
                                 <div>
-                                    <label className="text-sm font-extrabold">{translate('Maximum Spend')}</label>
+                                    <label className="text-sm font-extrabold">{translate('Maximum spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.kbSettings.formatCurrency(discount.maximum_spend) || `$${discount.maximum_spend.toFixed(2)}`}
                                     </p>
@@ -225,7 +225,7 @@ export default function DiscountDetailsPage() {
 
                 {/* Usage History */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-bold">{translate('Usage History')}</h2>
+                    <h2 className="mb-4 text-lg font-bold">{translate('Usage history')}</h2>
                     <div className="rounded-lg border">
                         <Table>
                             <TableHeader>
@@ -266,10 +266,10 @@ export default function DiscountDetailsPage() {
                                 total={usage_history.total || 0}
                                 currentPage={usage_history.current_page}
                                 lastPage={usage_history.last_page}
-                                entityName={translate('records')}
+                                entityName={translate('Records')}
                                 onPageChange={(url) => {
                                     const urlObj = new URL(url, window.location.origin);
-                                    const page = urlObj.searchParams.getranslate('page');
+                                    const page = urlObj.searchParams.get('page');
                                     window.location.href = route('discounts.show', {
                                         discount: discount.id,
                                         page: page,

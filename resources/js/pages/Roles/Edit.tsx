@@ -28,7 +28,7 @@ export default function RolesEdit() {
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
-        { title: translate('Edit Role') },
+        { title: translate('Edit role') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -78,7 +78,7 @@ export default function RolesEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Role')}
+            title={translate('Edit role')}
             description={translate('Update role details and related information')}
             url={`/roles/${role.id}/edit`}
             actions={pageActions}
@@ -88,7 +88,7 @@ export default function RolesEdit() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role information')}</CardTitle>
                         <CardDescription>{translate('Update the role name and description.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -96,7 +96,7 @@ export default function RolesEdit() {
                             <div className="space-y-1.5">
                                 <Input
                                     inputIdentifier="label"
-                                    label={translate('name')}
+                                    label={translate('Name')}
                                     required
                                     value={label}
                                     onChange={(e) => {
@@ -126,12 +126,12 @@ export default function RolesEdit() {
                 {/* Permissions */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Role Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role permissions')}</CardTitle>
                         <CardDescription>
                             {translate('Select permissions for this role. You can select all permissions at once or manage them by module.')}
                             {auth?.user?.type !== 'super_admin' && (
                                 <span className="mt-1 block text-xs text-amber-600">
-                                    {translate('Note: Only permissions for modules available to your role are shown.')}
+                                    {translate('Note: only permissions for modules available to your role are shown.')}
                                 </span>
                             )}
                         </CardDescription>

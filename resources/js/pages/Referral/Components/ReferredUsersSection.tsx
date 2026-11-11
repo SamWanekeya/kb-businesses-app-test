@@ -94,7 +94,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Total Referred Users')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Total referred users')}</p>
                                 <p className="mt-2 text-2xl font-extrabold">{referredUsers.total}</p>
                             </div>
                             <div className="rounded-full bg-fuchsia-100 p-3 dark:bg-fuchsia-900">
@@ -108,7 +108,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Users with Plans')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Users with plans')}</p>
                                 <p className="mt-2 text-2xl font-extrabold">{usersWithPlans}</p>
                             </div>
                             <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -122,7 +122,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-foreground/75 text-sm">{translate('Total Commission Earned')}</p>
+                                <p className="text-foreground/75 text-sm">{translate('Total commission earned')}</p>
                                 <p className="mt-2 font-mono text-2xl font-extrabold">
                                     {currency_symbol}
                                     {(totalCommissionEarned || 0).toFixed(2)}
@@ -138,7 +138,7 @@ export default function ReferredUsersSection({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base font-bold">{translate('Referred Users List')}</CardTitle>
+                    <CardTitle className="text-base font-bold">{translate('Referred users list')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {referredUsers.data.length === 0 ? (
@@ -201,7 +201,7 @@ export default function ReferredUsersSection({
                                                         </div>
                                                     ) : (
                                                         <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs text-gray-600 ring-1 ring-gray-500/10 ring-inset">
-                                                            {translate('No Plan')}
+                                                            {translate('No plan')}
                                                         </span>
                                                     );
                                                 })()}
@@ -221,12 +221,12 @@ export default function ReferredUsersSection({
 
                                     {user.referrals && user.referrals.length > 0 && (
                                         <div className="mt-4 border-t pt-4">
-                                            <p className="mb-2 text-sm font-bold">{translate('Commission History')}</p>
+                                            <p className="mb-2 text-sm font-bold">{translate('Commission history')}</p>
                                             <div className="space-y-2">
                                                 {user.referrals.map((referral) => (
                                                     <div key={referral.id} className="flex items-center justify-between">
                                                         <span className="text-foreground/75 text-sm">
-                                                            {referral.commission_percentage}% {translate('commission')}
+                                                            {referral.commission_percentage}% {translate('Commission')}
                                                         </span>
                                                         <span className="font-mono text-sm font-bold text-fuchsia-600">
                                                             +{currency_symbol}
@@ -253,7 +253,7 @@ export default function ReferredUsersSection({
                     links={referredUsers.links}
                     currentPage={referredUsers.current_page}
                     lastPage={referredUsers.last_page}
-                    entityName={translate('users')}
+                    entityName={translate('Users')}
                     onPageChange={(url) => {
                         router.visit(url, {
                             preserveState: true,

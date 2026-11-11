@@ -199,7 +199,7 @@ export default function Accounts() {
                       current: planLimits?.current_accounts || 0,
                       max: planLimits?.maximum_accounts || 0,
                   })
-                : translate('Add Account'),
+                : translate('Add account'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
@@ -213,14 +213,14 @@ export default function Accounts() {
                   },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: translate('Add Account'),
+            tooltip: translate('Add account'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Account Management'), href: route('accounts.index') },
+        { title: translate('Account management'), href: route('accounts.index') },
         { title: translate('Accounts') },
     ];
 
@@ -242,7 +242,7 @@ export default function Accounts() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -316,7 +316,7 @@ export default function Accounts() {
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             type: 'date',
         },
@@ -325,7 +325,7 @@ export default function Accounts() {
     // Define table actions
     const actions = [
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -377,7 +377,7 @@ export default function Accounts() {
                             value: selectedType,
                             onChange: setSelectedType,
                             options: [
-                                { value: 'all', label: translate('All Types') },
+                                { value: 'all', label: translate('All types') },
                                 ...allAccountTypes.map((type: any) => ({
                                     value: type.id.toString(),
                                     label: type.name,
@@ -392,7 +392,7 @@ export default function Accounts() {
                             value: selectedIndustry,
                             onChange: setSelectedIndustry,
                             options: [
-                                { value: 'all', label: translate('All Industries') },
+                                { value: 'all', label: translate('All industries') },
                                 ...allAccountIndustries.map((industry: any) => ({
                                     value: industry.id.toString(),
                                     label: industry.name,
@@ -406,20 +406,20 @@ export default function Accounts() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -477,7 +477,7 @@ export default function Accounts() {
                         to={accounts?.to || 0}
                         total={accounts?.total || 0}
                         links={accounts?.links}
-                        entityName={translate('accounts')}
+                        entityName={translate('Accounts')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -532,7 +532,7 @@ export default function Accounts() {
                                                         }}
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{translate('View Account')}</span>
+                                                        <span>{translate('View account')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-accounts') && (
@@ -685,7 +685,7 @@ export default function Accounts() {
                             to={accounts?.to || 0}
                             total={accounts?.total || 0}
                             links={accounts?.links}
-                            entityName={translate('accounts')}
+                            entityName={translate('Accounts')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -722,7 +722,7 @@ export default function Accounts() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('account')}
+                entityName={translate('Account')}
             />
         </PageTemplate>
     );

@@ -72,7 +72,7 @@ export default function DeliveryOrderCreate() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Delivery Orders'), href: route('delivery-orders.index') },
+        { title: translate('Delivery orders'), href: route('delivery-orders.index') },
         { title: translate('Create') },
     ];
 
@@ -139,17 +139,17 @@ export default function DeliveryOrderCreate() {
     const handleSubmit = () => {
         const errs: Errors = {};
         if (!form.name.trim()) errs.name = translate('Name is required');
-        if (!form.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!form.sales_order_id) errs.sales_order_id = translate('Sales order is required');
         if (!form.account_id) errs.account_id = translate('Account is required');
         if (!form.contact_id) errs.contact_id = translate('Contact is required');
-        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping Provider is required');
-        if (!form.delivery_date) errs.delivery_date = translate('Delivery Date is required');
-        if (!form.delivery_address.trim()) errs.delivery_address = translate('Delivery Address is required');
+        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping provider is required');
+        if (!form.delivery_date) errs.delivery_date = translate('Delivery date is required');
+        if (!form.delivery_address.trim()) errs.delivery_address = translate('Delivery address is required');
         if (!form.delivery_city.trim()) errs.delivery_city = translate('City is required');
         if (!form.delivery_state.trim()) errs.delivery_state = translate('State is required');
-        if (!form.delivery_postal_code.trim()) errs.delivery_postal_code = translate('Postal Code is required');
+        if (!form.delivery_postal_code.trim()) errs.delivery_postal_code = translate('Postal code is required');
         if (!form.delivery_country.trim()) errs.delivery_country = translate('Country is required');
-        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned to is required');
         if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = translate('At least one product is required');
         productRows.forEach((r, i) => {
             if (!r.product_id) errs[`products.${i}.product_id`] = translate('Product is required');
@@ -190,7 +190,7 @@ export default function DeliveryOrderCreate() {
 
     return (
         <PageTemplate
-            title={translate('Create Delivery Order')}
+            title={translate('Create delivery order')}
             description={translate('Fill in the details to create a new delivery order')}
             breadcrumbs={breadcrumbs}
             url="/delivery-orders"
@@ -209,7 +209,7 @@ export default function DeliveryOrderCreate() {
             <div className="space-y-8 rounded-lg border border-gray-200 bg-white p-6 text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 {/* ── Order Details ── */}
                 <div>
-                    <SectionHeader title={translate('Order Details')} />
+                    <SectionHeader title={translate('Order details')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
                             <Input
@@ -228,7 +228,7 @@ export default function DeliveryOrderCreate() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Sales Order')} <span className="text-red-500">*</span>
+                                {translate('Sales order')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                 <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
@@ -247,7 +247,7 @@ export default function DeliveryOrderCreate() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('sales-orders.index')} className="font-medium underline">
-                                        {translate('Sales Orders')}
+                                        {translate('Sales orders')}
                                     </a>
                                 </p>
                             )}
@@ -309,7 +309,7 @@ export default function DeliveryOrderCreate() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Shipping Provider')} <span className="text-red-500">*</span>
+                                {translate('Shipping provider')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
@@ -328,7 +328,7 @@ export default function DeliveryOrderCreate() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('shipping-provider-types.index')} className="font-medium underline">
-                                        {translate('Shipping Providers')}
+                                        {translate('Shipping providers')}
                                     </a>
                                 </p>
                             )}
@@ -359,7 +359,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected Delivery Date')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Expected delivery date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -391,7 +391,7 @@ export default function DeliveryOrderCreate() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="pending">{translate('Pending')}</SelectItem>
-                                    <SelectItem value="in_transit">{translate('In Transit')}</SelectItem>
+                                    <SelectItem value="in_transit">{translate('In transit')}</SelectItem>
                                     <SelectItem value="delivered">{translate('Delivered')}</SelectItem>
                                     <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
                                 </SelectContent>
@@ -414,7 +414,7 @@ export default function DeliveryOrderCreate() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Assigned To')} <span className="text-red-500">*</span>
+                                {translate('Assigned to')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -463,13 +463,13 @@ export default function DeliveryOrderCreate() {
                                 ]);
                             }}
                         >
-                            <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
+                            <Plus className="mr-1 h-4 w-4" /> {translate('Add product')}
                         </Button>
                     </div>
 
                     {productRows.length === 0 ? (
                         <div className="mx-6 my-4 rounded-lg border-2 border-dashed border-gray-200 py-10 text-center dark:border-gray-700">
-                            <p className="text-sm text-gray-400">{translate('No products added yet. Click "Add Product" to begin.')}</p>
+                            <p className="text-sm text-gray-400">{translate('No products added yet. Click "add product" to begin.')}</p>
                         </div>
                     ) : (
                         <>
@@ -483,8 +483,8 @@ export default function DeliveryOrderCreate() {
                                             <th className="w-28 px-4 py-3 text-left">
                                                 {translate('Quantity')} <span className="text-red-500">*</span>
                                             </th>
-                                            <th className="w-36 px-4 py-3 text-left">{translate('Unit Weight (kg)')}</th>
-                                            <th className="w-36 px-4 py-3 text-left">{translate('Total Weight (kg)')}</th>
+                                            <th className="w-36 px-4 py-3 text-left">{translate('Unit weight (kg)')}</th>
+                                            <th className="w-36 px-4 py-3 text-left">{translate('Total weight (kg)')}</th>
                                             <th className="w-12 px-4 py-3"></th>
                                         </tr>
                                     </thead>
@@ -553,7 +553,7 @@ export default function DeliveryOrderCreate() {
                                                         <Input
                                                             inputType="number"
                                                             inputMode="decimal"
-                                                            label={translate('Unit weight (KG)')}
+                                                            label={translate('Unit weight (kg)')}
                                                             min="0"
                                                             step="0.01"
                                                             value={row.unit_weight}
@@ -568,7 +568,7 @@ export default function DeliveryOrderCreate() {
                                                     </td>
                                                     <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                         <span className="text-foreground/75 block text-xs font-bold xl:hidden">
-                                                            {translate('Total Weight (kg)')}
+                                                            {translate('Total weight (kg)')}
                                                         </span>
                                                         <span className="text-sm text-gray-700 dark:text-gray-200">{lineWeight.toFixed(2)} kg</span>
                                                     </td>
@@ -594,7 +594,7 @@ export default function DeliveryOrderCreate() {
                                 <div className="flex justify-end border-t border-gray-100 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
                                     <div className="w-64">
                                         <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
-                                            <span>{translate('Total Weight')}</span>
+                                            <span>{translate('Total weight')}</span>
                                             <span className="text-lg text-fuchsia-600">{totalWeight.toFixed(2)} kg</span>
                                         </div>
                                     </div>
@@ -609,11 +609,11 @@ export default function DeliveryOrderCreate() {
                     <div className="border-t border-gray-200 dark:border-gray-700" />
                 </div>
                 <div className="mt-6">
-                    <SectionHeader title={translate('Delivery Address')} />
+                    <SectionHeader title={translate('Delivery address')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery Address')} <span className="text-red-500">*</span>
+                                {translate('Delivery address')} <span className="text-red-500">*</span>
                             </Label>
                             <Textarea
                                 value={form.delivery_address}
@@ -666,7 +666,7 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Delivery notes')}</Label>
                             <Textarea value={form.delivery_notes} onChange={(e) => set('delivery_notes', e.target.value)} rows={3} />
                         </div>
                     </div>

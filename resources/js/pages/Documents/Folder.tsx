@@ -188,12 +188,12 @@ export default function DocumentFolderView() {
     ];
     if (useHasPermission('create-document-folders')) {
         pageActions.push({
-            label: translate('Create Folder'),
+            label: translate('Create folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[1020px]:h-9 min-[1020px]:w-auto px-0 min-[1020px]:px-4',
             labelClassName: 'hidden min-[1020px]:inline',
-            tooltip: translate('Create Folder'),
+            tooltip: translate('Create folder'),
             tooltipClassName: 'min-[1020px]:hidden',
             onClick: () => {
                 setCurrentSubFolder(null);
@@ -204,12 +204,12 @@ export default function DocumentFolderView() {
     }
     if (useHasPermission('create-documents')) {
         pageActions.push({
-            label: translate('Upload Document'),
+            label: translate('Upload document'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1020px]:h-9 min-[1020px]:w-auto px-0 min-[1020px]:px-4',
             labelClassName: 'hidden min-[1020px]:inline',
-            tooltip: translate('Upload Document'),
+            tooltip: translate('Upload document'),
             tooltipClassName: 'min-[1020px]:hidden',
             onClick: () => {
                 setCurrentDoc(null);
@@ -221,7 +221,7 @@ export default function DocumentFolderView() {
 
     const breadcrumbs: any[] = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Management') },
+        { title: translate('Document management') },
         { title: translate('Documents'), href: route('documents.index') },
     ];
     if (folder.parent_folder) {
@@ -233,14 +233,14 @@ export default function DocumentFolderView() {
     breadcrumbs.push({ title: folder.name });
 
     const folderFields = [
-        { name: 'name', label: translate('Folder Name'), type: 'text', required: true },
+        { name: 'name', label: translate('Folder name'), type: 'text', required: true },
         {
             name: 'parent_folder_id',
-            label: translate('Parent Folder'),
+            label: translate('Parent folder'),
             type: 'select',
             searchable: true,
             options: [
-                { value: 'null', label: translate('Root Folder') },
+                { value: 'null', label: translate('Root folder') },
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
@@ -319,7 +319,7 @@ export default function DocumentFolderView() {
                         <div className="min-w-0 flex-1">
                             <h1 className="truncate text-base font-bold text-gray-900 dark:text-white">{folder.name}</h1>
                             <p className="text-xs text-gray-400">
-                                {subFolders.length + docsList.length} {translate('items')}
+                                {subFolders.length + docsList.length} {translate('Items')}
                             </p>
                         </div>
                     </div>
@@ -527,7 +527,7 @@ export default function DocumentFolderView() {
                                 to={docsPagination.to || 0}
                                 total={total}
                                 links={docsPagination.links}
-                                entityName={translate('items')}
+                                entityName={translate('Items')}
                                 onPageChange={(url) => {
                                     router.get(url);
                                 }}
@@ -541,7 +541,7 @@ export default function DocumentFolderView() {
                         <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-700">
                             <div className="flex items-center gap-2 text-sm font-extrabold text-gray-800 dark:text-gray-100">
                                 <Folder className="text-grey h-4 w-4" strokeWidth={1.5} />
-                                {translate('Folder Details')}
+                                {translate('Folder details')}
                             </div>
                             <div className="flex items-center gap-1.5">
                                 {useHasPermission('edit-document-folders') && (
@@ -587,8 +587,8 @@ export default function DocumentFolderView() {
                         <div>
                             <PanelRow label={translate('Name')} value={folder.name} />
                             <PanelRow
-                                label={translate('Parent Folder')}
-                                value={folder.parent_folder ? folder.parent_folder.name : translate('Root Folder')}
+                                label={translate('Parent folder')}
+                                value={folder.parent_folder ? folder.parent_folder.name : translate('Root folder')}
                             />
                             <PanelRow
                                 label={translate('Created')}
@@ -629,7 +629,7 @@ export default function DocumentFolderView() {
                     fields: [
                         {
                             name: 'name',
-                            label: translate('Document Name'),
+                            label: translate('Document name'),
                             type: 'text',
                             required: true,
                         },
@@ -648,7 +648,7 @@ export default function DocumentFolderView() {
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('documents.index'), linkText: translate('Document Folders') },
+                            emptyNote: { link: route('documents.index'), linkText: translate('Document folders') },
                             options: folders.map((f: any) => ({ value: f.id, label: f.name })),
                         },
                         {
@@ -657,7 +657,7 @@ export default function DocumentFolderView() {
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('document-types.index'), linkText: translate('Document Types') },
+                            emptyNote: { link: route('document-types.index'), linkText: translate('Document types') },
                             options: types.map((type: any) => ({ value: type.id, label: type.type_name })),
                         },
                         {
@@ -669,8 +669,8 @@ export default function DocumentFolderView() {
                             emptyNote: { link: route('opportunities.index'), linkText: translate('Opportunities') },
                             options: opportunities.map((o: any) => ({ value: o.id, label: o.name })),
                         },
-                        { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
-                        { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },
+                        { name: 'publish_date', label: translate('Publish date'), type: 'date' },
+                        { name: 'expiration_date', label: translate('Expiration date'), type: 'date' },
                         {
                             name: 'attachment',
                             label: translate('Attachment'),
@@ -680,7 +680,7 @@ export default function DocumentFolderView() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: 'select',
                             required: true,
                             searchable: true,
@@ -722,7 +722,7 @@ export default function DocumentFolderView() {
                           }
                         : { folder_id: folder.id, status: 'active' }
                 }
-                title={docFormMode === 'create' ? translate('Upload Document') : translate('Edit Document')}
+                title={docFormMode === 'create' ? translate('Upload document') : translate('Edit document')}
                 mode={docFormMode}
             />
 
@@ -745,7 +745,7 @@ export default function DocumentFolderView() {
                               parent_folder_id: currentSubFolder?.parent_folder_id ? String(currentSubFolder.parent_folder_id) : 'null',
                           }
                 }
-                title={folderFormMode === 'create' ? translate('Create Folder') : translate('Edit Folder')}
+                title={folderFormMode === 'create' ? translate('Create folder') : translate('Edit folder')}
                 mode={folderFormMode}
             />
 
@@ -756,7 +756,7 @@ export default function DocumentFolderView() {
                 }}
                 onConfirm={handleDocDeleteConfirm}
                 itemName={currentDoc?.name || ''}
-                entityName={translate('document')}
+                entityName={translate('Document')}
             />
             <CrudDeleteModal
                 isOpen={isFolderDeleteModalOpen}
@@ -765,7 +765,7 @@ export default function DocumentFolderView() {
                 }}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentSubFolder?.name || folder.name}
-                entityName={translate('folder')}
+                entityName={translate('Folder')}
             />
         </PageTemplate>
     );

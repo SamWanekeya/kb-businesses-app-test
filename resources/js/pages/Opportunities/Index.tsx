@@ -270,7 +270,7 @@ export default function Opportunities() {
     // Add the "Add Opportunity" button if user has permission
     if (useHasPermission('create-opportunities')) {
         pageActions.push({
-            label: translate('Add Opportunity'),
+            label: translate('Add opportunity'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -278,14 +278,14 @@ export default function Opportunities() {
             },
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: translate('Add Opportunity'),
+            tooltip: translate('Add opportunity'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Opportunity Management') },
+        { title: translate('Opportunity management') },
         { title: translate('Opportunities') },
     ];
 
@@ -306,7 +306,7 @@ export default function Opportunities() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -364,14 +364,14 @@ export default function Opportunities() {
         },
         {
             key: 'close_date',
-            label: translate('Close Date'),
+            label: translate('Close date'),
             sortable: true,
             type: 'date',
             // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.kbSettings.formatDateTime(value, false) || '-') : translate('-')}</span>
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     type: 'date',
         // }
@@ -380,7 +380,7 @@ export default function Opportunities() {
     // Define table actions
     const actions = [
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -434,7 +434,7 @@ export default function Opportunities() {
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: translate('All Accounts') },
+                                { value: 'all', label: translate('All accounts') },
                                 ...allAccounts.map((account: any) => ({
                                     value: account.id.toString(),
                                     label: account.name,
@@ -449,7 +449,7 @@ export default function Opportunities() {
                             value: selectedStage,
                             onChange: setSelectedStage,
                             options: [
-                                { value: 'all', label: translate('All Stages') },
+                                { value: 'all', label: translate('All stages') },
                                 ...allOpportunityStages.map((stage: any) => ({
                                     value: stage.id.toString(),
                                     label: stage.name,
@@ -464,7 +464,7 @@ export default function Opportunities() {
                             value: selectedSource,
                             onChange: setSelectedSource,
                             options: [
-                                { value: 'all', label: translate('All Sources') },
+                                { value: 'all', label: translate('All sources') },
                                 ...allOpportunitySources.map((source: any) => ({
                                     value: source.id.toString(),
                                     label: source.name,
@@ -478,20 +478,20 @@ export default function Opportunities() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -546,9 +546,9 @@ export default function Opportunities() {
                         );
                     }}
                     viewOptions={[
-                        { value: 'list', label: translate('List View'), icon: 'List' },
-                        { value: 'kanban', label: translate('Kanban View'), icon: 'Columns' },
-                        // { value: 'grid', label: translate('Grid View'), icon: 'Grid3X3' }
+                        { value: 'list', label: translate('List view'), icon: 'List' },
+                        { value: 'kanban', label: translate('Kanban view'), icon: 'Columns' },
+                        // { value: 'grid', label: translate('Grid view'), icon: 'Grid3X3' }
                     ]}
                 />
             </div>
@@ -580,7 +580,7 @@ export default function Opportunities() {
                         to={opportunities?.to || opportunities?.data?.length || 0}
                         total={opportunities?.total || opportunities?.data?.length || 0}
                         links={opportunities?.links}
-                        entityName={translate('opportunities')}
+                        entityName={translate('Opportunities')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -631,10 +631,10 @@ export default function Opportunities() {
                                     </div>
                                     <div className="space-y-1.5">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                                            {translate('No Opportunity Stage Yet')}
+                                            {translate('No opportunity stage yet')}
                                         </h3>
                                         <p className="text-foreground/75 text-sm leading-relaxed">
-                                            {translate('Set up opportunity stages to start organizing your work in a Kanban board.')}
+                                            {translate('Set up opportunity stages to start organizing your work in a kanban board.')}
                                         </p>
                                     </div>
                                     {useHasPermission('manage-opportunity-stages') && (
@@ -645,7 +645,7 @@ export default function Opportunities() {
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
-                                            {translate('Add Opportunity Stage')}
+                                            {translate('Add opportunity stage')}
                                         </button>
                                     )}
                                 </div>
@@ -747,7 +747,7 @@ export default function Opportunities() {
                                                         handleAddOpportunity(stage.id.toString());
                                                     }}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                                    title={translate('Add Opportunity')}
+                                                    title={translate('Add opportunity')}
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </button>
@@ -995,7 +995,7 @@ export default function Opportunities() {
                                                         }}
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{translate('View Opportunity')}</span>
+                                                        <span>{translate('View opportunity')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-opportunities') && (
@@ -1055,7 +1055,7 @@ export default function Opportunities() {
                                                 <Calendar className="h-4 w-4 text-gray-500" />
 
                                                 <span>
-                                                    {translate('Close Date')}:{' '}
+                                                    {translate('Close date')}:{' '}
                                                     {opportunity.close_date || opportunity.created_at
                                                         ? window.kbSettings.formatDateTime(opportunity.close_date || opportunity.created_at, false) ||
                                                           new Date(opportunity.close_date || opportunity.created_at).toLocaleDateString()
@@ -1151,7 +1151,7 @@ export default function Opportunities() {
                             to={opportunities?.to || opportunities?.data?.length || 0}
                             total={opportunities?.total || opportunities?.data?.length || 0}
                             links={opportunities?.links}
-                            entityName={translate('opportunities')}
+                            entityName={translate('Opportunities')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -1189,7 +1189,7 @@ export default function Opportunities() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('opportunity')}
+                entityName={translate('Opportunity')}
             />
         </PageTemplate>
     );

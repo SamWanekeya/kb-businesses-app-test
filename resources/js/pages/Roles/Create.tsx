@@ -26,7 +26,7 @@ export default function RolesCreate() {
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
-        { title: translate('Add Role') },
+        { title: translate('Add role') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -76,7 +76,7 @@ export default function RolesCreate() {
 
     return (
         <PageTemplate
-            title={translate('Add Role')}
+            title={translate('Add role')}
             description={translate('Fill in the details to create a new role')}
             url="/roles/create"
             actions={pageActions}
@@ -86,7 +86,7 @@ export default function RolesCreate() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role information')}</CardTitle>
                         <CardDescription>{translate('Enter the role name and an optional description.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -122,12 +122,12 @@ export default function RolesCreate() {
                 {/* Permissions */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Role Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role permissions')}</CardTitle>
                         <CardDescription>
                             {translate('Select permissions for this role. You can select all permissions at once or manage them by module.')}
                             {auth?.user?.type !== 'super_admin' && (
                                 <span className="mt-1 block text-xs text-amber-600">
-                                    {translate('Note: Only permissions for modules available to your role are shown.')}
+                                    {translate('Note: only permissions for modules available to your role are shown.')}
                                 </span>
                             )}
                         </CardDescription>

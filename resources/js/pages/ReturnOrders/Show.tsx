@@ -28,8 +28,8 @@ export default function ReturnOrderShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Return Orders'), href: route('return-orders.index') },
-        { title: translate('View Return Order') },
+        { title: translate('Return orders'), href: route('return-orders.index') },
+        { title: translate('View return order') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -53,9 +53,9 @@ export default function ReturnOrderShow() {
     const getReasonLabel = (reason: string) => {
         const reasonLabels: Record<string, string> = {
             defective: translate('Defective'),
-            wrong_item: translate('Wrong Item'),
+            wrong_item: translate('Wrong item'),
             damaged: translate('Damaged'),
-            not_needed: translate('Not Needed'),
+            not_needed: translate('Not needed'),
             other: translate('Other'),
         };
         return reasonLabels[reason] || reason;
@@ -93,21 +93,21 @@ export default function ReturnOrderShow() {
                         {(
                             [
                                 {
-                                    label: translate('Return Number'),
+                                    label: translate('Return number'),
                                     value: returnOrder.return_number || '',
                                     icon: FileText,
                                     iconCls: 'text-blue-600',
                                     blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                                 },
                                 {
-                                    label: translate('Return Date'),
+                                    label: translate('Return date'),
                                     value: window.kbSettings.formatDateTimeSimple(returnOrder.return_date),
                                     icon: Calendar,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                                 },
                                 {
-                                    label: translate('Return Reason'),
+                                    label: translate('Return reason'),
                                     value: returnOrder.reason ? getReasonLabel(returnOrder.reason) : '',
                                     icon: FileText,
                                     iconCls: 'text-emerald-600',
@@ -152,7 +152,7 @@ export default function ReturnOrderShow() {
                                                         {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
-                                                        {translate('Unit Price')}
+                                                        {translate('Unit price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Tax')}
@@ -248,13 +248,13 @@ export default function ReturnOrderShow() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(returnOrder.tax_amount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand total')}</span>
                                                 <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(returnOrder.total_amount)}
                                                 </span>
@@ -297,7 +297,7 @@ export default function ReturnOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 me-3 h-5 w-5" />
-                                {translate('Reason Description')}
+                                {translate('Reason description')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -339,13 +339,13 @@ export default function ReturnOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Summary & Actions')}
+                                {translate('Summary & actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(returnOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(returnOrder.status)}</div>
@@ -360,7 +360,7 @@ export default function ReturnOrderShow() {
                                         }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
-                                        {translate('Edit Return Order')}
+                                        {translate('Edit return order')}
                                     </Button>
                                 )}
                             </div>
@@ -373,7 +373,7 @@ export default function ReturnOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Customer Info')}
+                                    {translate('Customer information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -459,7 +459,7 @@ export default function ReturnOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-bold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {translate('Order Details')}
+                                {translate('Order details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
@@ -467,7 +467,7 @@ export default function ReturnOrderShow() {
                                 <div className="flex items-start gap-3">
                                     <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                     <div>
-                                        <p className="text-foreground/75 text-xs">{translate('Tracking Number')}</p>
+                                        <p className="text-foreground/75 text-xs">{translate('Tracking number')}</p>
                                         <p className="text-foreground font-mono text-sm">{returnOrder.tracking_number}</p>
                                     </div>
                                 </div>
@@ -475,7 +475,7 @@ export default function ReturnOrderShow() {
                             {returnOrder.tracking_number && returnOrder.assigned_user && <div className="border-t" />}
                             {returnOrder.assigned_user && (
                                 <div>
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.assigned_user.avatar} alt={returnOrder.assigned_user.name} />
@@ -494,7 +494,7 @@ export default function ReturnOrderShow() {
                             )}
                             {returnOrder.creator && (
                                 <div>
-                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={returnOrder.creator.avatar} alt={returnOrder.creator.name} />
@@ -520,14 +520,14 @@ export default function ReturnOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
-                                    {translate('Related Records')}
+                                    {translate('Related records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
                                 {returnOrder.sales_order && useHasPermission('view-sales-orders') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Sales Order')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Sales order')}</p>
                                             <p className="text-foreground truncate text-sm">{returnOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -550,7 +550,7 @@ export default function ReturnOrderShow() {
                                 {returnOrder.shipping_provider_type && useHasPermission('view-shipping-provider-types') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Shipping Provider Type')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Shipping provider type')}</p>
                                             <p className="text-foreground truncate text-sm">{returnOrder.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>

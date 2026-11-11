@@ -136,7 +136,7 @@ const CheckoutForm = ({
                             {translate('Processing...')}
                         </>
                     ) : (
-                        translate('Pay Now')
+                        translate('Pay now')
                     )}
                 </Button>
             </div>

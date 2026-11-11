@@ -135,7 +135,7 @@ export default function TwilioNotificationSettings() {
 
     return (
         <SettingsSection
-            title={translate('Twilio Settings')}
+            title={translate('Twilio settings')}
             description={translate('Configure Twilio settings for SMS notifications and communications')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
@@ -188,7 +188,7 @@ export default function TwilioNotificationSettings() {
                             {/* SMS Notification Settings */}
                             <div className="my-6 flex items-center gap-2">
                                 <Bell className="h-5 w-5 text-emerald-500" />
-                                <h3 className="font-medium text-gray-900">{translate('Twilio Notification Settings')}</h3>
+                                <h3 className="font-medium text-gray-900">{translate('Twilio notification settings')}</h3>
                             </div>
                             {availableNotifications.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
@@ -217,7 +217,7 @@ export default function TwilioNotificationSettings() {
                     <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 min-[1600px]:col-span-1">
                         <div className="mb-4 flex items-center gap-2">
                             <Send className="h-4 w-4 text-emerald-500" />
-                            <h3 className="font-medium text-gray-900">{translate('Test Twilio Configuration')}</h3>
+                            <h3 className="font-medium text-gray-900">{translate('Test Twilio configuration')}</h3>
                         </div>
                         <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
                             <div>
@@ -231,7 +231,7 @@ export default function TwilioNotificationSettings() {
                                     required
                                 />
                                 <p className="mt-1 text-xs text-gray-500">
-                                    {translate('Enter a phone number with country code')} {translate('e.g., +1234567890')}
+                                    {translate('Enter a phone number with country code')} {translate('E.G., +1234567890')}
                                 </p>
                             </div>
 
@@ -248,7 +248,7 @@ export default function TwilioNotificationSettings() {
                                 ) : (
                                     <>
                                         <Send className="mr-2 h-4 w-4" />
-                                        {translate('Send Test SMS')}
+                                        {translate('Send test SMS')}
                                     </>
                                 )}
                             </Button>
@@ -257,7 +257,7 @@ export default function TwilioNotificationSettings() {
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
                                 <MessageSquare className="h-5 w-5 text-blue-600" />
-                                <h3 className="font-medium text-blue-900">{translate('Twilio Setup Instructions')}</h3>
+                                <h3 className="font-medium text-blue-900">{translate('Twilio setup instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">
                                 <li>
@@ -266,7 +266,7 @@ export default function TwilioNotificationSettings() {
                                         <a href="https://www.twilio.com">twilio.com</a>{' '}
                                     </span>
                                 </li>
-                                <li>{translate('2. Get your Account SID and Auth Token from the Twilio Console')}</li>
+                                <li>{translate('2. Get your account SID and auth token from the Twilio console')}</li>
                                 <li>{translate('3. Purchase a phone number or use a trial number')}</li>
                                 <li>{translate('4. Enter your credentials and admin phone number')}</li>
                             </ol>

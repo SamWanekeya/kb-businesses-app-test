@@ -23,9 +23,9 @@ export default function ContactShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Contact Management') },
+        { title: translate('Contact management') },
         { title: translate('Contacts'), href: route('contacts.index') },
-        { title: translate('View Contact') },
+        { title: translate('View contact') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -122,7 +122,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Contact Summary')}
+                                {translate('Contact summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -137,7 +137,7 @@ export default function ContactShow() {
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                 {contact.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -165,7 +165,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Contact Info')}
+                                {translate('Contact information')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -212,7 +212,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Building className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Account')}
+                                {translate('Related account')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex items-center justify-center p-5" style={{ minHeight: '130px' }}>
@@ -379,7 +379,7 @@ export default function ContactShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
-                                        {translate('Meetings & Calls')}
+                                        {translate('Meetings & calls')}
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>

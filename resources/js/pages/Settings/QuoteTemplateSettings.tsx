@@ -281,7 +281,7 @@ export default function QuoteTemplateSettings() {
 
     return (
         <SettingsSection
-            title={translate('Quote Templates')}
+            title={translate('Quote templates')}
             description={translate('Configure quote template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="quote-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -295,7 +295,7 @@ export default function QuoteTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="quote_template">{translate('Quote Template')}</Label>
+                                    <Label htmlFor="quote_template">{translate('Quote template')}</Label>
                                     <Select
                                         value={data.quoteTemplate}
                                         onValueChange={(value) => {
@@ -318,7 +318,7 @@ export default function QuoteTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="quote_qr_enabled" className="text-sm">
-                                        {translate('QR Display?')}
+                                        {translate('QR display?')}
                                     </Label>
                                     <Switch
                                         id="quote_qr_enabled"
@@ -330,7 +330,7 @@ export default function QuoteTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{translate('Color Input')}</Label>
+                                    <Label>{translate('Color input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -356,7 +356,7 @@ export default function QuoteTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="quoteLogo">{translate('Quote Logo')}</Label>
+                                    <Label htmlFor="quoteLogo">{translate('Quote logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.quoteLogoId || ''}

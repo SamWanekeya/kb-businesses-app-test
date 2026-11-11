@@ -86,7 +86,7 @@ export function InvoicePayTabsPaymentForm({
                 <div className="flex items-start gap-3">
                     <ExternalLink className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div>
-                        <h4 className="mb-1 font-medium text-blue-900">{translate('Secure Payment with PayTabs')}</h4>
+                        <h4 className="mb-1 font-medium text-blue-900">{translate('Secure payment with PayTabs')}</h4>
                         <p className="text-sm text-blue-700">
                             {translate('You will be redirected to PayTabs secure payment page to complete your transaction.')}
                         </p>
@@ -96,7 +96,7 @@ export function InvoicePayTabsPaymentForm({
 
             <div className="rounded-lg border bg-gray-50 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-sm text-gray-600">{translate('Payment Type')}:</span>
+                    <span className="text-sm text-gray-600">{translate('Payment type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
                 <div className="flex items-center justify-between">

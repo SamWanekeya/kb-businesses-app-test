@@ -278,7 +278,7 @@ export default function SalesOrderTemplateSettings() {
 
     return (
         <SettingsSection
-            title={translate('Sales Order Templates')}
+            title={translate('Sales order templates')}
             description={translate('Configure sales orders template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="sales-orders-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -292,7 +292,7 @@ export default function SalesOrderTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="sales_order_template">{translate('Sales Order Template')}</Label>
+                                    <Label htmlFor="sales_order_template">{translate('Sales order template')}</Label>
                                     <Select
                                         value={data.salesOrderTemplate}
                                         onValueChange={(value) => {
@@ -315,7 +315,7 @@ export default function SalesOrderTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="sales_order_qr_enabled" className="text-sm">
-                                        {translate('QR Display?')}
+                                        {translate('QR display?')}
                                     </Label>
                                     <Switch
                                         id="sales_order_qr_enabled"
@@ -327,7 +327,7 @@ export default function SalesOrderTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{translate('Color Input')}</Label>
+                                    <Label>{translate('Color input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -353,7 +353,7 @@ export default function SalesOrderTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="salesOrderLogo">{translate('Sales Order Logo')}</Label>
+                                    <Label htmlFor="salesOrderLogo">{translate('Sales order logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.salesOrderLogoId || ''}

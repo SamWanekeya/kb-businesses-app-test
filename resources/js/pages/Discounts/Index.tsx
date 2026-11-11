@@ -231,7 +231,7 @@ export default function DiscountsPage() {
 
     if (useHasPermission('create-discounts')) {
         pageActions.push({
-            label: translate('Add Discount'),
+            label: translate('Add discount'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -239,7 +239,7 @@ export default function DiscountsPage() {
             },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: translate('Add Discount'),
+            tooltip: translate('Add discount'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
@@ -279,17 +279,17 @@ export default function DiscountsPage() {
             key: 'type',
             label: translate('Type'),
             sortable: true,
-            render: (value) => (value === 'percentage' ? translate('Percentage') : translate('Flat Amount')),
+            render: (value) => (value === 'percentage' ? translate('Percentage') : translate('Flat amount')),
         },
         {
             key: 'minimum_spend',
-            label: translate('Min Spend'),
+            label: translate('Min spend'),
             render: (value) =>
                 value ? <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'maximum_spend',
-            label: translate('Max Spend'),
+            label: translate('Max spend'),
             render: (value) =>
                 value ? <span className="font-mono">{window.kbSettings.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
@@ -307,17 +307,17 @@ export default function DiscountsPage() {
         },
         {
             key: 'use_limit_per_discount',
-            label: translate('Discount Limit'),
+            label: translate('Discount limit'),
             render: (value) => value || translate('Unlimited'),
         },
         {
             key: 'use_limit_per_user',
-            label: translate('User Limit'),
+            label: translate('User limit'),
             render: (value) => value || translate('Unlimited'),
         },
         {
             key: 'expiry_date',
-            label: translate('Expiry Date'),
+            label: translate('Expiry date'),
             sortable: true,
             type: 'date',
             // render: (value) => window.kbSettings.formatDateTime(value, false) || '-'
@@ -341,7 +341,7 @@ export default function DiscountsPage() {
     // Define table actions
     const actions = [
         {
-            label: translate('View Details'),
+            label: translate('View details'),
             icon: 'Eye',
             action: 'view-details',
             className: 'text-blue-500',
@@ -365,13 +365,13 @@ export default function DiscountsPage() {
 
     // Prepare filter options
     const typeOptions = [
-        { value: 'all', label: translate('All Types') },
+        { value: 'all', label: translate('All types') },
         { value: 'percentage', label: translate('Percentage') },
-        { value: 'flat', label: translate('Flat Amount') },
+        { value: 'flat', label: translate('Flat amount') },
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Status') },
+        { value: 'all', label: translate('All status') },
         { value: '1', label: translate('Active') },
         { value: '0', label: translate('Inactive') },
     ];
@@ -409,14 +409,14 @@ export default function DiscountsPage() {
                         },
                         {
                             name: 'date_from',
-                            label: translate('Date From'),
+                            label: translate('Date from'),
                             type: 'date',
                             value: dateFrom,
                             onChange: setDateFrom,
                         },
                         {
                             name: 'date_to',
-                            label: translate('Date To'),
+                            label: translate('Date to'),
                             type: 'date',
                             value: dateTo,
                             onChange: setDateTo,
@@ -454,7 +454,7 @@ export default function DiscountsPage() {
                     to={discounts?.to || 0}
                     total={discounts?.total || 0}
                     links={discounts?.links}
-                    entityName={translate('discounts')}
+                    entityName={translate('Discounts')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -493,25 +493,25 @@ export default function DiscountsPage() {
                     fields: [
                         {
                             name: 'name',
-                            label: translate('Discount Name'),
+                            label: translate('Discount name'),
                             type: 'text',
                             required: true,
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'type',
-                            label: translate('Discount Type'),
+                            label: translate('Discount type'),
                             type: 'select',
                             required: true,
                             options: [
                                 { value: 'percentage', label: translate('Percentage (%)') },
-                                { value: 'flat', label: translate('Fixed Amount ($)') },
+                                { value: 'flat', label: translate('Fixed amount ($)') },
                             ],
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'discount_amount',
-                            label: translate('Discount Value'),
+                            label: translate('Discount value'),
                             type: 'number',
                             required: true,
                             min: 0,
@@ -520,26 +520,26 @@ export default function DiscountsPage() {
                         },
                         {
                             name: 'use_limit_per_discount',
-                            label: translate('Total Usage Limit'),
+                            label: translate('Total usage limit'),
                             type: 'number',
                             min: 1,
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code_type',
-                            label: translate('Code Generation'),
+                            label: translate('Code generation'),
                             type: 'radio',
                             required: true,
                             options: [
-                                { value: 'manual', label: translate('Manual Entry') },
-                                { value: 'auto', label: translate('Auto Generate') },
+                                { value: 'manual', label: translate('Manual entry') },
+                                { value: 'auto', label: translate('Auto generate') },
                             ],
                             defaultValue: 'manual',
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code',
-                            label: translate('Discount Code'),
+                            label: translate('Discount code'),
                             type: 'text',
                             required: true,
                             width: 'calc(50% - 0.5rem)',
@@ -586,7 +586,7 @@ export default function DiscountsPage() {
                         },
                         {
                             name: 'minimum_spend',
-                            label: translate('Minimum Spend'),
+                            label: translate('Minimum spend'),
                             type: 'number',
                             min: 0,
                             step: 0.01,
@@ -594,7 +594,7 @@ export default function DiscountsPage() {
                         },
                         {
                             name: 'maximum_spend',
-                            label: translate('Maximum Spend'),
+                            label: translate('Maximum spend'),
                             type: 'number',
                             min: 0,
                             step: 0.01,
@@ -602,14 +602,14 @@ export default function DiscountsPage() {
                         },
                         {
                             name: 'use_limit_per_user',
-                            label: translate('Usage Limit Per User'),
+                            label: translate('Usage limit per user'),
                             type: 'number',
                             min: 1,
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'expiry_date',
-                            label: translate('Expiry Date'),
+                            label: translate('Expiry date'),
                             type: 'date',
                             width: 'calc(50% - 0.5rem)',
                         },
@@ -619,7 +619,7 @@ export default function DiscountsPage() {
                 }}
                 initialData={currentItem}
                 title={
-                    formMode === 'create' ? translate('Add Discount') : formMode === 'edit' ? translate('Edit Discount') : translate('View Discount')
+                    formMode === 'create' ? translate('Add discount') : formMode === 'edit' ? translate('Edit discount') : translate('View discount')
                 }
                 mode={formMode}
             />

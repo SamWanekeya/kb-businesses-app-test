@@ -22,7 +22,7 @@ export default function ShowDocumentType() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Types'), href: route('document-types.index') },
+        { title: translate('Document types'), href: route('document-types.index') },
         { title: documentType.type_name },
     ];
 
@@ -35,16 +35,16 @@ export default function ShowDocumentType() {
                     </div>
                     <div>
                         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">{documentType.type_name}</h1>
-                        <p className="text-gray-600 dark:text-gray-400">{translate('Document Type Details')}</p>
+                        <p className="text-gray-600 dark:text-gray-400">{translate('Document type details')}</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('Basic Information')}</h3>
+                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('Basic information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Type Name')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Type name')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">{documentType.type_name}</dd>
                             </div>
                             <div>
@@ -65,17 +65,17 @@ export default function ShowDocumentType() {
                     </div>
 
                     <div>
-                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('System Information')}</h3>
+                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('System information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Created At')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Created at')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.kbSettings.formatDateTime(documentType.created_at, false) ||
                                         new Date(documentType.created_at).toLocaleDateString()}
                                 </dd>
                             </div>
                             <div>
-                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Updated At')}</dt>
+                                <dt className="text-sm text-gray-500 dark:text-gray-400">{translate('Updated at')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.kbSettings.formatDateTime(documentType.updated_at, false) ||
                                         new Date(documentType.updated_at).toLocaleDateString()}

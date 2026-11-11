@@ -7,7 +7,7 @@ import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface AamarpayPaymentFormProps {
+interface AamarPayPaymentFormProps {
     planId: number;
     planPrice: number;
     discountCode?: string;
@@ -18,7 +18,7 @@ interface AamarpayPaymentFormProps {
     onCancel: () => void;
 }
 
-export function AamarpayPaymentForm({
+export function AamarPayPaymentForm({
     planId,
     planPrice,
     discountCode,
@@ -27,7 +27,7 @@ export function AamarpayPaymentForm({
     currency = 'BDT',
     onSuccess,
     onCancel,
-}: AamarpayPaymentFormProps) {
+}: AamarPayPaymentFormProps) {
     const { t: translate } = useTranslation();
     const { csrfToken } = usePage().props;
 
@@ -86,7 +86,7 @@ export function AamarpayPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('bn-BD', {
+        return new Intl.NumberFormat('bn-BD', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -97,7 +97,7 @@ export function AamarpayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('AamarPay Payment')}
+                    {translate('AamarPay payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -110,21 +110,21 @@ export function AamarpayPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
 
                 <div className="rounded-lg border border-fuchsia-200 bg-fuchsia-50 p-4">
-                    <h4 className="mb-2 font-medium text-fuchsia-900">{translate('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-fuchsia-900">{translate('Supported payment methods')}</h4>
                     <ul className="space-y-1 text-sm text-fuchsia-800">
                         <li>• bKash</li>
                         <li>• Nagad</li>

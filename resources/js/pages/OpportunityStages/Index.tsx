@@ -222,13 +222,13 @@ export default function OpportunityStages() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Opportunity Management') },
-        { title: translate('Opportunity Stages') },
+        { title: translate('Opportunity management') },
+        { title: translate('Opportunity stages') },
     ];
 
     return (
         <PageTemplate
-            title={translate('Opportunity Stages')}
+            title={translate('Opportunity stages')}
             description={translate('Manage opportunity stages for your sales pipeline.')}
             url="/opportunity-stages"
             breadcrumbs={breadcrumbs}
@@ -239,7 +239,7 @@ export default function OpportunityStages() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Stage') : translate('Edit Stage')}
+                                {formMode === 'create' ? translate('Add new stage') : translate('Edit stage')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -352,7 +352,7 @@ export default function OpportunityStages() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Stage') : translate('Update Stage')}
+                                        {formMode === 'create' ? translate('Add stage') : translate('Update stage')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -406,7 +406,7 @@ export default function OpportunityStages() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -420,7 +420,7 @@ export default function OpportunityStages() {
                         {(opportunityStages?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Opportunity Stages')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Opportunity stages')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage opportunity stage categories for your pipeline.')}</p>
                                 </div> */}
 
@@ -431,7 +431,7 @@ export default function OpportunityStages() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('name')}
+                                                    onClick={() => handleSortranslate('Name')}
                                                 >
                                                     <div className="flex items-center gap-1">
                                                         {translate('Stage')}
@@ -448,7 +448,7 @@ export default function OpportunityStages() {
                                                 </th>
                                                 <th
                                                     className="cursor-pointer px-3 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('probability')}
+                                                    onClick={() => handleSortranslate('Probability')}
                                                 >
                                                     <div className="flex items-center gap-1">
                                                         {translate('Probability')}
@@ -741,7 +741,7 @@ export default function OpportunityStages() {
                                             to={opportunityStages?.to || 0}
                                             total={opportunityStages?.total || 0}
                                             links={opportunityStages?.links}
-                                            entityName={translate('opportunity stages')}
+                                            entityName={translate('Opportunity stages')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -779,7 +779,7 @@ export default function OpportunityStages() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('opportunity stage')}
+                entityName={translate('Opportunity stage')}
             />
         </PageTemplate>
     );

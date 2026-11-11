@@ -119,7 +119,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <h2 className="text-foreground mt-1 text-2xl font-normal tracking-tight sm:text-3xl">{auth?.user?.name}</h2>
                         <p className="text-muted-foreground mt-3 text-sm">
                             <span className="text-foreground font-medium">{stats.totalActivePlanOrganizations.toLocaleString()}</span>{' '}
-                            {translate('organizations with active plans')}
+                            {translate('Organizations with active plans')}
                         </p>
                     </div>
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
@@ -150,17 +150,17 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         href={route('subscriptions.plan-orders.index')}
                         className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
                     >
-                        <p className="text-muted-foreground text-sm">{translate('Total Revenue')}</p>
+                        <p className="text-muted-foreground text-sm">{translate('Total revenue')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{formatCurrency(stats.totalRevenue)}</p>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('from approved orders')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('From approved orders')}</p>
                     </Link>
 
                     <Link href={route('organizations.index')} className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors">
-                        <p className="text-muted-foreground text-sm">{translate('Total Organizations')}</p>
+                        <p className="text-muted-foreground text-sm">{translate('Total organizations')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.totalOrganizations.toLocaleString()}</p>
                         <p className="text-muted-foreground mt-1 text-xs">
                             {stats.monthlyGrowth > 0 ? '+' : ''}
-                            {stats.monthlyGrowth}% {translate('this month')}
+                            {stats.monthlyGrowth}% {translate('This month')}
                         </p>
                     </Link>
 
@@ -168,15 +168,15 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         href={route('subscriptions.plans.index')}
                         className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
                     >
-                        <p className="text-muted-foreground text-sm">{translate('Active Plans')}</p>
+                        <p className="text-muted-foreground text-sm">{translate('Active plans')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.activePlans.toLocaleString()}</p>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('subscription plans')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('Subscription plans')}</p>
                     </Link>
 
                     <div className="bg-card rounded-lg border p-4">
-                        <p className="text-muted-foreground text-sm">{translate('Total Users')}</p>
+                        <p className="text-muted-foreground text-sm">{translate('Total users')}</p>
                         <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{stats.totalUsers.toLocaleString()}</p>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('registered users')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('Registered users')}</p>
                     </div>
 
                     <Link
@@ -184,7 +184,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         className="group bg-card hover:bg-muted/40 rounded-lg border p-4 transition-colors"
                     >
                         <div className="flex items-center justify-between gap-2">
-                            <p className="text-muted-foreground text-sm">{translate('Pending Requests')}</p>
+                            <p className="text-muted-foreground text-sm">{translate('Pending requests')}</p>
                             {stats.pendingRequests > 0 && (
                                 <span className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
                                     {translate('Action needed')}
@@ -196,7 +196,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         >
                             {stats.pendingRequests.toLocaleString()}
                         </p>
-                        <p className="text-muted-foreground mt-1 text-xs">{translate('awaiting approval')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('Awaiting approval')}</p>
                     </Link>
                 </section>
 
@@ -207,7 +207,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('Recently Registered Organizations')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Recently registered organizations')}</CardTitle>
                                     <p className="text-muted-foreground mt-0.5 text-xs">
                                         {translate('Latest organizations that joined the platform')}
                                     </p>
@@ -272,7 +272,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('Top Plans')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Top plans')}</CardTitle>
                                     <p className="text-muted-foreground mt-0.5 text-xs">{translate('By revenue generated')}</p>
                                 </div>
                                 <Link
@@ -305,12 +305,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                         />
                                                     </div>
                                                     <p className="text-muted-foreground mt-1 text-xs">
-                                                        {plan.subscribers} {translate('subscribers')}
+                                                        {plan.subscribers} {translate('Subscribers')}
                                                     </p>
                                                 </div>
                                                 <div className="shrink-0 text-right">
                                                     <p className="font-mono text-sm font-extrabold">{formatCurrency(plan.revenue)}</p>
-                                                    <p className="text-muted-foreground text-xs">{translate('revenue')}</p>
+                                                    <p className="text-muted-foreground text-xs">{translate('Revenue')}</p>
                                                 </div>
                                             </div>
                                         );
@@ -334,14 +334,14 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('New Organizations Registered')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('New organizations registered')}</CardTitle>
                                     <p className="text-muted-foreground mt-0.5 text-xs">
                                         {translate('Organizations joined per month')} — {selectedOrganizationsYear}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className="bg-muted text-muted-foreground inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs">
-                                        {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {translate('total')}
+                                        {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {translate('Total')}
                                     </span>
                                     <Select
                                         value={String(selectedOrganizationsYear)}
@@ -429,7 +429,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-bold">{translate('Monthly Revenue')}</CardTitle>
+                                    <CardTitle className="text-base font-bold">{translate('Monthly revenue')}</CardTitle>
                                     <p className="text-muted-foreground mt-0.5 text-xs">
                                         {translate('Approved plan orders')} — {selectedYear}
                                     </p>

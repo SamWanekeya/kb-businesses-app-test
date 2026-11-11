@@ -226,7 +226,7 @@ export default function Users() {
             onClick: () => {
                 router.visit(route('sign-in-history.index'));
             },
-            tooltip: translate('Sign in History'),
+            tooltip: translate('Sign in history'),
         });
     }
 
@@ -240,12 +240,12 @@ export default function Users() {
                           current: planLimits.current_users,
                           max: planLimits.maximum_users,
                       })
-                    : translate('Add User'),
+                    : translate('Add user'),
             icon: <Plus className="mr-0 h-4 w-4 min-[300px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
             className: 'h-8 w-8 min-[300px]:h-9 min-[300px]:w-auto px-0 min-[300px]:px-4',
             labelClassName: 'hidden min-[300px]:inline',
-            tooltip: translate('Add User'),
+            tooltip: translate('Add user'),
             tooltipClassName: 'min-[300px]:hidden',
             onClick: canCreate
                 ? () => {
@@ -318,14 +318,14 @@ export default function Users() {
     // Define table actions
     const actions = [
         {
-            label: translate('Reset Password'),
+            label: translate('Reset password'),
             icon: 'KeyRound',
             action: 'reset-password',
             className: 'text-blue-500',
             requiredPermission: 'reset-password-users',
         },
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -377,7 +377,7 @@ export default function Users() {
                             searchable: true,
                             onChange: setSelectedRole,
                             options: [
-                                { value: 'all', label: translate('All Roles') },
+                                { value: 'all', label: translate('All roles') },
                                 ...(roles || []).map((role: any) => ({
                                     value: role.id.toString(),
                                     label: role.label || role.name,
@@ -432,7 +432,7 @@ export default function Users() {
                         to={users?.to || 0}
                         total={users?.total || 0}
                         links={users?.links}
-                        entityName={translate('users')}
+                        entityName={translate('Users')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -549,7 +549,7 @@ export default function Users() {
                                                             <KeyRound className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{translate('Reset Password')}</TooltipContent>
+                                                    <TooltipContent>{translate('Reset password')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('toggle-status-users') && (
@@ -571,7 +571,7 @@ export default function Users() {
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>
-                                                        {user.status === 'active' ? translate('Disable User') : translate('Enable User')}
+                                                        {user.status === 'active' ? translate('Disable user') : translate('Enable user')}
                                                     </TooltipContent>
                                                 </Tooltip>
                                             )}
@@ -628,7 +628,7 @@ export default function Users() {
                                 {useHasPermission('create-users') && (
                                     <Button onClick={handleAddNew}>
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {translate('Add User')}
+                                        {translate('Add user')}
                                     </Button>
                                 )}
                             </div>
@@ -643,7 +643,7 @@ export default function Users() {
                                 to={users?.to || 0}
                                 total={users?.total || 0}
                                 links={users?.links}
-                                entityName={translate('users')}
+                                entityName={translate('Users')}
                                 onPageChange={(url) => {
                                     router.get(url);
                                 }}
@@ -696,7 +696,7 @@ export default function Users() {
                         },
                         {
                             name: 'password_confirmation',
-                            label: translate('Confirm Password'),
+                            label: translate('Confirm password'),
                             type: 'password',
                             required: true,
                             conditional: (mode) => mode === 'create',
@@ -732,7 +732,7 @@ export default function Users() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add User') : translate('Edit User')}
+                title={formMode === 'create' ? translate('Add user') : translate('Edit user')}
                 mode={formMode}
             />
 
@@ -759,13 +759,13 @@ export default function Users() {
                     fields: [
                         {
                             name: 'password',
-                            label: translate('New Password'),
+                            label: translate('New password'),
                             type: 'password',
                             required: true,
                         },
                         {
                             name: 'password_confirmation',
-                            label: translate('Confirm Password'),
+                            label: translate('Confirm password'),
                             type: 'password',
                             required: true,
                         },

@@ -362,12 +362,12 @@ export default function ProjectGantt() {
 
     if (useHasPermission('create-project-tasks')) {
         pageActions.unshift({
-            label: translate('Add Task'),
+            label: translate('Add task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1090px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1090px]:h-9 min-[1090px]:w-auto px-0 min-[1090px]:px-4',
             labelClassName: 'hidden min-[1090px]:inline',
-            tooltip: translate('Add Task'),
+            tooltip: translate('Add task'),
             tooltipClassName: 'min-[1090px]:hidden',
             onClick: handleAddTask,
         });
@@ -375,15 +375,15 @@ export default function ProjectGantt() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Project Management') },
+        { title: translate('Project management') },
         { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
-        { title: translate('Gantt View') },
+        { title: translate('Gantt view') },
     ];
 
     return (
         <PageTemplate
-            title={`${project.name} - ${translate('Gantt View')}`}
+            title={`${project.name} - ${translate('Gantt view')}`}
             description={translate('Visualize project timeline and task dependencies')}
             url={`/projects/${project.id}/gantt`}
             actions={pageActions}
@@ -421,7 +421,7 @@ export default function ProjectGantt() {
                             onChange: setSelectedStatus,
                             searchable: true,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 ...taskStatuses.map((status: any) => ({ value: status.id, label: status.name })),
                             ],
                         },
@@ -432,7 +432,7 @@ export default function ProjectGantt() {
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: translate('All Priority') },
+                                { value: 'all', label: translate('All priority') },
                                 { value: 'low', label: translate('Low') },
                                 { value: 'medium', label: translate('Medium') },
                                 { value: 'high', label: translate('High') },
@@ -454,11 +454,11 @@ export default function ProjectGantt() {
             <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="border-b border-gray-200 p-4">
                     <div className="flex items-center justify-between">
-                        <h6 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Gantt Chart')}</h6>
+                        <h6 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Gantt chart')}</h6>
                         <div className="flex gap-1">
                             {[
-                                { value: 'quarter-day', label: translate('Quarter Day') },
-                                { value: 'half-day', label: translate('Half Day') },
+                                { value: 'quarter-day', label: translate('Quarter day') },
+                                { value: 'half-day', label: translate('Half day') },
                                 { value: 'day', label: translate('Day') },
                                 { value: 'week', label: translate('Week') },
                                 { value: 'month', label: translate('Month') },
@@ -496,7 +496,7 @@ export default function ProjectGantt() {
                     fields: [
                         {
                             name: 'title',
-                            label: translate('Task Title'),
+                            label: translate('Task title'),
                             type: 'text',
                             required: true,
                         },
@@ -505,8 +505,8 @@ export default function ProjectGantt() {
                             label: translate('Description'),
                             type: 'textarea',
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
-                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due date'), type: 'date' },
                         {
                             name: 'priority',
                             label: translate('Priority'),
@@ -525,7 +525,7 @@ export default function ProjectGantt() {
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task Statuses') },
+                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task statuses') },
                             options: taskStatuses.map((status: any) => ({
                                 value: status.id,
                                 label: status.name,
@@ -534,7 +534,7 @@ export default function ProjectGantt() {
                         },
                         {
                             name: 'estimated_hours',
-                            label: translate('Estimated Hours'),
+                            label: translate('Estimated hours'),
                             type: 'number',
                             step: '0.5',
                         },
@@ -550,7 +550,7 @@ export default function ProjectGantt() {
                             ? [
                                   {
                                       name: 'assigned_to',
-                                      label: translate('Assign To'),
+                                      label: translate('Assign to'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -571,7 +571,7 @@ export default function ProjectGantt() {
                     modalSize: 'lg',
                 }}
                 initialData={null}
-                title={translate('Add Task')}
+                title={translate('Add task')}
                 mode={formMode}
             />
 
@@ -636,7 +636,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.assigned_user && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{translate('Assigned To')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Assigned to')}:</span>
                                     <span className="text-gray-900 dark:text-white">{selectedTask.assigned_user.name}</span>
                                 </div>
                             )}
@@ -653,7 +653,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.start_date && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{translate('Start Date')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Start date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
                                         {window.kbSettings.formatDateTime(selectedTask.start_date, false) ||
                                             new Date(selectedTask.start_date).toLocaleDateString()}
@@ -663,7 +663,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.due_date && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{translate('Due Date')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Due date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
                                         {window.kbSettings.formatDateTime(selectedTask.due_date, false) ||
                                             new Date(selectedTask.due_date).toLocaleDateString()}

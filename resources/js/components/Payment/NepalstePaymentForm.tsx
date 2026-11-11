@@ -84,7 +84,7 @@ export function NepalstePaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('en-NP', {
+        return new Intl.NumberFormat('En-NP', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -95,7 +95,7 @@ export function NepalstePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Nepalste Payment')}
+                    {translate('Nepalste payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -108,21 +108,21 @@ export function NepalstePaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
 
                 <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-                    <h4 className="mb-2 font-medium text-red-900">{translate('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-red-900">{translate('Supported payment methods')}</h4>
                     <ul className="space-y-1 text-sm text-red-800">
                         <li>• eSewa</li>
                         <li>• Khalti</li>

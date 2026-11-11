@@ -129,7 +129,7 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        {translate('QUOTE')}
+                                        {translate('Quote')}
                                     </h3>
                                     <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
                                         {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
@@ -168,7 +168,7 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             <tr>
                                                 <td style={styles.noSpace}></td>
                                                 <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
-                                                    {translate('Valid Until')}: {formatValue(quote.valid_until)}
+                                                    {translate('Valid until')}: {formatValue(quote.valid_until)}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -184,7 +184,7 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {quote.billing_contact?.name}
                                         <br />
@@ -200,7 +200,7 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                     </p>
                                 </td>
                                 <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {quote.shipping_contact?.name}
                                         <br />
@@ -235,7 +235,7 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             fontSize: '12px',
                                         }}
                                     >
-                                        {translate('before tax & discount')}
+                                        {translate('Before tax & discount')}
                                     </small>
                                 </th>
                             </tr>

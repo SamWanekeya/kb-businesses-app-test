@@ -73,7 +73,7 @@ export default function ReturnOrderCreate() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Return Orders'), href: route('return-orders.index') },
+        { title: translate('Return orders'), href: route('return-orders.index') },
         { title: translate('Create') },
     ];
 
@@ -197,12 +197,12 @@ export default function ReturnOrderCreate() {
     const handleSubmit = () => {
         const errs: Errors = {};
         if (!form.name.trim()) errs.name = translate('Name is required');
-        if (!form.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!form.sales_order_id) errs.sales_order_id = translate('Sales order is required');
         if (!form.account_id) errs.account_id = translate('Account is required');
         if (!form.contact_id) errs.contact_id = translate('Contact is required');
-        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping Provider is required');
-        if (!form.return_date) errs.return_date = translate('Return Date is required');
-        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping provider is required');
+        if (!form.return_date) errs.return_date = translate('Return date is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned to is required');
         if (!returnItems.length) errs.products = translate('At least one product is required');
 
         if (Object.keys(errs).length) {
@@ -242,7 +242,7 @@ export default function ReturnOrderCreate() {
 
     return (
         <PageTemplate
-            title={translate('Create Return Order')}
+            title={translate('Create return order')}
             description={translate('Fill in the details to create a new return order')}
             breadcrumbs={breadcrumbs}
             url="/return-orders"
@@ -278,7 +278,7 @@ export default function ReturnOrderCreate() {
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                 />
                             </svg>
-                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Basic Information')}</span>
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Basic information')}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
@@ -294,7 +294,7 @@ export default function ReturnOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Sales Order')}
+                                    {translate('Sales order')}
                                 </Label>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
@@ -313,7 +313,7 @@ export default function ReturnOrderCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('sales-orders.index')} className="font-medium underline">
-                                            {translate('Sales Orders')}
+                                            {translate('Sales orders')}
                                         </a>
                                     </p>
                                 )}
@@ -375,7 +375,7 @@ export default function ReturnOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Shipping Provider')}
+                                    {translate('Shipping provider')}
                                 </Label>
                                 <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                     <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
@@ -394,7 +394,7 @@ export default function ReturnOrderCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('shipping-provider-types.index')} className="font-medium underline">
-                                            {translate('Shipping Providers')}
+                                            {translate('Shipping providers')}
                                         </a>
                                     </p>
                                 )}
@@ -442,16 +442,16 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm">{translate('Return Reason')}</Label>
+                                <Label className="text-sm">{translate('Return reason')}</Label>
                                 <Select value={form.reason} onValueChange={(v) => set('reason', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="defective">{translate('Defective')}</SelectItem>
-                                        <SelectItem value="wrong_item">{translate('Wrong Item')}</SelectItem>
+                                        <SelectItem value="wrong_item">{translate('Wrong item')}</SelectItem>
                                         <SelectItem value="damaged">{translate('Damaged')}</SelectItem>
-                                        <SelectItem value="not_needed">{translate('Not Needed')}</SelectItem>
+                                        <SelectItem value="not_needed">{translate('Not needed')}</SelectItem>
                                         <SelectItem value="other">{translate('Other')}</SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -459,7 +459,7 @@ export default function ReturnOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm" required>
-                                    {translate('Assigned To')}
+                                    {translate('Assigned to')}
                                 </Label>
                                 <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -490,7 +490,7 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm">{translate('Reason Description')}</Label>
+                                <Label className="text-sm">{translate('Reason description')}</Label>
                                 <Textarea value={form.reason_description} onChange={(e) => set('reason_description', e.target.value)} rows={2} />
                             </div>
                         </div>
@@ -523,7 +523,7 @@ export default function ReturnOrderCreate() {
                                     />
                                 </svg>
                                 <span className="text-base font-extrabold text-gray-900 dark:text-white">
-                                    {translate('Available Product from Sales Order')}
+                                    {translate('Available product from sales order')}
                                 </span>
                             </div>
                             <div className="overflow-x-auto">
@@ -567,7 +567,7 @@ export default function ReturnOrderCreate() {
                                                                 {item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)
                                                             </span>
                                                         ) : (
-                                                            <span className="text-xs text-gray-400">{translate('No Tax')}</span>
+                                                            <span className="text-xs text-gray-400">{translate('No tax')}</span>
                                                         )}
                                                     </td>
                                                     <td className="py-4 pe-6 font-mono font-medium text-gray-900 dark:text-gray-100">
@@ -580,7 +580,7 @@ export default function ReturnOrderCreate() {
                                                             </Button>
                                                         ) : availableQuantity === 0 ? (
                                                             <Button type="button" disabled size="sm" variant="outline">
-                                                                {translate('Fully Returned')}
+                                                                {translate('Fully returned')}
                                                             </Button>
                                                         ) : (
                                                             <TooltipProvider delayDuration={200}>
@@ -596,12 +596,12 @@ export default function ReturnOrderCreate() {
                                                                         >
                                                                             <Plus className="h-4 w-4 min-[1200px]:mr-1" />
                                                                             <span className="hidden min-[1200px]:inline">
-                                                                                {translate('Add to Return')}
+                                                                                {translate('Add to return')}
                                                                             </span>
                                                                         </Button>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top" className="min-[1200px]:hidden">
-                                                                        <p>{translate('Add to Return')}</p>
+                                                                        <p>{translate('Add to return')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -636,7 +636,7 @@ export default function ReturnOrderCreate() {
                                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                                     />
                                 </svg>
-                                <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Return Product')}</span>
+                                <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Return product')}</span>
                                 {errors.products && <span className="ml-1 text-xs font-normal text-red-500">{errors.products}</span>}
                             </div>
                             <div className="overflow-x-auto">
@@ -688,7 +688,7 @@ export default function ReturnOrderCreate() {
                                                                 {item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)
                                                             </span>
                                                         ) : (
-                                                            <span className="text-xs text-gray-400">{translate('No Tax')}</span>
+                                                            <span className="text-xs text-gray-400">{translate('No tax')}</span>
                                                         )}
                                                     </td>
                                                     <td className="py-4 pe-6 font-mono font-medium text-gray-900 dark:text-gray-100">
@@ -714,7 +714,7 @@ export default function ReturnOrderCreate() {
 
                             <div className="mt-8 flex justify-end">
                                 <div className="w-80">
-                                    <p className="mb-3 text-base font-extrabold text-gray-900 dark:text-white">{translate('Return Summary')}</p>
+                                    <p className="mb-3 text-base font-extrabold text-gray-900 dark:text-white">{translate('Return summary')}</p>
                                     <div className="space-y-1.5 text-sm">
                                         <div className="flex justify-between">
                                             <span className="text-gray-500 dark:text-gray-400">{translate('Subtotal')}</span>
@@ -725,7 +725,7 @@ export default function ReturnOrderCreate() {
                                             <span className="font-mono text-gray-900 dark:text-gray-100">{fmt(totals.tax)}</span>
                                         </div>
                                         <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-extrabold dark:border-gray-700">
-                                            <span className="text-gray-900 dark:text-white">{translate('Total Return Amount')}</span>
+                                            <span className="text-gray-900 dark:text-white">{translate('Total return amount')}</span>
                                             <span className="font-mono text-fuchsia-600 dark:text-fuchsia-400">
                                                 {fmt(totals.subtotal + totals.tax)}
                                             </span>
@@ -753,7 +753,7 @@ export default function ReturnOrderCreate() {
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                 />
                             </svg>
-                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Additional Notes')}</span>
+                            <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Additional notes')}</span>
                         </div>
                         <div className="space-y-1">
                             <Label className="text-sm">{translate('Notes')}</Label>

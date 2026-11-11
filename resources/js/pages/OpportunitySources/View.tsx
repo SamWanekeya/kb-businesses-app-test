@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Zap className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Opportunity Source Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Opportunity source details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -31,7 +31,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Zap className="h-4 w-4" />
-                            {translate('Source Name')}
+                            {translate('Source name')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.name || '-'}</p>
                     </div>

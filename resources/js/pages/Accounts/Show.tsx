@@ -49,9 +49,9 @@ export default function AccountShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Account Management') },
+        { title: translate('Account management') },
         { title: translate('Accounts'), href: route('accounts.index') },
-        { title: translate('View Account') },
+        { title: translate('View account') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -110,7 +110,7 @@ export default function AccountShow() {
                             },
                             {
                                 label: translate('Contacts'),
-                                value: `${account.contacts?.length || 0} ${translate('contacts')}`,
+                                value: `${account.contacts?.length || 0} ${translate('Contacts')}`,
                                 icon: User,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
@@ -148,7 +148,7 @@ export default function AccountShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Account Summary')}
+                                {translate('Account summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -174,7 +174,7 @@ export default function AccountShow() {
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                 {account.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -202,7 +202,7 @@ export default function AccountShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Contact Info')}
+                                {translate('Contact information')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -226,7 +226,7 @@ export default function AccountShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <MapPin className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Billing Address')}
+                                {translate('Billing address')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -251,7 +251,7 @@ export default function AccountShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <MapPin className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Shipping Address')}
+                                {translate('Shipping address')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -402,7 +402,7 @@ export default function AccountShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
-                                        {translate('Meetings & Calls')}
+                                        {translate('Meetings & calls')}
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
@@ -590,7 +590,7 @@ export default function AccountShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Activity Stream')}
+                                {translate('Activity stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -872,8 +872,8 @@ export default function AccountShow() {
                     }
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={translate('this activity')}
-                entityName={translate('activity')}
+                itemName={translate('This activity')}
+                entityName={translate('Activity')}
             />
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
@@ -884,8 +884,8 @@ export default function AccountShow() {
                     router.delete(route('accounts.delete-activities', account.id), { preserveScroll: true });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={translate('all activities for {{name}}', { name: account.name })}
-                entityName={translate('activities')}
+                itemName={translate('All activities for {{name}}', { name: account.name })}
+                entityName={translate('Activities')}
             />
         </PageTemplate>
     );

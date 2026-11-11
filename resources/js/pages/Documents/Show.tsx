@@ -145,7 +145,7 @@ export default function DocumentShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Management') },
+        { title: translate('Document management') },
         { title: translate('Documents'), href: route('documents.index') },
         ...(document.folder
             ? [
@@ -159,13 +159,13 @@ export default function DocumentShow() {
     ];
 
     const formFields = [
-        { name: 'name', label: translate('Document Name'), type: 'text', required: true },
+        { name: 'name', label: translate('Document name'), type: 'text', required: true },
         {
             name: 'account_id',
             label: translate('Account'),
             type: 'select',
             options: [
-                { value: 'null', label: translate('No Account') },
+                { value: 'null', label: translate('No account') },
                 ...accounts.map((a: any) => ({
                     value: a.id,
                     label: a.name,
@@ -177,7 +177,7 @@ export default function DocumentShow() {
             label: translate('Folder'),
             type: 'select',
             options: [
-                { value: 'null', label: translate('No Folder') },
+                { value: 'null', label: translate('No folder') },
                 ...folders.map((f: any) => ({
                     value: f.id,
                     label: f.name,
@@ -189,7 +189,7 @@ export default function DocumentShow() {
             label: translate('Type'),
             type: 'select',
             options: [
-                { value: 'null', label: translate('No Type') },
+                { value: 'null', label: translate('No type') },
                 ...types.map((type: any) => ({
                     value: type.id,
                     label: type.type_name,
@@ -203,17 +203,17 @@ export default function DocumentShow() {
             options: [
                 {
                     value: 'null',
-                    label: translate('No Opportunity'),
+                    label: translate('No opportunity'),
                 },
                 ...opportunities.map((o: any) => ({ value: o.id, label: o.name })),
             ],
         },
-        { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
-        { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },
+        { name: 'publish_date', label: translate('Publish date'), type: 'date' },
+        { name: 'expiration_date', label: translate('Expiration date'), type: 'date' },
         { name: 'attachment', label: translate('Attachment'), type: 'media-picker', returnType: 'id' },
         {
             name: 'assigned_to',
-            label: translate('Assign To'),
+            label: translate('Assign to'),
             type: 'select',
             options: [
                 { value: 'null', label: translate('Unassigned') },
@@ -347,7 +347,7 @@ export default function DocumentShow() {
                         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                             <div className="flex items-center gap-2 text-sm font-extrabold text-gray-800 dark:text-gray-100">
                                 <FileText className="h-4 w-4 text-gray-500" />
-                                {translate('Document Details')}
+                                {translate('Document details')}
                             </div>
                             <div className="flex items-center gap-1.5">
                                 {useHasPermission('view-documents') && document.attachment_url && (
@@ -394,7 +394,7 @@ export default function DocumentShow() {
                                                     )}
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{isInactive ? translate('Activate') : translate('Toggle Status')}</TooltipContent>
+                                            <TooltipContent>{isInactive ? translate('Activate') : translate('Toggle status')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -445,7 +445,7 @@ export default function DocumentShow() {
                                 badge
                             />
                             <DetailRow
-                                label={translate('Document Status')}
+                                label={translate('Document status')}
                                 value={
                                     document.expiration_date && new Date(document.expiration_date) < new Date()
                                         ? translate('Expired')
@@ -456,7 +456,7 @@ export default function DocumentShow() {
                             />
                             {document.publish_date && (
                                 <DetailRow
-                                    label={translate('Publish Date')}
+                                    label={translate('Publish date')}
                                     value={
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             {document.publish_date && <LucidIcons.Calendar className="h-4 w-4" />}
@@ -470,12 +470,12 @@ export default function DocumentShow() {
                             )}
                             {document.expiration_date && (
                                 // <DetailRow
-                                //     label={translate('Expiration Date')}
+                                //     label={translate('Expiration date')}
                                 //     value={window.kbSettings.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
                                 //     expired={isExpired}
                                 // />
                                 <DetailRow
-                                    label={translate('Expiration Date')}
+                                    label={translate('Expiration date')}
                                     value={
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             <LucidIcons.Calendar className={`h-4 w-4 ${isExpired ? 'text-red-500' : 'text-gray-500'}`} />
@@ -489,7 +489,7 @@ export default function DocumentShow() {
                                 />
                             )}
                             <DetailRow
-                                label={translate('Created At')}
+                                label={translate('Created at')}
                                 value={
                                     <div className="flex items-center gap-2 whitespace-nowrap">
                                         {document.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
@@ -534,7 +534,7 @@ export default function DocumentShow() {
                         ) : null}
                         {document.assigned_user ? (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.assigned_user.avatar} alt={document.assigned_user.name} />
@@ -576,7 +576,7 @@ export default function DocumentShow() {
                     description: document.description || '',
                     status: document.status || 'active',
                 }}
-                title={translate('Edit Document')}
+                title={translate('Edit document')}
                 mode="edit"
             />
 
@@ -587,7 +587,7 @@ export default function DocumentShow() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={document.name || ''}
-                entityName={translate('document')}
+                entityName={translate('Document')}
             />
         </PageTemplate>
     );

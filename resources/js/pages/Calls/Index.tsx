@@ -222,7 +222,7 @@ export default function Calls() {
     const pageActions = [];
     if (useHasPermission('create-calls')) {
         pageActions.push({
-            label: translate('Add Call'),
+            label: translate('Add call'),
             icon: <Plus className="mr-2 h-4 w-4" />,
             variant: 'default',
             onClick: () => {
@@ -248,7 +248,7 @@ export default function Calls() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -268,7 +268,7 @@ export default function Calls() {
         },
         {
             key: 'start_date',
-            label: translate('Date & Time'),
+            label: translate('Date & time'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, row: any) => (
@@ -287,7 +287,7 @@ export default function Calls() {
 
         {
             key: 'parent_module',
-            label: translate('Related To'),
+            label: translate('Related to'),
             className: 'whitespace-nowrap',
             render: (value: string, row: any) =>
                 value ? (
@@ -376,7 +376,7 @@ export default function Calls() {
                         case 'held':
                             return translate('Held');
                         case 'not_held':
-                            return translate('Not Held');
+                            return translate('Not held');
                         default:
                             return status;
                     }
@@ -392,7 +392,7 @@ export default function Calls() {
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -401,7 +401,7 @@ export default function Calls() {
 
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -451,21 +451,21 @@ export default function Calls() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 { value: 'planned', label: translate('Planned') },
                                 { value: 'held', label: translate('Held') },
-                                { value: 'not_held', label: translate('Not Held') },
+                                { value: 'not_held', label: translate('Not held') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
@@ -506,7 +506,7 @@ export default function Calls() {
                     to={calls?.to || 0}
                     total={calls?.total || 0}
                     links={calls?.links}
-                    entityName={translate('calls')}
+                    entityName={translate('Calls')}
                     onPageChange={(url) => {
                         router.get(url, {}, { preserveState: true, preserveScroll: true });
                     }}
@@ -540,7 +540,7 @@ export default function Calls() {
                     fields: [
                         {
                             name: 'title',
-                            label: translate('Call Title'),
+                            label: translate('Call title'),
                             type: 'text' as const,
                             required: true,
                         },
@@ -549,13 +549,13 @@ export default function Calls() {
                             label: translate('Description'),
                             type: 'textarea' as const,
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' as const, required: true },
-                        { name: 'end_date', label: translate('End Date'), type: 'date' as const, required: true },
-                        { name: 'start_time', label: translate('Start Time'), type: 'time' as const, required: true },
-                        { name: 'end_time', label: translate('End Time'), type: 'time' as const, required: true },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' as const, required: true },
+                        { name: 'end_date', label: translate('End date'), type: 'date' as const, required: true },
+                        { name: 'start_time', label: translate('Start time'), type: 'time' as const, required: true },
+                        { name: 'end_time', label: translate('End time'), type: 'time' as const, required: true },
                         {
                             name: 'parent_module',
-                            label: translate('Related To'),
+                            label: translate('Related to'),
                             type: 'select' as const,
                             required: true,
                             options: [
@@ -569,7 +569,7 @@ export default function Calls() {
                         },
                         {
                             name: 'parent_id',
-                            label: translate('Select Record'),
+                            label: translate('Select record'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
@@ -619,7 +619,7 @@ export default function Calls() {
                                 },
                                 {
                                     name: 'id',
-                                    label: translate('Select Person'),
+                                    label: translate('Select person'),
                                     type: 'select' as const,
                                     required: true,
                                     searchable: true,
@@ -646,7 +646,7 @@ export default function Calls() {
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
@@ -665,7 +665,7 @@ export default function Calls() {
                             options: [
                                 { value: 'planned', label: translate('Planned') },
                                 { value: 'held', label: translate('Held') },
-                                { value: 'not_held', label: translate('Not Held') },
+                                { value: 'not_held', label: translate('Not held') },
                             ],
                             defaultValue: 'planned',
                         },
@@ -695,7 +695,7 @@ export default function Calls() {
                           }
                         : {}
                 }
-                title={formMode === 'create' ? translate('Add Call') : formMode === 'edit' ? translate('Edit Call') : translate('View Call')}
+                title={formMode === 'create' ? translate('Add call') : formMode === 'edit' ? translate('Edit call') : translate('View call')}
                 mode={formMode}
             />
 
@@ -717,14 +717,14 @@ export default function Calls() {
                             options: [
                                 { value: 'planned', label: translate('Planned') },
                                 { value: 'held', label: translate('Held') },
-                                { value: 'not_held', label: translate('Not Held') },
+                                { value: 'not_held', label: translate('Not held') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Call Status')}
+                title={translate('Change call status')}
                 mode="edit"
             />
 
@@ -735,7 +735,7 @@ export default function Calls() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={translate('call')}
+                entityName={translate('Call')}
             />
         </PageTemplate>
     );

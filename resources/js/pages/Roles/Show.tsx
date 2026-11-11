@@ -18,7 +18,7 @@ export default function RolesShow() {
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Roles'), href: route('users-permissions.roles.index') },
-        { title: role.label || translate('View Role') },
+        { title: role.label || translate('View role') },
     ];
 
     const pageActions = [
@@ -34,7 +34,7 @@ export default function RolesShow() {
 
     return (
         <PageTemplate
-            title={role.label || translate('View Role')}
+            title={role.label || translate('View role')}
             description={translate('Role details and related information')}
             url={`/roles/${role.id}`}
             actions={pageActions}
@@ -44,12 +44,12 @@ export default function RolesShow() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Role information')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                             <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Role Name')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Role name')}</p>
                                 <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{role.label || '-'}</p>
                             </div>
                             <div>
@@ -57,7 +57,7 @@ export default function RolesShow() {
                                 <p className="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400">{role.name || '-'}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Total Permissions')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Total permissions')}</p>
                                 <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{assignedPermissionNames.length}</p>
                             </div>
                             {role.description && (
@@ -73,7 +73,7 @@ export default function RolesShow() {
                 {/* Permissions grouped by module */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">{translate('Assigned Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Assigned permissions')}</CardTitle>
                         <CardDescription>{translate('Permissions assigned to this role, grouped by module.')}</CardDescription>
                     </CardHeader>
                     <CardContent>

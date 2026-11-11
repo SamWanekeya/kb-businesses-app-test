@@ -100,7 +100,7 @@ export function InvoicePayTRPaymentForm({
                     <CardTitle className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
                             <CreditCard className="h-5 w-5" />
-                            {translate('PayTR Payment')}
+                            {translate('PayTR payment')}
                         </span>
                         <Button
                             variant="outline"
@@ -130,14 +130,14 @@ export function InvoicePayTRPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('PayTR Payment')}
+                    {translate('PayTR payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted mb-4 rounded-lg p-3">
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm text-gray-600">{translate('Payment Type')}:</span>
+                            <span className="text-sm text-gray-600">{translate('Payment type')}:</span>
                             <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                         </div>
                         <div className="flex items-center justify-between">
@@ -163,7 +163,7 @@ export function InvoicePayTRPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')} *</Label>
+                        <Label htmlFor="email">{translate('Email address')} *</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"
@@ -177,7 +177,7 @@ export function InvoicePayTRPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="phone">{translate('Phone Number')} *</Label>
+                        <Label htmlFor="phone">{translate('Phone number')} *</Label>
                         <Input
                             inputIdentifier="phone"
                             value={customerDetails.phone}
@@ -201,8 +201,8 @@ export function InvoicePayTRPaymentForm({
                     </div>
 
                     <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-                        <p className="text-sm text-blue-900">{translate('Secure Payment via PayTR')}</p>
-                        <p className="mt-1 text-xs text-blue-700">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
+                        <p className="text-sm text-blue-900">{translate('Secure payment via PayTR')}</p>
+                        <p className="mt-1 text-xs text-blue-700">{translate('Credit card, debit card - real-time payment processing')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

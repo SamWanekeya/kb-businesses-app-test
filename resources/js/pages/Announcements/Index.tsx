@@ -238,7 +238,7 @@ export default function Announcements() {
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             type: 'date',
             //  render: (value: string) => window.kbSettings.formatDateTime(value, false) || '-'
@@ -247,7 +247,7 @@ export default function Announcements() {
 
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -284,14 +284,14 @@ export default function Announcements() {
                 ...(useHasPermission('manage-announcements')
                     ? [
                           {
-                              label: translate('Dashboard View'),
+                              label: translate('Dashboard view'),
                               icon: <PanelsTopLeft className="mr-0 h-4 w-4 min-[550px]:mr-2" />,
                               onClick: () => {
                                   router.get(route('announcements.dashboard'));
                               },
                               className: 'h-8 w-8 min-[550px]:h-9 min-[550px]:w-auto px-0 min-[550px]:px-4',
                               labelClassName: 'hidden min-[550px]:inline',
-                              tooltip: translate('Dashboard View'),
+                              tooltip: translate('Dashboard view'),
                               tooltipClassName: 'min-[550px]:hidden',
                           },
                       ]
@@ -299,12 +299,12 @@ export default function Announcements() {
                 ...(useHasPermission('create-announcements')
                     ? [
                           {
-                              label: translate('Add Announcement'),
+                              label: translate('Add announcement'),
                               variant: 'default',
                               icon: <Plus className="mr-0 h-4 w-4 min-[550px]:mr-2" />,
                               className: 'h-8 w-8 min-[550px]:h-9 min-[550px]:w-auto px-0 min-[550px]:px-4',
                               labelClassName: 'hidden min-[550px]:inline',
-                              tooltip: translate('Add Announcement'),
+                              tooltip: translate('Add announcement'),
                               tooltipClassName: 'min-[550px]:hidden',
                               onClick: () => {
                                   setCurrentItem(null);
@@ -337,7 +337,7 @@ export default function Announcements() {
                             value: selectedCategory,
                             onChange: setSelectedCategory,
                             options: [
-                                { value: 'all', label: translate('All Categories') },
+                                { value: 'all', label: translate('All categories') },
                                 ...allCategories.map((cat: any) => ({ value: cat.id.toString(), label: cat.name })),
                             ],
                         },
@@ -425,7 +425,7 @@ export default function Announcements() {
                     to={announcements?.to || 0}
                     total={announcements?.total || 0}
                     links={announcements?.links}
-                    entityName={translate('announcements')}
+                    entityName={translate('Announcements')}
                     onPageChange={(url) => {
                         router.get(url, {}, { preserveState: true, preserveScroll: true });
                     }}
@@ -472,7 +472,7 @@ export default function Announcements() {
                         },
                         {
                             name: 'announcement_category_id',
-                            label: translate('Announcement Category'),
+                            label: translate('Announcement category'),
                             type: 'select',
                             options: categories.map((cat: any) => ({ value: cat.id, label: cat.name })),
                             required: true,
@@ -481,17 +481,17 @@ export default function Announcements() {
                                 categories.length === 0
                                     ? {
                                           link: route('announcement-categories.index'),
-                                          linkText: translate('Announcement Category'),
+                                          linkText: translate('Announcement category'),
                                       }
                                     : undefined,
                         },
                         {
                             name: 'start_date',
-                            label: translate('Start Date'),
+                            label: translate('Start date'),
                             type: 'date',
                             required: true,
                         },
-                        { name: 'end_date', label: translate('End Date'), type: 'date' },
+                        { name: 'end_date', label: translate('End date'), type: 'date' },
                         {
                             name: 'status',
                             label: translate('Status'),
@@ -510,10 +510,10 @@ export default function Announcements() {
                 initialData={currentItem}
                 title={
                     formMode === 'create'
-                        ? translate('Add Announcement')
+                        ? translate('Add announcement')
                         : formMode === 'edit'
-                          ? translate('Edit Announcement')
-                          : translate('View Announcement')
+                          ? translate('Edit announcement')
+                          : translate('View announcement')
                 }
                 mode={formMode}
             />
@@ -543,7 +543,7 @@ export default function Announcements() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Announcement Status')}
+                title={translate('Change announcement status')}
                 mode="edit"
             />
 
@@ -554,7 +554,7 @@ export default function Announcements() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={translate('announcement')}
+                entityName={translate('Announcement')}
             />
         </PageTemplate>
     );

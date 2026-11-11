@@ -129,7 +129,7 @@ export default function Template3({ salesOrder, items, taxesData, settings, colo
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        {translate('SALES ORDER')}
+                                        {translate('Sales order')}
                                     </h3>
                                     <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
                                         {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
@@ -168,9 +168,9 @@ export default function Template3({ salesOrder, items, taxesData, settings, colo
                                             <tr>
                                                 <td style={styles.noSpace}></td>
                                                 <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
-                                                    {translate('Order Date')}: {formatValue(salesOrder.order_date)}
+                                                    {translate('Order date')}: {formatValue(salesOrder.order_date)}
                                                     <br />
-                                                    {translate('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
+                                                    {translate('Delivery date')}: {formatValue(salesOrder.delivery_date)}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -186,7 +186,7 @@ export default function Template3({ salesOrder, items, taxesData, settings, colo
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.billing_contact?.name}
                                         <br />
@@ -202,7 +202,7 @@ export default function Template3({ salesOrder, items, taxesData, settings, colo
                                     </p>
                                 </td>
                                 <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.shipping_contact?.name}
                                         <br />
@@ -237,7 +237,7 @@ export default function Template3({ salesOrder, items, taxesData, settings, colo
                                             fontSize: '12px',
                                         }}
                                     >
-                                        {translate('before tax & discount')}
+                                        {translate('Before tax & discount')}
                                     </small>
                                 </th>
                             </tr>

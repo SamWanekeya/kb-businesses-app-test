@@ -135,7 +135,7 @@ export default function Template3({ invoice, items, taxesData, settings, color, 
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        {translate('INVOICE')}
+                                        {translate('Invoice')}
                                     </h3>
                                     <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
                                         {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
@@ -174,9 +174,9 @@ export default function Template3({ invoice, items, taxesData, settings, color, 
                                             <tr>
                                                 <td style={styles.noSpace}></td>
                                                 <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
-                                                    {translate('Invoice Date')}: {formatValue(invoice.invoice_date)}
+                                                    {translate('Invoice date')}: {formatValue(invoice.invoice_date)}
                                                     <br />
-                                                    {translate('Due Date')}: {formatValue(invoice.due_date)}
+                                                    {translate('Due date')}: {formatValue(invoice.due_date)}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -192,7 +192,7 @@ export default function Template3({ invoice, items, taxesData, settings, color, 
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {formatValue(invoice.account?.name || invoice.contact?.name)}
                                         <br />
@@ -244,7 +244,7 @@ export default function Template3({ invoice, items, taxesData, settings, color, 
                                             fontSize: '12px',
                                         }}
                                     >
-                                        {translate('before tax & discount')}
+                                        {translate('Before tax & discount')}
                                     </small>
                                 </th>
                             </tr>

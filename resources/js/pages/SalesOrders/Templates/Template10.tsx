@@ -70,7 +70,7 @@ export default function Template10({
                                         margin: '0',
                                     }}
                                 >
-                                    {translate('SALES ORDER')}
+                                    {translate('Sales order')}
                                 </h3>
                                 <div
                                     style={{
@@ -101,7 +101,7 @@ export default function Template10({
                         <tr style={{ verticalAlign: 'top' }}>
                             <td style={{ padding: '0', verticalAlign: 'top' }}>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
-                                    <b style={{ color: borderColor }}>{translate('FROM')}:</b>
+                                    <b style={{ color: borderColor }}>{translate('From')}:</b>
                                     <br />
                                     {formatValue(salesOrder.creator?.name) && (
                                         <>
@@ -152,7 +152,7 @@ export default function Template10({
                                                     fontWeight: '600',
                                                 }}
                                             >
-                                                <b>{translate('Valid Until')}:</b> {formatValue(salesOrder.delivery_date)}
+                                                <b>{translate('Valid until')}:</b> {formatValue(salesOrder.delivery_date)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -171,7 +171,7 @@ export default function Template10({
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.billing_contact?.name)}
                                     <br />
@@ -188,7 +188,7 @@ export default function Template10({
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.shipping_contact?.name)}
                                     <br />
@@ -230,7 +230,7 @@ export default function Template10({
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

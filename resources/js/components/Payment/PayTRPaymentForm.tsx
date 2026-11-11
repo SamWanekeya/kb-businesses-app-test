@@ -102,7 +102,7 @@ export function PayTRPaymentForm({
                     <CardTitle className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
                             <CreditCard className="h-5 w-5" />
-                            {translate('PayTR Payment')}
+                            {translate('PayTR payment')}
                         </span>
                         <Button
                             variant="outline"
@@ -132,13 +132,13 @@ export function PayTRPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('PayTR Payment')}
+                    {translate('PayTR payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">{translate('Full Name')} *</Label>
+                        <Label htmlFor="name">{translate('Full name')} *</Label>
                         <Input
                             inputType="text"
                             inputMode="text"
@@ -153,7 +153,7 @@ export function PayTRPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')} *</Label>
+                        <Label htmlFor="email">{translate('Email address')} *</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"
@@ -167,7 +167,7 @@ export function PayTRPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="phone">{translate('Phone Number')} *</Label>
+                        <Label htmlFor="phone">{translate('Phone number')} *</Label>
                         <Input
                             id="phone"
                             value={customerDetails.phone}
@@ -191,8 +191,8 @@ export function PayTRPaymentForm({
                     </div>
 
                     <div className="bg-muted rounded-lg p-3">
-                        <p className="text-sm">{translate('Secure Payment via PayTR')}</p>
-                        <p className="text-foreground/75 mt-1 text-xs">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
+                        <p className="text-sm">{translate('Secure payment via PayTR')}</p>
+                        <p className="text-foreground/75 mt-1 text-xs">{translate('Credit card, debit card - real-time payment processing')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

@@ -83,7 +83,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Email Templates'), href: route('email-templates.index') },
+        { title: translate('Email templates'), href: route('email-templates.index') },
         { title: template.name },
     ];
 
@@ -111,7 +111,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-                                <CardTitle className="text-base sm:text-lg">{translate('Template Settings')}</CardTitle>
+                                <CardTitle className="text-base sm:text-lg">{translate('Template settings')}</CardTitle>
                                 <Button
                                     onClick={() => {
                                         router.put(route('email-templates.update-settings', template.id), {
@@ -151,7 +151,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
-                                    <CardTitle className="text-base sm:text-lg">{translate('Email Content')}</CardTitle>
+                                    <CardTitle className="text-base sm:text-lg">{translate('Email content')}</CardTitle>
                                     <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                         {translate('Customize email content for different languages')}
                                     </p>
@@ -171,7 +171,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     className="w-full shrink-0 sm:w-auto"
                                 >
                                     <Save className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                                    {translate('Save Content')}
+                                    {translate('Save content')}
                                 </Button>
                             </div>
                         </CardHeader>
@@ -231,7 +231,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                     className="min-h-[300px]"
                                                 />
                                                 <p className="text-foreground/75 text-xs">
-                                                    💡 {translate('Tip: Use the variables from the sidebar to personalize your emails')}
+                                                    💡 {translate('Tip: use the variables from the sidebar to personalize your emails')}
                                                 </p>
                                             </div>
                                         </div>
@@ -246,7 +246,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                                <span>{translate('Available Variables')}</span>
+                                <span>{translate('Available variables')}</span>
                                 <Badge variant="secondary" className="text-xs">
                                     {Object.keys(variables).length}
                                 </Badge>

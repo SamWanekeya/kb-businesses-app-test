@@ -160,7 +160,7 @@ export default function Currencies() {
     // Add the "Add New Currency" button if user has permission
     if (useHasPermission('manage-currencies')) {
         pageActions.push({
-            label: translate('Add Currency'),
+            label: translate('Add currency'),
             icon: <Plus className="mr-0 h-4 w-4 min-[340px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -168,7 +168,7 @@ export default function Currencies() {
             },
             className: 'h-8 w-8 min-[340px]:h-9 min-[340px]:w-auto px-0 min-[340px]:px-4',
             labelClassName: 'hidden min-[340px]:inline',
-            tooltip: translate('Add Currency'),
+            tooltip: translate('Add currency'),
             tooltipClassName: 'min-[340px]:hidden',
         });
     }
@@ -289,7 +289,7 @@ export default function Currencies() {
                     to={currencies?.to || 0}
                     total={currencies?.total || 0}
                     links={currencies?.links}
-                    entityName={translate('currencies')}
+                    entityName={translate('Currencies')}
                     onPageChange={(url) => {
                         router.get(url, {}, { preserveState: true, preserveScroll: true });
                     }}
@@ -326,19 +326,19 @@ export default function Currencies() {
                     fields: [
                         {
                             name: 'name',
-                            label: translate('Currency Name'),
+                            label: translate('Currency name'),
                             type: 'text',
                             required: true,
                         },
                         {
                             name: 'code',
-                            label: translate('Currency Code'),
+                            label: translate('Currency code'),
                             type: 'text',
                             required: true,
                         },
                         {
                             name: 'symbol',
-                            label: translate('Currency Symbol'),
+                            label: translate('Currency symbol'),
                             type: 'text',
                             required: true,
                         },
@@ -349,7 +349,7 @@ export default function Currencies() {
                         },
                         {
                             name: 'is_default',
-                            label: translate('Set as Default Currency'),
+                            label: translate('Set as default currency'),
                             type: 'checkbox',
                         },
                     ],
@@ -358,10 +358,10 @@ export default function Currencies() {
                 initialData={currentItem}
                 title={
                     formMode === 'create'
-                        ? translate('Add New Currency')
+                        ? translate('Add new currency')
                         : formMode === 'edit'
-                          ? translate('Edit Currency')
-                          : translate('View Currency')
+                          ? translate('Edit currency')
+                          : translate('View currency')
                 }
                 mode={formMode}
             />

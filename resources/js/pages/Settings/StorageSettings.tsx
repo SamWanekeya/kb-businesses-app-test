@@ -245,7 +245,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
     const renderFileTypeSelector = () => (
         <div className="space-y-2">
             <Label>
-                {translate('Allowed File Types')} <span className="text-sm text-red-500">*</span>
+                {translate('Allowed file types')} <span className="text-sm text-red-500">*</span>
             </Label>
             <div className="space-y-3">
                 <div className="flex flex-col gap-2 min-[1100px]:flex-row">
@@ -261,10 +261,10 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     </div>
                     <div className="flex gap-2 max-[768px]:grid max-[768px]:grid-cols-2">
                         <Button type="button" variant="outline" size="sm" onClick={handleSelectAll} className="w-full whitespace-nowrap">
-                            {translate('Select All')}
+                            {translate('Select all')}
                         </Button>
                         <Button type="button" variant="outline" size="sm" onClick={handleUnselectAll} className="w-full whitespace-nowrap">
-                            {translate('Unselect All')}
+                            {translate('Unselect all')}
                         </Button>
                     </div>
                 </div>
@@ -489,7 +489,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
 
     return (
         <SettingsSection
-            title={translate('Storage Settings')}
+            title={translate('Storage settings')}
             description={translate('Configure file storage settings for your application')}
             action={
                 <Button type="submit" disabled={processing} form="storage-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -510,7 +510,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                             <TabsList className="grid w-full grid-cols-3 max-[1100px]:h-auto max-[1100px]:grid-cols-1">
                                 <TabsTrigger value="local" className="flex cursor-pointer items-center gap-2">
                                     <HardDrive className="h-4 w-4" />
-                                    {translate('Local Storage')}
+                                    {translate('Local storage')}
                                 </TabsTrigger>
                                 <TabsTrigger value="aws_s3" className="flex cursor-pointer items-center gap-2">
                                     <span>☁️</span>
@@ -523,17 +523,17 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                             </TabsList>
 
                             <TabsContent value="local" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('Local Storage Settings')}</h3>
+                                <h3 className="mb-4 text-base font-medium">{translate('Local storage settings')}</h3>
                                 {renderLocalStorageFields()}
                             </TabsContent>
 
                             <TabsContent value="aws_s3" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('AWS S3 Storage Settings')}</h3>
+                                <h3 className="mb-4 text-base font-medium">{translate('AWS S3 storage settings')}</h3>
                                 {renderAwsS3Fields()}
                             </TabsContent>
 
                             <TabsContent value="wasabi" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('Wasabi Storage Settings')}</h3>
+                                <h3 className="mb-4 text-base font-medium">{translate('Wasabi storage settings')}</h3>
                                 {renderWasabiFields()}
                             </TabsContent>
                         </Tabs>

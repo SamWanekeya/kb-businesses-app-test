@@ -87,7 +87,7 @@ export function InvoiceSkrillPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Wallet className="h-5 w-5" />
-                    {translate('Skrill Payment')}
+                    {translate('Skrill payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -95,11 +95,11 @@ export function InvoiceSkrillPaymentForm({
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm">{translate('Payment Amount')}:</span>
+                            <span className="text-sm">{translate('Payment amount')}:</span>
                             <span className="font-extrabold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-foreground/75 text-sm">{translate('Payment Type')}:</span>
+                            <span className="text-foreground/75 text-sm">{translate('Payment type')}:</span>
                             <span className="text-sm capitalize">
                                 {paymentType} {translate('Payment')}
                             </span>
@@ -107,7 +107,7 @@ export function InvoiceSkrillPaymentForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{translate('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email address')}</Label>
                         <Input
                             inputIdentifier="email"
                             inputType="email"
@@ -127,7 +127,7 @@ export function InvoiceSkrillPaymentForm({
                         <div className="flex items-start gap-2">
                             <Wallet className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-sm">
-                                <p className="font-medium text-blue-900 dark:text-blue-100">{translate('Secure Payment with Skrill')}</p>
+                                <p className="font-medium text-blue-900 dark:text-blue-100">{translate('Secure payment with Skrill')}</p>
                                 <p className="mt-1 text-blue-700 dark:text-blue-300">
                                     {translate("You will be redirected to Skrill's secure payment page to complete your transaction.")}
                                 </p>

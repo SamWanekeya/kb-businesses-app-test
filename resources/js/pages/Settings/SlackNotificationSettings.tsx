@@ -122,7 +122,7 @@ export default function SlackNotificationSettings() {
 
     return (
         <SettingsSection
-            title={translate('Slack Settings')}
+            title={translate('Slack settings')}
             description={translate('Configure Slack settings for notifications and communications')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
@@ -153,7 +153,7 @@ export default function SlackNotificationSettings() {
                             {/* Slack Notification Settings */}
                             <div className="my-6 flex items-center gap-2">
                                 <Bell className="h-5 w-5 text-emerald-500" />
-                                <h3 className="font-medium text-gray-900">{translate('Slack Notification Settings')}</h3>
+                                <h3 className="font-medium text-gray-900">{translate('Slack notification settings')}</h3>
                             </div>
                             {availableNotifications.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
@@ -182,7 +182,7 @@ export default function SlackNotificationSettings() {
                     <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 min-[1600px]:col-span-1">
                         <div className="mb-4 flex items-center gap-2">
                             <Send className="h-4 w-4 text-emerald-500" />
-                            <h3 className="font-medium text-gray-900">{translate('Test Slack Configuration')}</h3>
+                            <h3 className="font-medium text-gray-900">{translate('Test Slack configuration')}</h3>
                         </div>
                         <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
                             <p className="text-xs text-gray-600">{translate('Send a test message to verify your Slack webhook.')}</p>
@@ -200,7 +200,7 @@ export default function SlackNotificationSettings() {
                                 ) : (
                                     <>
                                         <Send className="mr-2 h-4 w-4" />
-                                        {translate('Send Test Message')}
+                                        {translate('Send test message')}
                                     </>
                                 )}
                             </Button>
@@ -209,12 +209,12 @@ export default function SlackNotificationSettings() {
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
                                 <MessagesCircle className="h-4 w-4 text-blue-600" />
-                                <h3 className="text-sm text-blue-900">{translate('Slack Setup Instructions')}</h3>
+                                <h3 className="text-sm text-blue-900">{translate('Slack setup instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">
                                 <li>{translate('1. Go to your Slack workspace')}</li>
                                 <li>{translate('2. Create a new Slack app')}</li>
-                                <li>{translate('3. Enable Incoming Webhooks')}</li>
+                                <li>{translate('3. Enable incoming webhooks')}</li>
                                 <li>{translate('4. Add webhook to workspace')}</li>
                                 <li>{translate('5. Copy the webhook URL here')}</li>
                             </ol>

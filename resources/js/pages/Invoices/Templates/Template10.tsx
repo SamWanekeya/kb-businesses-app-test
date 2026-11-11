@@ -67,7 +67,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                         margin: '0',
                                     }}
                                 >
-                                    {translate('INVOICE')}
+                                    {translate('Invoice')}
                                 </h3>
                                 <div
                                     style={{
@@ -98,7 +98,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                         <tr style={{ verticalAlign: 'top' }}>
                             <td style={{ padding: '0', verticalAlign: 'top' }}>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
-                                    <b style={{ color: borderColor }}>{translate('FROM')}:</b>
+                                    <b style={{ color: borderColor }}>{translate('From')}:</b>
                                     <br />
                                     {formatValue(invoice.creator?.name) && (
                                         <>
@@ -149,7 +149,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                                     fontWeight: '600',
                                                 }}
                                             >
-                                                <b>{translate('Valid Until')}:</b> {formatValue(invoice.due_date)}
+                                                <b>{translate('Valid until')}:</b> {formatValue(invoice.due_date)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -168,7 +168,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.account?.name || invoice.contact?.name)}
                                     <br />
@@ -184,7 +184,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.creator?.name)}
                                     <br />
@@ -218,7 +218,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

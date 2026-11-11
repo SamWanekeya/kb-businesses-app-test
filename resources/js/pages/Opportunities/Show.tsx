@@ -46,9 +46,9 @@ export default function OpportunityShow() {
     const permissions = auth?.permissions || [];
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Opportunity Management') },
+        { title: translate('Opportunity management') },
         { title: translate('Opportunities'), href: route('opportunities.index') },
-        { title: translate('View Opportunity') },
+        { title: translate('View opportunity') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -128,13 +128,13 @@ export default function OpportunityShow() {
                             },
                             {
                                 label: translate('Products'),
-                                value: `${opportunity.products?.length || 0} ${(opportunity.products?.length || 0) === 1 ? translate('item') : translate('items')}`,
+                                value: `${opportunity.products?.length || 0} ${(opportunity.products?.length || 0) === 1 ? translate('Item') : translate('Items')}`,
                                 icon: Package,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: translate('Close Date'),
+                                label: translate('Close date'),
                                 value: window.kbSettings.formatDateTimeSimple(opportunity.close_date),
                                 icon: Clock,
                                 iconCls: 'text-purple-600',
@@ -166,7 +166,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Opportunity Summary')}
+                                {translate('Opportunity summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -181,7 +181,7 @@ export default function OpportunityShow() {
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                 {opportunity.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -209,7 +209,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Building className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Records')}
+                                {translate('Related records')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
@@ -340,7 +340,7 @@ export default function OpportunityShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
-                                        {translate('Meetings & Calls')}
+                                        {translate('Meetings & calls')}
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
@@ -543,7 +543,7 @@ export default function OpportunityShow() {
                                         <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
                                             <TableHead className="py-2.5 font-bold">{translate('Product')}</TableHead>
                                             <TableHead className="py-2.5 text-center font-bold">{translate('Quantity')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-bold">{translate('Unit Price')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-bold">{translate('Unit price')}</TableHead>
                                             <TableHead className="py-2.5 text-center font-bold">{translate('Tax')}</TableHead>
                                             <TableHead className="py-2.5 text-right font-bold">{translate('Total')}</TableHead>
                                         </TableRow>
@@ -627,11 +627,11 @@ export default function OpportunityShow() {
                                             <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(subtotal)}</span>
                                         </div>
                                         <div className="flex items-center justify-between border-b px-4 py-3">
-                                            <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
+                                            <span className="text-foreground/75 text-sm">{translate('Total tax')}</span>
                                             <span className="text-foreground font-mono text-sm font-bold">{formatCurrency(totalTax)}</span>
                                         </div>
                                         <div className="flex items-center justify-between px-4 py-3">
-                                            <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                            <span className="text-foreground text-sm font-extrabold">{translate('Grand total')}</span>
                                             <span className="font-mono text-lg font-extrabold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                         </div>
                                     </div>
@@ -654,7 +654,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Quotes')} ({opportunity.quotes.length})
+                                {translate('Related quotes')} ({opportunity.quotes.length})
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -688,7 +688,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Activity Stream')}
+                                {translate('Activity stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -956,8 +956,8 @@ export default function OpportunityShow() {
                     );
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={translate('this activity')}
-                entityName={translate('activity')}
+                itemName={translate('This activity')}
+                entityName={translate('Activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -972,8 +972,8 @@ export default function OpportunityShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={translate('all activities for {{name}}', { name: opportunity.name })}
-                entityName={translate('activities')}
+                itemName={translate('All activities for {{name}}', { name: opportunity.name })}
+                entityName={translate('Activities')}
             />
         </PageTemplate>
     );

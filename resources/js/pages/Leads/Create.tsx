@@ -36,7 +36,7 @@ export default function LeadCreate() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Lead Management') },
+        { title: translate('Lead management') },
         { title: translate('Leads'), href: route('leads.index') },
         { title: translate('Create') },
     ];
@@ -47,17 +47,17 @@ export default function LeadCreate() {
     };
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
-        { name: 'name', label: translate('Lead Name') },
+        { name: 'name', label: translate('Lead name') },
         { name: 'email', label: translate('Email') },
         { name: 'phone', label: translate('Phone') },
         { name: 'organization', label: translate('Organization') },
-        { name: 'value', label: translate('Lead Value') },
-        { name: 'account_industry_id', label: translate('Account Industry') },
-        { name: 'lead_status_id', label: translate('Lead Status') },
-        { name: 'lead_source_id', label: translate('Lead Source') },
+        { name: 'value', label: translate('Lead value') },
+        { name: 'account_industry_id', label: translate('Account industry') },
+        { name: 'lead_status_id', label: translate('Lead status') },
+        { name: 'lead_source_id', label: translate('Lead source') },
         { name: 'address', label: translate('Address') },
         { name: 'campaign_id', label: translate('Campaign') },
-        { name: 'assigned_to', label: translate('Assign To') },
+        { name: 'assigned_to', label: translate('Assign to') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -90,7 +90,7 @@ export default function LeadCreate() {
 
     return (
         <PageTemplate
-            title={translate('Create Lead')}
+            title={translate('Create lead')}
             description={translate('Fill in the details to create a new lead')}
             breadcrumbs={breadcrumbs}
             actions={[
@@ -110,7 +110,7 @@ export default function LeadCreate() {
                     {/* Basic Information */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Basic information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -236,12 +236,12 @@ export default function LeadCreate() {
                     {/* Lead Classification */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Lead Classification')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Lead classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label className="text-sm" required>
-                                    {translate('Account Industry')}
+                                    {translate('Account industry')}
                                 </Label>
                                 <Select
                                     value={data.account_industry_id}
@@ -265,7 +265,7 @@ export default function LeadCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('account-industries.index')} className="font-medium underline">
-                                            {translate('Account Industries')}
+                                            {translate('Account industries')}
                                         </a>
                                     </p>
                                 )}
@@ -273,7 +273,7 @@ export default function LeadCreate() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm" required>
-                                    {translate('Lead Status')}
+                                    {translate('Lead status')}
                                 </Label>
                                 <Select
                                     value={data.lead_status_id}
@@ -297,7 +297,7 @@ export default function LeadCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('lead-statuses.index')} className="font-medium underline">
-                                            {translate('Lead Statuses')}
+                                            {translate('Lead statuses')}
                                         </a>
                                     </p>
                                 )}
@@ -305,7 +305,7 @@ export default function LeadCreate() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm" required>
-                                    {translate('Lead Source')}
+                                    {translate('Lead source')}
                                 </Label>
                                 <Select
                                     value={data.lead_source_id}
@@ -329,7 +329,7 @@ export default function LeadCreate() {
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
                                         <a href={route('lead-sources.index')} className="font-medium underline">
-                                            {translate('Lead Sources')}
+                                            {translate('Lead sources')}
                                         </a>
                                     </p>
                                 )}
@@ -375,7 +375,7 @@ export default function LeadCreate() {
                     {/* Address & Notes */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Address & Notes')}</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Address & notes')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
@@ -420,7 +420,7 @@ export default function LeadCreate() {
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label className="text-sm" required>
-                                    {translate('Assign To')}
+                                    {translate('Assign to')}
                                 </Label>
                                 <Select
                                     value={data.assigned_to}

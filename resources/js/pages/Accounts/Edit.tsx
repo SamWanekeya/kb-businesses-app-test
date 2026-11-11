@@ -53,7 +53,7 @@ export default function AccountEdit() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Account Management') },
+        { title: translate('Account management') },
         { title: translate('Accounts'), href: route('accounts.index') },
         { title: translate('Edit') },
     ];
@@ -76,16 +76,16 @@ export default function AccountEdit() {
     };
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
-        { name: 'name', label: translate('Account Name') },
+        { name: 'name', label: translate('Account name') },
         { name: 'email', label: translate('Email') },
         { name: 'phone', label: translate('Phone') },
-        { name: 'account_type_id', label: translate('Account Type') },
+        { name: 'account_type_id', label: translate('Account type') },
         { name: 'account_industry_id', label: translate('Industry') },
-        { name: 'assigned_to', label: translate('Assign To') },
-        { name: 'billing_address', label: translate('Street Address') },
+        { name: 'assigned_to', label: translate('Assign to') },
+        { name: 'billing_address', label: translate('Street address') },
         { name: 'billing_city', label: translate('City') },
-        { name: 'billing_state', label: translate('State / Province') },
-        { name: 'billing_postal_code', label: translate('Postal Code') },
+        { name: 'billing_state', label: translate('State / province') },
+        { name: 'billing_postal_code', label: translate('Postal code') },
         { name: 'billing_country', label: translate('Country') },
     ];
 
@@ -93,7 +93,7 @@ export default function AccountEdit() {
         e.preventDefault();
         const clientErrors: Record<string, string> = {};
         requiredFields.forEach(({ name, label }) => {
-            if (!data[name]) clientErrors[name] = `${label} ${translate('is required')}`;
+            if (!data[name]) clientErrors[name] = `${label} ${translate('Is required')}`;
         });
         if (data.phone && !/^[+\d\s\-().]+$/.test(data.phone)) {
             clientErrors['phone'] = translate('Phone number can only contain digits, spaces, +, -, (, )');
@@ -125,8 +125,8 @@ export default function AccountEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Account')}
-            description={translate('Edit Account details and related information')}
+            title={translate('Edit account')}
+            description={translate('Edit account details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
@@ -145,7 +145,7 @@ export default function AccountEdit() {
             >
                 {/* ── Basic Information ── */}
                 <div>
-                    <SectionTitle title={translate('Basic Information')} />
+                    <SectionTitle title={translate('Basic information')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
                             <Input
@@ -202,10 +202,10 @@ export default function AccountEdit() {
 
                 {/* ── Classification & Assignment ── */}
                 <div>
-                    <SectionTitle title={translate('Classification & Assignment')} />
+                    <SectionTitle title={translate('Classification & assignment')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label required>{translate('Account Type')}</Label>
+                            <Label required>{translate('Account type')}</Label>
                             <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
                                 <SelectTrigger className={errors.account_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select...')} />
@@ -223,14 +223,14 @@ export default function AccountEdit() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('account-types.index')} className="font-medium underline">
-                                        {translate('Account Types')}
+                                        {translate('Account types')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label required>{translate('Assign To')}</Label>
+                            <Label required>{translate('Assign to')}</Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select...')} />
@@ -300,11 +300,11 @@ export default function AccountEdit() {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Billing */}
                     <div>
-                        <SectionTitle title={translate('Billing Address')} />
+                        <SectionTitle title={translate('Billing address')} />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
                                 <Label htmlFor="billing_address" required>
-                                    {translate('Billing Address')}
+                                    {translate('Billing address')}
                                 </Label>
                                 <Textarea
                                     id="billing_address"
@@ -369,7 +369,7 @@ export default function AccountEdit() {
                             title={
                                 (
                                     <span className="flex items-center gap-2">
-                                        {translate('Shipping Address')}
+                                        {translate('Shipping address')}
                                         <span className="text-sm font-normal text-gray-400">({translate('Optional')})</span>
                                     </span>
                                 ) as any
@@ -386,11 +386,11 @@ export default function AccountEdit() {
                                                 className="flex items-center justify-center p-2 text-xs sm:gap-1 sm:px-3 sm:py-1.5"
                                             >
                                                 <Copy className="h-3 w-3" />
-                                                <span className="hidden sm:inline">{translate('Copy to Shipping')}</span>
+                                                <span className="hidden sm:inline">{translate('Copy to shipping')}</span>
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{translate('Copy Billing to Shipping Address')}</p>
+                                            <p>{translate('Copy billing to shipping address')}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -398,7 +398,7 @@ export default function AccountEdit() {
                         />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="shipping_address">{translate('Shipping Address')}</Label>
+                                <Label htmlFor="shipping_address">{translate('Shipping address')}</Label>
                                 <Textarea
                                     id="shipping_address"
                                     value={data.shipping_address}
@@ -432,7 +432,7 @@ export default function AccountEdit() {
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_postal_code">{translate('Shipping Postal Code')}</Label>
+                                    <Label htmlFor="shipping_postal_code">{translate('Shipping postal code')}</Label>
                                     <Input
                                         inputIdentifier="shipping_postal_code"
                                         value={data.shipping_postal_code}

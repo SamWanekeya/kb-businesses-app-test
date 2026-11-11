@@ -38,30 +38,30 @@ export default function ProjectReports() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Reports'), href: '#' },
-        { title: translate('Project Reports') },
+        { title: translate('Project reports') },
     ];
 
     const summaryCards = [
         {
-            title: translate('Total Projects'),
+            title: translate('Total projects'),
             value: summary.total_projects.toLocaleString(),
             icon: <Briefcase className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: translate('Active Projects'),
+            title: translate('Active projects'),
             value: summary.active_projects.toLocaleString(),
             icon: <Play className="h-6 w-6 text-fuchsia-600" />,
             iconColor: 'bg-fuchsia-100',
         },
         {
-            title: translate('Completed Projects'),
+            title: translate('Completed projects'),
             value: summary.completed_projects.toLocaleString(),
             icon: <CheckCircle className="h-6 w-6 text-purple-600" />,
             iconColor: 'bg-purple-100',
         },
         {
-            title: translate('Completion Rate'),
+            title: translate('Completion rate'),
             value: `${summary.completion_rate.toFixed(2)}%`,
             icon: <Percent className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
@@ -72,7 +72,7 @@ export default function ProjectReports() {
 
     return (
         <PageTemplate
-            title={translate('Project Reports')}
+            title={translate('Project reports')}
             description={translate('View and analyze project reports to track performance and progress.')}
             url="/reports/projects"
             breadcrumbs={breadcrumbs}
@@ -84,7 +84,7 @@ export default function ProjectReports() {
                 <div className="col-span-full">
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-bold">{translate('Project Trend')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Project trend')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
                                     <Tabs
@@ -155,7 +155,7 @@ export default function ProjectReports() {
                             className="border-border bg-muted/30 flex shrink-0 flex-row items-center border-b px-5"
                             style={{ minHeight: '72px' }}
                         >
-                            <CardTitle className="text-foreground text-base font-bold">{translate('Projects by Status')}</CardTitle>
+                            <CardTitle className="text-foreground text-base font-bold">{translate('Projects by status')}</CardTitle>
                         </CardHeader>
 
                         <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
@@ -173,7 +173,7 @@ export default function ProjectReports() {
                                                       const statusLabels: { [key: string]: string } = {
                                                           active: translate('Active'),
                                                           completed: translate('Completed'),
-                                                          on_hold: translate('On Hold'),
+                                                          on_hold: translate('On hold'),
                                                           inactive: translate('Inactive'),
                                                       };
                                                       const label = statusLabels[status] || status;
@@ -193,7 +193,7 @@ export default function ProjectReports() {
                                             const statusLabels: { [key: string]: string } = {
                                                 active: translate('Active'),
                                                 completed: translate('Completed'),
-                                                on_hold: translate('On Hold'),
+                                                on_hold: translate('On hold'),
                                                 inactive: translate('Inactive'),
                                             };
                                             const label = statusLabels[props.payload.status] || props.payload.status;
@@ -209,7 +209,7 @@ export default function ProjectReports() {
                                                 const statusLabels: { [key: string]: string } = {
                                                     active: translate('Active'),
                                                     completed: translate('Completed'),
-                                                    on_hold: translate('On Hold'),
+                                                    on_hold: translate('On hold'),
                                                     inactive: translate('Inactive'),
                                                 };
                                                 return statusLabels[entry.payload.status] || entry.payload.status;
@@ -226,7 +226,7 @@ export default function ProjectReports() {
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm">
                         <div className="border-border bg-muted/30 flex shrink-0 items-center border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
-                                <h3 className="text-foreground text-base font-bold">{translate('Overdue Projects')}</h3>
+                                <h3 className="text-foreground text-base font-bold">{translate('Overdue projects')}</h3>
                                 <p className="text-foreground/75 mt-0.5 text-xs">{translate('Active projects past their deadline')}</p>
                             </div>
                         </div>

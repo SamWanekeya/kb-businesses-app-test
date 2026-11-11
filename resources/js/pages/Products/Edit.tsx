@@ -70,15 +70,15 @@ export default function ProductEdit() {
         if (s === 2) {
             if (!data.price) errs.price = translate('Price is required');
             if (data.price && parseFloat(data.price) < 0) errs.price = translate('Price must be at least 0');
-            if (!data.stock_quantity) errs.stock_quantity = translate('Stock Quantity is required');
-            if (data.stock_quantity && parseFloat(data.stock_quantity) < 0) errs.stock_quantity = translate('Stock Quantity must be at least 0');
+            if (!data.stock_quantity) errs.stock_quantity = translate('Stock quantity is required');
+            if (data.stock_quantity && parseFloat(data.stock_quantity) < 0) errs.stock_quantity = translate('Stock quantity must be at least 0');
         }
         if (s === 3) {
-            if (!data.main_image_id) errs.main_image_id = translate('Main Image is required');
-            if (!data.additional_image_ids?.length) errs.additional_image_ids = translate('Additional Images are required');
+            if (!data.main_image_id) errs.main_image_id = translate('Main image is required');
+            if (!data.additional_image_ids?.length) errs.additional_image_ids = translate('Additional images are required');
         }
         if (s === 4) {
-            if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
+            if (!data.assigned_to) errs.assigned_to = translate('Assign to is required');
         }
         return errs;
     };
@@ -144,7 +144,7 @@ export default function ProductEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Product')}
+            title={translate('Edit product')}
             url={route('products.index')}
             breadcrumbs={breadcrumbs}
             actions={[
@@ -331,7 +331,7 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="space-y-2">
                                         <Label>
-                                            {translate('Main Image')} <span className="text-red-500">*</span>
+                                            {translate('Main image')} <span className="text-red-500">*</span>
                                         </Label>
                                         <MediaPicker
                                             value={data.main_image_id ?? undefined}
@@ -364,7 +364,7 @@ export default function ProductEdit() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label>
-                                            {translate('Additional Images')} <span className="text-red-500">*</span>
+                                            {translate('Additional images')} <span className="text-red-500">*</span>
                                         </Label>
                                         <MediaPicker
                                             value={data.additional_image_ids || []}
@@ -383,7 +383,7 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Assign To')}</Label>
+                                            <Label required>{translate('Assign to')}</Label>
                                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                                     <SelectValue placeholder={translate('Select...')} />
@@ -436,7 +436,7 @@ export default function ProductEdit() {
                                     </Button>
                                 ) : (
                                     <Button type="submit" disabled={processing}>
-                                        {processing ? translate('Saving...') : translate('Save Product')}
+                                        {processing ? translate('Saving...') : translate('Save product')}
                                     </Button>
                                 )}
                             </div>
@@ -447,7 +447,7 @@ export default function ProductEdit() {
                     <div className="hidden w-72 shrink-0 xl:block">
                         <div className="bg-card border-border sticky top-4 overflow-hidden rounded-xl border">
                             <div className="border-border flex items-center justify-between border-b px-4 py-3">
-                                <span className="text-foreground/75 text-xs font-bold tracking-wide">{translate('Live Preview')}</span>
+                                <span className="text-foreground/75 text-xs font-bold tracking-wide">{translate('Live preview')}</span>
                             </div>
 
                             {/* Image area */}
@@ -465,7 +465,7 @@ export default function ProductEdit() {
                             {/* Product info */}
                             <div className="space-y-3 p-4">
                                 <div>
-                                    <p className="text-foreground text-sm font-bold">{data.name || translate('Untitled Item')}</p>
+                                    <p className="text-foreground text-sm font-bold">{data.name || translate('Untitled item')}</p>
                                     <p className="text-foreground/75 mt-0.5 flex items-center gap-1 text-xs">
                                         <Tag className="h-3 w-3 shrink-0" />
                                         {data.sku || 'SKU-XXXXXXXX'}
@@ -474,7 +474,7 @@ export default function ProductEdit() {
 
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="bg-muted border-border rounded-lg border p-2">
-                                        <p className="text-foreground/75 text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
+                                        <p className="text-foreground/75 text-[10px] font-medium tracking-wide">{translate('Sale price')}</p>
                                         <p className="text-foreground mt-0.5 font-mono text-sm font-extrabold">
                                             {data.price ? `${currency_symbol}${parseFloat(data.price).toFixed(2)}` : `${currency_symbol}0.00`}
                                         </p>

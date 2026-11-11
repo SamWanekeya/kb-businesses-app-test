@@ -69,7 +69,7 @@ export default function Template7({ invoice, items, taxesData, settings, color, 
                                         margin: '0',
                                     }}
                                 >
-                                    {translate('INVOICE')}
+                                    {translate('Invoice')}
                                 </h3>
                             </td>
                         </tr>
@@ -103,9 +103,9 @@ export default function Template7({ invoice, items, taxesData, settings, color, 
                                         <tr>
                                             <td style={{ padding: '0' }}></td>
                                             <td style={{ padding: '0', textAlign: 'right' }}>
-                                                {translate('Invoice Date')}: {formatValue(invoice.invoice_date)}
+                                                {translate('Invoice date')}: {formatValue(invoice.invoice_date)}
                                                 <br />
-                                                {translate('Due Date')}: {formatValue(invoice.due_date)}
+                                                {translate('Due date')}: {formatValue(invoice.due_date)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -138,7 +138,7 @@ export default function Template7({ invoice, items, taxesData, settings, color, 
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.account?.name || invoice.contact?.name)}
                                     <br />
@@ -154,7 +154,7 @@ export default function Template7({ invoice, items, taxesData, settings, color, 
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship to')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.creator?.name)}
                                     <br />
@@ -188,7 +188,7 @@ export default function Template7({ invoice, items, taxesData, settings, color, 
                                         fontSize: '12px',
                                     }}
                                 >
-                                    {translate('before tax & discount')}
+                                    {translate('Before tax & discount')}
                                 </small>
                             </th>
                         </tr>

@@ -422,7 +422,7 @@ export default function SalesOrderEdit() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Sales Orders'), href: route('sales-orders.index') },
+        { title: translate('Sales orders'), href: route('sales-orders.index') },
         { title: translate('Edit') },
     ];
 
@@ -441,7 +441,7 @@ export default function SalesOrderEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Sales Order')}
+            title={translate('Edit sales order')}
             description={translate('Update sales order details and related information')}
             url="/sales-orders"
             breadcrumbs={breadcrumbs}
@@ -462,7 +462,7 @@ export default function SalesOrderEdit() {
                 {/* Basic Info */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-bold">{translate('Order Information')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Order information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="md:col-span-2">
@@ -572,7 +572,7 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={translate('Assign To')} required error={errors.assigned_to}>
+                        <Field label={translate('Assign to')} required error={errors.assigned_to}>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select user')} />
@@ -592,10 +592,10 @@ export default function SalesOrderEdit() {
                 {/* Contacts & Shipping Provider */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-bold">{translate('Contacts & Shipping Provider')}</CardTitle>
+                        <CardTitle className="text-base font-bold">{translate('Contacts & shipping provider')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
-                        <Field label={translate('Billing Contact')} required error={errors.billing_contact_id}>
+                        <Field label={translate('Billing contact')} required error={errors.billing_contact_id}>
                             <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select billing contact')} />
@@ -609,7 +609,7 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={translate('Shipping Contact')} required error={errors.shipping_contact_id}>
+                        <Field label={translate('Shipping contact')} required error={errors.shipping_contact_id}>
                             <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select shipping contact')} />
@@ -623,7 +623,7 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={translate('Shipping Provider')} required error={errors.shipping_provider_type_id}>
+                        <Field label={translate('Shipping provider')} required error={errors.shipping_provider_type_id}>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select provider')} />
@@ -649,7 +649,7 @@ export default function SalesOrderEdit() {
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
                             <Button type="button" size="sm" onClick={addLine}>
-                                <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
+                                <Plus className="mr-1 h-4 w-4" /> {translate('Add product')}
                             </Button>
                         </div>
                     </CardHeader>
@@ -665,10 +665,10 @@ export default function SalesOrderEdit() {
                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {translate('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Val')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount val')}</th>
                                         <th className="w-28 px-4 py-3 text-left">{translate('Tax')}</th>
                                         <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
                                         <th className="w-12 px-4 py-3"></th>
@@ -737,7 +737,7 @@ export default function SalesOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -752,7 +752,7 @@ export default function SalesOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Type')}
+                                                        {translate('Discount type')}
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
@@ -766,13 +766,13 @@ export default function SalesOrderEdit() {
                                                         <SelectContent>
                                                             <SelectItem value="none">{translate('None')}</SelectItem>
                                                             <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Val')}
+                                                        {translate('Discount val')}
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -795,7 +795,7 @@ export default function SalesOrderEdit() {
                                                             <span className="text-foreground/75 text-sm">
                                                                 {prod?.tax
                                                                     ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
-                                                                    : translate('No Tax')}
+                                                                    : translate('No tax')}
                                                             </span>
                                                         );
                                                     })()}
@@ -838,7 +838,7 @@ export default function SalesOrderEdit() {
                                     <span className="font-mono font-medium">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
-                                    <span>{translate('Grand Total')}</span>
+                                    <span>{translate('Grand total')}</span>
                                     <span className="font-mono text-lg text-fuchsia-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
@@ -850,7 +850,7 @@ export default function SalesOrderEdit() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-bold">{translate('Billing & Shipping Address')}</CardTitle>
+                            <CardTitle className="text-base font-bold">{translate('Billing & shipping address')}</CardTitle>
                             <button
                                 type="button"
                                 onClick={() => {
@@ -869,13 +869,13 @@ export default function SalesOrderEdit() {
                                 {/* Billing */}
                                 <div>
                                     <div className="mb-4 flex items-center justify-between">
-                                        <h3 className="font-bold text-gray-800 dark:text-gray-100">{translate('Billing Address')}</h3>
+                                        <h3 className="font-bold text-gray-800 dark:text-gray-100">{translate('Billing address')}</h3>
                                         <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
-                                            <Copy className="mr-1 h-3 w-3" /> {translate('Copy to Shipping')}
+                                            <Copy className="mr-1 h-3 w-3" /> {translate('Copy to shipping')}
                                         </Button>
                                     </div>
                                     <div className="space-y-3">
-                                        <Field label={translate('Billing Address')} required error={errors.billing_address}>
+                                        <Field label={translate('Billing address')} required error={errors.billing_address}>
                                             <Textarea
                                                 value={form.billing_address}
                                                 onChange={(e) => set('billing_address', e.target.value)}
@@ -918,9 +918,9 @@ export default function SalesOrderEdit() {
 
                                 {/* Shipping */}
                                 <div>
-                                    <h3 className="mb-4 font-bold text-gray-800 dark:text-gray-100">{translate('Shipping Address')}</h3>
+                                    <h3 className="mb-4 font-bold text-gray-800 dark:text-gray-100">{translate('Shipping address')}</h3>
                                     <div className="space-y-3">
-                                        <Field label={translate('Shipping Address')} error={errors.shipping_address}>
+                                        <Field label={translate('Shipping address')} error={errors.shipping_address}>
                                             <Textarea
                                                 value={form.shipping_address}
                                                 onChange={(e) => set('shipping_address', e.target.value)}

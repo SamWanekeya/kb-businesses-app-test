@@ -151,12 +151,12 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
     return (
         <SettingsSection
-            title={translate('Webhook Settings')}
+            title={translate('Webhook settings')}
             description={translate('Manage webhooks for external integrations')}
             action={
                 <Button onClick={handleCreate} size="sm" className="max-[1300px]:px-2.5">
                     <Plus className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{translate('Add Webhook')}</span>
+                    <span className="max-[1300px]:hidden">{translate('Add webhook')}</span>
                 </Button>
             }
         >
@@ -258,7 +258,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>{editingWebhook ? translate('Edit Webhook') : translate('Add Webhook')}</DialogTitle>
+                                    <DialogTitle>{editingWebhook ? translate('Edit webhook') : translate('Add webhook')}</DialogTitle>
                                 </DialogHeader>
                                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid gap-2">
@@ -275,13 +275,13 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                 <SelectValue placeholder={translate('Select module')} />
                                             </SelectTrigger>
                                             <SelectContent className="z-[60000]">
-                                                <SelectItem value="New User">{translate('New User')}</SelectItem>
-                                                <SelectItem value="Lead Assigned">{translate('Lead Create')}</SelectItem>
-                                                <SelectItem value="Case Created">{translate('Case Create')}</SelectItem>
-                                                <SelectItem value="Meeting Invitation">{translate('Meeting Invitation')}</SelectItem>
-                                                <SelectItem value="Opportunity Created">{translate('Opportunity Create')}</SelectItem>
-                                                <SelectItem value="Quote Created">{translate('Quote Create')}</SelectItem>
-                                                <SelectItem value="Task Assigned">{translate('Task Create')}</SelectItem>
+                                                <SelectItem value="New User">{translate('New user')}</SelectItem>
+                                                <SelectItem value="Lead Assigned">{translate('Lead create')}</SelectItem>
+                                                <SelectItem value="Case Created">{translate('Case create')}</SelectItem>
+                                                <SelectItem value="Meeting Invitation">{translate('Meeting invitation')}</SelectItem>
+                                                <SelectItem value="Opportunity Created">{translate('Opportunity create')}</SelectItem>
+                                                <SelectItem value="Quote Created">{translate('Quote create')}</SelectItem>
+                                                <SelectItem value="Task Assigned">{translate('Task create')}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>

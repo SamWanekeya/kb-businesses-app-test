@@ -39,7 +39,7 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
     return (
         <Select value={value || ''} onValueChange={onChange}>
             <SelectTrigger>
-                <SelectValue placeholder={translate('Select Parent Task')} />
+                <SelectValue placeholder={translate('Select parent task')} />
             </SelectTrigger>
             <SelectContent className="z-[60000]">
                 {tasks.map((task: any) => (
@@ -263,12 +263,12 @@ export default function ProjectTasks() {
 
     if (useHasPermission('create-project-tasks')) {
         pageActions.push({
-            label: translate('Add Task'),
+            label: translate('Add task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[390px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
             labelClassName: 'hidden min-[390px]:inline',
-            tooltip: translate('Add Task'),
+            tooltip: translate('Add task'),
             tooltipClassName: 'min-[390px]:hidden',
             onClick: () => {
                 handleAddTask('');
@@ -278,8 +278,8 @@ export default function ProjectTasks() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Project Management'), href: route('project-tasks.index') },
-        { title: translate('Project Tasks') },
+        { title: translate('Project management'), href: route('project-tasks.index') },
+        { title: translate('Project tasks') },
     ];
 
     const priorityColors: any = {
@@ -291,7 +291,7 @@ export default function ProjectTasks() {
 
     return (
         <PageTemplate
-            title={translate('Project Tasks')}
+            title={translate('Project tasks')}
             description={translate('Manage your project tasks.')}
             url="/project-tasks"
             actions={pageActions}
@@ -321,7 +321,7 @@ export default function ProjectTasks() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 ...allTaskStatuses.map((s: any) => ({ value: s.id.toString(), label: s.name })),
                             ],
                         },
@@ -332,7 +332,7 @@ export default function ProjectTasks() {
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: translate('All Priorities') },
+                                { value: 'all', label: translate('All priorities') },
                                 { value: 'low', label: translate('Low') },
                                 { value: 'medium', label: translate('Medium') },
                                 { value: 'high', label: translate('High') },
@@ -347,19 +347,19 @@ export default function ProjectTasks() {
                             value: selectedProject,
                             onChange: setSelectedProject,
                             options: [
-                                { value: 'all', label: translate('All Projects') },
+                                { value: 'all', label: translate('All projects') },
                                 ...allProjects.map((p: any) => ({ value: p.id.toString(), label: p.name })),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name })),
                             ],
                         },
@@ -379,9 +379,9 @@ export default function ProjectTasks() {
                                 <LayoutGrid className="text-primary h-10 w-10" />
                             </div>
                             <div className="space-y-1.5">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No task status yet')}</h3>
                                 <p className="text-foreground/75 text-sm leading-relaxed">
-                                    {translate('Set up task statuses to start organizing your work in a Kanban board.')}
+                                    {translate('Set up task statuses to start organizing your work in a kanban board.')}
                                 </p>
                             </div>
                             {useHasPermission('manage-task-statuses') && (
@@ -392,7 +392,7 @@ export default function ProjectTasks() {
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
-                                    {translate('Add Task Status')}
+                                    {translate('Add task status')}
                                 </button>
                             )}
                         </div>
@@ -461,7 +461,7 @@ export default function ProjectTasks() {
                                                 handleAddTask(status.id.toString());
                                             }}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                            title={translate('Add Task')}
+                                            title={translate('Add task')}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </button>
@@ -650,7 +650,7 @@ export default function ProjectTasks() {
                     fields: [
                         {
                             name: 'title',
-                            label: translate('Task Title'),
+                            label: translate('Task title'),
                             type: 'text',
                             required: true,
                         },
@@ -688,7 +688,7 @@ export default function ProjectTasks() {
                         },
                         {
                             name: 'parent_id',
-                            label: translate('Parent Task'),
+                            label: translate('Parent task'),
                             type: 'custom',
                             render: (_field: any, formData: any, handleChange: any, _errors: any, mode: any) => {
                                 if (mode === 'view') {
@@ -703,8 +703,8 @@ export default function ProjectTasks() {
                                 );
                             },
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
-                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due date'), type: 'date' },
                         {
                             name: 'priority',
                             label: translate('Priority'),
@@ -723,7 +723,7 @@ export default function ProjectTasks() {
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task Statuses') },
+                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task statuses') },
                             options: taskStatuses.map((s: any) => ({ value: String(s.id), label: s.name })),
                             defaultValue: prefilledStatus
                                 ? String(prefilledStatus)
@@ -732,11 +732,11 @@ export default function ProjectTasks() {
                         },
                         {
                             name: 'estimated_hours',
-                            label: translate('Estimated Hours'),
+                            label: translate('Estimated hours'),
                             type: 'number',
                             step: '0.5',
                         },
-                        { name: 'actual_hours', label: translate('Actual Hours'), type: 'number', step: '0.5' },
+                        { name: 'actual_hours', label: translate('Actual hours'), type: 'number', step: '0.5' },
                         {
                             name: 'progress',
                             label: translate('Progress (%)'),
@@ -746,7 +746,7 @@ export default function ProjectTasks() {
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -772,12 +772,12 @@ export default function ProjectTasks() {
                               task_status_id: currentItem.task_status_id ? String(currentItem.task_status_id) : '',
                               parent_id: currentItem.parent_id ? String(currentItem.parent_id) : '',
                               assigned_user_name: currentItem.assigned_user?.name || translate('Unassigned'),
-                              project_name: currentItem.project?.name || translate('No Project'),
-                              parent_name: currentItem.parent?.title || translate('No Parent Task'),
+                              project_name: currentItem.project?.name || translate('No project'),
+                              parent_name: currentItem.parent?.title || translate('No parent task'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Task') : formMode === 'edit' ? translate('Edit Task') : translate('View Task')}
+                title={formMode === 'create' ? translate('Add task') : formMode === 'edit' ? translate('Edit task') : translate('View task')}
                 mode={formMode}
             />
 
@@ -788,7 +788,7 @@ export default function ProjectTasks() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={translate('task')}
+                entityName={translate('Task')}
             />
         </PageTemplate>
     );

@@ -221,14 +221,14 @@ export default function CalendarIndex() {
                         <SelectValue>
                             <div className="flex items-center gap-2">
                                 {isSyncing ? <RefreshCw className="h-4 w-4 animate-spin" /> : <></>}
-                                <span>{activeCalendar === 'local' ? translate('Local Calendar') : translate('Google Calendar')}</span>
+                                <span>{activeCalendar === 'local' ? translate('Local calendar') : translate('Google Calendar')}</span>
                             </div>
                         </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="local">
                             <div className="flex items-center gap-2">
-                                <span>{translate('Local Calendar')}</span>
+                                <span>{translate('Local calendar')}</span>
                             </div>
                         </SelectItem>
                         <SelectItem value="google">
@@ -408,7 +408,7 @@ export default function CalendarIndex() {
                 <div className="space-y-6 lg:col-span-1">
                     <Card className="border-border flex flex-col overflow-hidden border p-0 shadow-sm">
                         <div className="bg-muted/30 shrink-0 border-b px-5 py-4">
-                            <h3 className="text-base font-bold">{translate('Upcoming Events')}</h3>
+                            <h3 className="text-base font-bold">{translate('Upcoming events')}</h3>
                         </div>
 
                         <div className="custom-scrollbar h-[360px] overflow-y-auto">
@@ -469,7 +469,7 @@ export default function CalendarIndex() {
                     <Card className="border-border overflow-hidden border p-0 shadow-sm">
                         {/* Header */}
                         <div className="border-border border-b px-4 py-4">
-                            <h3 className="text-foreground text-sm font-bold">{translate('This Month')}</h3>
+                            <h3 className="text-foreground text-sm font-bold">{translate('This month')}</h3>
                         </div>
 
                         {/* Stats */}
@@ -494,7 +494,7 @@ export default function CalendarIndex() {
                             {/* Total */}
                             <div className="border-border -mx-4 border-t px-4 pt-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-foreground/75 text-sm">{translate('Total Events')}</span>
+                                    <span className="text-foreground/75 text-sm">{translate('Total events')}</span>
                                     <span className="text-foreground text-sm font-bold">{summaryStats.total}</span>
                                 </div>
                             </div>
@@ -559,13 +559,13 @@ export default function CalendarIndex() {
                                                     : selectedEvent.status === 'held'
                                                       ? translate('Held')
                                                       : selectedEvent.status === 'not_held'
-                                                        ? translate('Not Held')
+                                                        ? translate('Not held')
                                                         : selectedEvent.status
                                                 : selectedEvent.type === 'task'
                                                   ? selectedEvent.status === 'to_do'
-                                                      ? translate('To Do')
+                                                      ? translate('To do')
                                                       : selectedEvent.status === 'in_progress'
-                                                        ? translate('In Progress')
+                                                        ? translate('In progress')
                                                         : selectedEvent.status === 'review'
                                                           ? translate('Review')
                                                           : selectedEvent.status === 'done'
@@ -621,7 +621,7 @@ export default function CalendarIndex() {
                                             className="flex items-center gap-2"
                                         >
                                             <ExternalLink className="h-4 w-4" />
-                                            {translate('View Details')}
+                                            {translate('View details')}
                                         </Button>
                                     </div>
                                 ) : null;

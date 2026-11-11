@@ -204,7 +204,7 @@ export default function PurchaseOrders() {
 
     if (useHasPermission('create-purchase-orders')) {
         pageActions.push({
-            label: translate('Add Purchase Order'),
+            label: translate('Add purchase order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -212,7 +212,7 @@ export default function PurchaseOrders() {
             },
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: translate('Add Purchase Order'),
+            tooltip: translate('Add purchase order'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
@@ -222,13 +222,13 @@ export default function PurchaseOrders() {
             title: translate('Dashboard'),
             href: route('dashboard.index'),
         },
-        { title: translate('Purchase Orders') },
+        { title: translate('Purchase orders') },
     ];
 
     const columns = [
         {
             key: 'order_number',
-            label: translate('Order Number'),
+            label: translate('Order number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -251,7 +251,7 @@ export default function PurchaseOrders() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -271,13 +271,13 @@ export default function PurchaseOrders() {
         },
         {
             key: 'sales_order',
-            label: translate('Sales Order'),
+            label: translate('Sales order'),
             className: 'whitespace-nowrap',
             render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
         },
         {
             key: 'order_date',
-            label: translate('Order Date'),
+            label: translate('Order date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -305,7 +305,7 @@ export default function PurchaseOrders() {
         },
         // {
         //     key: 'created_at',
-        //     label: translate('Created At'),
+        //     label: translate('Created at'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -314,7 +314,7 @@ export default function PurchaseOrders() {
 
     const actions = [
         {
-            label: translate('Change Status'),
+            label: translate('Change status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -344,7 +344,7 @@ export default function PurchaseOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: translate('All Statuses') },
+        { value: 'all', label: translate('All statuses') },
         { value: 'draft', label: translate('Draft') },
         { value: 'sent', label: translate('Sent') },
         { value: 'confirmed', label: translate('Confirmed') },
@@ -354,7 +354,7 @@ export default function PurchaseOrders() {
 
     return (
         <PageTemplate
-            title={translate('Purchase Orders')}
+            title={translate('Purchase orders')}
             description={translate('Manage your purchase orders.')}
             url="/purchase-orders"
             actions={pageActions}
@@ -382,7 +382,7 @@ export default function PurchaseOrders() {
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: translate('All Accounts') },
+                                { value: 'all', label: translate('All accounts') },
                                 ...(allAccounts?.map((acc: any) => ({
                                     value: acc.id.toString(),
                                     label: acc.name,
@@ -391,25 +391,25 @@ export default function PurchaseOrders() {
                         },
                         {
                             name: 'sales_order_id',
-                            label: translate('Sales Order'),
+                            label: translate('Sales order'),
                             type: 'select',
                             searchable: true,
                             value: selectedSalesOrder,
                             onChange: setSelectedSalesOrder,
                             options: [
-                                { value: 'all', label: translate('All Sales Orders') },
+                                { value: 'all', label: translate('All sales orders') },
                                 ...(salesOrders?.map((so: any) => ({ value: so.id.toString(), label: so.name })) || []),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
@@ -447,7 +447,7 @@ export default function PurchaseOrders() {
                     to={purchaseOrders?.to || 0}
                     total={purchaseOrders?.total || 0}
                     links={purchaseOrders?.links}
-                    entityName={translate('purchase orders')}
+                    entityName={translate('Purchase orders')}
                     onPageChange={(url) => {
                         router.get(url);
                     }}
@@ -498,7 +498,7 @@ export default function PurchaseOrders() {
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Purchase Order Status')}
+                title={translate('Change purchase order status')}
                 mode="edit"
             />
 
@@ -509,7 +509,7 @@ export default function PurchaseOrders() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('purchase order')}
+                entityName={translate('Purchase order')}
             />
         </PageTemplate>
     );

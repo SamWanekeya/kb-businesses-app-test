@@ -12,7 +12,7 @@ export default function DocumentFolderShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Folders'), href: route('documents.document-folders.index') },
+        { title: translate('Document folders'), href: route('documents.document-folders.index') },
         { title: documentFolder.name },
     ];
 
@@ -38,19 +38,19 @@ export default function DocumentFolderShow() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <Folder className="h-5 w-5 text-blue-600" />
-                            {translate('Folder Information')}
+                            {translate('Folder information')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-sm text-gray-500">{translate('Folder Name')}</label>
+                                <label className="text-sm text-gray-500">{translate('Folder name')}</label>
                                 <p className="mt-1 text-sm text-gray-900">{documentFolder.name}</p>
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-500">{translate('Parent Folder')}</label>
-                                <p className="mt-1 text-sm text-gray-900">{documentFolder.parent_folder?.name || translate('Root Folder')}</p>
+                                <label className="text-sm text-gray-500">{translate('Parent folder')}</label>
+                                <p className="mt-1 text-sm text-gray-900">{documentFolder.parent_folder?.name || translate('Root folder')}</p>
                             </div>
 
                             <div>
@@ -116,7 +116,7 @@ export default function DocumentFolderShow() {
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-sm text-gray-500">{translate('Created At')}</label>
+                                <label className="text-sm text-gray-500">{translate('Created at')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
                                     {window.kbSettings.formatDateTime(documentFolder.created_at, false) ||
                                         new Date(documentFolder.created_at).toLocaleString()}
@@ -124,7 +124,7 @@ export default function DocumentFolderShow() {
                             </div>
 
                             <div>
-                                <label className="text-sm text-gray-500">{translate('Last Updated')}</label>
+                                <label className="text-sm text-gray-500">{translate('Last updated')}</label>
                                 <p className="mt-1 text-sm text-gray-900">
                                     {window.kbSettings.formatDateTime(documentFolder.updated_at, false) ||
                                         new Date(documentFolder.updated_at).toLocaleString()}

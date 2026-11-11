@@ -70,7 +70,7 @@ export default function NotificationTemplateShow({ template, languages, variable
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Notification Templates'), href: route('notification-templates.index') },
+        { title: translate('Notification templates'), href: route('notification-templates.index') },
         { title: template.name },
     ];
 
@@ -98,7 +98,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex items-center justify-between">
-                                <CardTitle>{translate('Template Settings')}</CardTitle>
+                                <CardTitle>{translate('Template settings')}</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
@@ -112,7 +112,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
-                                    <CardTitle>{translate('Notification Content')}</CardTitle>
+                                    <CardTitle>{translate('Notification content')}</CardTitle>
                                     <p className="text-foreground/75 mt-1 text-xs sm:text-sm">
                                         {translate('Customize notification content for different languages')}
                                     </p>
@@ -132,7 +132,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                     className="w-full shrink-0 sm:w-auto"
                                 >
                                     <Save className="mr-2 h-4 w-4" />
-                                    {translate('Save Content')}
+                                    {translate('Save content')}
                                 </Button>
                             </div>
                         </CardHeader>
@@ -171,7 +171,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
                                                 <Label htmlFor={`title-${code}`} className="text-sm" required>
-                                                    {translate('Notification Title')}
+                                                    {translate('Notification title')}
                                                 </Label>
                                                 <Input
                                                     id={`title-${code}`}
@@ -188,7 +188,7 @@ export default function NotificationTemplateShow({ template, languages, variable
 
                                             <div className="space-y-3">
                                                 <Label htmlFor={`content-${code}`} className="text-sm" required>
-                                                    {translate('Notification Content')}
+                                                    {translate('Notification content')}
                                                 </Label>
                                                 <Textarea
                                                     id={`content-${code}`}
@@ -200,7 +200,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                     rows={8}
                                                 />
                                                 <p className="text-foreground/75 text-xs">
-                                                    💡 {translate('Tip: Use the variables from the sidebar to personalize your notifications')}
+                                                    💡 {translate('Tip: use the variables from the sidebar to personalize your notifications')}
                                                 </p>
                                             </div>
                                         </div>
@@ -215,7 +215,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                                <span>{translate('Available Variables')}</span>
+                                <span>{translate('Available variables')}</span>
                                 <Badge variant="secondary" className="text-xs">
                                     {Object.keys(variables).length}
                                 </Badge>

@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <NotebookPen className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Note Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Note details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -38,7 +38,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <User className="h-4 w-4" />
-                            {translate('Created By')}
+                            {translate('Created by')}
                         </label>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">{record.creator?.name || '-'}</p>
                     </div>
@@ -49,7 +49,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm text-gray-500">
                             <Share2 className="h-4 w-4" />
-                            {translate('Shared With')}
+                            {translate('Shared with')}
                         </label>
                         <div className="mt-1 flex flex-wrap gap-2">
                             {record.shared_users.map((user: any) => (

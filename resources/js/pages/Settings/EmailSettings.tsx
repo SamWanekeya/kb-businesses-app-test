@@ -92,7 +92,7 @@ export default function EmailSettings() {
 
     return (
         <SettingsSection
-            title={translate('Email Settings')}
+            title={translate('Email settings')}
             description={translate('Configure email server settings for system notifications and communications')}
             action={
                 <Button type="submit" disabled={processing} form="email-settings-form" size="sm" className="max-[1300px]:px-2.5">
@@ -111,7 +111,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Mail className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="provider" className="font-medium">
-                                                {translate('Email Provider')}
+                                                {translate('Email provider')}
                                             </Label>
                                         </div>
                                         <Select
@@ -216,7 +216,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Lock className="text-foreground/75 h-4 w-4" />
                                             <Label htmlFor="encryption" className="font-medium">
-                                                {translate('Mail Encryption')}
+                                                {translate('Mail encryption')}
                                             </Label>
                                         </div>
                                         <Select
@@ -272,7 +272,7 @@ export default function EmailSettings() {
                             <form autoComplete="off" onSubmit={sendTestEmail} className="space-y-4">
                                 <div className="mb-4 flex items-center gap-2">
                                     <Send className="text-primary h-4 w-4" />
-                                    <h3 className="text-base font-medium">{translate('Test Email Configuration')}</h3>
+                                    <h3 className="text-base font-medium">{translate('Test email configuration')}</h3>
                                 </div>
 
                                 <div className="space-y-1.5">
@@ -299,7 +299,7 @@ export default function EmailSettings() {
                                     ) : (
                                         <>
                                             <Send className="mr-2 h-4 w-4" />
-                                            {translate('Send Test Email')}
+                                            {translate('Send test email')}
                                         </>
                                     )}
                                 </Button>

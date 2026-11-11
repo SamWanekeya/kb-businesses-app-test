@@ -38,7 +38,7 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
     };
 
     return (
-        <SettingsSection title={translate('Cache Settings')} description={translate('Manage application cache to improve performance')}>
+        <SettingsSection title={translate('Cache settings')} description={translate('Manage application cache to improve performance')}>
             <Card>
                 <CardContent className="mt-6">
                     <div className="space-y-6">
@@ -51,9 +51,9 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                             <div className="flex items-center space-x-3">
                                 <HardDrive className="text-foreground/75 h-5 w-5" />
                                 <div>
-                                    <h4 className="font-medium">{translate('Current Cache Size')}</h4>
+                                    <h4 className="font-medium">{translate('Current cache size')}</h4>
                                     <p className="text-foreground/75 text-sm">
-                                        {cacheSize} MB {translate('of cached data')}
+                                        {cacheSize} MB {translate('Of cached data')}
                                     </p>
                                 </div>
                             </div>
@@ -69,12 +69,12 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                                         >
                                             <Trash2 className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
                                             <span className="max-[1300px]:hidden">
-                                                {isClearing ? translate('Clearing...') : translate('Clear Cache')}
+                                                {isClearing ? translate('Clearing...') : translate('Clear cache')}
                                             </span>
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>{translate('Clear Cache')}</p>
+                                        <p>{translate('Clear cache')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>

@@ -67,7 +67,7 @@ export function CoinGatePaymentForm({ planId, discountCode, billingCycle, planPr
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Coins className="h-5 w-5 text-orange-500" />
-                    {translate('CoinGate Cryptocurrency Payment')}
+                    {translate('CoinGate cryptocurrency payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -83,7 +83,7 @@ export function CoinGatePaymentForm({ planId, discountCode, billingCycle, planPr
                         <div className="mb-2 flex items-center justify-between">
                             <span className="text-sm">{translate('Plan')}</span>
                             <span className="text-sm">
-                                {translate(billingCycle)} {translate('billing')}
+                                {translate(billingCycle)} {translate('Billing')}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
@@ -101,9 +101,9 @@ export function CoinGatePaymentForm({ planId, discountCode, billingCycle, planPr
                         <div className="flex items-start gap-2">
                             <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-xs text-blue-800">
-                                <p className="mb-1 font-medium">{translate('Payment Process:')}</p>
+                                <p className="mb-1 font-medium">{translate('Payment process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{translate('Click "Pay with Crypto" to proceed to CoinGate')}</li>
+                                    <li>{translate('Click "pay with Crypto" to proceed to CoinGate')}</li>
                                     <li>{translate('Complete payment using your selected cryptocurrency')}</li>
                                     <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>

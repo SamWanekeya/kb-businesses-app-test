@@ -73,7 +73,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
 
     return (
         <SettingsSection
-            title={translate('Google Calendar Settings')}
+            title={translate('Google Calendar settings')}
             description={translate('Configure Google Calendar integration for appointment synchronization')}
             action={
                 <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
@@ -102,7 +102,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                             <div className="space-y-2">
                                 <Input
                                     inputIdentifier="googleCalendarId"
-                                    label={translate('Google calendar ID')}
+                                    label={translate('Google Calendar ID')}
                                     required
                                     inputType="text"
                                     inputMode="text"
@@ -136,7 +136,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                             <div className="flex justify-end">
                                 <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
                                     <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                                    {isSyncing ? translate('Syncing...') : translate('Test Sync')}
+                                    {isSyncing ? translate('Syncing...') : translate('Test sync')}
                                 </Button>
                             </div>
                         </div>

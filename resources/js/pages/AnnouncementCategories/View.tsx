@@ -21,7 +21,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Megaphone className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-bold">{translate('Announcement Category Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{translate('Announcement category details')}</DialogTitle>
                 </div>
             </DialogHeader>
 

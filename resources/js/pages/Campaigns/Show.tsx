@@ -20,7 +20,7 @@ export default function CampaignShow() {
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
         { title: translate('Campaigns'), href: route('campaigns.index') },
-        { title: translate('View Campaign') },
+        { title: translate('View campaign') },
     ];
 
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
@@ -104,28 +104,28 @@ export default function CampaignShow() {
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
                             },
                             {
-                                label: translate('Actual Cost'),
+                                label: translate('Actual cost'),
                                 value: formatCurrency(campaign.actual_cost),
                                 icon: BarChart3,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
-                                label: translate('Response Rate'),
+                                label: translate('Response rate'),
                                 value: getResponseRate(),
                                 icon: TrendingUp,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: translate('Total Leads'),
+                                label: translate('Total leads'),
                                 value: `${campaignLeads?.length || 0}`,
                                 icon: Users,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
                             },
                             {
-                                label: translate('ROI'),
+                                label: translate('Roi'),
                                 value: calculateROI(),
                                 icon: Target,
                                 iconCls: 'text-rose-600',
@@ -157,29 +157,29 @@ export default function CampaignShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Tag className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Campaign Information')}
+                                {translate('Campaign information')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 p-6">
                             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Campaign Type')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Campaign type')}</label>
                                     <p className="mt-1 text-sm">{campaign.campaign_type?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Target List')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Target list')}</label>
                                     <p className="mt-1 text-sm">{campaign.target_list?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Start Date')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Start date')}</label>
                                     <p className="mt-1 text-sm">{window.kbSettings.formatDateTimeSimple(campaign.start_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('End Date')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('End date')}</label>
                                     <p className="mt-1 text-sm">{window.kbSettings.formatDateTimeSimple(campaign.end_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Assigned To')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Assigned to')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.assigned_user ? (
                                             <>
@@ -197,7 +197,7 @@ export default function CampaignShow() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Created By')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Created by')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.creator ? (
                                             <>
@@ -213,13 +213,13 @@ export default function CampaignShow() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Expected Response')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Expected response')}</label>
                                     <p className="mt-1 text-sm">{campaign.expected_response || 0}</p>
                                 </div>
                                 <div>
-                                    <label className="text-foreground/75 text-xs">{translate('Actual Response')}</label>
+                                    <label className="text-foreground/75 text-xs">{translate('Actual response')}</label>
                                     <p className="mt-1 text-sm">
-                                        {campaignLeads?.length || 0} {translate('leads')}
+                                        {campaignLeads?.length || 0} {translate('Leads')}
                                     </p>
                                 </div>
                             </div>
@@ -243,7 +243,7 @@ export default function CampaignShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <DollarSign className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Budget Analysis')}
+                                {translate('Budget analysis')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 p-6">
@@ -275,7 +275,7 @@ export default function CampaignShow() {
                             {campaign.budget > 0 && (
                                 <div>
                                     <div className="text-foreground/75 mb-1.5 flex justify-between text-xs">
-                                        <span>{translate('Budget Used')}</span>
+                                        <span>{translate('Budget used')}</span>
                                         <span className="font-medium">{budgetUsedPct.toFixed(1)}%</span>
                                     </div>
                                     <div className="h-2 w-full rounded-full bg-gray-100">
@@ -287,7 +287,7 @@ export default function CampaignShow() {
                             {campaign.expected_response > 0 && (
                                 <div>
                                     <div className="text-foreground/75 mb-1.5 flex justify-between text-xs">
-                                        <span>{translate('Response Progress')}</span>
+                                        <span>{translate('Response progress')}</span>
                                         <span className="font-medium">
                                             {campaignLeads?.length || 0} / {campaign.expected_response}
                                         </span>
@@ -306,7 +306,7 @@ export default function CampaignShow() {
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-bold">
                             <Users className="text-foreground/75 mr-3 h-5 w-5" />
-                            {translate('Campaign Leads')}
+                            {translate('Campaign leads')}
                             <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                 {campaignLeads?.length || 0}
                             </span>
@@ -320,7 +320,7 @@ export default function CampaignShow() {
                                         <thead>
                                             <tr className="text-foreground/75 border-b bg-[#F0F0F1] text-xs dark:bg-gray-800">
                                                 <th className="px-6 py-3 text-left font-medium">{translate('Name')}</th>
-                                                <th className="px-6 py-3 text-left font-medium">{translate('Assigned To')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{translate('Assigned to')}</th>
                                                 <th className="px-6 py-3 text-left font-medium">{translate('Status')}</th>
                                                 {useHasPermission('view-leads') && (
                                                     <th className="px-6 py-3 text-right font-medium">{translate('Action')}</th>
@@ -400,7 +400,7 @@ export default function CampaignShow() {
                                 </div>
                                 {campaignLeads.length > 10 && (
                                     <div className="text-foreground/75 border-t bg-gray-50 px-6 py-3 text-center text-sm">
-                                        +{campaignLeads.length - 10} {translate('more leads')}
+                                        +{campaignLeads.length - 10} {translate('More leads')}
                                     </div>
                                 )}
                             </>

@@ -344,7 +344,7 @@ export default function Leads() {
     // Add the "Add Lead" button if user has permission
     if (useHasPermission('create-leads')) {
         pageActions.push({
-            label: translate('Add Lead'),
+            label: translate('Add lead'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => {
@@ -353,13 +353,13 @@ export default function Leads() {
             disabled: hasEmptyDropdowns,
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: translate('Add Lead'),
+            tooltip: translate('Add lead'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Lead Management') },
+        { title: translate('Lead management') },
         { title: translate('Leads') },
     ];
 
@@ -383,7 +383,7 @@ export default function Leads() {
         },
         {
             key: 'assigned_user',
-            label: translate('Assigned To'),
+            label: translate('Assigned to'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -462,7 +462,7 @@ export default function Leads() {
         },
         {
             key: 'created_at',
-            label: translate('Created At'),
+            label: translate('Created at'),
             sortable: true,
             type: 'date',
         },
@@ -471,7 +471,7 @@ export default function Leads() {
     // Define table actions
     const actions = [
         {
-            label: translate('Convert to Account'),
+            label: translate('Convert to account'),
             icon: 'Building2',
             action: 'convert-to-account',
             className: 'text-primary',
@@ -479,7 +479,7 @@ export default function Leads() {
             condition: (item: any) => !item.is_converted,
         },
         {
-            label: translate('Convert to Contact'),
+            label: translate('Convert to contact'),
             icon: 'Users',
             action: 'convert-to-contact',
             className: 'text-blue-500',
@@ -487,7 +487,7 @@ export default function Leads() {
             condition: (item: any) => !item.is_converted,
         },
         {
-            label: translate('Toggle Status'),
+            label: translate('Toggle status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
@@ -536,13 +536,13 @@ export default function Leads() {
                     filters={[
                         {
                             name: 'lead_status_id',
-                            label: translate('Lead Status'),
+                            label: translate('Lead status'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedLeadStatus,
                             onChange: setSelectedLeadStatus,
                             options: [
-                                { value: 'all', label: translate('All Statuses') },
+                                { value: 'all', label: translate('All statuses') },
                                 ...allLeadStatuses.map((status: any) => ({
                                     value: status.id.toString(),
                                     label: status.name,
@@ -551,13 +551,13 @@ export default function Leads() {
                         },
                         {
                             name: 'lead_source_id',
-                            label: translate('Lead Source'),
+                            label: translate('Lead source'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedLeadSource,
                             onChange: setSelectedLeadSource,
                             options: [
-                                { value: 'all', label: translate('All Sources') },
+                                { value: 'all', label: translate('All sources') },
                                 ...allLeadSources.map((source: any) => ({
                                     value: source.id.toString(),
                                     label: source.name,
@@ -571,32 +571,32 @@ export default function Leads() {
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: translate('All Status') },
+                                { value: 'all', label: translate('All status') },
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'is_converted',
-                            label: translate('Conversion Status'),
+                            label: translate('Conversion status'),
                             type: 'select' as const,
                             value: selectedConverted,
                             onChange: setSelectedConverted,
                             options: [
-                                { value: 'all', label: translate('All Leads') },
+                                { value: 'all', label: translate('All leads') },
                                 { value: '1', label: translate('Converted') },
-                                { value: '0', label: translate('Not Converted') },
+                                { value: '0', label: translate('Not converted') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -634,9 +634,9 @@ export default function Leads() {
                         );
                     }}
                     viewOptions={[
-                        { value: 'list', label: translate('List View'), icon: 'List' },
-                        { value: 'kanban', label: translate('Kanban View'), icon: 'Columns' },
-                        // { value: 'grid', label: translate('Grid View'), icon: 'Grid3X3' }
+                        { value: 'list', label: translate('List view'), icon: 'List' },
+                        { value: 'kanban', label: translate('Kanban view'), icon: 'Columns' },
+                        // { value: 'grid', label: translate('Grid view'), icon: 'Grid3X3' }
                     ]}
                 />
             </div>
@@ -668,7 +668,7 @@ export default function Leads() {
                         to={leads?.to || leads?.data?.length || 0}
                         total={leads?.total || leads?.data?.length || 0}
                         links={leads?.links}
-                        entityName={translate('leads')}
+                        entityName={translate('Leads')}
                         onPageChange={(url) => {
                             router.get(url);
                         }}
@@ -717,9 +717,9 @@ export default function Leads() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No Lead Status Yet')}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{translate('No lead status yet')}</h3>
                                         <p className="text-foreground/75 text-sm leading-relaxed">
-                                            {translate('Set up lead statuses to start organizing your work in a Kanban board.')}
+                                            {translate('Set up lead statuses to start organizing your work in a kanban board.')}
                                         </p>
                                     </div>
                                     {useHasPermission('manage-lead-statuses') && (
@@ -730,7 +730,7 @@ export default function Leads() {
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
-                                            {translate('Add Lead Status')}
+                                            {translate('Add lead status')}
                                         </button>
                                     )}
                                 </div>
@@ -808,7 +808,7 @@ export default function Leads() {
                                                         handleAddLead(status.id.toString());
                                                     }}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                                    title={translate('Add Lead')}
+                                                    title={translate('Add lead')}
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </button>
@@ -905,7 +905,7 @@ export default function Leads() {
                                                                                             className="text-fuchsia-600"
                                                                                         >
                                                                                             <Building2 className="mr-2 h-4 w-4" />
-                                                                                            {translate('To Account')}
+                                                                                            {translate('To account')}
                                                                                         </DropdownMenuItem>
                                                                                         <DropdownMenuItem
                                                                                             onClick={() => {
@@ -914,7 +914,7 @@ export default function Leads() {
                                                                                             className="text-blue-600"
                                                                                         >
                                                                                             <Users className="mr-2 h-4 w-4" />
-                                                                                            {translate('To Contact')}
+                                                                                            {translate('To contact')}
                                                                                         </DropdownMenuItem>
                                                                                     </>
                                                                                 )}
@@ -1189,7 +1189,7 @@ export default function Leads() {
                             to={leads?.to || leads?.data?.length || 0}
                             total={leads?.total || leads?.data?.length || 0}
                             links={leads?.links}
-                            entityName={translate('leads')}
+                            entityName={translate('Leads')}
                             onPageChange={(url) => {
                                 router.get(url);
                             }}
@@ -1244,7 +1244,7 @@ export default function Leads() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={translate('lead')}
+                entityName={translate('Lead')}
             />
 
             {/* Convert Modal */}
@@ -1261,7 +1261,7 @@ export default function Leads() {
                             ? [
                                   {
                                       name: 'account_type_id',
-                                      label: translate('Account Type'),
+                                      label: translate('Account type'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -1273,13 +1273,13 @@ export default function Leads() {
                                           accountTypes.length === 0
                                               ? {
                                                     link: route('account-types.index'),
-                                                    linkText: translate('Account Types'),
+                                                    linkText: translate('Account types'),
                                                 }
                                               : undefined,
                                   },
                                   {
                                       name: 'account_industry_id',
-                                      label: translate('Account Industry'),
+                                      label: translate('Account industry'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -1291,39 +1291,39 @@ export default function Leads() {
                                           accountIndustries.length === 0
                                               ? {
                                                     link: route('account-industries.index'),
-                                                    linkText: translate('Account Industries'),
+                                                    linkText: translate('Account industries'),
                                                 }
                                               : undefined,
                                   },
                                   { name: 'website', label: translate('Website'), type: 'text', colSpan: 2 },
                                   {
                                       name: 'billing_address',
-                                      label: translate('Billing Address'),
+                                      label: translate('Billing address'),
                                       type: 'textarea',
                                       required: true,
                                       colSpan: 2,
                                   },
                                   {
                                       name: 'billing_city',
-                                      label: translate('Billing City'),
+                                      label: translate('Billing city'),
                                       type: 'text',
                                       required: true,
                                   },
                                   {
                                       name: 'billing_state',
-                                      label: translate('Billing State'),
+                                      label: translate('Billing state'),
                                       type: 'text',
                                       required: true,
                                   },
                                   {
                                       name: 'billing_postal_code',
-                                      label: translate('Billing Postal Code'),
+                                      label: translate('Billing postal code'),
                                       type: 'text',
                                       required: true,
                                   },
                                   {
                                       name: 'billing_country',
-                                      label: translate('Billing Country'),
+                                      label: translate('Billing country'),
                                       type: 'text',
                                       required: true,
                                   },
@@ -1381,31 +1381,31 @@ export default function Leads() {
                                                   }}
                                                   className="w-full"
                                               >
-                                                  {translate('Copy Billing to Shipping Address')}
+                                                  {translate('Copy billing to shipping address')}
                                               </Button>
                                           </div>
                                       ),
                                   },
                                   {
                                       name: 'shipping_address',
-                                      label: translate('Shipping Address'),
+                                      label: translate('Shipping address'),
                                       type: 'textarea',
                                       colSpan: 2,
                                   },
                                   {
                                       name: 'shipping_city',
-                                      label: translate('Shipping City'),
+                                      label: translate('Shipping city'),
                                       type: 'text',
                                   },
-                                  { name: 'shipping_state', label: translate('Shipping State'), type: 'text' },
+                                  { name: 'shipping_state', label: translate('Shipping state'), type: 'text' },
                                   {
                                       name: 'shipping_postal_code',
-                                      label: translate('Shipping Postal Code'),
+                                      label: translate('Shipping postal code'),
                                       type: 'text',
                                   },
                                   {
                                       name: 'shipping_country',
-                                      label: translate('Shipping Country'),
+                                      label: translate('Shipping country'),
                                       type: 'text',
                                   },
                               ]
@@ -1466,7 +1466,7 @@ export default function Leads() {
                     importingRef.current = true;
                     setIsImportModalOpen(false);
                 }}
-                title={translate('Import Leads from CSV/Excel')}
+                title={translate('Import leads from CSV/Excel')}
                 importRoute="leads.import"
                 parseRoute="leads.parse"
                 samplePath={samplePath}

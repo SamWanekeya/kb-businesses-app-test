@@ -45,7 +45,7 @@ export default function UserShow() {
                     <CardHeader className="border-b bg-gray-50 px-8 py-6">
                         <CardTitle className="flex items-center text-xl font-extrabold text-gray-800">
                             <User className="mr-3 h-5 w-5" />
-                            {translate('User Information')}
+                            {translate('User information')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
@@ -88,13 +88,13 @@ export default function UserShow() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Created At')}</label>
+                                    <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Created at')}</label>
                                     <p className="mt-2 text-base font-medium text-gray-700">
                                         {window.kbSettings.formatDateTimeSimple(user.created_at)}
                                     </p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Created By')}</label>
+                                    <label className="text-xs font-extrabold tracking-wide text-gray-500 uppercase">{translate('Created by')}</label>
                                     <p className="mt-2 text-base font-medium text-gray-800">{user.creator?.name || 'System'}</p>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@ export default function UserShow() {
                         <CardHeader className="border-b bg-gray-50 px-8 py-6">
                             <CardTitle className="flex items-center text-xl font-extrabold text-gray-800">
                                 <Calendar className="mr-3 h-5 w-5" />
-                                {translate('Related Meetings')}
+                                {translate('Related meetings')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-8">

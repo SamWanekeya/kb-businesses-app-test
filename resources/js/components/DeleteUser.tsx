@@ -36,7 +36,7 @@ export default function DeleteUser() {
 
     return (
         <div className="rounded-lg border p-6">
-            <h3 className="mb-4 text-lg font-medium">{translate('Delete Account')}</h3>
+            <h3 className="mb-4 text-lg font-medium">{translate('Delete account')}</h3>
             <p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
                 {translate(
                     'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
@@ -44,7 +44,7 @@ export default function DeleteUser() {
             </p>
 
             <Button variant="destructive" onClick={confirmUserDeletion}>
-                {translate('Delete Account')}
+                {translate('Delete account')}
             </Button>
 
             <Dialog open={confirmingUserDeletion} onOpenChange={setConfirmingUserDeletion}>
@@ -52,7 +52,7 @@ export default function DeleteUser() {
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <AlertCircle className="h-5 w-5 text-red-500" />
-                            {translate('Delete Account')}
+                            {translate('Delete account')}
                         </DialogTitle>
                         <DialogDescription>
                             {translate(
@@ -66,7 +66,7 @@ export default function DeleteUser() {
                             {translate('Cancel')}
                         </Button>
                         <Button variant="destructive" onClick={deleteUser}>
-                            {translate('Delete Account')}
+                            {translate('Delete account')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

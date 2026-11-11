@@ -259,12 +259,12 @@ export default function Projects() {
                           current: planLimits.current_projects,
                           max: planLimits.maximum_projects,
                       })
-                    : translate('Add Project'),
+                    : translate('Add project'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: translate('Add Project'),
+            tooltip: translate('Add project'),
             tooltipClassName: 'min-[450px]:hidden',
             onClick: canCreate
                 ? handleAddNew
@@ -280,13 +280,13 @@ export default function Projects() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Project Management'), href: route('projects.index') },
+        { title: translate('Project management'), href: route('projects.index') },
         { title: translate('Projects') },
     ];
 
     const statCards = [
         {
-            label: translate('Total Projects'),
+            label: translate('Total projects'),
             value: stats.total ?? 0,
             sub: translate('All time'),
             icon: <LayoutGrid className="h-6 w-6" />,
@@ -297,16 +297,16 @@ export default function Projects() {
         {
             label: translate('Active'),
             value: stats.ongoing ?? 0,
-            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
+            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('Of total')}` : '',
             icon: <Play className="h-6 w-6" />,
             color: 'text-fuchsia-700',
             cardBg: 'bg-fuchsia-50 dark:bg-fuchsia-900/30',
             borderColor: '#bbf7d0',
         },
         {
-            label: translate('On Hold'),
+            label: translate('On hold'),
             value: stats.on_hold ?? 0,
-            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
+            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${translate('Of total')}` : '',
             icon: <PauseCircle className="h-6 w-6" />,
             color: 'text-yellow-600',
             cardBg: 'bg-yellow-50 dark:bg-yellow-900/30',
@@ -315,7 +315,7 @@ export default function Projects() {
         {
             label: translate('Completed'),
             value: stats.completed ?? 0,
-            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
+            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${translate('Of total')}` : '',
             icon: <CheckCircle2 className="h-6 w-6" />,
             color: 'text-violet-700',
             cardBg: 'bg-violet-50 dark:bg-violet-900/30',
@@ -324,7 +324,7 @@ export default function Projects() {
         {
             label: translate('Overdue'),
             value: stats.overdue ?? 0,
-            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '',
+            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${translate('Of total')}` : '',
             icon: <AlertCircle className="h-6 w-6" />,
             color: 'text-red-600',
             cardBg: 'bg-red-50 dark:bg-red-900/30',
@@ -334,7 +334,7 @@ export default function Projects() {
 
     return (
         <PageTemplate
-            title={translate('Manage Projects')}
+            title={translate('Manage projects')}
             description={translate('Manage your projects.')}
             url="/projects"
             actions={pageActions}
@@ -372,7 +372,7 @@ export default function Projects() {
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: translate('All Priorities') },
+                                { value: 'all', label: translate('All priorities') },
                                 { value: 'low', label: translate('Low') },
                                 { value: 'medium', label: translate('Medium') },
                                 { value: 'high', label: translate('High') },
@@ -387,19 +387,19 @@ export default function Projects() {
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: translate('All Accounts') },
+                                { value: 'all', label: translate('All accounts') },
                                 ...allAccounts.map((a: any) => ({ value: a.id.toString(), label: a.name })),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: translate('Assigned To'),
+                            label: translate('Assigned to'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: translate('All Users') },
+                                { value: 'all', label: translate('All users') },
                                 { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name })),
                             ],
@@ -438,7 +438,7 @@ export default function Projects() {
                             },
                             {
                                 value: 'on_hold',
-                                label: translate('On Hold'),
+                                label: translate('On hold'),
                                 count: stats.on_hold ?? 0,
                                 icon: <PauseCircle className="h-3.5 w-3.5" />,
                             },
@@ -523,7 +523,7 @@ export default function Projects() {
                                                                 handleAction('view', project);
                                                             }}
                                                         >
-                                                            <Eye className="mr-2 h-4 w-4" /> {translate('View Project')}
+                                                            <Eye className="mr-2 h-4 w-4" /> {translate('View project')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-projects') && (
@@ -532,7 +532,7 @@ export default function Projects() {
                                                                 handleAction('toggle-status', project);
                                                             }}
                                                         >
-                                                            <RefreshCw className="mr-2 h-4 w-4" /> {translate('Change Status')}
+                                                            <RefreshCw className="mr-2 h-4 w-4" /> {translate('Change status')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-projects') && (
@@ -570,7 +570,7 @@ export default function Projects() {
                                                     {project.task_done ?? 0}/{total}
                                                 </span>
                                                 <span>
-                                                    ({pct}% {translate('completed')})
+                                                    ({pct}% {translate('Completed')})
                                                 </span>
                                             </div>
                                             <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
@@ -634,7 +634,7 @@ export default function Projects() {
                     to={projects?.to || 0}
                     total={projects?.total || 0}
                     links={projects?.links}
-                    entityName={translate('projects')}
+                    entityName={translate('Projects')}
                     onPageChange={(url) => {
                         router.get(url, {}, { preserveState: true, preserveScroll: true });
                     }}
@@ -667,7 +667,7 @@ export default function Projects() {
                     fields: [
                         {
                             name: 'name',
-                            label: translate('Project Name'),
+                            label: translate('Project name'),
                             type: 'text',
                             required: true,
                         },
@@ -692,8 +692,8 @@ export default function Projects() {
                                           label: a.name,
                                       })),
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
-                        { name: 'end_date', label: translate('End Date'), type: 'date' },
+                        { name: 'start_date', label: translate('Start date'), type: 'date' },
+                        { name: 'end_date', label: translate('End date'), type: 'date' },
                         { name: 'budget', label: translate('Budget'), type: 'number', step: '0.01' },
                         {
                             name: 'priority',
@@ -716,12 +716,12 @@ export default function Projects() {
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                                 { value: 'completed', label: translate('Completed') },
-                                { value: 'on_hold', label: translate('On Hold') },
+                                { value: 'on_hold', label: translate('On hold') },
                             ],
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: translate('Assign To'),
+                            label: translate('Assign to'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -747,7 +747,7 @@ export default function Projects() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? translate('Add Project') : formMode === 'edit' ? translate('Edit Project') : translate('View Project')}
+                title={formMode === 'create' ? translate('Add project') : formMode === 'edit' ? translate('Edit project') : translate('View project')}
                 mode={formMode}
             />
 
@@ -770,14 +770,14 @@ export default function Projects() {
                                 { value: 'active', label: translate('Active') },
                                 { value: 'inactive', label: translate('Inactive') },
                                 { value: 'completed', label: translate('Completed') },
-                                { value: 'on_hold', label: translate('On Hold') },
+                                { value: 'on_hold', label: translate('On hold') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={translate('Change Project Status')}
+                title={translate('Change project status')}
                 mode="edit"
             />
 

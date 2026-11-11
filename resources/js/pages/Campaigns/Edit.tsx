@@ -38,13 +38,13 @@ export default function CampaignEdit() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name.trim()) errs.name = translate('Campaign Name is required');
-        if (!data.start_date) errs.start_date = translate('Start Date is required');
-        if (!data.end_date) errs.end_date = translate('End Date is required');
-        else if (data.start_date && data.end_date < data.start_date) errs.end_date = translate('End Date must be after Start Date');
-        if (!data.campaign_type_id) errs.campaign_type_id = translate('Campaign Type is required');
-        if (!data.target_list_id) errs.target_list_id = translate('Target List is required');
-        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
+        if (!data.name.trim()) errs.name = translate('Campaign name is required');
+        if (!data.start_date) errs.start_date = translate('Start date is required');
+        if (!data.end_date) errs.end_date = translate('End date is required');
+        else if (data.start_date && data.end_date < data.start_date) errs.end_date = translate('End date must be after start date');
+        if (!data.campaign_type_id) errs.campaign_type_id = translate('Campaign type is required');
+        if (!data.target_list_id) errs.target_list_id = translate('Target list is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign to is required');
 
         if (Object.keys(errs).length > 0) {
             Object.entries(errs).forEach(([k, v]) => {
@@ -72,7 +72,7 @@ export default function CampaignEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Campaign')}
+            title={translate('Edit campaign')}
             description={translate('Update campaign details, related information')}
             breadcrumbs={breadcrumbs}
             actions={[
@@ -90,7 +90,7 @@ export default function CampaignEdit() {
                 {/* Card 1 — Campaign Information */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Campaign Information')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Campaign information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
@@ -106,7 +106,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Campaign Type')}
+                                {translate('Campaign type')}
                             </Label>
                             <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
                                 <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
@@ -125,7 +125,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Target List')}
+                                {translate('Target list')}
                             </Label>
                             <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
                                 <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
@@ -205,7 +205,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm" required>
-                                {translate('Assign To')}
+                                {translate('Assign to')}
                             </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -232,7 +232,7 @@ export default function CampaignEdit() {
                 {/* Card 2 — Budget & Performance */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Budget & Performance')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-bold">{translate('Budget & performance')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">

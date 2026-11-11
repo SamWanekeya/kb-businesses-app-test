@@ -167,7 +167,7 @@ export default function DocumentTypes() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Document Management') },
+        { title: translate('Document management') },
         { title: translate('Types') },
     ];
 
@@ -184,7 +184,7 @@ export default function DocumentTypes() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? translate('Add New Document Type') : translate('Edit Document Type')}
+                                {formMode === 'create' ? translate('Add new document type') : translate('Edit document type')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
@@ -230,7 +230,7 @@ export default function DocumentTypes() {
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? translate('Add Document Type') : translate('Update Document Type')}
+                                        {formMode === 'create' ? translate('Add document type') : translate('Update document type')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
@@ -283,7 +283,7 @@ export default function DocumentTypes() {
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="all">{translate('All statuses')}</SelectItem>
                                         <SelectItem value="active">{translate('Active')}</SelectItem>
                                         <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
@@ -296,7 +296,7 @@ export default function DocumentTypes() {
                         {(documentTypes?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Document Types')}</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{translate('Document types')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage document type categories.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
@@ -306,10 +306,10 @@ export default function DocumentTypes() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSortranslate('type_name')}
+                                                    onClick={() => handleSortranslate('Type_name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {translate('Type Name')}
+                                                        {translate('Type name')}
                                                         {pageFilters.sort_field === 'type_name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -512,7 +512,7 @@ export default function DocumentTypes() {
                                             to={documentTypes?.to || 0}
                                             total={documentTypes?.total || 0}
                                             links={documentTypes?.links}
-                                            entityName={translate('document types')}
+                                            entityName={translate('Document types')}
                                             hidePerPage={true}
                                             onPageChange={(url) => {
                                                 router.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -549,7 +549,7 @@ export default function DocumentTypes() {
                 }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.type_name || ''}
-                entityName={translate('document type')}
+                entityName={translate('Document type')}
             />
         </PageTemplate>
     );

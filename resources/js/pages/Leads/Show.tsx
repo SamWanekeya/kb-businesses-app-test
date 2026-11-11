@@ -50,9 +50,9 @@ export default function LeadShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Lead Management') },
+        { title: translate('Lead management') },
         { title: translate('Leads'), href: route('leads.index') },
-        { title: translate('View Lead') },
+        { title: translate('View lead') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -93,14 +93,14 @@ export default function LeadShow() {
                     {(
                         [
                             {
-                                label: translate('Lead Value'),
+                                label: translate('Lead value'),
                                 value: formatCurrency(lead.value),
                                 icon: DollarSign,
                                 iconCls: 'text-emerald-600',
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
                             },
                             {
-                                label: translate('Pipeline Stage'),
+                                label: translate('Pipeline stage'),
                                 value: lead.lead_status?.name || '',
                                 icon: TrendingUp,
                                 iconCls: 'text-blue-600',
@@ -146,7 +146,7 @@ export default function LeadShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <FileText className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Lead Summary')}
+                                {translate('Lead summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -156,7 +156,7 @@ export default function LeadShow() {
                                     <div>{getStatusBadge(lead.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-foreground/75 text-xs">{translate('Pipeline Stage')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Pipeline stage')}</p>
                                     <p className="text-foreground text-sm">{lead.lead_status?.name || ''}</p>
                                 </div>
                                 <div className="space-y-0.5">
@@ -173,20 +173,20 @@ export default function LeadShow() {
                                             </span>
                                         ) : (
                                             <span className="bg-muted text-foreground/75 ring-border inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-inset">
-                                                {translate('Not Converted')}
+                                                {translate('Not converted')}
                                             </span>
                                         )}
                                     </div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-foreground/75 text-xs">{translate('Account Name')}</p>
+                                    <p className="text-foreground/75 text-xs">{translate('Account name')}</p>
                                     <p className="text-foreground text-sm">{lead.account_name || ''}</p>
                                 </div>
                             </div>
                             {/* Assigned To + Created By — footer */}
                             <div className="border-border mt-4 grid grid-cols-2 gap-4 border-t pt-4">
                                 <div>
-                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned To')}</p>
+                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Assigned to')}</p>
                                     {lead.assigned_user ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
@@ -207,7 +207,7 @@ export default function LeadShow() {
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Created By')}</p>
+                                    <p className="text-foreground/75 mb-1.5 text-xs">{translate('Created by')}</p>
                                     {lead.creator ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-7 w-7 flex-shrink-0">
@@ -234,7 +234,7 @@ export default function LeadShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <User className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Contact & Address')}
+                                {translate('Contact & address')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -317,7 +317,7 @@ export default function LeadShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <Target className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Related Campaign')}
+                                {translate('Related campaign')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -373,7 +373,7 @@ export default function LeadShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-bold">
                                     <Building className="text-foreground/75 mr-3 h-5 w-5" />
-                                    {translate('Related Accounts')}
+                                    {translate('Related accounts')}
                                     {relatedAccounts?.length > 0 && (
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {relatedAccounts.length}
@@ -430,7 +430,7 @@ export default function LeadShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-bold">
                                     <Users className="text-foreground/75 mr-3 h-5 w-5" />
-                                    {translate('Related Contacts')}
+                                    {translate('Related contacts')}
                                     {relatedContacts?.length > 0 && (
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {relatedContacts.length}
@@ -494,7 +494,7 @@ export default function LeadShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-bold">
                                         <Calendar className="text-foreground/75 mr-3 h-5 w-5" />
-                                        {translate('Meetings & Calls')}
+                                        {translate('Meetings & calls')}
                                         <span className="bg-muted text-foreground/75 ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold">
                                             {meetings.length}
                                         </span>
@@ -684,7 +684,7 @@ export default function LeadShow() {
                         <CardHeader className="border-b">
                             <CardTitle className="flex items-center text-lg font-bold">
                                 <MessageCircle className="text-foreground/75 mr-3 h-5 w-5" />
-                                {translate('Activity Stream')}
+                                {translate('Activity stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -974,8 +974,8 @@ export default function LeadShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={translate('this activity')}
-                entityName={translate('activity')}
+                itemName={translate('This activity')}
+                entityName={translate('Activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -990,8 +990,8 @@ export default function LeadShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={translate('all activities for {{name}}', { name: lead.name })}
-                entityName={translate('activities')}
+                itemName={translate('All activities for {{name}}', { name: lead.name })}
+                entityName={translate('Activities')}
             />
         </PageTemplate>
     );

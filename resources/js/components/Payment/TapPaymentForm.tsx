@@ -86,7 +86,7 @@ export function TapPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormatranslate('en-US', {
+        return new Intl.NumberFormat('En-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -97,7 +97,7 @@ export function TapPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {translate('Tap Payment')}
+                    {translate('Tap payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -110,15 +110,15 @@ export function TapPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{translate('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total amount')}</span>
                         <span className="text-lg font-extrabold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-foreground/75 mt-1 text-sm">
-                        {translate('Billing Cycle')}: {translate(billingCycle)}
+                        {translate('Billing cycle')}: {translate(billingCycle)}
                     </div>
                     {discountCode && (
                         <div className="mt-1 text-sm text-fuchsia-600">
-                            {translate('Discount Applied')}: {discountCode}
+                            {translate('Discount applied')}: {discountCode}
                         </div>
                     )}
                 </div>
@@ -129,7 +129,7 @@ export function TapPaymentForm({
                 </Alert>
 
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported payment methods')}</h4>
                     <ul className="space-y-1 text-sm text-blue-800">
                         <li>• Credit/Debit Cards</li>
                         <li>• Apple Pay</li>
@@ -158,7 +158,7 @@ export function TapPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-foreground/75 text-center text-xs">{translate('Powered by Tap - Secure payment processing')}</div>
+                <div className="text-foreground/75 text-center text-xs">{translate('Powered by Tap - secure payment processing')}</div>
             </CardContent>
         </Card>
     );

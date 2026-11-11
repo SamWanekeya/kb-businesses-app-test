@@ -65,7 +65,7 @@ export default function ReceiptOrderEdit() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Receipt Orders'), href: route('receipt-orders.index') },
+        { title: translate('Receipt orders'), href: route('receipt-orders.index') },
         { title: translate('Edit') },
     ];
 
@@ -205,11 +205,11 @@ export default function ReceiptOrderEdit() {
     const handleSubmit = () => {
         const errs: Errors = {};
         if (!form.name.trim()) errs.name = translate('Name is required');
-        if (!form.purchase_order_id && !form.return_order_id) errs.purchase_order_id = translate('Either Purchase Order or Return Order is required');
+        if (!form.purchase_order_id && !form.return_order_id) errs.purchase_order_id = translate('Either purchase order or return order is required');
         if (!form.account_id) errs.account_id = translate('Account is required');
         if (!form.contact_id) errs.contact_id = translate('Contact is required');
-        if (!form.receipt_date) errs.receipt_date = translate('Receipt Date is required');
-        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!form.receipt_date) errs.receipt_date = translate('Receipt date is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned to is required');
         if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = translate('At least one product is required');
 
         if (Object.keys(errs).length) {
@@ -246,7 +246,7 @@ export default function ReceiptOrderEdit() {
 
     return (
         <PageTemplate
-            title={translate('Edit Receipt Order')}
+            title={translate('Edit receipt order')}
             description={translate('Update receipt order details and related information')}
             breadcrumbs={breadcrumbs}
             url="/receipt-orders"
@@ -266,7 +266,7 @@ export default function ReceiptOrderEdit() {
                 {/* Basic Information */}
                 <div className="border-b border-gray-200 dark:border-gray-700">
                     <div className="px-6 pt-5">
-                        <h2 className="text-sm font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
+                        <h2 className="text-sm font-bold text-gray-900 dark:text-white">{translate('Basic information')}</h2>
                     </div>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 p-6 md:grid-cols-2">
                         {/* Name + Description */}
@@ -288,7 +288,7 @@ export default function ReceiptOrderEdit() {
 
                         {/* Purchase Order + Return Order */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Purchase Order')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Purchase order')}</Label>
                             <Select value={form.purchase_order_id} onValueChange={handlePurchaseOrderChange}>
                                 <SelectTrigger className={errors.purchase_order_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={translate('Select purchase order')} />
@@ -306,14 +306,14 @@ export default function ReceiptOrderEdit() {
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
                                     <a href={route('purchase-orders.index')} className="font-medium underline">
-                                        {translate('Purchase Orders')}
+                                        {translate('Purchase orders')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Return Order')}</Label>
+                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Return order')}</Label>
                             <Select value={form.return_order_id} onValueChange={handleReturnOrderChange}>
                                 <SelectTrigger>
                                     <SelectValue placeholder={translate('Select return order')} />
@@ -450,7 +450,7 @@ export default function ReceiptOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Assigned To')} <span className="text-red-500">*</span>
+                                {translate('Assigned to')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
@@ -477,7 +477,7 @@ export default function ReceiptOrderEdit() {
                             {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                         </h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
-                            <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
+                            <Plus className="mr-1 h-4 w-4" /> {translate('Add product')}
                         </Button>
                     </div>
 
@@ -493,12 +493,12 @@ export default function ReceiptOrderEdit() {
                                             {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {translate('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Value')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount value')}</th>
                                         <th className="w-28 px-4 py-3 text-left">{translate('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{translate('Line Total')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Line total')}</th>
                                         <th className="w-12 px-4 py-3"></th>
                                     </tr>
                                 </thead>
@@ -565,7 +565,7 @@ export default function ReceiptOrderEdit() {
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -581,7 +581,7 @@ export default function ReceiptOrderEdit() {
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Type')}
+                                                        {translate('Discount type')}
                                                     </span>
                                                     <Select
                                                         value={row.discount_type}
@@ -595,14 +595,14 @@ export default function ReceiptOrderEdit() {
                                                         <SelectContent>
                                                             <SelectItem value="none">{translate('None')}</SelectItem>
                                                             <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount Value')}
+                                                        {translate('Discount value')}
                                                     </span>
                                                     <Input
                                                         inputType="number"
@@ -626,7 +626,7 @@ export default function ReceiptOrderEdit() {
                                                             <span className="text-foreground/75 text-sm">
                                                                 {prod?.tax
                                                                     ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
-                                                                    : translate('No Tax')}
+                                                                    : translate('No tax')}
                                                             </span>
                                                         );
                                                     })()}
@@ -673,7 +673,7 @@ export default function ReceiptOrderEdit() {
                                     <span className="font-mono font-medium">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-extrabold text-gray-900 dark:text-gray-100">
-                                    <span>{translate('Grand Total')}</span>
+                                    <span>{translate('Grand total')}</span>
                                     <span className="font-mono text-lg text-fuchsia-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
@@ -683,7 +683,7 @@ export default function ReceiptOrderEdit() {
 
                 {/* Additional Notes */}
                 <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-                    <h2 className="mb-4 text-sm font-bold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
+                    <h2 className="mb-4 text-sm font-bold text-gray-900 dark:text-white">{translate('Additional notes')}</h2>
                     <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
                 </div>
 

@@ -27,8 +27,8 @@ export default function ShowReceiptOrder() {
     }, []);
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard.index') },
-        { title: translate('Receipt Orders'), href: route('receipt-orders.index') },
-        { title: translate('View Receipt Order') },
+        { title: translate('Receipt orders'), href: route('receipt-orders.index') },
+        { title: translate('View receipt order') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -99,21 +99,21 @@ export default function ShowReceiptOrder() {
                         {(
                             [
                                 {
-                                    label: translate('Receipt Number'),
+                                    label: translate('Receipt number'),
                                     value: receiptOrder.receipt_number || '',
                                     icon: FileText,
                                     iconCls: 'text-blue-600',
                                     blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                                 },
                                 {
-                                    label: translate('Receipt Date'),
+                                    label: translate('Receipt date'),
                                     value: window.kbSettings.formatDateTimeSimple(receiptOrder.receipt_date),
                                     icon: Calendar,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                                 },
                                 {
-                                    label: translate('Expected Date'),
+                                    label: translate('Expected date'),
                                     value: window.kbSettings.formatDateTimeSimple(receiptOrder.expected_date),
                                     icon: Calendar,
                                     iconCls: 'text-purple-600',
@@ -158,7 +158,7 @@ export default function ShowReceiptOrder() {
                                                         {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
-                                                        {translate('Unit Price')}
+                                                        {translate('Unit price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-bold whitespace-nowrap">
                                                         {translate('Discount')}
@@ -301,13 +301,13 @@ export default function ShowReceiptOrder() {
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-foreground/75 text-sm">{translate('Total Tax')}</span>
+                                                <span className="text-foreground/75 text-sm">{translate('Total tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-bold">
                                                     {formatCurrency(receiptOrder.tax_amount ?? totalTax)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-extrabold">{translate('Grand total')}</span>
                                                 <span className="font-mono text-lg font-extrabold text-emerald-600">
                                                     {formatCurrency(receiptOrder.total_amount ?? grandTotal)}
                                                 </span>
@@ -379,7 +379,7 @@ export default function ShowReceiptOrder() {
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total Amount')}</p>
+                                    <p className="text-foreground/75 mb-1 text-xs">{translate('Total amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-extrabold">{formatCurrency(receiptOrder.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(receiptOrder.status)}</div>
@@ -394,7 +394,7 @@ export default function ShowReceiptOrder() {
                                         }}
                                     >
                                         <Edit className="mr-2 h-4 w-4" />
-                                        {translate('Edit Receipt Order')}
+                                        {translate('Edit receipt order')}
                                     </Button>
                                 )}
                             </div>
@@ -407,7 +407,7 @@ export default function ShowReceiptOrder() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="mr-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Customer Info')}
+                                    {translate('Customer information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -494,13 +494,13 @@ export default function ShowReceiptOrder() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <User className="mr-2 h-4 w-4 text-emerald-600" />
-                                    {translate('Assigned To')}
+                                    {translate('Assigned to')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 {receiptOrder.assigned_user && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned To')}</p>
+                                        <p className="text-foreground/75 mb-2 text-xs">{translate('Assigned to')}</p>
                                         <div className="flex min-w-0 items-center gap-2">
                                             <Avatar className="h-9 w-9 flex-shrink-0">
                                                 <AvatarImage src={receiptOrder.assigned_user.avatar} alt={receiptOrder.assigned_user.name} />
@@ -520,7 +520,7 @@ export default function ShowReceiptOrder() {
                                 {receiptOrder.assigned_user && receiptOrder.creator && <div className="mx-0 border-t" />}
                                 {receiptOrder.creator && (
                                     <div className="px-4 pt-3 pb-3">
-                                        <p className="text-foreground/75 mb-2 text-xs">{translate('Created By')}</p>
+                                        <p className="text-foreground/75 mb-2 text-xs">{translate('Created by')}</p>
                                         <div className="flex min-w-0 items-center gap-2">
                                             <Avatar className="h-9 w-9 flex-shrink-0">
                                                 <AvatarImage src={receiptOrder.creator.avatar} alt={receiptOrder.creator.name} />
@@ -547,7 +547,7 @@ export default function ShowReceiptOrder() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-bold">
                                     <Package className="mr-2 h-4 w-4 text-gray-600" />
-                                    {translate('Related Records')}
+                                    {translate('Related records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
@@ -557,7 +557,7 @@ export default function ShowReceiptOrder() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Purchase Order')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Purchase order')}</p>
                                             <p className="text-foreground truncate text-sm">{receiptOrder.purchase_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -578,7 +578,7 @@ export default function ShowReceiptOrder() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-foreground/75 text-xs">{translate('Return Order')}</p>
+                                            <p className="text-foreground/75 text-xs">{translate('Return order')}</p>
                                             <p className="text-foreground truncate text-sm">{receiptOrder.return_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
