@@ -32,7 +32,9 @@ class CookieConsentController extends Controller
         $csvFile = storage_path('app/cookie-consents.csv');
 
         if (!file_exists($csvFile)) {
-            return redirect()->back()->with('error', __('No data available'));
+            // Return an empty CSV with generic headers instead of failing
+            $headers = ['necessary', 'analytics', 'marketing', 'timestamp', 'consentType', 'userAgent', 'language', 'url', 'ip', 'country', 'city', 'region', 'network', 'version', 'region_code', 'country_name', 'country_code', 'country_code_iso3', 'country_capital', 'country_tld', 'continent_code', 'in_eu', 'postal', 'latitude', 'longitude', 'timezone', 'utc_offset', 'country_calling_code', 'currency', 'currency_name', 'languages', 'country_area', 'country_population', 'asn', 'org'];
+            file_put_contents($csvFile, implode(',', $headers) . "\n");
         }
 
         return response()->download($csvFile, 'cookie-consents-' . date('Y-m-d') . '.csv');

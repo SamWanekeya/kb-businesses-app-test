@@ -107,7 +107,7 @@ class ReportsController extends Controller
         }
 
         // Calculate growth rate compared to previous period
-        $previousPeriodStart = Carbon::parse($dateFrom)->subDays(Carbon::parse($dateTo)->diffInDays(Carbon::parse($dateFrom)))?->format('Y-m-d');
+        $previousPeriodStart = Carbon::parse($dateFrom)->subDays((int) abs(Carbon::parse($dateTo)->diffInDays(Carbon::parse($dateFrom))))->format('Y-m-d');
         $previousPeriodEnd = Carbon::parse($dateFrom)->subDay()?->format('Y-m-d');
 
         $previousSales = SalesOrder::where('created_by', $organizationId)->whereBetween('created_at', [$previousPeriodStart, $previousPeriodEnd])->sum('total_amount');

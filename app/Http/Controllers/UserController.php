@@ -105,6 +105,8 @@ class UserController extends BaseController
     {
         // Set user language same as creator (organization)
         $authUser = Auth::user();
+        $organizationSettings = settings();
+        $userLang = $organizationSettings['defaultLanguage'] ?? $authUser->lang;
         // Check plan limits for organization users
         if ($authUser->type === 'organization' && $authUser->plan) {
             $currentUserCount = User::where('created_by', $authUser->id)?->count();
@@ -137,6 +139,7 @@ class UserController extends BaseController
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'created_by' => $created_by,
+            'lang' => $userLang,
         ]);
 
         if ($user && $request->roles) {
