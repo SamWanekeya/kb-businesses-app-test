@@ -214,7 +214,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
                             {/* Scrollable Card Content */}
                             <div className="hover:scrollbar-thumb-border focus-within:scrollbar-thumb-border active:scrollbar-thumb-border min-h-0 flex-1 scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto overscroll-contain p-6 md:p-8">
                                 <div className="mb-5 text-center">
-                                    <div className="mx-auto mb-3 flex h-10 w-50 items-center justify-center">
+                                    <div className="mx-auto mb-3 flex h-14 w-50 items-center justify-center">
                                         <img src={currentLogo} alt="Kakbima" className="h-14 w-auto" />
                                     </div>
 
