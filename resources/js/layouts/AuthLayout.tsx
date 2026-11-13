@@ -208,9 +208,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
 
                     {/* Authentication Card */}
                     <div
-                        className={`flex max-h-[80vh] min-h-0 w-full max-w-md flex-col transition-all duration-700 ${
-                            mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                        }`}
+                        className="flex max-h-[80vh] min-h-0 w-full max-w-md flex-col transition-all duration-700"
                     >
                         <div className="bg-card text-card-foreground flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border shadow-xl">
                             {/* Scrollable Card Content */}
