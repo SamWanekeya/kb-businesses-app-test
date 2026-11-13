@@ -85,7 +85,7 @@ export default function DeliveryOrderShow() {
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (d: string) => {
-        if (!d) return translate('-');
+        if (!d) return '';
         return window.kbSettings.formatDateTime(d, false) || new Date(d).toLocaleDateString();
     };
 
@@ -126,26 +126,26 @@ export default function DeliveryOrderShow() {
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('Address')}</p>
-                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_address || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_address}</p>
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('City')}</p>
-                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_city || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_city}</p>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('State')}</p>
-                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_state || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_state}</p>
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
-                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_postal_code || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{deliveryOrder.delivery_postal_code}</p>
                                         </div>
                                     </div>
                                     <div className="space-y-0.5">
                                         <p className="text-foreground/75 text-xs">{translate('Country')}</p>
-                                        <p className="text-foreground text-sm">{deliveryOrder.delivery_country || translate('-')}</p>
+                                        <p className="text-foreground text-sm">{deliveryOrder.delivery_country}</p>
                                     </div>
                                 </div>
                             </div>
@@ -164,9 +164,7 @@ export default function DeliveryOrderShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {deliveryOrder.delivery_notes || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{deliveryOrder.delivery_notes}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -181,9 +179,7 @@ export default function DeliveryOrderShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {deliveryOrder.description || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{deliveryOrder.description}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -458,7 +454,7 @@ export default function DeliveryOrderShow() {
                                 <Hash className="text-foreground/75 mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-foreground/75 text-xs">{translate('Tracking number')}</p>
-                                    <p className="text-foreground font-mono text-sm">{deliveryOrder.tracking_number || translate('-')}</p>
+                                    <p className="text-foreground font-mono text-sm">{deliveryOrder.tracking_number}</p>
                                 </div>
                             </div>
                             {deliveryOrder.assigned_user && (

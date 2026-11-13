@@ -43,7 +43,7 @@ export default function ContactShow() {
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return translate('-');
+        if (!dateString) return '';
         return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 

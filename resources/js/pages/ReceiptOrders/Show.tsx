@@ -49,7 +49,7 @@ export default function ShowReceiptOrder() {
     };
 
     const formatDate = (d: string) => {
-        if (!d) return translate('-');
+        if (!d) return '';
         return window.kbSettings.formatDateTime(d, false) || new Date(d).toLocaleDateString();
     };
 
@@ -338,9 +338,7 @@ export default function ShowReceiptOrder() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {receiptOrder.notes || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{receiptOrder.notes}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -355,9 +353,7 @@ export default function ShowReceiptOrder() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {receiptOrder.description || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{receiptOrder.description}</p>
                                     </div>
                                 </div>
                             </CardContent>

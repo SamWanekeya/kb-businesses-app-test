@@ -327,14 +327,14 @@ export default function Products() {
                         {value.name}
                     </span>
                 ) : (
-                    <span className="whitespace-nowrap">{translate('-')}</span>
+                    <span className="whitespace-nowrap">{''}</span>
                 ),
         },
         {
             key: 'brand',
             label: translate('Brand'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name}</span>,
         },
         {
             key: 'status',

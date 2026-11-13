@@ -64,7 +64,7 @@ export default function ReturnOrderShow() {
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return translate('-');
+        if (!dateString) return '';
         return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -284,9 +284,7 @@ export default function ReturnOrderShow() {
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                        {returnOrder.description || translate('-')}
-                                    </p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{returnOrder.description}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -303,9 +301,7 @@ export default function ReturnOrderShow() {
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                        {returnOrder.reason_description || translate('-')}
-                                    </p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{returnOrder.reason_description}</p>
                                 </div>
                             </div>
                         </CardContent>

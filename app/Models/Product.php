@@ -88,7 +88,7 @@ class Product extends BaseModel implements HasMedia
         $this->addMediaCollection('additional');
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(300)

@@ -157,7 +157,7 @@ export default function InvoiceShow() {
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return translate('-');
+        if (!dateString) return '';
         return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -260,23 +260,23 @@ export default function InvoiceShow() {
                             <div className="grid grid-cols-1 gap-x-2 gap-y-2 xl:grid-cols-2">
                                 <div className="space-y-0.5">
                                     <p className="text-foreground/75 text-xs">{translate('Address')}</p>
-                                    <p className="text-foreground text-sm">{invoice.billing_address || translate('-')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_address}</p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-foreground/75 text-xs">{translate('City')}</p>
-                                    <p className="text-foreground text-sm">{invoice.billing_city || translate('-')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_city}</p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-foreground/75 text-xs">{translate('State')}</p>
-                                    <p className="text-foreground text-sm">{invoice.billing_state || translate('-')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_state}</p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
-                                    <p className="text-foreground text-sm">{invoice.billing_postal_code || translate('-')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_postal_code}</p>
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-foreground/75 text-xs">{translate('Country')}</p>
-                                    <p className="text-foreground text-sm">{invoice.billing_country || translate('-')}</p>
+                                    <p className="text-foreground text-sm">{invoice.billing_country}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -475,9 +475,7 @@ export default function InvoiceShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {invoice.notes || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.notes}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -492,9 +490,7 @@ export default function InvoiceShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                            {invoice.terms || translate('-')}
-                                        </p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.terms}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -648,9 +644,7 @@ export default function InvoiceShow() {
                                                     key={i}
                                                     className="hover:bg-muted/50 border-b transition-colors dark:border-gray-700 dark:bg-gray-900"
                                                 >
-                                                    <td className="text-foreground px-4 py-3 align-middle text-sm">
-                                                        {reminder.sent_by?.name || translate('-')}
-                                                    </td>
+                                                    <td className="text-foreground px-4 py-3 align-middle text-sm">{reminder.sent_by?.name}</td>
                                                     <td className="px-4 py-3 align-middle capitalize">
                                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-700 ring-1 ring-blue-600/20 ring-inset dark:bg-blue-900/20 dark:text-blue-400">
                                                             {reminder.type || 'email'}
@@ -758,9 +752,7 @@ export default function InvoiceShow() {
                                                             {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 align-middle font-mono text-sm">
-                                                        {payment.payment_id || translate('-')}
-                                                    </td>
+                                                    <td className="px-4 py-3 align-middle font-mono text-sm">{payment.payment_id}</td>
                                                     <td className="px-4 py-3 text-center align-middle">
                                                         {payment.receipt ? (
                                                             <TooltipProvider>

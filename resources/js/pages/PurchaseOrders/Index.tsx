@@ -273,7 +273,7 @@ export default function PurchaseOrders() {
             key: 'sales_order',
             label: translate('Sales order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name}</span>,
         },
         {
             key: 'order_date',

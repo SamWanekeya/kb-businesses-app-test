@@ -112,10 +112,10 @@ class ProfileUpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => __('full name'),
-            'email' => __('email address'),
-            'avatar' => __('avatar'),
-            '_method' => __('request method'),
+            'name' => __('Full name'),
+            'email' => __('Email address'),
+            'avatar' => __('Avatar'),
+            '_method' => __('Request method'),
         ];
     }
 }

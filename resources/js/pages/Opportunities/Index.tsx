@@ -339,13 +339,13 @@ export default function Opportunities() {
                         {value.name}
                     </span>
                 ) : (
-                    translate('-')
+                    ''
                 ),
         },
         {
             key: 'opportunity_source',
             label: translate('Source'),
-            render: (value: any) => <span>{value?.name || translate('-')}</span>,
+            render: (value: any) => <span>{value?.name}</span>,
         },
         {
             key: 'status',
@@ -367,7 +367,7 @@ export default function Opportunities() {
             label: translate('Close date'),
             sortable: true,
             type: 'date',
-            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.kbSettings.formatDateTime(value, false) || '-') : translate('-')}</span>
+            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.kbSettings.formatDateTime(value, false) || '-') : ''}</span>
         },
         // {
         //     key: 'created_at',
@@ -1046,7 +1046,7 @@ export default function Opportunities() {
                                                     {opportunity.amount
                                                         ? window.kbSettings.formatCurrency(parseFloat(opportunity.amount)) ||
                                                           `$${parseFloat(opportunity.amount).toFixed(2)}`
-                                                        : translate('-')}
+                                                        : ''}
                                                 </span>
                                             </span>
                                         </div>
@@ -1059,7 +1059,7 @@ export default function Opportunities() {
                                                     {opportunity.close_date || opportunity.created_at
                                                         ? window.kbSettings.formatDateTime(opportunity.close_date || opportunity.created_at, false) ||
                                                           new Date(opportunity.close_date || opportunity.created_at).toLocaleDateString()
-                                                        : translate('-')}
+                                                        : ''}
                                                 </span>
                                             </span>
                                         </div>

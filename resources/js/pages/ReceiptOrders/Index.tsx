@@ -256,7 +256,7 @@ export default function ReceiptOrders() {
             key: 'account',
             label: translate('Account'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name}</span>,
         },
         {
             key: 'receipt_date',

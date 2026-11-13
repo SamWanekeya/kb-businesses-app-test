@@ -699,7 +699,7 @@ export default function Notes() {
                         ? {
                               ...currentItem,
                               shared_users: currentItem.shared_users?.map((u: any) => u.id) || [],
-                              shared_users_names: currentItem.shared_users?.map((u: any) => u.name).join(', ') || translate('-'),
+                              shared_users_names: currentItem.shared_users?.map((u: any) => u.name).join(', '),
                           }
                         : null
                 }

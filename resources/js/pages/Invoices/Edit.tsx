@@ -555,7 +555,7 @@ export default function InvoiceEdit() {
                             </CardTitle>
                             {!isPaidOrCancelled && (
                                 <Button type="button" size="sm" onClick={addLine}>
-                                    <Plus className="mr-1 h-4 w-4" /> {translate(' add product')}
+                                    <Plus className="mr-1 h-4 w-4" /> {translate('Add product')}
                                 </Button>
                             )}
                         </div>

@@ -188,7 +188,9 @@ export default function SignInHistory() {
     return (
         <PageTemplate
             title={translate('Sign in history')}
-            description={translate('')}
+            description={translate(
+                'View a complete record of admin and member logins into the platform. Inspect connection details or take immediate action on active user sessions.',
+            )}
             url="/sign-in-history"
             breadcrumbs={breadcrumbs}
             actions={[

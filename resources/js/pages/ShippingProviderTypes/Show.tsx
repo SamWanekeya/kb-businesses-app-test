@@ -83,7 +83,7 @@ export default function ShippingProviderTypeShow() {
                                 </div>
                                 <div>
                                     <label className="text-foreground/75 text-sm">{translate('Description')}</label>
-                                    <p className="mt-1 text-sm">{shippingProviderType.description || translate('-')}</p>
+                                    <p className="mt-1 text-sm">{shippingProviderType.description}</p>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <Palette className="text-foreground/75 h-4 w-4" />
@@ -108,7 +108,7 @@ export default function ShippingProviderTypeShow() {
                                     <User className="text-foreground/75 h-4 w-4" />
                                     <div>
                                         <label className="text-foreground/75 text-sm">{translate('Created by')}</label>
-                                        <p className="mt-1 text-sm">{shippingProviderType.creator?.name || translate('-')}</p>
+                                        <p className="mt-1 text-sm">{shippingProviderType.creator?.name}</p>
                                     </div>
                                 </div>
                             </div>

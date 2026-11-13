@@ -408,7 +408,7 @@ export default function Leads() {
                 value ? (
                     <span className="font-mono">{window.kbSettings.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`}</span>
                 ) : (
-                    translate('-')
+                    ''
                 ),
         },
         {
@@ -427,7 +427,7 @@ export default function Leads() {
                         {value.name}
                     </span>
                 ) : (
-                    translate('-')
+                    ''
                 ),
         },
         {
@@ -1098,12 +1098,12 @@ export default function Leads() {
                     {/* <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {translate('Organization')}: {lead.organization || translate('-')}
+                                                {translate('Organization')}: {lead.organization}
                                             </span>
                                         </div>
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {translate('Value')}: {lead.value ? (window.kbSettings.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : translate('-')}
+                                                {translate('Value')}: {lead.value ? (window.kbSettings.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : ''}
                                             </span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">

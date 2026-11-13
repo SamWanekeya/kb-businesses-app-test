@@ -44,7 +44,7 @@ export default function CampaignShow() {
     const calculateROI = () => {
         const actualCost = campaign.actual_cost || 0;
         const budget = campaign.budget || 0;
-        if (budget === 0) return translate('-');
+        if (budget === 0) return '';
         const roi = ((budget - actualCost) / budget) * 100;
         return `${roi.toFixed(1)}%`;
     };

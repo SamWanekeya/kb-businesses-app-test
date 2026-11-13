@@ -50,7 +50,7 @@ export default function ProductReports() {
         },
         {
             title: translate('Best seller'),
-            value: summary.best_seller || translate('-'),
+            value: summary.best_seller,
             icon: <Award className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
         },

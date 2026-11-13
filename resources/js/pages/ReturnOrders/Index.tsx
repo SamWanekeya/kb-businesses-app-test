@@ -213,7 +213,7 @@ export default function ReturnOrders() {
             key: 'sales_order',
             label: translate('Sales order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || translate('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number}</span>,
         },
         {
             key: 'status',

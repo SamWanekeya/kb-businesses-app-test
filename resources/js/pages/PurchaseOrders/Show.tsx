@@ -109,7 +109,7 @@ export default function PurchaseOrderShow() {
     const formatCurrency = (amount: number) => window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return translate('-');
+        if (!dateString) return '';
         return window.kbSettings.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -224,26 +224,26 @@ export default function PurchaseOrderShow() {
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.billing_address || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_address}</p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('City')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.billing_city || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_city}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('State')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.billing_state || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_state}</p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.billing_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.billing_postal_code}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm">{purchaseOrder.billing_country || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{purchaseOrder.billing_country}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -253,26 +253,26 @@ export default function PurchaseOrderShow() {
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_address || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_address}</p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('City')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_city || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_city}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('State')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_state || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_state}</p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-foreground/75 text-xs">{translate('Postal code')}</p>
-                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm">{purchaseOrder.shipping_postal_code}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-foreground/75 text-xs">{translate('Country')}</p>
-                                            <p className="text-foreground text-sm">{purchaseOrder.shipping_country || translate('-')}</p>
+                                            <p className="text-foreground text-sm">{purchaseOrder.shipping_country}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -465,9 +465,7 @@ export default function PurchaseOrderShow() {
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                        {purchaseOrder.description || translate('-')}
-                                    </p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{purchaseOrder.description}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -935,7 +933,7 @@ export default function PurchaseOrderShow() {
                                     <p className="text-foreground text-sm">
                                         {purchaseOrder.expected_delivery_date
                                             ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date)
-                                            : translate('-')}
+                                            : ''}
                                     </p>
                                 </div>
                             </div>

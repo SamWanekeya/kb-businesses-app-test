@@ -828,9 +828,7 @@ export default function Invoices() {
                                                         {formatTitleCase(reminder.type)}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                                                    {reminder.sent_by?.name || translate('-')}
-                                                </td>
+                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">{reminder.sent_by?.name}</td>
                                             </tr>
                                         ))}
                                     </tbody>
