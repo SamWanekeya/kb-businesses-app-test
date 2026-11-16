@@ -3,7 +3,6 @@ import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
@@ -106,15 +105,14 @@ export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIn
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="kakbima_intelligence_model">{translate('Kakbima Intelligence model name')}</Label>
                                 <Select
                                     value={kakbimaIntelligenceSettings.kakbima_intelligence_model}
                                     onValueChange={(value) => {
                                         handleSettingsChange('kakbima_intelligence_model', value);
                                     }}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select Kakbima Intelligence model')} />
+                                    <SelectTrigger label={translate('Kakbima Intelligence model name')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>

@@ -205,9 +205,8 @@ export default function AccountEdit() {
                     <SectionTitle title={translate('Classification & assignment')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label required>{translate('Account type')}</Label>
                             <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
-                                <SelectTrigger className={errors.account_type_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Account type')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -230,9 +229,8 @@ export default function AccountEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label required>{translate('Assign to')}</Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Assign to')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -255,9 +253,8 @@ export default function AccountEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label required>{translate('Industry')}</Label>
                             <Select value={data.account_industry_id} onValueChange={(v) => set('account_industry_id', v)}>
-                                <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Industry')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -280,9 +277,8 @@ export default function AccountEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label>{translate('Status')}</Label>
                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger>
+                                <SelectTrigger label={translate('Status')}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>

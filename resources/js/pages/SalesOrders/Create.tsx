@@ -441,11 +441,10 @@ export default function SalesOrderCreate() {
                                 <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </Field>
                         </div>
-                        <Field label={translate('Quote')} required error={errors.quote_id}>
                             <div className="relative">
                                 <Select value={form.quote_id} onValueChange={handleQuoteChange}>
-                                    <SelectTrigger className={errors.quote_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select a quote')} />
+                                    <SelectTrigger label={translate('Quote')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {quoteOptions.map((o) => (
@@ -467,11 +466,9 @@ export default function SalesOrderCreate() {
                                     </a>
                                 </p>
                             )}
-                        </Field>
-                        <Field label={translate('Account')} required error={errors.account_id}>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select account')} />
+                                <SelectTrigger label={translate('Account')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountOptions.map((o) => (
@@ -489,7 +486,6 @@ export default function SalesOrderCreate() {
                                     </a>
                                 </p>
                             )}
-                        </Field>
                         <div
                             className="cursor-pointer"
                             onClick={(e) => {
@@ -529,9 +525,8 @@ export default function SalesOrderCreate() {
                                 className="cursor-pointer"
                             />
                         </div>
-                        <Field label={translate('Status')} error={errors.status}>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Status')}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -549,11 +544,9 @@ export default function SalesOrderCreate() {
                                     ))}
                                 </SelectContent>
                             </Select>
-                        </Field>
-                        <Field label={translate('Assign to')} required error={errors.assigned_to}>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                <SelectTrigger label={translate('Assign to')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {userOptions.map((o) => (
@@ -581,10 +574,9 @@ export default function SalesOrderCreate() {
                         <CardTitle className="text-base font-bold">{translate('Contacts & shipping provider')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
-                        <Field label={translate('Billing contact')} required error={errors.billing_contact_id}>
                             <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
-                                <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select billing contact')} />
+                                <SelectTrigger label={translate('Billing contact')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((o) => (
@@ -602,11 +594,9 @@ export default function SalesOrderCreate() {
                                     </a>
                                 </p>
                             )}
-                        </Field>
-                        <Field label={translate('Shipping contact')} required error={errors.shipping_contact_id}>
                             <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
-                                <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select shipping contact')} />
+                                <SelectTrigger label={translate('Shipping contact')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((o) => (
@@ -616,11 +606,9 @@ export default function SalesOrderCreate() {
                                     ))}
                                 </SelectContent>
                             </Select>
-                        </Field>
-                        <Field label={translate('Shipping provider')} required error={errors.shipping_provider_type_id}>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
-                                <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select provider')} />
+                                <SelectTrigger label={translate('Shipping provider')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {providerOptions.map((o) => (
@@ -638,7 +626,6 @@ export default function SalesOrderCreate() {
                                     </a>
                                 </p>
                             )}
-                        </Field>
                     </CardContent>
                 </Card>
 
@@ -689,17 +676,14 @@ export default function SalesOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Product')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Select
                                                         value={line.product_id}
                                                         onValueChange={(v) => {
                                                             setLine(line.id, 'product_id', v);
                                                         }}
                                                     >
-                                                        <SelectTrigger className="w-full">
-                                                            <SelectValue placeholder={translate('Select product')} />
+                                                        <SelectTrigger label={translate('Product')} className="w-full">
+                                                            <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((o) => (
@@ -748,16 +732,13 @@ export default function SalesOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount type')}
-                                                    </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
                                                         onValueChange={(val) => {
                                                             setLine(line.id, 'discount_type', val === 'none' ? '' : val);
                                                         }}
                                                     >
-                                                        <SelectTrigger className="w-full">
+                                                        <SelectTrigger label={translate('Discount type')} className="w-full">
                                                             <SelectValue placeholder={translate('None')} />
                                                         </SelectTrigger>
                                                         <SelectContent>

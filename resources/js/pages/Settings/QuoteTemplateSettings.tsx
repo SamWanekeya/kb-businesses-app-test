@@ -295,15 +295,14 @@ export default function QuoteTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="quote_template">{translate('Quote template')}</Label>
                                     <Select
                                         value={data.quoteTemplate}
                                         onValueChange={(value) => {
                                             setData('quoteTemplate', value);
                                         }}
                                     >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={translate('Select template')} />
+                                        <SelectTrigger label={translate('Quote template')}>
+                                            <SelectValue placeholder={translate('Select...')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (

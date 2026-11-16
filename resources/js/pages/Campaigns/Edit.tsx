@@ -105,11 +105,8 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('Campaign type')}
-                            </Label>
                             <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
-                                <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Campaign type')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -124,11 +121,8 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('Target list')}
-                            </Label>
                             <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
-                                <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Target list')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -191,9 +185,8 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Status')}</Label>
                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger>
+                                <SelectTrigger label={translate('Status')}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -204,11 +197,8 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm" required>
-                                {translate('Assign to')}
-                            </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Assign to')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>

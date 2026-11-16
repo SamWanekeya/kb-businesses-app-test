@@ -292,15 +292,14 @@ export default function SalesOrderTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="sales_order_template">{translate('Sales order template')}</Label>
                                     <Select
                                         value={data.salesOrderTemplate}
                                         onValueChange={(value) => {
                                             setData('salesOrderTemplate', value);
                                         }}
                                     >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={translate('Select template')} />
+                                        <SelectTrigger label={translate('Sales order template')}>
+                                            <SelectValue placeholder={translate('Select...')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (

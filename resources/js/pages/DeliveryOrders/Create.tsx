@@ -227,11 +227,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Sales order')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
-                                <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Sales order')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -254,11 +251,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Account')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Account')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -281,11 +275,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Contact')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
-                                <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Contact')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -308,11 +299,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Shipping provider')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
-                                <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Shipping provider')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -384,9 +372,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Status')}</Label>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger>
+                                <SelectTrigger label={translate('Status')}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -413,11 +400,8 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Assigned to')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                <SelectTrigger label={translate('Assigned to')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
@@ -497,16 +481,13 @@ export default function DeliveryOrderCreate() {
                                                     className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:text-gray-100 dark:hover:bg-gray-800/50"
                                                 >
                                                     <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[220px] xl:px-4 xl:py-3">
-                                                        <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                            {translate('Product')} <span className="text-red-500">*</span>
-                                                        </span>
                                                         <Select
                                                             value={row.product_id}
                                                             onValueChange={(v) => {
                                                                 setRow(row.id, 'product_id', v);
                                                             }}
                                                         >
-                                                            <SelectTrigger>
+                                                            <SelectTrigger label={translate('Product')}>
                                                                 <SelectValue placeholder={translate('Select...')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>

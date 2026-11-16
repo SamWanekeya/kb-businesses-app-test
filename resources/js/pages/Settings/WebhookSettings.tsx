@@ -5,7 +5,6 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
@@ -262,17 +261,14 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                 </DialogHeader>
                                 <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="module" required>
-                                            {translate('Module')}
-                                        </Label>
                                         <Select
                                             value={formData.module}
                                             onValueChange={(value) => {
                                                 setFormData((prev) => ({ ...prev, module: value }));
                                             }}
                                         >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder={translate('Select module')} />
+                                            <SelectTrigger label={translate('Module')}>
+                                                <SelectValue placeholder={translate('Select...')} />
                                             </SelectTrigger>
                                             <SelectContent className="z-[60000]">
                                                 <SelectItem value="New User">{translate('New user')}</SelectItem>
@@ -287,7 +283,6 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="method">{translate('Method')}</Label>
                                         <Select
                                             value={formData.method}
                                             onValueChange={(value) => {
@@ -295,7 +290,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                             }}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder={translate('Select method')} />
+                                                <SelectValue placeholder={translate('Select...')} />
                                             </SelectTrigger>
                                             <SelectContent className="z-[60000]">
                                                 <SelectItem value="GET">GET</SelectItem>

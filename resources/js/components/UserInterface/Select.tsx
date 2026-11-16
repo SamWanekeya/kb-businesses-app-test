@@ -43,62 +43,179 @@ const getReactNodeText = (node: React.ReactNode): string => {
     return '';
 };
 
+interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+    /** Optional floating label. */
+    label?: string;
+
+    /** External validation error. */
+    error?: string | boolean | null;
+
+    /** Supporting text displayed below the field. */
+    helperText?: string;
+
+    /** Additional classes for the outer wrapper. */
+    wrapperClassName?: string;
+}
+
 /**
  * Select trigger button.
  *
  * Provides the primary interactive control for opening the Select dropdown
  * while preserving Radix UI's accessible Select behavior.
  */
-const SelectTrigger = React.forwardRef<
-    React.ComponentRef<typeof SelectPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Trigger
-        ref={ref}
-        className={cn(
-            // Layout.
-            'flex h-12 w-full items-center justify-between',
-
-            // Spacing.
-            'px-3 py-2',
-
-            // Appearance.
-            'border-input rounded-md border',
-            'bg-background',
-            'text-foreground text-sm',
-
-            // Placeholder.
-            'placeholder:text-foreground/75',
-
-            // Interaction.
-            'transition-colors duration-150 ease-out',
-            'hover:border-ring/70',
-
-            // Focus.
-            'focus:outline-none',
-            'focus:ring-2',
-            'focus:ring-ring',
-            'focus:ring-offset-2',
-            'focus:ring-offset-background',
-
-            // Disabled.
-            'disabled:cursor-not-allowed',
-            'disabled:opacity-50',
-
-            // Selected value.
-            '[&>span]:line-clamp-1',
-
+const SelectTrigger = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Trigger>, SelectTriggerProps>(
+    (
+        {
             className,
-        )}
-        {...props}
-    >
-        {children}
+            wrapperClassName,
+            children,
+            label,
+            error,
+            helperText,
+            id,
+            'aria-invalid': ariaInvalid,
+            'aria-describedby': ariaDescribedBy,
+            ...props
+        },
+        ref,
+    ) => {
+        const isInvalid = ariaInvalid === true || ariaInvalid === 'true' || Boolean(error);
 
-        <SelectPrimitive.Icon asChild>
-            <ChevronDown aria-hidden="true" className="text-foreground/75 h-4 w-4 shrink-0 transition-transform duration-150" />
-        </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-));
+        const errorMessage = typeof error === 'string' && error.length > 0 ? error : undefined;
+
+        const helperId = id ? `${id}-description` : undefined;
+
+        const describedBy =
+            [ariaDescribedBy, (isInvalid && errorMessage) || (!isInvalid && helperText) ? helperId : undefined].filter(Boolean).join(' ') ||
+            undefined;
+
+        return (
+            <div className={cn('w-full min-w-0', wrapperClassName)}>
+                <div className="relative">
+                    <SelectPrimitive.Trigger
+                        ref={ref}
+                        id={id}
+                        data-slot="select-trigger"
+                        aria-invalid={isInvalid}
+                        aria-describedby={describedBy}
+                        className={cn(
+                            // Layout
+                            'peer group flex w-full items-center justify-between',
+                            label ? 'h-14' : 'h-12',
+
+                            // Spacing
+                            'px-3.5 py-2',
+
+                            // Appearance
+                            'border-input rounded-md border',
+                            'bg-background text-foreground',
+                            'text-base font-normal',
+                            'shadow-none ring-0 outline-none',
+
+                            // Selected value
+                            '[&>span]:line-clamp-1',
+
+                            // Interaction
+                            'cursor-pointer transition-[border-color,border-width] duration-150',
+
+                            // Hover
+                            'hover:border-foreground/40',
+
+                            // Focus and open state
+                            'focus:border-primary focus:border-2',
+                            'focus:ring-0 focus:outline-none',
+                            'data-[state=open]:border-2',
+                            'data-[state=open]:border-primary',
+
+                            // Invalid state takes priority
+                            'aria-invalid:!border-destructive',
+                            'aria-invalid:focus:!border-destructive',
+                            'aria-invalid:data-[state=open]:!border-destructive',
+                            'aria-invalid:focus:!ring-0',
+
+                            // Disabled
+                            'disabled:cursor-not-allowed',
+                            'disabled:opacity-60',
+
+                            // Reduced motion
+                            'motion-reduce:transition-none',
+
+                            className,
+                        )}
+                        {...props}
+                    >
+                        {children}
+
+                        <SelectPrimitive.Icon asChild>
+                            <ChevronDown
+                                aria-hidden="true"
+                                className={cn(
+                                    'h-4 w-4 shrink-0',
+                                    'text-foreground/75',
+                                    'transition-transform duration-150',
+                                    'group-data-[state=open]:text-primary',
+                                    isInvalid && 'text-destructive',
+                                )}
+                            />
+                        </SelectPrimitive.Icon>
+                    </SelectPrimitive.Trigger>
+
+                    {label && (
+                        <label
+                            htmlFor={id}
+                            className={cn(
+                                // Position and appearance
+                                'pointer-events-none absolute start-3.5 z-10',
+                                'origin-start bg-background px-1',
+                                'text-foreground/75 text-sm font-medium',
+
+                                // Default: floated label
+                                'top-0 -translate-y-1/2',
+
+                                // No selection: center the label
+                                'peer-data-[placeholder]:top-1/2',
+                                'peer-data-[placeholder]:-translate-y-1/2',
+                                'peer-data-[placeholder]:text-base',
+                                'peer-data-[placeholder]:font-normal',
+
+                                // Open: always float the label
+                                'peer-data-[state=open]:top-0',
+                                'peer-data-[state=open]:-translate-y-1/2',
+                                'peer-data-[state=open]:text-sm',
+                                'peer-data-[state=open]:font-medium',
+                                'peer-data-[state=open]:text-primary',
+
+                                // Smooth movement
+                                'transition-[top,transform,color,font-size] duration-150',
+                                'motion-reduce:transition-none',
+
+                                // Invalid state
+                                isInvalid && 'text-destructive',
+                                isInvalid && 'peer-data-[state=open]:text-destructive',
+
+                                // Disabled
+                                'peer-data-[disabled]:opacity-60',
+                            )}
+                        >
+                            {label}
+                            {props.required && (
+                                <span aria-hidden="true" className="ms-1">
+                                    *
+                                </span>
+                            )}
+                        </label>
+                    )}
+                </div>
+
+                {(isInvalid && errorMessage) || (!isInvalid && helperText) ? (
+                    <p id={helperId} className={cn('mt-1.5 px-1 text-xs leading-5', isInvalid ? 'text-destructive' : 'text-muted-foreground')}>
+                        {isInvalid ? errorMessage : helperText}
+                    </p>
+                ) : null}
+            </div>
+        );
+    },
+);
 
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 

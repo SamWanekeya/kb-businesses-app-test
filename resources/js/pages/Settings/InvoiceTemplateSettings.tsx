@@ -281,15 +281,14 @@ export default function InvoiceTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="invoice_template">{translate('Invoice template')}</Label>
                                     <Select
                                         value={data.invoiceTemplate}
                                         onValueChange={(value) => {
                                             setData('invoiceTemplate', value);
                                         }}
                                     >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={translate('Select template')} />
+                                        <SelectTrigger label={translate('Invoice template')}>
+                                            <SelectValue placeholder={translate('Select...')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (

@@ -1,8 +1,6 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
-import { Badge } from '@components/UserInterface/Badge';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent, CardHeader } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
@@ -10,11 +8,12 @@ import { Switch } from '@components/UserInterface/Switch';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Check, DollarSign, Info, Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Check, Info } from 'lucide-react';
+import type { ComponentProps } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface CurrencyProps {
+interface Currency {
     id: number;
     name: string;
     code: string;
@@ -23,420 +22,513 @@ interface CurrencyProps {
     is_default: boolean;
 }
 
+type CurrencySettingsData = {
+    decimal_format: number;
+    default_currency: string;
+    decimal_separator: '.' | ',';
+    thousands_separator: ',' | '.' | ' ' | 'none';
+    float_number: number;
+    currency_symbol_space: number;
+    currency_symbol_position: 'before' | 'after';
+};
+
+type CurrencySettingUpdate = {
+    [K in keyof CurrencySettingsData]: {
+        field: K;
+        value: CurrencySettingsData[K];
+    };
+}[keyof CurrencySettingsData];
+
+interface InfoTooltipProps {
+    content: string;
+}
+
+const DEFAULT_PREVIEW_AMOUNT = 1234.5689;
+
+const DEFAULT_CURRENCY_SETTINGS: CurrencySettingsData = {
+    decimal_format: 1,
+    default_currency: 'USD',
+    decimal_separator: '.',
+    thousands_separator: ',',
+    float_number: 0,
+    currency_symbol_space: 0,
+    currency_symbol_position: 'before',
+};
+
+const DECIMAL_OPTIONS = [
+    { value: '0', label: '0 (1234)' },
+    { value: '1', label: '1 (1234.5)' },
+    { value: '2', label: '2 (1234.56)' },
+    { value: '3', label: '3 (1234.567)' },
+    { value: '4', label: '4 (1234.5678)' },
+    { value: '5', label: '5 (1234.56789)' },
+] as const;
+
+/**
+ * Normalizes persisted settings into the values expected by the form.
+ *
+ * Invalid or missing formatting options fall back to the existing defaults.
+ * Numeric flags remain numeric to preserve the server request contract.
+ */
+function normalizeCurrencySettings(settings: Partial<CurrencySettingsData> | undefined): CurrencySettingsData {
+    const decimalFormat = (settings?.decimal_format ?? DEFAULT_CURRENCY_SETTINGS.decimal_format) satisfies number;
+
+    const thousandsSeparator = settings?.thousands_separator;
+
+    return {
+        decimal_format:
+            Number.isInteger(decimalFormat) && decimalFormat >= 0 && decimalFormat <= 5 ? decimalFormat : DEFAULT_CURRENCY_SETTINGS.decimal_format,
+
+        default_currency: settings?.default_currency || DEFAULT_CURRENCY_SETTINGS.default_currency,
+
+        decimal_separator: settings?.decimal_separator === ',' ? ',' : DEFAULT_CURRENCY_SETTINGS.decimal_separator,
+
+        thousands_separator:
+            thousandsSeparator === ',' || thousandsSeparator === '.' || thousandsSeparator === ' ' || thousandsSeparator === 'none'
+                ? thousandsSeparator
+                : DEFAULT_CURRENCY_SETTINGS.thousands_separator,
+
+        float_number: Number(settings?.float_number) === 1 ? 1 : 0,
+
+        currency_symbol_space: Number(settings?.currency_symbol_space) === 1 ? 1 : 0,
+
+        currency_symbol_position: settings?.currency_symbol_position === 'after' ? 'after' : 'before',
+    };
+}
+
+/**
+ * Formats a monetary amount using the configured separators and symbol position.
+ *
+ * This intentionally uses the application's existing custom formatting rules
+ * rather than locale-based formatting, which could override user preferences.
+ */
+function formatCurrencyPreview(amount: number, settings: CurrencySettingsData, symbol: string): string {
+    const decimalPlaces = settings.decimal_format;
+
+    const displayAmount = settings.float_number ? amount : Math.floor(amount);
+
+    const [integerPart = '0', decimalPart] = displayAmount.toFixed(decimalPlaces).split('.');
+
+    const formattedInteger =
+        settings.thousands_separator === 'none' ? integerPart : integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, settings.thousands_separator);
+
+    const formattedNumber = decimalPart !== undefined ? `${formattedInteger}${settings.decimal_separator}${decimalPart}` : formattedInteger;
+
+    const spacing = settings.currency_symbol_space ? ' ' : '';
+
+    return settings.currency_symbol_position === 'before' ? `${symbol}${spacing}${formattedNumber}` : `${formattedNumber}${spacing}${symbol}`;
+}
+
+/**
+ * Displays supplementary information for a settings control.
+ *
+ * Kept outside CurrencySettings so its component identity remains stable
+ * across parent renders.
+ */
+const InfoTooltip = memo(function InfoTooltip({ content }: InfoTooltipProps) {
+    return (
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <button
+                        type="button"
+                        aria-label={content}
+                        className="text-foreground/75 hover:bg-muted hover:text-foreground focus-visible:ring-ring inline-flex size-7 items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                        <Info aria-hidden="true" className="size-4" />
+                    </button>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                    <p>{content}</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
+});
+
+/**
+ * CurrencySettings
+ *
+ * Configures the default currency and monetary display preferences.
+ *
+ * Responsibilities:
+ * - Initialize settings from Inertia page props.
+ * - Preview formatting changes before saving.
+ * - Submit preferences to the existing update endpoint.
+ *
+ * State:
+ * - Currency preferences represent the user's unsaved form changes.
+ * - The preview amount is independent of persisted preferences.
+ * - Currency metadata is derived from the selected currency.
+ *
+ * Accessibility:
+ * - Preserves the existing semantic form controls and keyboard interaction.
+ * - Exposes selected button states and associates controls with labels.
+ *
+ * Performance:
+ * - Memoizes derived currency and preview values.
+ * - Uses stable callbacks for state updates and form submission.
+ */
 export default function CurrencySettings() {
     const { t: translate } = useTranslation();
+
     const { currencies = [], systemSettings = {} } = usePage().props;
 
-    // Currency Settings form state
-    const [currencySettings, setCurrencySettings] = useState({
-        decimal_format: systemSettings.decimal_format || '2',
-        default_currency: systemSettings.default_currency || 'USD',
-        decimal_separator: systemSettings.decimal_separator || '.',
-        thousands_separator: systemSettings.thousands_separator || ',',
-        float_number: systemSettings.float_number === '0' ? false : true,
-        currency_symbol_space: systemSettings.currency_symbol_space === '1',
-        currency_symbol_position: systemSettings.currency_symbol_position || 'before',
-        currency_name: '',
-    });
+    const [currencySettings, setCurrencySettings] = useState<CurrencySettingsData>(() => normalizeCurrencySettings(systemSettings));
 
-    // Preview amount
-    const [previewAmount, setPreviewAmount] = useState(1234.56);
+    const [previewAmount, setPreviewAmount] = useState(DEFAULT_PREVIEW_AMOUNT);
 
-    const [processing, setProcessing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
-    // Set currency name based on selected currency
-    useEffect(() => {
-        if (currencies && currencies.length > 0) {
-            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.default_currency);
-            if (selectedCurrency) {
-                setCurrencySettings((prev) => ({
-                    ...prev,
-                    currency_name: selectedCurrency.name,
-                }));
-            }
-        }
-    }, [currencies, currencySettings.default_currency]);
+    const selectedCurrency = useMemo(
+        () => currencies.find((currency) => currency.code === currencySettings.default_currency),
+        [currencies, currencySettings.default_currency],
+    );
 
-    // Handle currency settings form changes
-    const handleCurrencySettingsChange = (field: string, value: string | boolean) => {
-        setCurrencySettings((prev) => ({
-            ...prev,
-            [field]: value,
+    const currencyName = selectedCurrency?.name ?? currencySettings.default_currency;
+
+    const currencySymbol = selectedCurrency?.symbol || '$';
+
+    const updateCurrencySetting = useCallback((update: CurrencySettingUpdate) => {
+        setCurrencySettings((previous) => ({
+            ...previous,
+            [update.field]: update.value,
         }));
-    };
+    }, []);
 
-    // Handle currency selection change
-    const handleCurrencyChange = (value: string) => {
-        const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === value);
+    const handleCurrencyChange = useCallback(
+        (value: string) => {
+            updateCurrencySetting({
+                field: 'default_currency',
+                value,
+            });
+        },
+        [updateCurrencySetting],
+    );
 
-        setCurrencySettings((prev) => ({
-            ...prev,
-            default_currency: value,
-            currency_name: selectedCurrency?.name || value,
-        }));
-    };
+    const handleDecimalFormatChange = useCallback(
+        (value: string) => {
+            const decimalFormat = Number(value);
 
-    // Format the preview amount based on current settings
-    const formattedPreview = () => {
-        try {
-            // Parse the preview amount
-            let amount = previewAmount;
-
-            // Format the number with the specified decimal places
-            const decimalPlaces = parseInt(currencySettings.decimal_format);
-
-            // Handle float number setting
-            if (!currencySettings.float_number) {
-                amount = Math.floor(amount);
+            if (Number.isInteger(decimalFormat) && decimalFormat >= 0 && decimalFormat <= 5) {
+                updateCurrencySetting({
+                    field: 'decimal_format',
+                    value: decimalFormat,
+                });
             }
+        },
+        [updateCurrencySetting],
+    );
 
-            // Format the number with the specified separators
-            const parts = amount.toFixed(decimalPlaces).split('.');
-
-            // Format the integer part with thousands separator
-            if (currencySettings.thousands_separator !== 'none') {
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currencySettings.thousands_separator);
+    const handleThousandsSeparatorChange = useCallback(
+        (value: string) => {
+            if (value === ',' || value === '.' || value === ' ' || value === 'none') {
+                updateCurrencySetting({
+                    field: 'thousands_separator',
+                    value,
+                });
             }
+        },
+        [updateCurrencySetting],
+    );
 
-            // Join with decimal separator
-            const formattedNumber = parts.join(currencySettings.decimal_separator);
+    const handlePreviewAmountChange = useCallback((event: Parameters<NonNullable<ComponentProps<'input'>['onChange']>>[0]) => {
+        setPreviewAmount(parseFloat(event.target.value) || 0);
+    }, []);
 
-            // Get currency symbol from the currencies array
-            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.default_currency);
-            const symbol = selectedCurrency?.symbol || '$';
+    const resetPreviewAmount = useCallback(() => {
+        setPreviewAmount(DEFAULT_PREVIEW_AMOUNT);
+    }, []);
 
-            // Add currency symbol with proper positioning and spacing
-            const space = currencySettings.currency_symbol_space ? ' ' : '';
+    const formattedPreview = useMemo(
+        () => formatCurrencyPreview(previewAmount, currencySettings, currencySymbol),
+        [previewAmount, currencySettings, currencySymbol],
+    );
 
-            if (currencySettings.currency_symbol_position === 'before') {
-                return `${symbol}${space}${formattedNumber}`;
-            } else {
-                return `${formattedNumber}${space}${symbol}`;
-            }
-        } catch (error) {
-            return 'Invalid format';
-        }
-    };
-
-    // Handle currency settings form submission
-    const submitCurrencySettings = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const toastId = toast.loading(translate('Saving currency settings...'));
-        setProcessing(true);
-
-        router.post(route('settings.currency.update'), currencySettings, {
-            preserveScroll: true,
-            onSuccess: () => {
-                setProcessing(false);
-                toast.dismiss(toastId);
-            },
-            onError: (errors) => {
-                setProcessing(false);
-                toast.dismiss(toastId);
-                Object.values(errors).forEach((message) => toast.error(translate(message)));
-            },
+    const setSymbolPositionBefore = useCallback(() => {
+        updateCurrencySetting({
+            field: 'currency_symbol_position',
+            value: 'before',
         });
-    };
+    }, [updateCurrencySetting]);
+
+    const setSymbolPositionAfter = useCallback(() => {
+        updateCurrencySetting({
+            field: 'currency_symbol_position',
+            value: 'after',
+        });
+    }, [updateCurrencySetting]);
+
+    const setDecimalSeparatorDot = useCallback(() => {
+        updateCurrencySetting({
+            field: 'decimal_separator',
+            value: '.',
+        });
+    }, [updateCurrencySetting]);
+
+    const setDecimalSeparatorComma = useCallback(() => {
+        updateCurrencySetting({
+            field: 'decimal_separator',
+            value: ',',
+        });
+    }, [updateCurrencySetting]);
+
+    const handleFloatNumberChange = useCallback(
+        (checked: boolean) => {
+            updateCurrencySetting({
+                field: 'float_number',
+                value: checked ? 1 : 0,
+            });
+        },
+        [updateCurrencySetting],
+    );
+
+    const handleSymbolSpaceChange = useCallback(
+        (checked: boolean) => {
+            updateCurrencySetting({
+                field: 'currency_symbol_space',
+                value: checked ? 1 : 0,
+            });
+        },
+        [updateCurrencySetting],
+    );
+
+    const handleSubmit: NonNullable<ComponentProps<'form'>['onSubmit']> = useCallback(
+        (event) => {
+            event.preventDefault();
+
+            if (isSaving) {
+                return;
+            }
+
+            setIsSaving(true);
+
+            const toastId = toast.loading(translate('Saving currency settings...'));
+
+            router.post(route('settings.currency.update'), currencySettings, {
+                preserveScroll: true,
+
+                onSuccess: () => {
+                    toast.dismiss(toastId);
+                },
+
+                onError: (errors) => {
+                    toast.dismiss(toastId);
+
+                    Object.values(errors).forEach((message) => {
+                        toast.error(translate(message));
+                    });
+                },
+
+                onFinish: () => {
+                    setIsSaving(false);
+                },
+            });
+        },
+        [currencySettings, isSaving, translate],
+    );
 
     return (
         <SettingsSection
-            title={translate('Currency settings')}
+            title={translate('Currency')}
             description={translate('Configure how currency values are displayed throughout the application')}
             action={
-                <Button type="submit" disabled={processing} form="currency-settings-form" size="sm">
-                    <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save changes')}
+                <Button type="submit" form="currency-settings-form" size="lg" disabled={isSaving}>
+                    {translate('Save')}
                 </Button>
             }
         >
-            <form id="currency-settings-form" onSubmit={submitCurrencySettings}>
-                <div className="grid grid-cols-1 gap-6">
-                    {/* Format Settings with Live Preview */}
-                    <div>
-                        <Card>
-                            <CardHeader className="pb-3">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center space-x-2">
-                                        <DollarSign className="text-primary h-5 w-5" />
-                                        <h3 className="text-base font-medium">{translate('Format options')}</h3>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-1 gap-6">
-                                    {/* Live Preview Section */}
-                                    <div className="bg-muted/30 flex flex-col items-center justify-between gap-4 rounded-md border p-4 xl:flex-row">
-                                        <div className="mb-3 flex flex-col items-center xl:mb-0 xl:items-start">
-                                            <div className="mb-1 font-mono text-2xl font-bold">{formattedPreview()}</div>
-                                            <div className="text-foreground/75 text-xs">
-                                                {currencySettings.currency_name} ({currencySettings.default_currency})
-                                            </div>
-                                        </div>
-                                        <div className="w-full xl:w-auto xl:max-w-[200px]">
-                                            <div className="flex items-center gap-2">
-                                                <Input
-                                                    inputType="number"
-                                                    inputMode="decimal"
-                                                    className="h-8 text-right text-sm"
-                                                    value={previewAmount}
-                                                    onChange={(e) => {
-                                                        setPreviewAmount(parseFloat(e.target.value) || 0);
-                                                    }}
-                                                />
-                                                <Button
-                                                    variant="outline"
-                                                    onClick={() => {
-                                                        setPreviewAmount(1234.56);
-                                                    }}
-                                                    type="button"
-                                                    size="sm"
-                                                    className="h-8 text-xs"
-                                                >
-                                                    Reset
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
+            <div className="space-y-6">
+                <div className="border-border border-t" />
 
-                                    {/* Format Options */}
-                                    <div className="grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-2">
-                                        <div className="min-w-0 space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <Label htmlFor="default_currency" className="font-medium">
-                                                    {translate('Default currency')}
-                                                </Label>
-                                                <Badge variant="outline" className="font-mono">
-                                                    {currencySettings.default_currency}
-                                                </Badge>
-                                            </div>
-                                            <Select value={currencySettings.default_currency} onValueChange={handleCurrencyChange}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder={translate('Select currency')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <div className="max-h-[300px] overflow-y-auto">
-                                                        {currencies && currencies.length > 0 ? (
-                                                            currencies.map((currency: CurrencyProps) => (
-                                                                <SelectItem key={currency.id} value={currency.code}>
-                                                                    <div className="flex items-center">
-                                                                        <span className="w-8 text-center">{currency.symbol}</span>
-                                                                        <span>
-                                                                            {currency.code} - {currency.name}
-                                                                        </span>
-                                                                        {currency.is_default && (
-                                                                            <span className="text-primary ml-2 text-xs">(Default)</span>
-                                                                        )}
-                                                                    </div>
-                                                                </SelectItem>
-                                                            ))
-                                                        ) : (
-                                                            <div className="text-foreground/75 p-2 text-center">
-                                                                {translate('No currencies found')}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
+                <div className="border-border bg-muted/20 flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1">
+                        <p aria-live="polite" aria-atomic="true" className="text-foreground text-2xl font-semibold tracking-tight">
+                            {formattedPreview}
+                        </p>
 
-                                        <div className="min-w-0 space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <Label htmlFor="decimal_format" className="font-medium">
-                                                    {translate('Decimal places')}
-                                                </Label>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Info className="text-foreground/75 h-4 w-4" />
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
-                                                            <p>{translate('Number of digits after decimal point')}</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
-                                            <Select
-                                                value={currencySettings.decimal_format}
-                                                onValueChange={(value) => {
-                                                    handleCurrencySettingsChange('decimal_format', value);
-                                                }}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select..." />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0">0 (e.g., 1234)</SelectItem>
-                                                    <SelectItem value="1">1 (e.g., 1234.5)</SelectItem>
-                                                    <SelectItem value="2">2 (e.g., 1234.56)</SelectItem>
-                                                    <SelectItem value="3">3 (e.g., 1234.567)</SelectItem>
-                                                    <SelectItem value="4">4 (e.g., 1234.5678)</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
+                        <p className="text-foreground/75 text-sm">
+                            {currencyName} ({currencySettings.default_currency})
+                        </p>
+                    </div>
 
-                                        <div className="space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <Label htmlFor="currency_symbol_position" className="font-medium">
-                                                    {translate('Symbol position')}
-                                                </Label>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Info className="text-foreground/75 h-4 w-4" />
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
-                                                            <p>{translate('Where to place the currency symbol')}</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Button
-                                                    type="button"
-                                                    variant={currencySettings.currency_symbol_position === 'before' ? 'default' : 'outline'}
-                                                    className="justify-center"
-                                                    onClick={() => {
-                                                        handleCurrencySettingsChange('currency_symbol_position', 'before');
-                                                    }}
-                                                >
-                                                    <span className="mr-2">$</span>100
-                                                    {currencySettings.currency_symbol_position === 'before' && <Check className="ml-2 h-4 w-4" />}
-                                                </Button>
-                                                <Button
-                                                    type="button"
-                                                    variant={currencySettings.currency_symbol_position === 'after' ? 'default' : 'outline'}
-                                                    className="justify-center"
-                                                    onClick={() => {
-                                                        handleCurrencySettingsChange('currency_symbol_position', 'after');
-                                                    }}
-                                                >
-                                                    100<span className="ml-2">$</span>
-                                                    {currencySettings.currency_symbol_position === 'after' && <Check className="ml-2 h-4 w-4" />}
-                                                </Button>
-                                            </div>
-                                        </div>
+                    <div className="flex items-center gap-2">
+                        <Input
+                            id="currency-preview-amount"
+                            inputType="number"
+                            inputMode="decimal"
+                            value={previewAmount}
+                            onChange={handlePreviewAmountChange}
+                            aria-label={translate('Preview amount')}
+                        />
 
-                                        <div className="space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <Label htmlFor="decimal_separator" className="font-medium">
-                                                    {translate('Decimal separator')}
-                                                </Label>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Info className="text-foreground/75 h-4 w-4" />
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
-                                                            <p>{translate('Character used to separate decimal places')}</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Button
-                                                    type="button"
-                                                    variant={currencySettings.decimal_separator === '.' ? 'default' : 'outline'}
-                                                    className="justify-center"
-                                                    onClick={() => {
-                                                        handleCurrencySettingsChange('decimal_separator', '.');
-                                                    }}
-                                                >
-                                                    {translate('Dot')} (123.45)
-                                                    {currencySettings.decimal_separator === '.' && <Check className="ml-2 h-4 w-4" />}
-                                                </Button>
-                                                <Button
-                                                    type="button"
-                                                    variant={currencySettings.decimal_separator === ',' ? 'default' : 'outline'}
-                                                    className="justify-center"
-                                                    onClick={() => {
-                                                        handleCurrencySettingsChange('decimal_separator', ',');
-                                                    }}
-                                                >
-                                                    {translate('Comma')} (123,45)
-                                                    {currencySettings.decimal_separator === ',' && <Check className="ml-2 h-4 w-4" />}
-                                                </Button>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <Label htmlFor="thousands_separator" className="font-medium">
-                                                    {translate('Thousands separator')}
-                                                </Label>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Info className="text-foreground/75 h-4 w-4" />
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
-                                                            <p>{translate('Character used to group thousands')}</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
-                                            <Select
-                                                value={currencySettings.thousands_separator}
-                                                onValueChange={(value) => {
-                                                    handleCurrencySettingsChange('thousands_separator', value);
-                                                }}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder={translate('Select...')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value=",">Comma (1,234.56)</SelectItem>
-                                                    <SelectItem value=".">Dot (1.234,56)</SelectItem>
-                                                    <SelectItem value=" ">Space (1 234.56)</SelectItem>
-                                                    <SelectItem value="none">None (123456.78)</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-
-                                        <div className="space-y-3 rounded-md border p-4">
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <Label htmlFor="float_number" className="font-medium">
-                                                        {translate('Show decimals')}
-                                                    </Label>
-                                                    <p className="text-foreground/75 mt-1 text-xs">
-                                                        {translate('Display decimal places in amounts')}
-                                                    </p>
-                                                </div>
-                                                <Switch
-                                                    id="float_number"
-                                                    checked={currencySettings.float_number}
-                                                    onCheckedChange={(checked) => {
-                                                        handleCurrencySettingsChange('float_number', checked);
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-3 rounded-md border p-4">
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <Label htmlFor="currency_symbol_space" className="font-medium">
-                                                        {translate('Add space')}
-                                                    </Label>
-                                                    <p className="text-foreground/75 mt-1 text-xs">{translate('Space between amount and symbol')}</p>
-                                                </div>
-                                                <Switch
-                                                    id="currency_symbol_space"
-                                                    checked={currencySettings.currency_symbol_space}
-                                                    onCheckedChange={(checked) => {
-                                                        handleCurrencySettingsChange('currency_symbol_space', checked);
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <Button type="button" variant="outline" onClick={resetPreviewAmount}>
+                            {translate('Reset')}
+                        </Button>
                     </div>
                 </div>
-            </form>
+
+                <form
+                    id="currency-settings-form"
+                    autoComplete="off"
+                    onSubmit={handleSubmit}
+                    aria-busy={isSaving}
+                    className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2"
+                >
+                    {/* Default currency */}
+                    <div className="space-y-2">
+                        <Select value={currencySettings.default_currency} onValueChange={handleCurrencyChange} disabled={currencies.length === 0}>
+                            <SelectTrigger id="default_currency" label={translate('Default currency')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {currencies.length > 0 ? (
+                                    currencies.map((currency) => (
+                                        <SelectItem key={currency.id} value={currency.code}>
+                                            <span>
+                                                {currency.symbol} {currency.code} - {currency.name}
+                                                {currency.is_default && ` (${translate('Default')})`}
+                                            </span>
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <SelectItem value="__no_currencies__" disabled>
+                                        {translate('No currencies found')}
+                                    </SelectItem>
+                                )}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Decimal places */}
+                    <div className="space-y-2">
+                        <Select value={String(currencySettings.decimal_format)} onValueChange={handleDecimalFormatChange}>
+                            <SelectTrigger id="decimal_format" label={translate('Decimal places')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {DECIMAL_OPTIONS.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Symbol position */}
+                    <fieldset className="space-y-2">
+                        <legend className="flex w-full items-center justify-between gap-2 text-sm">
+                            {translate('Symbol position')}
+
+                            <InfoTooltip content={translate('Where to place the currency symbol')} />
+                        </legend>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <Button
+                                type="button"
+                                variant={currencySettings.currency_symbol_position === 'before' ? 'default' : 'outline'}
+                                aria-pressed={currencySettings.currency_symbol_position === 'before'}
+                                onClick={setSymbolPositionBefore}
+                            >
+                                {currencySymbol}100
+                                {currencySettings.currency_symbol_position === 'before' && <Check aria-hidden="true" className="size-4" />}
+                            </Button>
+
+                            <Button
+                                type="button"
+                                variant={currencySettings.currency_symbol_position === 'after' ? 'default' : 'outline'}
+                                aria-pressed={currencySettings.currency_symbol_position === 'after'}
+                                onClick={setSymbolPositionAfter}
+                            >
+                                100{currencySymbol}
+                                {currencySettings.currency_symbol_position === 'after' && <Check aria-hidden="true" className="size-4" />}
+                            </Button>
+                        </div>
+                    </fieldset>
+
+                    {/* Decimal separator */}
+                    <fieldset className="space-y-2">
+                        <legend className="flex w-full items-center justify-between gap-2 text-sm">
+                            {translate('Decimal separator')}
+
+                            <InfoTooltip content={translate('Character used to separate decimal places')} />
+                        </legend>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <Button
+                                type="button"
+                                variant={currencySettings.decimal_separator === '.' ? 'default' : 'outline'}
+                                aria-pressed={currencySettings.decimal_separator === '.'}
+                                onClick={setDecimalSeparatorDot}
+                            >
+                                {translate('Dot')} (123.45)
+                                {currencySettings.decimal_separator === '.' && <Check aria-hidden="true" className="ml-2 size-4" />}
+                            </Button>
+
+                            <Button
+                                type="button"
+                                variant={currencySettings.decimal_separator === ',' ? 'default' : 'outline'}
+                                onClick={setDecimalSeparatorComma}
+                                aria-pressed={currencySettings.decimal_separator === ','}
+                                className="justify-center"
+                            >
+                                {translate('Comma')} (123,45)
+                                {currencySettings.decimal_separator === ',' && <Check aria-hidden="true" className="ml-2 size-4" />}
+                            </Button>
+                        </div>
+                    </fieldset>
+
+                    {/* Thousands separator */}
+                    <div className="space-y-2">
+                        <Select value={currencySettings.thousands_separator} onValueChange={handleThousandsSeparatorChange}>
+                            <SelectTrigger id="thousands_separator" label={translate('Thousands separator')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                <SelectItem value=",">Comma (1,234.56)</SelectItem>
+
+                                <SelectItem value=".">Dot (1.234,56)</SelectItem>
+
+                                <SelectItem value=" ">Space (1 234.56)</SelectItem>
+
+                                <SelectItem value="none">None (123456.78)</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Display options */}
+                    <div className="space-y-4">
+                        <div className="border-border flex items-center justify-between gap-4 rounded-lg border p-3">
+                            <div className="space-y-1">
+                                <Label htmlFor="float_number">{translate('Show decimals')}</Label>
+
+                                <p className="text-foreground/75 text-xs">{translate('Display decimal places in amounts')}</p>
+                            </div>
+
+                            <Switch id="float_number" checked={currencySettings.float_number === 1} onCheckedChange={handleFloatNumberChange} />
+                        </div>
+
+                        <div className="border-border flex items-center justify-between gap-4 rounded-lg border p-3">
+                            <div className="space-y-1">
+                                <Label htmlFor="currency_symbol_space">{translate('Add a new space')}</Label>
+
+                                <p className="text-foreground/75 text-xs">{translate('Space between amount and symbol')}</p>
+                            </div>
+
+                            <Switch
+                                id="currency_symbol_space"
+                                checked={currencySettings.currency_symbol_space === 1}
+                                onCheckedChange={handleSymbolSpaceChange}
+                            />
+                        </div>
+                    </div>
+                </form>
+            </div>
         </SettingsSection>
     );
 }

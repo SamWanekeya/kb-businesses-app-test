@@ -240,16 +240,13 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Account industry')}
-                                </Label>
                                 <Select
                                     value={data.account_industry_id}
                                     onValueChange={(value) => {
                                         handleInputChange('account_industry_id', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Account industry')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -272,16 +269,13 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Lead status')}
-                                </Label>
                                 <Select
                                     value={data.lead_status_id}
                                     onValueChange={(value) => {
                                         handleInputChange('lead_status_id', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.lead_status_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Lead status')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -304,16 +298,13 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Lead source')}
-                                </Label>
                                 <Select
                                     value={data.lead_source_id}
                                     onValueChange={(value) => {
                                         handleInputChange('lead_source_id', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.lead_source_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Lead source')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -336,16 +327,13 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Campaign')}
-                                </Label>
                                 <Select
                                     value={data.campaign_id}
                                     onValueChange={(value) => {
                                         handleInputChange('campaign_id', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.campaign_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Campaign')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -419,16 +407,13 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Assign to')}
-                                </Label>
                                 <Select
                                     value={data.assigned_to}
                                     onValueChange={(value) => {
                                         handleInputChange('assigned_to', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Assign to')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -451,14 +436,13 @@ export default function LeadCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select
                                     value={data.status}
                                     onValueChange={(value) => {
                                         handleInputChange('status', value);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

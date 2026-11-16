@@ -39,7 +39,7 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
     return (
         <Select value={value || ''} onValueChange={onChange}>
             <SelectTrigger>
-                <SelectValue placeholder={translate('Select parent task')} />
+                <SelectValue placeholder={translate('Select...')} />
             </SelectTrigger>
             <SelectContent className="z-[60000]">
                 {tasks.map((task: any) => (

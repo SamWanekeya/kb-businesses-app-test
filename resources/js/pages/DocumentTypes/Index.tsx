@@ -3,7 +3,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import Pagination from '@components/UserInterface/Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
@@ -210,7 +209,6 @@ export default function DocumentTypes() {
                                 {formErrors.type_name && <p className="text-sm text-red-500">{formErrors.type_name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => {
@@ -218,7 +216,7 @@ export default function DocumentTypes() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

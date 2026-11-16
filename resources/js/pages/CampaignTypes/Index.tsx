@@ -300,7 +300,6 @@ export default function CampaignTypes() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => {
@@ -308,7 +307,7 @@ export default function CampaignTypes() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

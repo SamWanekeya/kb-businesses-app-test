@@ -734,10 +734,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                />*/}
                             {/*            </div>*/}
                             {/*            <div className="space-y-2">*/}
-                            {/*                <Label htmlFor="paytabs_region">{translate('Region')}</Label>*/}
                             {/*                <Select value={data.paytabs_region} onValueChange={(value) => setData('paytabs_region', value)}>*/}
-                            {/*                    <SelectTrigger>*/}
-                            {/*                        <SelectValue placeholder={translate('Select region')} />*/}
+                            {/*                    <SelectTrigger label={translate('Region')}>*/}
+                            {/*                        <SelectValue placeholder={translate('Select...')} />*/}
                             {/*                    </SelectTrigger>*/}
                             {/*                    <SelectContent>*/}
                             {/*                        <SelectItem value="ARE">{translate('Uae')}</SelectItem>*/}

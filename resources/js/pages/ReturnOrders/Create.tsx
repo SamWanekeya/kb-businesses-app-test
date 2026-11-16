@@ -293,12 +293,9 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Sales order')}
-                                </Label>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
-                                    <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select sales order')} />
+                                    <SelectTrigger label={translate('Sales order')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrders.map((so: any) => (
@@ -320,12 +317,9 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Account')}
-                                </Label>
                                 <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                    <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select account')} />
+                                    <SelectTrigger label={translate('Account')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -347,12 +341,9 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Contact')}
-                                </Label>
                                 <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
-                                    <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select contact')} />
+                                    <SelectTrigger label={translate('Contact')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -374,12 +365,9 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Shipping provider')}
-                                </Label>
                                 <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
-                                    <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select shipping provider')} />
+                                    <SelectTrigger label={translate('Shipping provider')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {shippingProviderTypes.map((s: any) => (
@@ -425,9 +413,8 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                    <SelectTrigger>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -442,9 +429,8 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm">{translate('Return reason')}</Label>
                                 <Select value={form.reason} onValueChange={(v) => set('reason', v)}>
-                                    <SelectTrigger>
+                                    <SelectTrigger label={translate('Return reason')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -458,12 +444,9 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Assigned to')}
-                                </Label>
                                 <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                    <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select user')} />
+                                    <SelectTrigger label={translate('Assigned to')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (

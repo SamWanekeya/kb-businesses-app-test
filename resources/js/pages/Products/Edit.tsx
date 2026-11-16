@@ -235,9 +235,8 @@ export default function ProductEdit() {
 
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Category')}</Label>
                                             <Select value={data.category_id} onValueChange={(v) => set('category_id', v)}>
-                                                <SelectTrigger className={errors.category_id ? 'border-red-500' : ''}>
+                                                <SelectTrigger label={translate('Category')}>
                                                     <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
@@ -251,9 +250,8 @@ export default function ProductEdit() {
                                             {errors.category_id && <p className="text-xs text-red-500">{errors.category_id}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Brand')}</Label>
                                             <Select value={data.brand_id} onValueChange={(v) => set('brand_id', v)}>
-                                                <SelectTrigger className={errors.brand_id ? 'border-red-500' : ''}>
+                                                <SelectTrigger label={translate('Brand')}>
                                                     <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
@@ -270,9 +268,8 @@ export default function ProductEdit() {
 
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Tax')}</Label>
                                             <Select value={data.tax_id} onValueChange={(v) => set('tax_id', v)}>
-                                                <SelectTrigger className={errors.tax_id ? 'border-red-500' : ''}>
+                                                <SelectTrigger label={translate('Tax')}>
                                                     <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
@@ -383,9 +380,8 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{translate('Assign to')}</Label>
                                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                                <SelectTrigger label={translate('Assign to')}>
                                                     <SelectValue placeholder={translate('Select...')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
@@ -399,9 +395,8 @@ export default function ProductEdit() {
                                             {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label>{translate('Status')}</Label>
                                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
-                                                <SelectTrigger>
+                                                <SelectTrigger label={translate('Status')}>
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>

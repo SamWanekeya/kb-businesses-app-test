@@ -116,15 +116,14 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="recaptchaVersion">{translate('Google reCAPTCHA version')}</Label>
                                 <Select
                                     value={recaptchaSettings.recaptchaVersion}
                                     onValueChange={(value) => {
                                         handleSettingsChange('recaptchaVersion', value);
                                     }}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select version')} />
+                                    <SelectTrigger label={translate('Google reCAPTCHA version')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="v2">v2</SelectItem>

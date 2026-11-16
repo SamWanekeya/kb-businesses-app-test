@@ -220,14 +220,13 @@ export default function OpportunityCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="text-sm">{translate('Status')}</Label>
                                     <Select
                                         value={data.status}
                                         onValueChange={(v) => {
                                             handleInputChange('status', v);
                                         }}
                                     >
-                                        <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+                                        <SelectTrigger label={translate('Status')}>
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -264,16 +263,13 @@ export default function OpportunityCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Account')}
-                                </Label>
                                 <Select
                                     value={data.account_id}
                                     onValueChange={(v) => {
                                         handleInputChange('account_id', v);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Account')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -296,16 +292,13 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Contact')}
-                                </Label>
                                 <Select
                                     value={data.contact_id}
                                     onValueChange={(v) => {
                                         handleInputChange('contact_id', v);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Contact')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -328,16 +321,13 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Stage')}
-                                </Label>
                                 <Select
                                     value={data.opportunity_stage_id}
                                     onValueChange={(v) => {
                                         handleInputChange('opportunity_stage_id', v);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.opportunity_stage_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Stage')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -360,16 +350,13 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Source')}
-                                </Label>
                                 <Select
                                     value={data.opportunity_source_id}
                                     onValueChange={(v) => {
                                         handleInputChange('opportunity_source_id', v);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.opportunity_source_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Source')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
@@ -570,7 +557,6 @@ export default function OpportunityCreate() {
                                                 </div>
                                                 <div className="space-y-2">
                                                     <div>
-                                                        <label className="text-foreground/75 mb-1 block text-xs">{translate('Product')} *</label>
                                                         <Select
                                                             value={row.product_id}
                                                             onValueChange={(v) => {
@@ -578,6 +564,7 @@ export default function OpportunityCreate() {
                                                             }}
                                                         >
                                                             <SelectTrigger
+                                                                label={translate('Product')}
                                                                 className={errors[`products.${i}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                             >
                                                                 <SelectValue placeholder={translate('Select...')} />
@@ -697,16 +684,13 @@ export default function OpportunityCreate() {
                     <div className="space-y-4 p-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <Label className="text-sm" required>
-                                    {translate('Assign to')}
-                                </Label>
                                 <Select
                                     value={data.assigned_to}
                                     onValueChange={(v) => {
                                         handleInputChange('assigned_to', v);
                                     }}
                                 >
-                                    <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Assign to')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>

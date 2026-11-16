@@ -252,7 +252,6 @@ export default function DocumentFolders() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="parent_folder_id">{translate('Parent folder')}</Label>
                                 <Select
                                     value={formData.parent_folder_id}
                                     onValueChange={(value) => {
@@ -260,7 +259,7 @@ export default function DocumentFolders() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.parent_folder_id ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Parent folder')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
@@ -289,7 +288,6 @@ export default function DocumentFolders() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => {
@@ -297,7 +295,7 @@ export default function DocumentFolders() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

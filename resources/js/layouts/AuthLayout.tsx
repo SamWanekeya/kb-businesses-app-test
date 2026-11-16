@@ -207,9 +207,7 @@ export default function AuthLayout({ children, title, description }: AuthLayoutP
                     </div>
 
                     {/* Authentication Card */}
-                    <div
-                        className="flex max-h-[80vh] min-h-0 w-full max-w-md flex-col transition-all duration-700"
-                    >
+                    <div className="flex max-h-[80vh] min-h-0 w-full max-w-md flex-col transition-all duration-700">
                         <div className="bg-card text-card-foreground flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border shadow-xl">
                             {/* Scrollable Card Content */}
                             <div className="hover:scrollbar-thumb-border focus-within:scrollbar-thumb-border active:scrollbar-thumb-border min-h-0 flex-1 scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent overflow-y-auto overscroll-contain p-6 md:p-8">

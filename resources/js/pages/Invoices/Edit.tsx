@@ -322,86 +322,74 @@ export default function InvoiceEdit() {
                             />
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={translate('Sales order')} required error={errors.sales_order_id}>
-                                <div className="relative">
-                                    <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
-                                        <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                            <SelectValue placeholder={translate('Select...')} />
-                                        </SelectTrigger>
-                                        <SelectContent searchable>
-                                            {salesOrderOptions.map((s: any) => (
-                                                <SelectItem key={s.id} value={String(s.id)}>
-                                                    {s.order_number} – {s.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {loadingSalesOrder && (
-                                        <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">
-                                            {translate('Loading...')}
-                                        </span>
-                                    )}
-                                </div>
-                            </Field>
+                            <div className="relative">
+                                <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
+                                    <SelectTrigger label={translate('Sales order')}>
+                                        <SelectValue placeholder={translate('Select...')} />
+                                    </SelectTrigger>
+                                    <SelectContent searchable>
+                                        {salesOrderOptions.map((s: any) => (
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.order_number} – {s.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {loadingSalesOrder && (
+                                    <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
+                                )}
+                            </div>
                         </div>
 
                         {/* Row 2: Quote, Opportunity, Customer, Contact */}
-                        <Field label={translate('Quote')} error={errors.quote_id}>
-                            <Select value={form.quote_id} onValueChange={(v) => set('quote_id', v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {quoteOptions.map((q: any) => (
-                                        <SelectItem key={q.id} value={String(q.id)}>
-                                            {q.quote_number} – {q.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field label={translate('Opportunity')} error={errors.opportunity_id}>
-                            <Select value={form.opportunity_id} onValueChange={(v) => set('opportunity_id', v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {opportunityOptions.map((o: any) => (
-                                        <SelectItem key={o.id} value={String(o.id)}>
-                                            {o.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field label={translate('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {accountOptions.map((a: any) => (
-                                        <SelectItem key={a.id} value={String(a.id)}>
-                                            {a.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field label={translate('Contact')} required error={errors.contact_id}>
-                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
-                                <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {contactOptions.map((c: any) => (
-                                        <SelectItem key={c.id} value={String(c.id)}>
-                                            {c.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
+                        <Select value={form.quote_id} onValueChange={(v) => set('quote_id', v)}>
+                            <SelectTrigger label={translate('Quote')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {quoteOptions.map((q: any) => (
+                                    <SelectItem key={q.id} value={String(q.id)}>
+                                        {q.quote_number} – {q.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.opportunity_id} onValueChange={(v) => set('opportunity_id', v)}>
+                            <SelectTrigger label={translate('Opportunity')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {opportunityOptions.map((o: any) => (
+                                    <SelectItem key={o.id} value={String(o.id)}>
+                                        {o.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                            <SelectTrigger label={translate('Account')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {accountOptions.map((a: any) => (
+                                    <SelectItem key={a.id} value={String(a.id)}>
+                                        {a.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
+                            <SelectTrigger label={translate('Contact')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {contactOptions.map((c: any) => (
+                                    <SelectItem key={c.id} value={String(c.id)}>
+                                        {c.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
 
                         {/* Row 3: Invoice Date, Due Date, Status, Assign To */}
                         <div
@@ -444,42 +432,38 @@ export default function InvoiceEdit() {
                                 className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
                             />
                         </div>
-                        <Field label={translate('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {[
-                                        ['draft', translate('Draft')],
-                                        ['sent', translate('Sent')],
-                                        ['pending', translate('Pending')],
-                                        ['paid', translate('Paid')],
-                                        ['partially_paid', translate('Partially paid')],
-                                        ['overdue', translate('Overdue')],
-                                        ['cancelled', translate('Cancelled')],
-                                    ].map(([v, l]) => (
-                                        <SelectItem key={v} value={v}>
-                                            {l}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                        <Field label={translate('Assign to')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {userOptions.map((u: any) => (
-                                        <SelectItem key={u.id} value={String(u.id)}>
-                                            {u.name} ({u.email})
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
+                        <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                            <SelectTrigger label={translate('Status')}>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[
+                                    ['draft', translate('Draft')],
+                                    ['sent', translate('Sent')],
+                                    ['pending', translate('Pending')],
+                                    ['paid', translate('Paid')],
+                                    ['partially_paid', translate('Partially paid')],
+                                    ['overdue', translate('Overdue')],
+                                    ['cancelled', translate('Cancelled')],
+                                ].map(([v, l]) => (
+                                    <SelectItem key={v} value={v}>
+                                        {l}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <SelectTrigger label={translate('Assign to')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {userOptions.map((u: any) => (
+                                    <SelectItem key={u.id} value={String(u.id)}>
+                                        {u.name} ({u.email})
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
 
                         {/* Row 4: Notes + Description */}
                         <div className="md:col-span-1 lg:col-span-2">
@@ -597,9 +581,6 @@ export default function InvoiceEdit() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Product')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Select
                                                         value={line.product_id}
                                                         onValueChange={(v) => {
@@ -607,7 +588,7 @@ export default function InvoiceEdit() {
                                                         }}
                                                         disabled={isPaidOrCancelled}
                                                     >
-                                                        <SelectTrigger>
+                                                        <SelectTrigger label={translate('Product')}>
                                                             <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
@@ -658,9 +639,6 @@ export default function InvoiceEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount type')}
-                                                    </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
                                                         onValueChange={(v) => {
@@ -668,7 +646,7 @@ export default function InvoiceEdit() {
                                                         }}
                                                         disabled={isPaidOrCancelled}
                                                     >
-                                                        <SelectTrigger className="w-full">
+                                                        <SelectTrigger label={translate('Discount type')} className="w-full">
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>

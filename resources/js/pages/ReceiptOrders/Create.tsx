@@ -290,10 +290,9 @@ export default function ReceiptOrderCreate() {
 
                         {/* Purchase Order + Return Order */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Purchase order')}</Label>
                             <Select value={form.purchase_order_id} onValueChange={handlePurchaseOrderChange}>
-                                <SelectTrigger className={errors.purchase_order_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select purchase order')} />
+                                <SelectTrigger label={translate('Purchase order')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {purchaseOrders.map((po: any) => (
@@ -315,10 +314,9 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Return order')}</Label>
                             <Select value={form.return_order_id} onValueChange={handleReturnOrderChange}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={translate('Select return order')} />
+                                <SelectTrigger label={translate('Return order')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {returnOrders.map((ro: any) => (
@@ -340,12 +338,9 @@ export default function ReceiptOrderCreate() {
 
                         {/* Account + Contact */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Account')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select account')} />
+                                <SelectTrigger label={translate('Account')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -367,12 +362,9 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Contact')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
-                                <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select contact')} />
+                                <SelectTrigger label={translate('Contact')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -442,9 +434,8 @@ export default function ReceiptOrderCreate() {
 
                         {/* Status + Assigned To */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Status')}</Label>
                             <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger>
+                                <SelectTrigger label={translate('Status')}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -458,12 +449,9 @@ export default function ReceiptOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Assigned to')} <span className="text-red-500">*</span>
-                            </Label>
                             <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={translate('Select user')} />
+                                <SelectTrigger label={translate('Assigned to')}>
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -528,17 +516,14 @@ export default function ReceiptOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Product')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Select
                                                         value={row.product_id}
                                                         onValueChange={(v) => {
                                                             setRow(row.id, 'product_id', v);
                                                         }}
                                                     >
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder={translate('Select product')} />
+                                                        <SelectTrigger label={translate('Product')}>
+                                                            <SelectValue placeholder={translate('Select...')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {products
@@ -595,16 +580,13 @@ export default function ReceiptOrderCreate() {
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount type')}
-                                                    </span>
                                                     <Select
                                                         value={row.discount_type}
                                                         onValueChange={(v) => {
                                                             setRow(row.id, 'discount_type', v);
                                                         }}
                                                     >
-                                                        <SelectTrigger>
+                                                        <SelectTrigger label={translate('Discount type')}>
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>

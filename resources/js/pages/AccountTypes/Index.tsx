@@ -311,7 +311,6 @@ export default function AccountTypes() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => {
@@ -319,7 +318,7 @@ export default function AccountTypes() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>

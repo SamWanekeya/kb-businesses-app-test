@@ -253,12 +253,9 @@ export default function PurchaseOrderCreate() {
                         {/* Sales Order + Account */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Sales order')}
-                                </Label>
                                 <Select value={data.sales_order_id} onValueChange={handleSalesOrderChange}>
-                                    <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select sales order')} />
+                                    <SelectTrigger label={translate('Sales order')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrders.map((so: any) => (
@@ -280,12 +277,9 @@ export default function PurchaseOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Account')}
-                                </Label>
                                 <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
-                                    <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select account')} />
+                                    <SelectTrigger label={translate('Account')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -310,12 +304,9 @@ export default function PurchaseOrderCreate() {
                         {/* Billing Contact + Shipping Contact */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Billing contact')}
-                                </Label>
                                 <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
-                                    <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select billing contact')} />
+                                    <SelectTrigger label={translate('Billing contact')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -337,12 +328,9 @@ export default function PurchaseOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Shipping contact')}
-                                </Label>
                                 <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
-                                    <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select shipping contact')} />
+                                    <SelectTrigger label={translate('Shipping contact')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -359,9 +347,8 @@ export default function PurchaseOrderCreate() {
                         {/* Status + Order Date */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm">{translate('Status')}</Label>
                                 <Select value={data.status} onValueChange={(v) => set('status', v)}>
-                                    <SelectTrigger>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -424,12 +411,9 @@ export default function PurchaseOrderCreate() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm" required>
-                                    {translate('Assign to')}
-                                </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                    <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={translate('Select user')} />
+                                    <SelectTrigger label={translate('Assign to')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
@@ -495,16 +479,13 @@ export default function PurchaseOrderCreate() {
                                                 className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b border-gray-100 bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:border-gray-700 dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[180px] xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Product')} <span className="text-red-500">*</span>
-                                                    </span>
                                                     <Select
                                                         value={row.product_id}
                                                         onValueChange={(v) => {
                                                             updateProductRow(row.id, 'product_id', v);
                                                         }}
                                                     >
-                                                        <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
+                                                        <SelectTrigger label={translate('Product')}>
                                                             <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
@@ -572,16 +553,13 @@ export default function PurchaseOrderCreate() {
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-foreground/75 mb-1 block text-xs font-bold xl:hidden">
-                                                        {translate('Discount type')}
-                                                    </span>
                                                     <Select
                                                         value={row.discount_type}
                                                         onValueChange={(v) => {
                                                             updateProductRow(row.id, 'discount_type', v);
                                                         }}
                                                     >
-                                                        <SelectTrigger>
+                                                        <SelectTrigger label={translate('Discount type')}>
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>

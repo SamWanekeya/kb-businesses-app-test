@@ -2,7 +2,6 @@ import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router, usePage } from '@inertiajs/react';
 import languageData from '@lang/language.json';
@@ -113,14 +112,13 @@ export default function OrganizationSystemSettings({
                     <form id="organization-system-settings-form" onSubmit={submitSystemSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="defaultLanguage">{translate('Default language')}</Label>
                                 <Select
                                     value={systemSettings.defaultLanguage}
                                     onValueChange={(value) => {
                                         handleSystemSettingsChange('defaultLanguage', value);
                                     }}
                                 >
-                                    <SelectTrigger>
+                                    <SelectTrigger label={translate('Default language')}>
                                         <SelectValue placeholder={translate('Select...')}>
                                             {systemSettings.default_language &&
                                                 (() => {
@@ -148,15 +146,14 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="dateFormat">{translate('Date format')}</Label>
                                 <Select
                                     value={systemSettings.dateFormat}
                                     onValueChange={(value) => {
                                         handleSystemSettingsChange('dateFormat', value);
                                     }}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select date format')} />
+                                    <SelectTrigger label={translate('Date format')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(dateFormats).length > 0 ? (
@@ -181,15 +178,14 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="timeFormat">{translate('Time format')}</Label>
                                 <Select
                                     value={systemSettings.timeFormat}
                                     onValueChange={(value) => {
                                         handleSystemSettingsChange('timeFormat', value);
                                     }}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select time format')} />
+                                    <SelectTrigger label={translate('Time format')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(timeFormats).length > 0 ? (
@@ -213,15 +209,14 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="defaultTimezone">{translate('Default timezone')}</Label>
                                 <Select
                                     value={systemSettings.defaultTimezone}
                                     onValueChange={(value) => {
                                         handleSystemSettingsChange('defaultTimezone', value);
                                     }}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select timezone')} />
+                                    <SelectTrigger label={translate('Default timezone')}>
+                                        <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(timezones).length > 0 ? (

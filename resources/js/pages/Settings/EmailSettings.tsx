@@ -3,12 +3,11 @@ import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { AlertCircle, Lock, Mail, Send } from 'lucide-react';
+import { AlertCircle, Send } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -108,12 +107,6 @@ export default function EmailSettings() {
                             <CardContent className="pt-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Mail className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="provider" className="font-medium">
-                                                {translate('Email provider')}
-                                            </Label>
-                                        </div>
                                         <Select
                                             value={emailSettings.provider}
                                             onValueChange={(value) => {
@@ -128,8 +121,8 @@ export default function EmailSettings() {
                                                 }
                                             }}
                                         >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select..." />
+                                            <SelectTrigger label={translate('Email provider')}>
+                                                <SelectValue placeholder={translate('Select...')} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="smtp">SMTP</SelectItem>
@@ -213,20 +206,14 @@ export default function EmailSettings() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <Lock className="text-foreground/75 h-4 w-4" />
-                                            <Label htmlFor="encryption" className="font-medium">
-                                                {translate('Mail encryption')}
-                                            </Label>
-                                        </div>
                                         <Select
                                             value={emailSettings.encryption}
                                             onValueChange={(value) => {
                                                 handleEmailSettingsChange('encryption', value);
                                             }}
                                         >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select..." />
+                                            <SelectTrigger label={translate('Mail encryption')}>
+                                                <SelectValue placeholder={translate('Select...')} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="tls">TLS</SelectItem>

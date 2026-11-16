@@ -262,7 +262,6 @@ export default function Taxes() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="type">{translate('Type')}</Label>
                                 <Select
                                     value={formData.type}
                                     onValueChange={(value) => {
@@ -270,7 +269,7 @@ export default function Taxes() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger>
+                                    <SelectTrigger label={translate('Type')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -313,7 +312,6 @@ export default function Taxes() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => {
@@ -321,7 +319,7 @@ export default function Taxes() {
                                     }}
                                     disabled={!canCreate && !canEdit}
                                 >
-                                    <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
+                                    <SelectTrigger label={translate('Status')}>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
