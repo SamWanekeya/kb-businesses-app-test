@@ -21,11 +21,11 @@ class FedaPayPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
+            if (!isset($settings['paymentSettings']['fedapay_secret_key'])) {
                 return back()->withErrors(['error' => 'FedaPay not configured']);
             }
 
-            $this->configureFedaPay($settings['payment_settings']);
+            $this->configureFedaPay($settings['paymentSettings']);
 
             $transaction = Transaction::retrieve($validated['transaction_id']);
 
@@ -64,11 +64,11 @@ class FedaPayPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
+            if (!isset($settings['paymentSettings']['fedapay_secret_key'])) {
                 return response()->json(['error' => __('FedaPay not configured')], 400);
             }
 
-            $this->configureFedaPay($settings['payment_settings']);
+            $this->configureFedaPay($settings['paymentSettings']);
 
             $user = auth()?->user();
 
@@ -107,7 +107,7 @@ class FedaPayPaymentController extends Controller
     {
         try {
             $settings = getPaymentGatewaySettings();
-            $this->configureFedaPay($settings['payment_settings']);
+            $this->configureFedaPay($settings['paymentSettings']);
 
             $transactionId = $request->input('id');
             $transaction = Transaction::retrieve($transactionId);

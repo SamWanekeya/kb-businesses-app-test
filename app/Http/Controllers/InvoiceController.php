@@ -697,7 +697,7 @@ class InvoiceController extends Controller
             'paymentMethod' => $method,
             'amount' => $amount,
             'paymentType' => $paymentType,
-            'payment_settings' => $paymentSettings,
+            'paymentSettings' => $paymentSettings,
             'currency' => $currency,
         ]);
     }
@@ -945,7 +945,7 @@ class InvoiceController extends Controller
             $methods['bank'] = [
                 'name' => 'Bank Transfer',
                 'enabled' => true,
-                'details' => $settings['payment_settings']['bank_details'] ?? null,
+                'details' => $settings['paymentSettings']['bank_details'] ?? null,
             ];
         }
 

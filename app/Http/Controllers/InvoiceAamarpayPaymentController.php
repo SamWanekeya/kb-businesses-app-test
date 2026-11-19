@@ -38,15 +38,15 @@ class InvoiceAamarpayPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
+            if (!isset($settings['paymentSettings']['aamarpay_store_id']) || !isset($settings['paymentSettings']['aamarpay_signature'])) {
                 return response()->json(['error' => __('AamarPay not configured')], 400);
             }
 
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
-            $currency = $settings['payment_settings']['currency'] ?? 'BDT';
+            $currency = $settings['paymentSettings']['currency'] ?? 'BDT';
             $url = 'https://sandbox.aamarpay.com/request.php';
 
-            $storeId = $settings['payment_settings']['aamarpay_store_id'];
+            $storeId = $settings['paymentSettings']['aamarpay_store_id'];
 
             $fields = [
                 'store_id' => $storeId,
@@ -75,7 +75,7 @@ class InvoiceAamarpayPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                 ]),
                 'cancel_url' => route('customer-facing.invoice.aamarpay.success', ['response' => 'cancel']),
-                'signature_key' => $settings['payment_settings']['aamarpay_signature'],
+                'signature_key' => $settings['paymentSettings']['aamarpay_signature'],
                 'desc' => 'Invoice #' . $invoice->invoice_number,
             ];
 
@@ -110,7 +110,7 @@ class InvoiceAamarpayPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

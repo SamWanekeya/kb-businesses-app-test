@@ -1,281 +1,316 @@
-import { toast } from '@components/CustomToast';
-import SettingsSection from '@components/SettingsSection';
-import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
-import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
-import { Switch } from '@components/UserInterface/Switch';
-import { Textarea } from '@components/UserInterface/Textarea';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
-import { Download, Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from '@/components/CustomToast';
+import SettingsSection from '@/components/SettingsSection';
+import { Button } from '@/components/UserInterface/Button';
+import { Input } from '@/components/UserInterface/Input';
+import { Label } from '@/components/UserInterface/Label';
+import { Switch } from '@/components/UserInterface/Switch';
+import { Textarea } from '@/components/UserInterface/Textarea';
+import { route } from '@/utils/Routes';
+
+type CookieSettingsValues = {
+    enable_logging: boolean;
+    strictly_necessary_cookies: boolean;
+    cookie_title: string;
+    strictly_cookie_title: string;
+    cookie_description: string;
+    strictly_cookie_description: string;
+    contact_us_description: string;
+    contact_us_url: string;
+};
+
+type TextSettingKey = Exclude<keyof CookieSettingsValues, 'enable_logging' | 'strictly_necessary_cookies'>;
+
+type RawCookieSettings = Record<string, string | boolean | undefined>;
+
 interface CookieSettingsProps {
-    settings?: Record<string, string>;
+    settings?: RawCookieSettings;
 }
 
+interface CookiePageProps {
+    settings?: RawCookieSettings;
+}
+
+const DEFAULT_SETTINGS: CookieSettingsValues = {
+    enable_logging: false,
+    strictly_necessary_cookies: true,
+    cookie_title: 'Cookie Consent',
+    strictly_cookie_title: 'Strictly Necessary Cookies',
+    cookie_description: 'We use cookies to enhance your browsing experience and provide personalized content.',
+    strictly_cookie_description: 'These cookies are essential for the website to function properly.',
+    contact_us_description: 'If you have any questions about our cookie policy, please contact us.',
+    contact_us_url: 'https://www.kakbima.com/contact',
+};
+
+/**
+ * Normalizes persisted cookie settings into the form's expected state.
+ *
+ * Boolean logging values support both database strings and actual booleans.
+ * Strictly necessary cookies remain enabled regardless of the stored value.
+ */
+function normalizeCookieSettings(settings: RawCookieSettings = {}): CookieSettingsValues {
+    const getText = (key: TextSettingKey): string => {
+        const value = settings[key];
+
+        return typeof value === 'string' && value.length > 0 ? value : DEFAULT_SETTINGS[key];
+    };
+
+    return {
+        enable_logging: settings.enable_logging === '1' || settings.enable_logging === true,
+        strictly_necessary_cookies: true,
+        cookie_title: getText('cookie_title'),
+        strictly_cookie_title: getText('strictly_cookie_title'),
+        cookie_description: getText('cookie_description'),
+        strictly_cookie_description: getText('strictly_cookie_description'),
+        contact_us_description: getText('contact_us_description'),
+        contact_us_url: getText('contact_us_url'),
+    };
+}
+
+/**
+ * CookieSettings
+ *
+ * Configures cookie consent presentation, activity logging, and consent
+ * data exports for the application.
+ *
+ * Responsibilities:
+ * - Manage editable cookie consent settings.
+ * - Synchronize form values with server-provided settings.
+ * - Submit updates through Inertia.
+ * - Download accepted cookie preference data as CSV.
+ *
+ * Architecture:
+ * - Uses a normalized settings model to centralize default handling.
+ * - Separates boolean and text field updates for type safety.
+ * - Preserves the existing backend route and field names.
+ *
+ * Accessibility:
+ * - Associates every field with a visible label.
+ * - Explains why strictly necessary cookies cannot be disabled.
+ * - Provides descriptive text for settings and the download action.
+ *
+ * Performance:
+ * - Uses stable callbacks for event handlers.
+ * - Synchronizes state only when normalized server values change.
+ */
 export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
     const { t: translate } = useTranslation();
-    const pageProps = usePage().props;
+    const { props } = usePage<CookiePageProps>();
 
-    // Default settings
-    const defaultSettings = {
-        enable_logging: false,
-        strictlyNecessaryCookies: true,
-        cookieTitle: 'Cookie Consent',
-        strictlyCookieTitle: 'Strictly Necessary Cookies',
-        cookieDescription: 'We use cookies to enhance your browsing experience and provide personalized content.',
-        strictlyCookieDescription: 'These cookies are essential for the website to function properly.',
-        contactUsDescription: 'If you have any questions about our cookie policy, please contact us.',
-        contactUsUrl: 'https://kakbima.dev/contact',
-    };
+    const pageSettings = props.settings ?? {};
+    const settingsData = Object.keys(settings).length > 0 ? settings : pageSettings;
 
-    // Combine settings from props and page props
-    const settingsData = Object.keys(settings).length > 0 ? settings : pageProps.settings || {};
+    const normalizedSettings = normalizeCookieSettings(settingsData);
 
-    // Initialize state with merged settings
-    const [cookieSettings, setCookieSettings] = useState(() => ({
-        enable_logging: settingsData.enable_logging === '1' || settingsData.enable_logging === true || defaultSettings.enable_logging,
-        strictlyNecessaryCookies:
-            settingsData.strictlyNecessaryCookies === '1' ||
-            settingsData.strictlyNecessaryCookies === true ||
-            defaultSettings.strictlyNecessaryCookies,
-        cookieTitle: settingsData.cookieTitle || defaultSettings.cookieTitle,
-        strictlyCookieTitle: settingsData.strictlyCookieTitle || defaultSettings.strictlyCookieTitle,
-        cookieDescription: settingsData.cookieDescription || defaultSettings.cookieDescription,
-        strictlyCookieDescription: settingsData.strictlyCookieDescription || defaultSettings.strictlyCookieDescription,
-        contactUsDescription: settingsData.contactUsDescription || defaultSettings.contactUsDescription,
-        contactUsUrl: settingsData.contactUsUrl || defaultSettings.contactUsUrl,
-    }));
+    const [cookieSettings, setCookieSettings] = useState<CookieSettingsValues>(() => normalizedSettings);
 
-    // Update state when settings change
+    /**
+     * Apply server updates without resetting unsaved edits on unrelated
+     * renders where the normalized settings have not changed.
+     */
     useEffect(() => {
-        if (Object.keys(settingsData).length > 0) {
-            setCookieSettings((prevSettings) => ({
-                ...prevSettings,
-                enable_logging: settingsData.enable_logging === '1' || settingsData.enable_logging === true || defaultSettings.enable_logging,
-                strictlyNecessaryCookies:
-                    settingsData.strictlyNecessaryCookies === '1' ||
-                    settingsData.strictlyNecessaryCookies === true ||
-                    defaultSettings.strictlyNecessaryCookies,
-                cookieTitle: settingsData.cookieTitle || defaultSettings.cookieTitle,
-                strictlyCookieTitle: settingsData.strictlyCookieTitle || defaultSettings.strictlyCookieTitle,
-                cookieDescription: settingsData.cookieDescription || defaultSettings.cookieDescription,
-                strictlyCookieDescription: settingsData.strictlyCookieDescription || defaultSettings.strictlyCookieDescription,
-                contactUsDescription: settingsData.contactUsDescription || defaultSettings.contactUsDescription,
-                contactUsUrl: settingsData.contactUsUrl || defaultSettings.contactUsUrl,
-            }));
-        }
-    }, [settingsData]);
-    const [processing, setProcessing] = useState(false);
+        setCookieSettings(normalizedSettings);
+    }, [
+        normalizedSettings.enable_logging,
+        normalizedSettings.cookie_title,
+        normalizedSettings.strictly_cookie_title,
+        normalizedSettings.cookie_description,
+        normalizedSettings.strictly_cookie_description,
+        normalizedSettings.contact_us_description,
+        normalizedSettings.contact_us_url,
+    ]);
 
-    // Handle cookie settings form changes
-    const handleCookieSettingsChange = (field: string, value: string | boolean) => {
-        setCookieSettings((prev) => ({
-            ...prev,
+    const handleTextChange = useCallback((field: TextSettingKey, value: string) => {
+        setCookieSettings((previous) => ({
+            ...previous,
             [field]: value,
         }));
-    };
+    }, []);
 
-    // Handle cookie settings form submission
-    const submitCookieSettings = (e: React.FormEvent) => {
-        e.preventDefault();
-        setProcessing(true);
+    const handleLoggingChange = useCallback((checked: boolean) => {
+        setCookieSettings((previous) => ({
+            ...previous,
+            enable_logging: checked,
+        }));
+    }, []);
 
-        const toastId = toast.loading(translate('Updating cookie settings...'));
-        router.post(route('settings.cookie.update'), cookieSettings, {
-            preserveScroll: true,
-            onSuccess: () => {
-                setProcessing(false);
-                toast.dismiss(toastId);
-            },
-            onError: (errors) => {
-                toast.dismiss(toastId);
-                Object.values(errors).forEach((message) => toast.error(translate(message)));
-            },
-        });
-    };
+    const submitCookieSettings: NonNullable<React.ComponentProps<'form'>['onSubmit']> = useCallback(
+        (event) => {
+            event.preventDefault();
 
-    // Download all users' cookie consent data as CSV
-    const downloadCookieData = () => {
+            const toastId = toast.loading(translate('Saving cookie settings...'));
+
+            router.post(route('settings.cookie.update'), cookieSettings, {
+                preserveScroll: true,
+
+                onSuccess: () => {
+                    toast.dismiss(toastId);
+                },
+
+                onError: (errors) => {
+                    Object.values(errors).forEach((message) => {
+                        toast.error(translate(message));
+                    });
+                },
+
+                onFinish: () => {
+                    toast.dismiss(toastId);
+                },
+            });
+        },
+        [cookieSettings, translate],
+    );
+
+    const downloadCookieData = useCallback(() => {
         window.location.href = route('cookie.consent.download');
-    };
+    }, []);
 
     return (
         <SettingsSection
-            title={translate('Cookie settings')}
+            title={translate('Cookie')}
             description={translate('Configure cookie consent and privacy settings for your application')}
             action={
-                <Button type="submit" disabled={processing} form="cookie-settings-form" size="sm">
-                    <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save changes')}
+                <Button type="submit" form="cookie-settings-form" size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="mt-6">
-                    <form id="cookie-settings-form" onSubmit={submitCookieSettings} className="space-y-6">
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            {/* Enable Logging Switch */}
-                            <div className="flex items-center justify-between space-x-2">
-                                <div className="space-y-0.5">
-                                    <Label htmlFor="enable_logging">{translate('Enable logging')}</Label>
-                                    <p className="text-foreground/75 text-sm">{translate('Enable cookie activity logging')}</p>
-                                </div>
-                                <Switch
-                                    id="enable_logging"
-                                    checked={cookieSettings.enable_logging}
-                                    onCheckedChange={(checked) => {
-                                        handleCookieSettingsChange('enable_logging', checked);
-                                    }}
-                                />
+            <form id="cookie-settings-form" autoComplete="off" onSubmit={submitCookieSettings} className="space-y-8">
+                <div className="border-border border-t" />
+                {/* Cookie behavior */}
+                <section aria-label={translate('Cookie behavior')} className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
+                            <div className="min-w-0 space-y-1">
+                                <Label htmlFor="enable_logging">{translate('Enable logging')}</Label>
+
+                                <p id="enable-logging-description" className="text-foreground/75 text-sm">
+                                    {translate('Enable cookie activity logging')}
+                                </p>
                             </div>
 
-                            {/* Strictly Necessary Cookies Switch */}
-                            <div className="flex items-center justify-between space-x-2">
-                                <div className="space-y-0.5">
-                                    <Label htmlFor="strictlyNecessaryCookies">{translate('Strictly necessary cookies')}</Label>
-                                    <p className="text-foreground/75 text-sm">{translate('Enable strictly necessary cookies')}</p>
-                                </div>
-                                <Switch
-                                    id="strictlyNecessaryCookies"
-                                    checked={cookieSettings.strictlyNecessaryCookies}
-                                    onCheckedChange={(checked) => {
-                                        handleCookieSettingsChange('strictlyNecessaryCookies', checked);
-                                    }}
-                                />
-                            </div>
+                            <Switch
+                                id="enable_logging"
+                                aria-describedby="enable-logging-description"
+                                checked={cookieSettings.enable_logging}
+                                onCheckedChange={handleLoggingChange}
+                            />
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            {/* Cookie Title */}
-                            <div className="grid gap-2">
-                                <Input
-                                    inputIdentifier="cookieTitle"
-                                    label={translate('Cookie title')}
-                                    inputType="text"
-                                    inputMode="text"
-                                    required
-                                    value={cookieSettings.cookieTitle}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('cookieTitle', e.target.value);
-                                    }}
-                                />
+                        <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
+                            <div className="min-w-0 space-y-1">
+                                <Label htmlFor="strictly_necessary_cookies">{translate('Strictly necessary cookies')}</Label>
+
+                                <p id="strictly-necessary-description" className="text-foreground/75 text-sm">
+                                    {translate('These cookies are always enabled and cannot be disabled')}
+                                </p>
                             </div>
 
-                            {/* Strictly Cookie Title */}
-                            <div className="grid gap-2">
-                                <Input
-                                    inputIdentifier="strictlyCookieTitle"
-                                    label={translate('Strictly cookie title')}
-                                    required
-                                    inputType="text"
-                                    inputMode="text"
-                                    value={cookieSettings.strictlyCookieTitle}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('strictlyCookieTitle', e.target.value);
-                                    }}
-                                />
-                            </div>
+                            <Switch id="strictly_necessary_cookies" aria-describedby="strictly-necessary-description" checked disabled />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Consent dialog content */}
+                <section className="space-y-4">
+                    <div className="grid gap-5 md:grid-cols-2">
+                        <div className="grid content-start gap-2">
+                            <Input
+                                inputIdentifier="cookie_title"
+                                label={translate('Cookie title')}
+                                name="cookie_title"
+                                value={cookieSettings.cookie_title}
+                                maxLength={255}
+                                onChange={(event) => handleTextChange('cookie_title', event.target.value)}
+                            />
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            {/* Cookie Description */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="cookieDescription" required>
-                                    {translate('Cookie description')}
-                                </Label>
-                                <Textarea
-                                    id="cookieDescription"
-                                    value={cookieSettings.cookieDescription}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('cookieDescription', e.target.value);
-                                    }}
-                                    rows={4}
-                                />
-                            </div>
-
-                            {/* Strictly Cookie Description */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="strictlyCookieDescription" required>
-                                    {translate('Strictly cookie description')}
-                                </Label>
-                                <Textarea
-                                    id="strictlyCookieDescription"
-                                    value={cookieSettings.strictlyCookieDescription}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('strictlyCookieDescription', e.target.value);
-                                    }}
-                                    rows={4}
-                                />
-                            </div>
+                        <div className="grid content-start gap-2">
+                            <Input
+                                inputIdentifier="strictly_cookie_title"
+                                label={translate('Strictly cookie title')}
+                                name="strictly_cookie_title"
+                                value={cookieSettings.strictly_cookie_title}
+                                maxLength={255}
+                                onChange={(event) => handleTextChange('strictly_cookie_title', event.target.value)}
+                            />
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            {/* Contact Us Description */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="contactUsDescription" required>
-                                    {translate('Contact us description')}
-                                </Label>
-                                <Textarea
-                                    id="contactUsDescription"
-                                    value={cookieSettings.contactUsDescription}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('contactUsDescription', e.target.value);
-                                    }}
-                                    rows={3}
-                                />
-                            </div>
+                        <div className="grid content-start gap-2">
+                            <Label htmlFor="cookie_description">{translate('Cookie description')}</Label>
 
-                            {/* Contact Us URL */}
-                            <div className="grid gap-2">
-                                <Input
-                                    inputIdentifier="contactUsUrl"
-                                    label={translate('Contact us URL')}
-                                    required
-                                    inputType="url"
-                                    value={cookieSettings.contactUsUrl}
-                                    onChange={(e) => {
-                                        handleCookieSettingsChange('contactUsUrl', e.target.value);
-                                    }}
-                                />
-                            </div>
+                            <Textarea
+                                id="cookie_description"
+                                name="cookie_description"
+                                value={cookieSettings.cookie_description}
+                                rows={4}
+                                maxLength={5000}
+                                onChange={(event) => handleTextChange('cookie_description', event.target.value)}
+                            />
                         </div>
 
-                        {/* Download CSV Section */}
-                        <div className="border-t pt-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h4 className="text-sm">{translate('Download accepted cookies')}</h4>
-                                    <p className="text-foreground/75 text-sm">Download a CSV file of accepted cookie preferences</p>
-                                </div>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={downloadCookieData}
-                                                className="max-[1300px]:px-2.5"
-                                            >
-                                                <Download className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                                                <span className="max-[1300px]:hidden">{translate('Download CSV')}</span>
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{translate('Download CSV')}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
+                        <div className="grid content-start gap-2">
+                            <Label htmlFor="strictly_cookie_description">{translate('Strictly cookie description')}</Label>
+
+                            <Textarea
+                                id="strictly_cookie_description"
+                                name="strictly_cookie_description"
+                                value={cookieSettings.strictly_cookie_description}
+                                rows={4}
+                                maxLength={5000}
+                                onChange={(event) => handleTextChange('strictly_cookie_description', event.target.value)}
+                            />
                         </div>
-                    </form>
-                </CardContent>
-            </Card>
+                    </div>
+                </section>
+
+                {/* Contact information */}
+                <section className="space-y-4">
+                    <div className="grid gap-5 md:grid-cols-2">
+                        <div className="grid content-start gap-2">
+                            <Label htmlFor="contact_us_description">{translate('Contact us description')}</Label>
+
+                            <Textarea
+                                id="contact_us_description"
+                                name="contact_us_description"
+                                value={cookieSettings.contact_us_description}
+                                rows={3}
+                                maxLength={5000}
+                                onChange={(event) => handleTextChange('contact_us_description', event.target.value)}
+                            />
+                        </div>
+
+                        <div className="grid content-start gap-2">
+                            <Input
+                                inputIdentifier="contact_us_url"
+                                label={translate('Contact us URL')}
+                                name="contact_us_url"
+                                type="url"
+                                inputMode="url"
+                                maxLength={2048}
+                                value={cookieSettings.contact_us_url}
+                                onChange={(event) => handleTextChange('contact_us_url', event.target.value)}
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Consent data export */}
+                <section className="flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0 space-y-1">
+                        <h3 className="text-sm font-semibold">{translate('Download accepted cookies')}</h3>
+
+                        <p className="text-foreground/75 text-sm">{translate('Download a CSV file of accepted cookie preferences')}</p>
+                    </div>
+
+                    <Button type="button" variant="outline" size="lg" onClick={downloadCookieData} className="w-full shrink-0 sm:w-auto">
+                        {translate('Download CSV')}
+                    </Button>
+                </section>
+            </form>
         </SettingsSection>
     );
 }

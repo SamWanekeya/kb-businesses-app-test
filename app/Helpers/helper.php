@@ -1187,7 +1187,7 @@ if (!function_exists('getPaymentGatewaySettings')) {
         $superAdminId = User::where('type', 'super_admin')?->first()?->id;
 
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($superAdminId),
+            'paymentSettings' => PaymentSetting::getUserSettings($superAdminId),
             'general_settings' => Setting::getUserSettings($superAdminId),
             'super_admin_id' => $superAdminId,
         ];

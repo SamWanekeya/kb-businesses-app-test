@@ -1,22 +1,19 @@
-import { NavItem } from '@/types';
+import { route } from '@/utils/Routes';
 import PageTemplate from '@components/PageTemplate';
-import { Button } from '@components/UserInterface/Button';
 import { ScrollArea } from '@components/UserInterface/ScrollArea';
+import Toaster from '@components/UserInterface/Toaster';
 import { usePage } from '@inertiajs/react';
 import { cn } from '@lib/utils';
-import OrganizationSystemSettings from '@pages/Settings/OrganizationSystemSettings';
-import SystemSettings from '@pages/Settings/SystemSettings';
-import { route } from '@utils/Routes';
 import {
     Bell,
-    Bot,
+    Brain,
     Calendar,
     Cookie,
     CreditCard,
-    DollarSign,
+    Currency,
     FileText,
     HardDrive,
-    Mail,
+    type LucideIcon,
     MessagesCircle,
     MessageSquare,
     Palette,
@@ -25,533 +22,704 @@ import {
     ShoppingBag,
     Webhook,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-
-import CurrencySettings from '@pages/Settings/CurrencySettings';
-import EmailNotificationSettings from '@pages/Settings/EmailNotificationSettings';
-import SlackNotificationSettings from '@pages/Settings/SlackNotificationSettings';
-import TwilioNotificationSettings from '@pages/Settings/TwilioNotificationSettings';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BrandSettings from '@pages/Settings/BrandSettings';
-import EmailSettings from '@pages/Settings/EmailSettings';
-import PaymentSettings from '@pages/Settings/PaymentSettings';
-
 import CacheSettings from '@pages/Settings/CacheSettings';
 import CookieSettings from '@pages/Settings/CookieSettings';
+import CurrencySettings from '@pages/Settings/CurrencySettings';
+import KakbimaIntelligenceSettings from '@pages/Settings/KakbimaIntelligenceSettings';
+import SystemSettings from '@pages/Settings/SystemSettings';
+// import EmailSettings from '@pages/Settings/EmailSettings';
+import EmailNotificationSettings from '@pages/Settings/EmailNotificationSettings';
 import GoogleCalendarSettings from '@pages/Settings/GoogleCalendarSettings';
 import InvoiceTemplateSettings from '@pages/Settings/InvoiceTemplateSettings';
-import KakbimaIntelligenceSettings from '@pages/Settings/KakbimaIntelligenceSettings';
+import PaymentSettings from '@pages/Settings/PaymentSettings/PaymentSettings';
 import QuoteTemplateSettings from '@pages/Settings/QuoteTemplateSettings';
 import RecaptchaSettings from '@pages/Settings/RecaptchaSettings';
 import SalesOrderTemplateSettings from '@pages/Settings/SalesOrderTemplateSettings';
+import SlackNotificationSettings from '@pages/Settings/SlackNotificationSettings';
+import StorageSettings from '@pages/Settings/StorageSettings';
+import TwilioNotificationSettings from '@pages/Settings/TwilioNotificationSettings';
 import WebhookSettings from '@pages/Settings/WebhookSettings';
 
-import Toaster from '@components/UserInterface/Toaster';
-import { useLayout } from '@contexts/LayoutContext';
-import StorageSettings from '@pages/Settings/StorageSettings';
-import { useHasPermission } from '@utils/Permissions';
-import { useTranslation } from 'react-i18next';
+interface SettingsNavigationItem {
+    title: string;
+    href: `#${string}`;
+    icon: LucideIcon;
+    requiredPermission?: string;
+}
 
+const ORGANIZATION_SETTINGS_PERMISSIONS = [
+    'manage-system-settings',
+    'manage-email-settings',
+    'manage-brand-settings',
+    'manage-currency-settings',
+    'manage-webhook-settings',
+    'manage-email-notification-settings',
+    'manage-twilio-notification-settings',
+    'manage-slack-notification-settings',
+    'manage-quotes-settings',
+    'manage-sales-order-settings',
+    'manage-invoice-settings',
+    'manage-google-calendar-settings',
+    'manage-settings',
+] as const;
+
+const SUPER_ADMIN_EXCLUDED_PERMISSIONS = [
+    'manage-webhook-settings',
+    'manage-email-notification-settings',
+    'manage-twilio-notification-settings',
+    'manage-slack-notification-settings',
+    'manage-quotes-settings',
+    'manage-sales-order-settings',
+    'manage-invoice-settings',
+] as const;
+
+/**
+ * Settings
+ *
+ * Provides the application settings workspace, including permission-aware
+ * navigation and the existing settings forms.
+ *
+ * Responsibilities:
+ * - Render settings available to the current user.
+ * - Synchronize section navigation with scrolling and URL fragments.
+ * - Preserve existing child-component contracts and settings behavior.
+ *
+ * Accessibility:
+ * - Uses a named navigation landmark and semantic section headings.
+ * - Supports native anchor navigation and visible keyboard focus.
+ * - Respects reduced-motion preferences when scrolling.
+ *
+ * Performance:
+ * - Memoizes translated navigation configuration.
+ * - Uses IntersectionObserver instead of continuously calculating layout
+ *   positions in a scroll event handler.
+ *
+ * Extension points:
+ * - Add new navigation metadata and a corresponding permission-guarded
+ *   section when introducing another settings category.
+ */
 export default function Settings() {
     const { t: translate } = useTranslation();
-    const { position } = useLayout();
+
     const {
         systemSettings = {},
         cacheSize = '0.00',
-        timezones = {},
+        timeZones = {},
         dateFormats = {},
         timeFormats = {},
-        payment_settings = {},
-        webhooks = [],
-        auth = {},
+        paymentSettings = {},
+        auth,
     } = usePage().props;
+
     const [activeSection, setActiveSection] = useState('system-settings');
 
-    // Define all possible sidebar navigation items
-    const allSidebarNavItems: (NavItem & { permission?: string; role?: string })[] = [
-        {
-            title: translate('System'),
-            href: '#system-settings',
-            icon: <SettingsIcon className="mr-2 h-4 w-4" />,
-            permission: 'manage-system-settings',
-        },
-        {
-            title: translate('Brand'),
-            href: '#brand-settings',
-            icon: <Palette className="mr-2 h-4 w-4" />,
-            permission: 'manage-brand-settings',
-        },
-        {
-            title: translate('Currency'),
-            href: '#currency-settings',
-            icon: <DollarSign className="mr-2 h-4 w-4" />,
-            permission: 'manage-currency-settings',
-        },
-        {
-            title: translate('Email'),
-            href: '#email-settings',
-            icon: <Mail className="mr-2 h-4 w-4" />,
-            permission: 'manage-email-settings',
-        },
-        {
-            title: translate('Email notification'),
-            href: '#email-notification-settings',
-            icon: <Bell className="mr-2 h-4 w-4" />,
-            permission: 'manage-email-notifications',
-        },
-        {
-            title: translate('Twilio'),
-            href: '#twilio-notification-settings',
-            icon: <MessageSquare className="mr-2 h-4 w-4" />,
-            permission: 'manage-twilio-notifications',
-        },
-        {
-            title: translate('Slack'),
-            href: '#slack-notification-settings',
-            icon: <MessagesCircle className="mr-2 h-4 w-4" />,
-            permission: 'manage-twilio-notifications',
-        },
-        {
-            title: translate('Payment'),
-            href: '#payment-settings',
-            icon: <CreditCard className="mr-2 h-4 w-4" />,
-            permission: 'manage-payment-settings',
-        },
-        {
-            title: translate('Payment'),
-            href: '#organization-payment-settings',
-            icon: <CreditCard className="mr-2 h-4 w-4" />,
-            permission: 'settings',
-        },
-        {
-            title: translate('Quote templates'),
-            href: '#quote-templates',
-            icon: <FileText className="mr-2 h-4 w-4" />,
-            role: 'organization',
-            permission: 'manage-quotes-settings',
-        },
-        {
-            title: translate('Sales order templates'),
-            href: '#sales-order-templates',
-            icon: <ShoppingBag className="mr-2 h-4 w-4" />,
-            role: 'organization',
-            permission: 'manage-sales-orders-settings',
-        },
-        {
-            title: translate('Invoice templates'),
-            href: '#invoice-templates',
-            icon: <FileText className="mr-2 h-4 w-4" />,
-            role: 'organization',
-            permission: 'manage-invoices-settings',
-        },
+    const userType = auth?.user?.type;
+    const EMPTY_PERMISSIONS: string[] = [];
+    const permissions = auth?.permissions ?? EMPTY_PERMISSIONS;
 
-        {
-            title: translate('reCAPTCHA'),
-            href: '#recaptcha-settings',
-            icon: <Shield className="mr-2 h-4 w-4" />,
-            permission: 'manage-recaptcha-settings',
-        },
-        {
-            title: translate('Kakbima Intelligence'),
-            href: '#kakbima-intelligence-settings',
-            icon: <Bot className="mr-2 h-4 w-4" />,
-            permission: 'manage-kakbima-intelligence-settings',
-        },
-        {
-            title: translate('Cookie'),
-            href: '#cookie-settings',
-            icon: <Cookie className="mr-2 h-4 w-4" />,
-            permission: 'manage-cookie-settings',
-        },
-        {
-            title: translate('Storage'),
-            href: '#storage-settings',
-            icon: <HardDrive className="mr-2 h-4 w-4" />,
-            permission: 'manage-storage-settings',
-        },
-        {
-            title: translate('Cache'),
-            href: '#cache-settings',
-            icon: <HardDrive className="mr-2 h-4 w-4" />,
-            permission: 'manage-cache-settings',
-        },
-        {
-            title: translate('Google Calendar'),
-            href: '#google-calendar-settings',
-            icon: <Calendar className="mr-2 h-4 w-4" />,
-            permission: 'settings',
-        },
-    ];
+    const isSuperAdmin = userType === 'super_admin';
+    const isOrganization = userType === 'organization';
 
-    if (auth?.user?.type !== 'super_admin') {
-        allSidebarNavItems.push({
-            title: translate('Webhook'),
-            href: '#webhook-settings',
-            icon: <Webhook className="mr-2 h-4 w-4" />,
-            permission: 'manage-webhook-settings',
-        });
-    }
-    // Filter sidebar items based on user permissions
-    const sidebarNavItems = allSidebarNavItems.filter((item) => {
-        // If no permission is required or user has the permission
-        if (!item.permission || useHasPermission(item.permission)) {
-            return true;
-        }
-        // For organization users, only show specific settings
-        if (auth?.user?.type === 'organization') {
-            // Only allow system settings, email settings, brand settings, currency settings, webhook settings, email notifications, and settings
-            return [
-                'manage-system-settings',
-                'manage-email-settings',
-                'manage-brand-settings',
-                'manage-currency-settings',
-                'manage-webhook-settings',
-                'manage-email-notifications',
-                'manage-twilio-notifications',
-                'manage-quotes-settings',
-                'manage-sales-orders-settings',
-                'manage-invoices-settings',
-                'settings',
-            ].includes(item.permission);
-        }
-        return false;
-    });
+    /**
+     * Navigation metadata is kept separate from rendering so labels,
+     * anchors, icons, and permission requirements remain easy to audit.
+     */
+    const navigationItems = useMemo<SettingsNavigationItem[]>(
+        () => [
+            {
+                title: translate('System'),
+                href: '#system-settings',
+                icon: SettingsIcon,
+                requiredPermission: 'manage-system-settings',
+            },
+            {
+                title: translate('Branding'),
+                href: '#brand-settings',
+                icon: Palette,
+                requiredPermission: 'manage-brand-settings',
+            },
+            {
+                title: translate('Currency'),
+                href: '#currency-settings',
+                icon: Currency,
+                requiredPermission: 'manage-currency-settings',
+            },
+            {
+                title: translate('Google Calendar'),
+                href: '#google-calendar-settings',
+                icon: Calendar,
+                requiredPermission: 'manage-google-calendar-settings',
+            },
+            // {
+            //     title: translate('Email address'),
+            //     href: '#email-settings',
+            //     icon: Mail,
+            //     requiredPermission: 'manage-email-settings'
+            // },
+            {
+                title: translate('Email notification'),
+                href: '#email-notification-settings',
+                icon: Bell,
+                requiredPermission: 'manage-email-notification-settings',
+            },
+            {
+                title: translate('Twilio'),
+                href: '#twilio-notification-settings',
+                icon: MessageSquare,
+                requiredPermission: 'manage-twilio-notification-settings',
+            },
+            {
+                title: translate('Slack'),
+                href: '#slack-notification-settings',
+                icon: MessagesCircle,
+                requiredPermission: 'manage-slack-notification-settings',
+            },
+            {
+                title: translate('Quote templates'),
+                href: '#quote-templates',
+                icon: FileText,
+                requiredPermission: 'manage-quotes-settings',
+            },
+            {
+                title: translate('Sales order templates'),
+                href: '#sales-order-templates',
+                icon: ShoppingBag,
+                requiredPermission: 'manage-sales-order-settings',
+            },
+            {
+                title: translate('Invoice templates'),
+                href: '#invoice-templates',
+                icon: FileText,
+                requiredPermission: 'manage-invoice-settings',
+            },
 
-    // Refs for each section
-    const systemSettingsRef = useRef<HTMLDivElement>(null);
-    const organizationSystemSettingsRef = useRef<HTMLDivElement>(null);
-    const brandSettingsRef = useRef<HTMLDivElement>(null);
+            {
+                title: translate('Payment'),
+                href: '#payment-settings',
+                icon: CreditCard,
+                requiredPermission: 'manage-payment-settings',
+            },
+            {
+                title: translate('Storage'),
+                href: '#storage-settings',
+                icon: HardDrive,
+                requiredPermission: 'manage-storage-settings',
+            },
+            {
+                title: translate('Google reCAPTCHA'),
+                href: '#recaptcha-settings',
+                icon: Shield,
+                requiredPermission: 'manage-recaptcha-settings',
+            },
+            {
+                title: translate('Kakbima Intelligence'),
+                href: '#kakbima-intelligence-settings',
+                icon: Brain,
+                requiredPermission: 'manage-kakbima-intelligence-settings',
+            },
+            {
+                title: translate('Cookie'),
+                href: '#cookie-settings',
+                icon: Cookie,
+                requiredPermission: 'manage-cookie-settings',
+            },
+            {
+                title: translate('Cache'),
+                href: '#cache-settings',
+                icon: HardDrive,
+                requiredPermission: 'manage-cache-settings',
+            },
+            {
+                title: translate('Webhook'),
+                href: '#webhook-settings',
+                icon: Webhook,
+                requiredPermission: 'manage-webhook-settings',
+            },
+        ],
+        [translate],
+    );
 
-    const currencySettingsRef = useRef<HTMLDivElement>(null);
-    const emailSettingsRef = useRef<HTMLDivElement>(null);
-    const paymentSettingsRef = useRef<HTMLDivElement>(null);
-    const organizationPaymentSettingsRef = useRef<HTMLDivElement>(null);
-    const quoteTemplatesRef = useRef<HTMLDivElement>(null);
-    const salesOrderTemplatesRef = useRef<HTMLDivElement>(null);
-    const invoiceTemplatesRef = useRef<HTMLDivElement>(null);
-    const emailNotificationSettingsRef = useRef<HTMLDivElement>(null);
-    const twilioNotificationSettingsRef = useRef<HTMLDivElement>(null);
-    const slackNotificationSettingsRef = useRef<HTMLDivElement>(null);
+    /**
+     * Mirrors the existing sidebar visibility rules.
+     *
+     * Special role exclusions take precedence over ordinary permission
+     * checks. Organization users retain the existing fallback allowlist.
+     */
+    const sidebarNavItems = useMemo(
+        () =>
+            navigationItems.filter((item) => {
+                const permission = item.requiredPermission;
 
-    const recaptchaSettingsRef = useRef<HTMLDivElement>(null);
-    const kakbimaIntelligenceSettingsRef = useRef<HTMLDivElement>(null);
-    const cookieSettingsRef = useRef<HTMLDivElement>(null);
-    const seoSettingsRef = useRef<HTMLDivElement>(null);
-    const cacheSettingsRef = useRef<HTMLDivElement>(null);
-    const webhookSettingsRef = useRef<HTMLDivElement>(null);
-    const googleCalendarSettingsRef = useRef<HTMLDivElement>(null);
+                if (!permission) {
+                    return true;
+                }
 
-    const storageSettingsRef = useRef<HTMLDivElement>(null);
+                if (isSuperAdmin && SUPER_ADMIN_EXCLUDED_PERMISSIONS.includes(permission as (typeof SUPER_ADMIN_EXCLUDED_PERMISSIONS)[number])) {
+                    return false;
+                }
 
-    // Smart scroll functionality
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY + 100; // Add offset for better UX
+                if (permissions.includes(permission)) {
+                    return true;
+                }
 
-            // Get positions of each section
-            const systemSettingsPosition = systemSettingsRef.current?.offsetTop || 0;
-            const organizationSystemSettingsPosition = organizationSystemSettingsRef.current?.offsetTop || 0;
-            const brandSettingsPosition = brandSettingsRef.current?.offsetTop || 0;
+                if (isOrganization) {
+                    return ORGANIZATION_SETTINGS_PERMISSIONS.includes(permission as (typeof ORGANIZATION_SETTINGS_PERMISSIONS)[number]);
+                }
 
-            const currencySettingsPosition = currencySettingsRef.current?.offsetTop || 0;
-            const emailSettingsPosition = emailSettingsRef.current?.offsetTop || 0;
-            const paymentSettingsPosition = paymentSettingsRef.current?.offsetTop || 0;
-            const organizationPaymentSettingsPosition = organizationPaymentSettingsRef.current?.offsetTop || 0;
-            const quoteTemplatesPosition = quoteTemplatesRef.current?.offsetTop || 0;
-            const salesOrderTemplatesPosition = salesOrderTemplatesRef.current?.offsetTop || 0;
-            const invoiceTemplatesPosition = invoiceTemplatesRef.current?.offsetTop || 0;
-            const emailNotificationSettingsPosition = emailNotificationSettingsRef.current?.offsetTop || 0;
-            const twilioNotificationSettingsPosition = twilioNotificationSettingsRef.current?.offsetTop || 0;
-            const slackNotificationSettingsPosition = slackNotificationSettingsRef.current?.offsetTop || 0;
+                return false;
+            }),
+        [isOrganization, isSuperAdmin, navigationItems, permissions],
+    );
 
-            const recaptchaSettingsPosition = recaptchaSettingsRef.current?.offsetTop || 0;
-            const kakbimaIntelligenceSettingsPosition = kakbimaIntelligenceSettingsRef.current?.offsetTop || 0;
-            const cookieSettingsPosition = cookieSettingsRef.current?.offsetTop || 0;
-            const seoSettingsPosition = seoSettingsRef.current?.offsetTop || 0;
-            const cacheSettingsPosition = cacheSettingsRef.current?.offsetTop || 0;
-            const webhookSettingsPosition = webhookSettingsRef.current?.offsetTop || 0;
-            const googleCalendarSettingsPosition = googleCalendarSettingsRef.current?.offsetTop || 0;
-
-            const storageSettingsPosition = storageSettingsRef.current?.offsetTop || 0;
-
-            // Determine active section based on scroll position
-            if (scrollPosition >= webhookSettingsPosition && webhookSettingsPosition > 0) {
-                setActiveSection('webhook-settings');
-            } else if (scrollPosition >= googleCalendarSettingsPosition && googleCalendarSettingsPosition > 0) {
-                setActiveSection('google-calendar-settings');
-            } else if (scrollPosition >= cacheSettingsPosition && cacheSettingsPosition > 0) {
-                setActiveSection('cache-settings');
-            } else if (scrollPosition >= storageSettingsPosition && storageSettingsPosition > 0) {
-                setActiveSection('storage-settings');
-            } else if (scrollPosition >= seoSettingsPosition && seoSettingsPosition > 0) {
-                setActiveSection('seo-settings');
-            } else if (scrollPosition >= cookieSettingsPosition && cookieSettingsPosition > 0) {
-                setActiveSection('cookie-settings');
-            } else if (scrollPosition >= kakbimaIntelligenceSettingsPosition && kakbimaIntelligenceSettingsPosition > 0) {
-                setActiveSection('kakbima-intelligence-settings');
-            } else if (scrollPosition >= recaptchaSettingsPosition && recaptchaSettingsPosition > 0) {
-                setActiveSection('recaptcha-settings');
-            } else if (scrollPosition >= invoiceTemplatesPosition && invoiceTemplatesPosition > 0) {
-                setActiveSection('invoice-templates');
-            } else if (scrollPosition >= salesOrderTemplatesPosition && salesOrderTemplatesPosition > 0) {
-                setActiveSection('sales-order-templates');
-            } else if (scrollPosition >= quoteTemplatesPosition && quoteTemplatesPosition > 0) {
-                setActiveSection('quote-templates');
-            } else if (scrollPosition >= organizationPaymentSettingsPosition && organizationPaymentSettingsPosition > 0) {
-                setActiveSection('organization-payment-settings');
-            } else if (scrollPosition >= slackNotificationSettingsPosition && slackNotificationSettingsPosition > 0) {
-                setActiveSection('slack-notification-settings');
-            } else if (scrollPosition >= twilioNotificationSettingsPosition && twilioNotificationSettingsPosition > 0) {
-                setActiveSection('twilio-notification-settings');
-            } else if (scrollPosition >= emailNotificationSettingsPosition && emailNotificationSettingsPosition > 0) {
-                setActiveSection('email-notification-settings');
-            } else if (scrollPosition >= paymentSettingsPosition && paymentSettingsPosition > 0) {
-                setActiveSection('payment-settings');
-            } else if (scrollPosition >= emailSettingsPosition && emailSettingsPosition > 0) {
-                setActiveSection('email-settings');
-            } else if (scrollPosition >= currencySettingsPosition && currencySettingsPosition > 0) {
-                setActiveSection('currency-settings');
-            } else if (scrollPosition >= brandSettingsPosition && brandSettingsPosition > 0) {
-                setActiveSection('brand-settings');
-            } else {
-                setActiveSection('system-settings');
-            }
-        };
-
-        // Add scroll event listener
-        window.addEventListener('scroll', handleScroll);
-
-        // Initial check for hash in URL
-        const hash = window.location.hash.replace('#', '');
-        if (hash) {
-            const targetId = hash === 'system-settings' && !document.getElementById('system-settings') ? 'organization-system-settings' : hash;
-            const element = document.getElementById(targetId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-                setActiveSection(hash);
-            }
-        }
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
+    /**
+     * Update the active anchor only when its value changes.
+     * This avoids unnecessary renders when observers report repeatedly.
+     */
+    const updateActiveSection = useCallback((sectionId: string) => {
+        setActiveSection((current) => (current === sectionId ? current : sectionId));
     }, []);
 
-    // Force layout recalculation on mount to fix issues where layout is stuck
+    /**
+     * Observe rendered sections rather than maintaining a separate ref
+     * for every settings component.
+     *
+     * Missing sections are ignored, which is important because section
+     * visibility depends on the current user's role and permissions.
+     */
     useEffect(() => {
-        const triggerResize = () => {
-            window.dispatchEvent(new Event('resize'));
-        };
+        const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-settings-section]'));
 
-        const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];
-
-        return () => {
-            timers.forEach(clearTimeout);
-        };
-    }, []);
-
-    // Handle navigation click
-    const handleNavClick = (href: string) => {
-        const id = href.replace('#', '');
-        const targetId = id === 'system-settings' && !document.getElementById('system-settings') ? 'organization-system-settings' : id;
-        const element = document.getElementById(targetId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            setActiveSection(id);
+        if (sections.length === 0) {
+            return;
         }
-    };
 
-    const breadcrumbs = [
-        {
-            title: translate('Dashboard'),
-            href: route('dashboard.index'),
-        },
-        { title: translate('Settings') },
-    ];
+        const visibleSections = new Map<string, number>();
 
-    return (
-        <PageTemplate title={translate('Settings')} description={translate('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>
-            <style>{`
-                @media (min-width: 1024px) {
-                    [data-slot="sidebar-inset"] {
-                        overflow-x: clip !important;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    const sectionId = entry.target.id;
+
+                    if (entry.isIntersecting) {
+                        visibleSections.set(sectionId, entry.intersectionRatio);
+                    } else {
+                        visibleSections.delete(sectionId);
                     }
                 }
-            `}</style>
-            <div className="flex w-full max-w-full min-w-0 flex-col gap-8 lg:flex-row" dir={position === 'right' ? 'rtl' : 'ltr'}>
-                {/* Sidebar Navigation */}
-                <div className="w-full flex-shrink-0 lg:sticky lg:top-20 lg:w-64 lg:self-start">
-                    <ScrollArea className="h-auto lg:h-[calc(100vh-5rem)]">
-                        <div className="bg-card rounded-xl border p-2 shadow-sm">
-                            <div className="flex flex-col gap-2">
-                                {sidebarNavItems.map((item) => (
-                                    <Button
-                                        key={item.href}
-                                        variant="ghost"
-                                        className={cn(
-                                            'text-card-foreground hover:bg-muted w-full justify-start gap-3 rounded-lg text-sm font-normal hover:font-normal',
-                                            {
-                                                'bg-muted text-card-foreground font-medium': activeSection === item.href.replace('#', ''),
-                                            },
-                                        )}
-                                        onClick={() => {
-                                            handleNavClick(item.href);
-                                        }}
-                                    >
-                                        {item.icon}
-                                        {item.title}
-                                    </Button>
-                                ))}
+
+                const currentSection = [...visibleSections.entries()].sort((first, second) => {
+                    return second[1] - first[1];
+                })[0]?.[0];
+
+                if (currentSection) {
+                    updateActiveSection(currentSection);
+                }
+            },
+            {
+                rootMargin: '-12% 0px -65% 0px',
+                threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+            },
+        );
+
+        sections.forEach((section) => observer.observe(section));
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [updateActiveSection]);
+
+    /**
+     * Honor direct links to settings sections.
+     * The section must exist in the rendered DOM before scrolling.
+     */
+    useEffect(() => {
+        const hash = window.location.hash.slice(1);
+
+        if (!hash) {
+            return;
+        }
+
+        const target = document.getElementById(hash);
+
+        if (!target?.hasAttribute('data-settings-section')) {
+            return;
+        }
+
+        updateActiveSection(hash);
+
+        target.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start',
+        });
+    }, [updateActiveSection]);
+
+    /**
+     * Keep the URL fragment and selected navigation item synchronized.
+     * Native anchors remain usable without JavaScript.
+     */
+    const handleNavigation = useCallback(
+        (sectionId: string) => {
+            updateActiveSection(sectionId);
+
+            const target = document.getElementById(sectionId);
+
+            if (!target) {
+                return;
+            }
+
+            target.scrollIntoView({
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                block: 'start',
+            });
+        },
+        [updateActiveSection],
+    );
+
+    const breadcrumbs = useMemo(
+        () => [
+            {
+                title: translate('Settings'),
+                href: route('settings.index'),
+            },
+        ],
+        [translate],
+    );
+
+    return (
+        <PageTemplate
+            title={translate('Settings')}
+            description={translate('Manage system configuration, integrations, and workspace defaults.')}
+            url="/settings"
+            breadcrumbs={breadcrumbs}
+        >
+            <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+                <aside className="min-w-0 lg:sticky lg:top-20 lg:w-64 lg:shrink-0">
+                    <div className={cn('border-border/70 overflow-hidden rounded-xl border', 'text-sidebar-foreground', 'shadow-sm')}>
+                        <div className="border-border/70 border-b px-4 py-4">
+                            <div className="flex items-center gap-3">
+                                <div
+                                    aria-hidden="true"
+                                    className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-lg"
+                                >
+                                    <SettingsIcon className="size-[18px]" />
+                                </div>
+
+                                <div className="min-w-0">
+                                    <h2 className="text-foreground text-sm font-semibold tracking-tight">{translate('Settings')}</h2>
+                                    <p className="text-foreground/75 mt-0.5 text-xs">{translate('Manage your preferences')}</p>
+                                </div>
                             </div>
                         </div>
-                    </ScrollArea>
-                </div>
 
-                {/* Main Content */}
-                <div className="w-full max-w-full min-w-0 flex-1 overflow-x-hidden">
-                    {/* System Settings Section */}
-                    {(useHasPermission('manage-system-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="system-settings" ref={systemSettingsRef} className="mb-8">
-                            <SystemSettings settings={systemSettings} timezones={timezones} dateFormats={dateFormats} timeFormats={timeFormats} />
-                        </section>
-                    )}
+                        <ScrollArea className="h-auto max-h-72 lg:h-[calc(100dvh-13rem)] lg:max-h-[calc(100dvh-13rem)]">
+                            <nav aria-label={translate('Settings navigation')} className="p-2">
+                                <ul className="flex min-w-0 gap-1.5 overflow-x-auto pb-1 lg:flex-col lg:overflow-x-visible lg:pb-0">
+                                    {sidebarNavItems.map((item) => {
+                                        const sectionId = item.href.slice(1);
+                                        const isActive = activeSection === sectionId;
+                                        const Icon = item.icon;
 
-                    {/* Organization System Settings Section */}
-                    {auth?.user?.type === 'organization' && (
-                        <section id="organization-system-settings" ref={organizationSystemSettingsRef} className="mb-8">
-                            <OrganizationSystemSettings
+                                        return (
+                                            <li key={item.href} className="shrink-0 lg:w-full">
+                                                <a
+                                                    href={item.href}
+                                                    aria-current={isActive ? 'location' : undefined}
+                                                    onClick={(event) => {
+                                                        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                                                            return;
+                                                        }
+
+                                                        event.preventDefault();
+                                                        handleNavigation(sectionId);
+
+                                                        window.history.replaceState(null, '', item.href);
+                                                    }}
+
+                                                    className={cn(
+                                                        'group relative flex h-10 items-center gap-2.5 rounded-md border px-3',
+                                                        'text-sm transition-colors duration-150',
+                                                        'focus-visible:ring-ring focus-visible:ring-offset-sidebar focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                                                        'motion-reduce:transition-none',
+
+                                                        // Default state
+                                                        'text-foreground/75 border-transparent',
+                                                        'hover:border-border/70 hover:bg-muted/70 hover:text-foreground',
+
+                                                        // Active state
+                                                        isActive && [
+                                                            'border-primary/20 bg-primary/10 text-primary font-medium',
+                                                            'hover:border-primary/20 hover:bg-primary/10 hover:text-primary',
+                                                            'dark:text-fuchsia-300 dark:hover:text-fuchsia-300',
+                                                        ],
+
+                                                        // Active indicator
+                                                        'after:pointer-events-none after:absolute after:end-3 after:top-1/2',
+                                                        'after:size-1.5 after:-translate-y-1/2 after:rounded-full',
+                                                        'after:bg-primary after:opacity-0',
+                                                        isActive && 'after:opacity-100',
+                                                    )}
+                                                >
+                                                    <Icon aria-hidden="true" className="size-4 shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
+
+                                                    <span className="min-w-0 truncate">{item.title}</span>
+
+                                                    {isActive && (
+                                                        <span aria-hidden="true" className="bg-primary ml-auto size-1.5 shrink-0 rounded-full" />
+                                                    )}
+                                                </a>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </nav>
+                        </ScrollArea>
+                    </div>
+                </aside>
+
+                <div className="min-w-0 flex-1 space-y-8">
+                    {(permissions.includes('manage-system-settings') || isSuperAdmin) && (
+                        <section id="system-settings" data-settings-section="true" aria-labelledby="system-settings-heading" className="scroll-mt-24">
+                            <h2 id="system-settings-heading" className="sr-only">
+                                {translate('System')}
+                            </h2>
+                            <SystemSettings
                                 settings={systemSettings}
-                                timezones={timezones}
+                                timeZones={timeZones}
                                 dateFormats={dateFormats}
                                 timeFormats={timeFormats}
+                                isOrganizationUser={isOrganization}
                             />
                         </section>
                     )}
 
-                    {/* Brand Settings Section */}
-                    {(useHasPermission('manage-brand-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="brand-settings" ref={brandSettingsRef} className="mb-8">
-                            <BrandSettings />
+                    {(permissions.includes('manage-brand-settings') || isSuperAdmin) && (
+                        <section id="brand-settings" data-settings-section="true" aria-labelledby="brand-settings-heading" className="scroll-mt-24">
+                            <h2 id="brand-settings-heading" className="sr-only">
+                                {translate('Branding')}
+                            </h2>
+                            <BrandSettings settings={systemSettings} />
                         </section>
                     )}
 
-                    {/* Currency Settings Section */}
-                    {useHasPermission('manage-currency-settings') && (
-                        <section id="currency-settings" ref={currencySettingsRef} className="mb-8">
+                    {(permissions.includes('manage-currency-settings') || isSuperAdmin) && (
+                        <section
+                            id="currency-settings"
+                            data-settings-section="true"
+                            aria-labelledby="currency-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="currency-settings-heading" className="sr-only">
+                                {translate('Currency')}
+                            </h2>
                             <CurrencySettings />
                         </section>
                     )}
 
-                    {/* Email Settings Section */}
-                    {(useHasPermission('manage-email-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="email-settings" ref={emailSettingsRef} className="mb-8">
-                            <EmailSettings />
+                    {isOrganization && permissions.includes('manage-google-calendar-settings') && (
+                        <section
+                            id="google-calendar-settings"
+                            data-settings-section="true"
+                            aria-labelledby="google-calendar-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="google-calendar-settings-heading" className="sr-only">
+                                {translate('Google Calendar')}
+                            </h2>
+                            <GoogleCalendarSettings settings={GoogleCalendarSettings} />
                         </section>
                     )}
-                    {/* Email Notification Settings Section */}
-                    {useHasPermission('manage-email-notifications') && (
-                        <section id="email-notification-settings" ref={emailNotificationSettingsRef} className="mb-8">
+
+                    {/*{(permissions.includes('manage-email-settings') ||*/}
+                    {/*    isSuperAdmin) && (*/}
+                    {/*    <section*/}
+                    {/*        id="email-settings"*/}
+                    {/*        data-settings-section="true"*/}
+                    {/*        aria-labelledby="email-settings-heading"*/}
+                    {/*        className="scroll-mt-24"*/}
+                    {/*    >*/}
+                    {/*        <h2*/}
+                    {/*            id="email-settings-heading"*/}
+                    {/*            className="sr-only"*/}
+                    {/*        >*/}
+                    {/*            {translate('Email address')}*/}
+                    {/*        </h2>*/}
+                    {/*        <EmailSettings />*/}
+                    {/*    </section>*/}
+                    {/*)}*/}
+
+                    {isOrganization && permissions.includes('manage-email-notification-settings') && (
+                        <section
+                            id="email-notification-settings"
+                            data-settings-section="true"
+                            aria-labelledby="email-notification-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="email-notification-settings-heading" className="sr-only">
+                                {translate('Email notification')}
+                            </h2>
                             <EmailNotificationSettings />
                         </section>
                     )}
-                    {/* Twilio Notification Settings Section */}
-                    {useHasPermission('manage-twilio-notifications') && (
-                        <section id="twilio-notification-settings" ref={twilioNotificationSettingsRef} className="mb-8">
+
+                    {isOrganization && permissions.includes('manage-twilio-notification-settings') && (
+                        <section
+                            id="twilio-notification-settings"
+                            data-settings-section="true"
+                            aria-labelledby="twilio-notification-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="twilio-notification-settings-heading" className="sr-only">
+                                {translate('Twilio')}
+                            </h2>
                             <TwilioNotificationSettings />
                         </section>
                     )}
-                    {/* Slack Notification Settings Section */}
-                    {useHasPermission('manage-slack-notifications') && (
-                        <section id="slack-notification-settings" ref={slackNotificationSettingsRef} className="mb-8">
+
+                    {isOrganization && permissions.includes('manage-slack-notification-settings') && (
+                        <section
+                            id="slack-notification-settings"
+                            data-settings-section="true"
+                            aria-labelledby="slack-notification-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="slack-notification-settings-heading" className="sr-only">
+                                {translate('Slack')}
+                            </h2>
                             <SlackNotificationSettings />
                         </section>
                     )}
 
-                    {/* Payment Settings Section */}
-                    {(useHasPermission('manage-payment-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="payment-settings" ref={paymentSettingsRef} className="mb-8">
-                            <PaymentSettings settings={payment_settings} />
-                        </section>
-                    )}
-
-                    {/* Organization Payment Settings Section */}
-                    {useHasPermission('settings') && (
-                        <section id="organization-payment-settings" ref={organizationPaymentSettingsRef} className="mb-8">
-                            <PaymentSettings settings={payment_settings} />
-                        </section>
-                    )}
-
-                    {/* Quote Templates Section */}
-                    {auth?.user?.type === 'organization' && useHasPermission('manage-quotes-settings') && (
-                        <section id="quote-templates" ref={quoteTemplatesRef} className="mb-8">
+                    {isOrganization && permissions.includes('manage-quotes-settings') && (
+                        <section id="quote-templates" data-settings-section="true" aria-labelledby="quote-templates-heading" className="scroll-mt-24">
+                            <h2 id="quote-templates-heading" className="sr-only">
+                                {translate('Quote templates')}
+                            </h2>
                             <QuoteTemplateSettings />
                         </section>
                     )}
 
-                    {/* Sales Order Templates Section */}
-                    {auth?.user?.type === 'organization' && useHasPermission('manage-sales-orders-settings') && (
-                        <section id="sales-order-templates" ref={salesOrderTemplatesRef} className="mb-8">
+                    {isOrganization && permissions.includes('manage-sales-order-settings') && (
+                        <section
+                            id="sales-order-templates"
+                            data-settings-section="true"
+                            aria-labelledby="sales-order-templates-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="sales-order-templates-heading" className="sr-only">
+                                {translate('Sales order templates')}
+                            </h2>
                             <SalesOrderTemplateSettings />
                         </section>
                     )}
 
-                    {/* Invoice Templates Section */}
-                    {auth?.user?.type === 'organization' && useHasPermission('manage-invoices-settings') && (
-                        <section id="invoice-templates" ref={invoiceTemplatesRef} className="mb-8">
+                    {isOrganization && permissions.includes('manage-invoice-settings') && (
+                        <section
+                            id="invoice-templates"
+                            data-settings-section="true"
+                            aria-labelledby="invoice-templates-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="invoice-templates-heading" className="sr-only">
+                                {translate('Invoice templates')}
+                            </h2>
                             <InvoiceTemplateSettings />
                         </section>
                     )}
 
-                    {/* reCAPTCHA Settings Section */}
-                    {(useHasPermission('manage-recaptcha-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="recaptcha-settings" ref={recaptchaSettingsRef} className="mb-8">
-                            <RecaptchaSettings settings={systemSettings} />
+                    {(permissions.includes('manage-payment-settings') || isSuperAdmin) && (
+                        <section
+                            id="payment-settings"
+                            data-settings-section="true"
+                            aria-labelledby="payment-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="payment-settings-heading" className="sr-only">
+                                {translate('Payment')}
+                            </h2>
+                            <PaymentSettings settings={paymentSettings} />
                         </section>
                     )}
 
-                    {/* Kakbima Intelligence Settings Section */}
-                    {(useHasPermission('manage-kakbima-intelligence-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="kakbima-intelligence-settings" ref={kakbimaIntelligenceSettingsRef} className="mb-8">
-                            <KakbimaIntelligenceSettings settings={systemSettings} />
-                        </section>
-                    )}
-
-                    {/* Cookie Settings Section */}
-                    {(useHasPermission('manage-cookie-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="cookie-settings" ref={cookieSettingsRef} className="mb-8">
-                            <CookieSettings settings={systemSettings} />
-                        </section>
-                    )}
-
-                    {/* Storage Settings Section */}
-                    {(useHasPermission('manage-storage-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="storage-settings" ref={storageSettingsRef} className="mb-8">
+                    {permissions.includes('manage-storage-settings') && isSuperAdmin && (
+                        <section
+                            id="storage-settings"
+                            data-settings-section="true"
+                            aria-labelledby="storage-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="storage-settings-heading" className="sr-only">
+                                {translate('Storage')}
+                            </h2>
                             <StorageSettings settings={systemSettings} />
                         </section>
                     )}
 
-                    {/* Cache Settings Section */}
-                    {(useHasPermission('manage-cache-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="cache-settings" ref={cacheSettingsRef} className="mb-8">
+                    {(permissions.includes('manage-recaptcha-settings') || isSuperAdmin) && (
+                        <section
+                            id="recaptcha-settings"
+                            data-settings-section="true"
+                            aria-labelledby="recaptcha-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="recaptcha-settings-heading" className="sr-only">
+                                {translate('Google reCAPTCHA')}
+                            </h2>
+                            <RecaptchaSettings settings={systemSettings} />
+                        </section>
+                    )}
+
+                    {(permissions.includes('manage-kakbima-intelligence-settings') || isSuperAdmin) && (
+                        <section
+                            id="kakbima-intelligence-settings"
+                            data-settings-section="true"
+                            aria-labelledby="kakbima-intelligence-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="kakbima-intelligence-settings-heading" className="sr-only">
+                                {translate('Kakbima Intelligence')}
+                            </h2>
+                            <KakbimaIntelligenceSettings settings={systemSettings} />
+                        </section>
+                    )}
+
+                    {(permissions.includes('manage-cookie-settings') || isSuperAdmin) && (
+                        <section id="cookie-settings" data-settings-section="true" aria-labelledby="cookie-settings-heading" className="scroll-mt-24">
+                            <h2 id="cookie-settings-heading" className="sr-only">
+                                {translate('Cookie')}
+                            </h2>
+                            <CookieSettings settings={systemSettings} />
+                        </section>
+                    )}
+
+                    {(permissions.includes('manage-cache-settings') || isSuperAdmin) && (
+                        <section id="cache-settings" data-settings-section="true" aria-labelledby="cache-settings-heading" className="scroll-mt-24">
+                            <h2 id="cache-settings-heading" className="sr-only">
+                                {translate('Cache')}
+                            </h2>
                             <CacheSettings cacheSize={cacheSize} />
                         </section>
                     )}
 
-                    {/* Google Calendar Settings Section */}
-                    {useHasPermission('settings') && (
-                        <section id="google-calendar-settings" ref={googleCalendarSettingsRef} className="mb-8">
-                            <GoogleCalendarSettings settings={systemSettings} />
-                        </section>
-                    )}
-
-                    {/* Webhook Settings Section */}
-                    {useHasPermission('manage-webhook-settings') && (
-                        <section id="webhook-settings" ref={webhookSettingsRef} className="mb-8">
-                            <WebhookSettings webhooks={webhooks} />
+                    {isOrganization && permissions.includes('manage-webhook-settings') && (
+                        <section
+                            id="webhook-settings"
+                            data-settings-section="true"
+                            aria-labelledby="webhook-settings-heading"
+                            className="scroll-mt-24"
+                        >
+                            <h2 id="webhook-settings-heading" className="sr-only">
+                                {translate('Webhook')}
+                            </h2>
+                            <WebhookSettings />
                         </section>
                     )}
                 </div>
             </div>
+
             <Toaster />
         </PageTemplate>
     );

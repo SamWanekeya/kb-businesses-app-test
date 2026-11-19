@@ -42,13 +42,13 @@ class InvoiceStripePaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
             $currency = $settings['general_settings']['default_currency'] ?? 'usd';
 
-            if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
+            if (!isset($settings['paymentSettings']['stripe_secret']) || !isset($settings['paymentSettings']['stripe_key'])) {
                 Log::error('Stripe payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Stripe not configured')]);
             }
 
-            $stripeSecret = $settings['payment_settings']['stripe_secret'];
+            $stripeSecret = $settings['paymentSettings']['stripe_secret'];
             if (!str_starts_with($stripeSecret, 'sk_')) {
                 Log::error('Stripe payment failed: Invalid secret key format', ['invoice_id' => $invoice->id]);
 
@@ -126,7 +126,7 @@ class InvoiceStripePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

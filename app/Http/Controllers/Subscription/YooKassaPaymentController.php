@@ -21,12 +21,12 @@ class YooKassaPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['yookassa_shop_id'])) {
+            if (!isset($settings['paymentSettings']['yookassa_shop_id'])) {
                 return response()->json(['error' => 'YooKassa not configured'], 400);
             }
 
             $client = new Client();
-            $client->setAuth((int)$settings['payment_settings']['yookassa_shop_id'], $settings['payment_settings']['yookassa_secret_key']);
+            $client->setAuth((int)$settings['paymentSettings']['yookassa_shop_id'], $settings['paymentSettings']['yookassa_secret_key']);
 
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
             $user = auth()?->user();

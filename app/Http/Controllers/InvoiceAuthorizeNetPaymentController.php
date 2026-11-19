@@ -45,8 +45,8 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
-                !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
+            if (!isset($settings['paymentSettings']['authorizenet_merchant_id']) ||
+                !isset($settings['paymentSettings']['authorizenet_transaction_key'])) {
                 Log::error('AuthorizeNet payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('AuthorizeNet not configured')]);
@@ -105,7 +105,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -114,8 +114,8 @@ class InvoiceAuthorizeNetPaymentController extends Controller
     {
         try {
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-            $merchantAuthentication->setName($settings['payment_settings']['authorizenet_merchant_id']);
-            $merchantAuthentication->setTransactionKey($settings['payment_settings']['authorizenet_transaction_key']);
+            $merchantAuthentication->setName($settings['paymentSettings']['authorizenet_merchant_id']);
+            $merchantAuthentication->setTransactionKey($settings['paymentSettings']['authorizenet_transaction_key']);
 
             $creditCard = new AnetAPI\CreditCardType();
             $creditCard->setCardNumber(preg_replace('/\s+/', '', $paymentData['card_number']));
@@ -155,7 +155,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
 
             $controller = new AnetController\CreateTransactionController($request);
 
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+            $environment = ($settings['paymentSettings']['authorizenet_mode'] === 'sandbox')
                 ? ANetEnvironment::SANDBOX
                 : ANetEnvironment::PRODUCTION;
 

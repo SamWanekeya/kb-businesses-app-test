@@ -73,6 +73,7 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\PermissionRegistrar;
 
 // Temporary solution to run migrations in production
 //Route::get('/update-database', function () {
@@ -81,21 +82,21 @@ use Illuminate\Support\Facades\Route;
 //    return 'Database migrations updated!';
 //});
 
-// Temporary solution update permissions based on new features in production
+//// Temporary solution update permissions based on new features in production
 //Route::get('/update-permissions', function () {
 //    Artisan::call('db:seed', ['--class' => 'PermissionSeeder', '--force' => true,]);
 //
 //    return 'PermissionSeeder executed!';
 //});
-
-// Temporary solution to run RoleSeeder
+//
+//// Temporary solution to run RoleSeeder
 //Route::get('/seed-roles', function () {
 //    Artisan::call('db:seed', ['--class' => 'RoleSeeder', '--force' => true,]);
 //
 //    return 'RoleSeeder executed!';
 //});
-
-// Temporary solution to clear and rebuild the cache for permissions and roles
+//
+//// Temporary solution to clear and rebuild the cache for permissions and roles
 //Route::get('/reset-permission-cache', function () {
 //    app()->make(PermissionRegistrar::class)?->forgetCachedPermissions();
 //

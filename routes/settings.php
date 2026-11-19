@@ -3,7 +3,6 @@
 use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
 use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
-use App\Http\Controllers\Settings\OrganizationSystemSettingsController;
 use App\Http\Controllers\Settings\PaymentSettingController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
@@ -73,9 +72,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
 
     Route::post('settings/cache/clear', [SystemSettingsController::class, 'clearCache'])
         ->name('settings.cache.clear');
-
-    Route::post('settings/organization/system', [OrganizationSystemSettingsController::class, 'update'])
-        ->name('settings.organization.system.update');
 
     Route::post('settings/currency', [CurrencySettingController::class, 'update'])
         ->name('settings.currency.update');

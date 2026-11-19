@@ -21,7 +21,7 @@ class PaiementPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['paiement_merchant_id'])) {
                 return back()->withErrors(['error' => __('Paiement Pro not configured')]);
             }
 
@@ -54,7 +54,7 @@ class PaiementPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['paiement_merchant_id'])) {
                 return response()->json(['error' => __('Paiement Pro not configured')], 400);
             }
 
@@ -62,7 +62,7 @@ class PaiementPaymentController extends Controller
             $transactionId = 'REF-' . time();
 
             $data = [
-                'merchantId' => $settings['payment_settings']['paiement_merchant_id'],
+                'merchantId' => $settings['paymentSettings']['paiement_merchant_id'],
                 'amount' => (int)($pricing['final_price'] * 549),
                 'description' => $plan->name,
                 'channel' => 'CARD',

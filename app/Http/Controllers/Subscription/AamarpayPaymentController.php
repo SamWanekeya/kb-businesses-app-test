@@ -21,7 +21,7 @@ class AamarpayPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['aamarpay_store_id'])) {
+            if (!isset($settings['paymentSettings']['aamarpay_store_id'])) {
                 return back()->withErrors(['error' => __('AamarPay not configured')]);
             }
 
@@ -54,17 +54,17 @@ class AamarpayPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
+            if (!isset($settings['paymentSettings']['aamarpay_store_id']) || !isset($settings['paymentSettings']['aamarpay_signature'])) {
                 return response()->json(['error' => __('AamarPay not configured')], 400);
             }
 
             $user = auth()?->user();
             $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
-            $currency = $settings['payment_settings']['currency'] ?? 'BDT';
+            $currency = $settings['paymentSettings']['currency'] ?? 'BDT';
             $url = 'https://sandbox.aamarpay.com/request.php';
 
             // Use proper test store_id for sandbox
-            $storeId = $settings['payment_settings']['aamarpay_store_id'];
+            $storeId = $settings['paymentSettings']['aamarpay_store_id'];
             if ($storeId === 'aamarpaytest') {
                 $storeId = 'aamarpaytest'; // This might need to be changed to actual test store ID
             }
@@ -101,7 +101,7 @@ class AamarpayPaymentController extends Controller
                     'order_id' => $orderID,
                 ]),
                 'cancel_url' => route('aamarpay.success', ['response' => 'cancel']),
-                'signature_key' => $settings['payment_settings']['aamarpay_signature'],
+                'signature_key' => $settings['paymentSettings']['aamarpay_signature'],
                 'desc' => 'Plan: ' . $plan->name,
             ];
 

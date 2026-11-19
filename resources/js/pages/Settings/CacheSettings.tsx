@@ -1,11 +1,8 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { HardDrive, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,85 +10,70 @@ interface CacheSettingsProps {
     cacheSize?: string;
 }
 
+/**
+ * Displays the current application cache size and allows administrators
+ * to clear cached application data through the existing Inertia endpoint.
+ *
+ * Prevents duplicate requests and provides success and validation feedback.
+ */
 export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps) {
     const { t: translate } = useTranslation();
     const [isClearing, setIsClearing] = useState(false);
 
-    // Handle cache clear
     const handleClearCache = () => {
+        if (isClearing) {
+            return;
+        }
+
         setIsClearing(true);
+
+        const toastId = toast.loading(translate('Clearing cache...'));
 
         router.post(
             route('settings.cache.clear'),
             {},
             {
                 preserveScroll: true,
+
                 onSuccess: () => {
                     toast.dismiss(toastId);
                 },
+
                 onError: (errors) => {
+                    Object.values(errors).forEach((message) => {
+                        toast.error(translate(message));
+                    });
+                },
+
+                onFinish: () => {
+                    setIsClearing(false);
                     toast.dismiss(toastId);
-                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
     };
 
     return (
-        <SettingsSection title={translate('Cache settings')} description={translate('Manage application cache to improve performance')}>
-            <Card>
-                <CardContent className="mt-6">
-                    <div className="space-y-6">
-                        <div className="bg-muted/50 rounded-lg p-3">
-                            <p className="text-foreground/75 text-sm">
-                                {translate("This is a page meant for more advanced users, simply ignore it if you don't understand what cache is.")}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-between rounded-lg border p-4">
-                            <div className="flex items-center space-x-3">
-                                <HardDrive className="text-foreground/75 h-5 w-5" />
-                                <div>
-                                    <h4 className="font-medium">{translate('Current cache size')}</h4>
-                                    <p className="text-foreground/75 text-sm">
-                                        {cacheSize} MB {translate('Of cached data')}
-                                    </p>
-                                </div>
-                            </div>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={handleClearCache}
-                                            disabled={isClearing}
-                                            variant="destructive"
-                                            size="sm"
-                                            className="max-[1300px]:px-2.5"
-                                        >
-                                            <Trash2 className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                                            <span className="max-[1300px]:hidden">
-                                                {isClearing ? translate('Clearing...') : translate('Clear cache')}
-                                            </span>
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>{translate('Clear cache')}</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
+        <SettingsSection title={translate('Cache')} description={translate('Manage application cache to improve performance.')}>
+            <div className="border-border space-y-5 border-t pt-5">
+                <p className="text-foreground/75 text-sm">
+                    {translate('Clearing cache will remove application cache, route cache, view cache and configuration cache.')}
+                </p>
 
-                        <div className="text-foreground/75 text-sm">
-                            <p>{translate('Clearing cache will remove')}:</p>
-                            <ul className="mt-2 list-inside list-disc space-y-1">
-                                <li>{translate('Application cache')}</li>
-                                <li>{translate('Route cache')}</li>
-                                <li>{translate('View cache')}</li>
-                                <li>{translate('Configuration cache')}</li>
-                            </ul>
-                        </div>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1">
+                        <h3 className="text-sm">{translate('Current cache size')}</h3>
+
+                        <p className="text-foreground/75 text-sm">
+                            {cacheSize} MB {translate('of cached data')}
+                        </p>
                     </div>
-                </CardContent>
-            </Card>
+
+                    <Button type="button" variant="destructive" size="lg" onClick={handleClearCache} disabled={isClearing}>
+                        {isClearing ? translate('Clearing...') : translate('Clear cache')}
+                    </Button>
+                </div>
+            </div>
         </SettingsSection>
     );
 }

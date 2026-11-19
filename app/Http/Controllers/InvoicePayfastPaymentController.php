@@ -39,7 +39,7 @@ class InvoicePayfastPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['payfast_merchant_id']) || !isset($settings['payment_settings']['payfast_merchant_key'])) {
+            if (!isset($settings['paymentSettings']['payfast_merchant_id']) || !isset($settings['paymentSettings']['payfast_merchant_key'])) {
                 return response()->json(['success' => false, 'error' => __('PayFast not configured')]);
             }
 
@@ -49,11 +49,11 @@ class InvoicePayfastPaymentController extends Controller
 
             $paymentId = 'inv_pf_' . $invoice->id . '_' . time() . '_' . uniqid();
 
-            $isLive = ($settings['payment_settings']['payfast_mode'] ?? 'sandbox') === 'live';
+            $isLive = ($settings['paymentSettings']['payfast_mode'] ?? 'sandbox') === 'live';
 
             $data = [
-                'merchant_id' => $settings['payment_settings']['payfast_merchant_id'],
-                'merchant_key' => $settings['payment_settings']['payfast_merchant_key'],
+                'merchant_id' => $settings['paymentSettings']['payfast_merchant_id'],
+                'merchant_key' => $settings['paymentSettings']['payfast_merchant_key'],
                 'return_url' => route('customer-facing.invoice.payfast.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&m_payment_id=' . $paymentId,
                 'cancel_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
                 'notify_url' => route('customer-facing.invoice.payfast.callback'),
@@ -65,7 +65,7 @@ class InvoicePayfastPaymentController extends Controller
                 'item_name' => "Invoice #{$invoice->invoice_number}",
             ];
 
-            $passphrase = $settings['payment_settings']['payfast_passphrase'] ?? '';
+            $passphrase = $settings['paymentSettings']['payfast_passphrase'] ?? '';
             $signature = $this->generateSignature($data, $passphrase);
             $data['signature'] = $signature;
 
@@ -109,7 +109,7 @@ class InvoicePayfastPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -153,7 +153,7 @@ class InvoicePayfastPaymentController extends Controller
                         $settings = $this->getInvoicePaymentSettings($organizationId);
 
                         // Verify signature
-                        if (!$this->verifyPayfastSignature($pfData, $settings['payment_settings']['payfast_passphrase'] ?? '')) {
+                        if (!$this->verifyPayfastSignature($pfData, $settings['paymentSettings']['payfast_passphrase'] ?? '')) {
                             return response(__('Invalid signature'), 400);
                         }
 

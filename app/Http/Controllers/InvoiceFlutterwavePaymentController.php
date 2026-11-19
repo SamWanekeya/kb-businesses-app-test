@@ -37,7 +37,7 @@ class InvoiceFlutterwavePaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['flutterwave_secret_key'])) {
+            if (!isset($settings['paymentSettings']['flutterwave_secret_key'])) {
                 Log::error('Flutterwave payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Flutterwave not configured')]);
@@ -49,7 +49,7 @@ class InvoiceFlutterwavePaymentController extends Controller
                 CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/" . $validated['payment_id'] . "/verify",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
-                    "Authorization: Bearer " . $settings['payment_settings']['flutterwave_secret_key'],
+                    "Authorization: Bearer " . $settings['paymentSettings']['flutterwave_secret_key'],
                     "Content-Type: application/json",
                 ],
             ]);
@@ -140,7 +140,7 @@ class InvoiceFlutterwavePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

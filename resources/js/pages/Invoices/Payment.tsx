@@ -23,7 +23,7 @@ interface Props {
     paymentMethod: string;
     amount: number;
     paymentType: string;
-    payment_settings: any;
+    paymentSettings: any;
     currency: string;
 }
 
@@ -146,15 +146,15 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
     );
 };
 
-export default function InvoicePayment({ invoice, paymentMethod, amount, paymentType, payment_settings, currency }: Props) {
+export default function InvoicePayment({ invoice, paymentMethod, amount, paymentType, paymentSettings, currency }: Props) {
     const { t: translate } = useTranslation();
     const [stripePromise, setStripePromise] = useState<any>(null);
 
     useEffect(() => {
-        if (paymentMethod === 'stripe' && payment_settings.key) {
-            setStripePromise(loadStripe(payment_settings.key));
+        if (paymentMethod === 'stripe' && paymentSettings.key) {
+            setStripePromise(loadStripe(paymentSettings.key));
         }
-    }, [paymentMethod, payment_settings]);
+    }, [paymentMethod, paymentSettings]);
 
     const formatCurrency = (amount: number) => {
         return window.kbSettings.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
@@ -216,7 +216,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {paymentMethod === 'stripe' && payment_settings.key && stripePromise ? (
+                            {paymentMethod === 'stripe' && paymentSettings.key && stripePromise ? (
                                 <Elements stripe={stripePromise}>
                                     <StripeCheckoutForm invoice={invoice} amount={amount} paymentType={paymentType} />
                                 </Elements>

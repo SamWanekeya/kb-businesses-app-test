@@ -22,7 +22,7 @@ class NepalstePaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['nepalste_public_key']) || !isset($settings['payment_settings']['nepalste_secret_key'])) {
+            if (!isset($settings['paymentSettings']['nepalste_public_key']) || !isset($settings['paymentSettings']['nepalste_secret_key'])) {
                 return back()->withErrors(['error' => __('Nepalste not configured')]);
             }
 
@@ -55,7 +55,7 @@ class NepalstePaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['nepalste_public_key']) || !isset($settings['payment_settings']['nepalste_secret_key'])) {
+            if (!isset($settings['paymentSettings']['nepalste_public_key']) || !isset($settings['paymentSettings']['nepalste_secret_key'])) {
                 return response()->json(['error' => __('Nepalste not configured')], 400);
             }
 
@@ -63,7 +63,7 @@ class NepalstePaymentController extends Controller
             $orderId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             // First get access token
-            $accessToken = $this->getAccessToken($settings['payment_settings']);
+            $accessToken = $this->getAccessToken($settings['paymentSettings']);
             if (!$accessToken) {
                 return response()->json(['error' => __('Failed to get access token')], 500);
             }
@@ -76,7 +76,7 @@ class NepalstePaymentController extends Controller
                 'website_url' => route('subscriptions.plans.index'),
             ];
 
-            $baseUrl = $settings['payment_settings']['nepalste_mode'] === 'live'
+            $baseUrl = $settings['paymentSettings']['nepalste_mode'] === 'live'
                 ? 'https://nepalste.com.np/pay/api/v1'
                 : 'https://nepalste.com.np/pay/sandbox/api/v1';
 

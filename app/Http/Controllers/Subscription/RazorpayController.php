@@ -68,8 +68,8 @@ class RazorpayController extends Controller
         $settings = getPaymentGatewaySettings();
 
         return [
-            'key' => $settings['payment_settings']['razorpay_key'] ?? null,
-            'secret' => $settings['payment_settings']['razorpay_secret'] ?? null,
+            'key' => $settings['paymentSettings']['razorpay_key'] ?? null,
+            'secret' => $settings['paymentSettings']['razorpay_secret'] ?? null,
             'currency' => $settings['general_settings']['default_currency'] ?? 'INR',
         ];
     }

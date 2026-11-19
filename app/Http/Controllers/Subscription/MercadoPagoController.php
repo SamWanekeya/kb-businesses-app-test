@@ -188,11 +188,11 @@ class MercadoPagoController extends Controller
     {
         $settings = getPaymentGatewaySettings();
 
-        $accessToken = $settings['payment_settings']['mercadopago_access_token'] ?? null;
+        $accessToken = $settings['paymentSettings']['mercadopago_access_token'] ?? null;
 
         return [
             'access_token' => $accessToken,
-            'mode' => $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox',
+            'mode' => $settings['paymentSettings']['mercadopago_mode'] ?? 'sandbox',
             'currency' => $settings['general_settings']['default_currency'] ?? 'BRL',
         ];
     }

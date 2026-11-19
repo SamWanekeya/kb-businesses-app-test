@@ -36,7 +36,7 @@ class InvoicePaystackPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['paystack_secret_key'])) {
+            if (!isset($settings['paymentSettings']['paystack_secret_key'])) {
                 Log::error('Paystack payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Paystack not configured')]);
@@ -48,7 +48,7 @@ class InvoicePaystackPaymentController extends Controller
                 CURLOPT_URL => "https://api.paystack.co/transaction/verify/" . $validated['payment_id'],
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
-                    "Authorization: Bearer " . $settings['payment_settings']['paystack_secret_key'],
+                    "Authorization: Bearer " . $settings['paymentSettings']['paystack_secret_key'],
                     "Cache-Control: no-cache",
                 ],
             ]);
@@ -122,7 +122,7 @@ class InvoicePaystackPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

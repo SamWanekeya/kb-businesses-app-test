@@ -121,9 +121,9 @@ class InvoicePayTRPaymentController extends Controller
         $settings = $this->getInvoicePaymentSettings($organizationId);
 
         return [
-            'merchant_id' => $settings['payment_settings']['paytr_merchant_id'] ?? null,
-            'merchant_key' => $settings['payment_settings']['paytr_merchant_key'] ?? null,
-            'merchant_salt' => $settings['payment_settings']['paytr_merchant_salt'] ?? null,
+            'merchant_id' => $settings['paymentSettings']['paytr_merchant_id'] ?? null,
+            'merchant_key' => $settings['paymentSettings']['paytr_merchant_key'] ?? null,
+            'merchant_salt' => $settings['paymentSettings']['paytr_merchant_salt'] ?? null,
             'currency' => $settings['general_settings']['default_currency'] ?? 'TRY',
         ];
     }
@@ -131,7 +131,7 @@ class InvoicePayTRPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

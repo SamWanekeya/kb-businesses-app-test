@@ -757,7 +757,7 @@ class SystemSettingsController extends Controller
      */
     public function updateInvoiceTemplate(Request $request)
     {
-        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-invoices-settings')) {
+        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-invoice-settings')) {
             return response()->json(['error' => __('Permission denied')], 403);
         }
 
@@ -833,7 +833,7 @@ class SystemSettingsController extends Controller
      */
     public function updateSalesOrderTemplate(Request $request)
     {
-        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-sales-orders-settings')) {
+        if (!auth()?->user()?->hasRole('organization') || !auth()?->user()?->can('manage-sales-order-settings')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 

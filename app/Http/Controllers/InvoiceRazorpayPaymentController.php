@@ -22,11 +22,11 @@ class InvoiceRazorpayPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
+            if (!isset($settings['paymentSettings']['razorpay_key']) || !isset($settings['paymentSettings']['razorpay_secret'])) {
                 return response()->json(['error' => __('Razorpay not configured')], 400);
             }
 
-            $api = new Api($settings['payment_settings']['razorpay_key'], $settings['payment_settings']['razorpay_secret']);
+            $api = new Api($settings['paymentSettings']['razorpay_key'], $settings['paymentSettings']['razorpay_secret']);
             $currency = $settings['general_settings']['default_currency'] ?? 'INR';
             // Convert to smallest unit (paise) and ensure it's an integer
             $amount = floatval($validated['amount']);
@@ -80,7 +80,7 @@ class InvoiceRazorpayPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -111,13 +111,13 @@ class InvoiceRazorpayPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
+            if (!isset($settings['paymentSettings']['razorpay_key']) || !isset($settings['paymentSettings']['razorpay_secret'])) {
                 Log::error('Razorpay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Razorpay not configured')]);
             }
 
-            $api = new Api($settings['payment_settings']['razorpay_key'], $settings['payment_settings']['razorpay_secret']);
+            $api = new Api($settings['paymentSettings']['razorpay_key'], $settings['paymentSettings']['razorpay_secret']);
 
             // Verify payment signature
             $api->utility->verifyPaymentSignature([

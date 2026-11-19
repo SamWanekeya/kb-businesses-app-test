@@ -22,7 +22,7 @@ class CinetPayPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['cinetpay_site_id'])) {
+            if (!isset($settings['paymentSettings']['cinetpay_site_id'])) {
                 return back()->withErrors(['error' => __('CinetPay not configured')]);
             }
 
@@ -55,7 +55,7 @@ class CinetPayPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $request->billing_cycle);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
+            if (!isset($settings['paymentSettings']['cinetpay_site_id']) || !isset($settings['paymentSettings']['cinetpay_api_key'])) {
                 return response()->json(['error' => __('CinetPay not configured')], 400);
             }
 
@@ -64,8 +64,8 @@ class CinetPayPaymentController extends Controller
 
             // Prepare API request data according to CinetPay v2 API
             $apiData = [
-                'apikey' => $settings['payment_settings']['cinetpay_api_key'],
-                'site_id' => $settings['payment_settings']['cinetpay_site_id'],
+                'apikey' => $settings['paymentSettings']['cinetpay_api_key'],
+                'site_id' => $settings['paymentSettings']['cinetpay_site_id'],
                 'transaction_id' => $transactionId,
                 // 'amount' => 100,
                 'amount' => (int)($pricing['final_price']),

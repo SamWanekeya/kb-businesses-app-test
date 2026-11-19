@@ -139,15 +139,15 @@ class InvoiceToyyibPayPaymentController extends Controller
         $settings = $this->getInvoicePaymentSettings($organizationId);
 
         return [
-            'secret_key' => $settings['payment_settings']['toyyibpay_secret_key'] ?? null,
-            'category_code' => $settings['payment_settings']['toyyibpay_category_code'] ?? null,
+            'secret_key' => $settings['paymentSettings']['toyyibpay_secret_key'] ?? null,
+            'category_code' => $settings['paymentSettings']['toyyibpay_category_code'] ?? null,
         ];
     }
 
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

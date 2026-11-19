@@ -421,11 +421,7 @@ export default function CurrencySettings() {
 
                     {/* Symbol position */}
                     <fieldset className="space-y-2">
-                        <legend className="flex w-full items-center justify-between gap-2 text-sm">
-                            {translate('Symbol position')}
-
-                            <InfoTooltip content={translate('Where to place the currency symbol')} />
-                        </legend>
+                        <legend className="flex w-full items-center justify-between gap-2 text-sm">{translate('Symbol position')}</legend>
 
                         <div className="grid grid-cols-2 gap-2">
                             <Button
@@ -452,11 +448,7 @@ export default function CurrencySettings() {
 
                     {/* Decimal separator */}
                     <fieldset className="space-y-2">
-                        <legend className="flex w-full items-center justify-between gap-2 text-sm">
-                            {translate('Decimal separator')}
-
-                            <InfoTooltip content={translate('Character used to separate decimal places')} />
-                        </legend>
+                        <legend className="flex w-full items-center justify-between gap-2 text-sm">{translate('Decimal separator')}</legend>
 
                         <div className="grid grid-cols-2 gap-2">
                             <Button

@@ -21,7 +21,7 @@ class XenditPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['xendit_api_key'])) {
+            if (!isset($settings['paymentSettings']['xendit_api_key'])) {
                 return response()->json(['error' => __('Xendit not configured')], 400);
             }
 
@@ -48,7 +48,7 @@ class XenditPaymentController extends Controller
             ];
 
             $response = Http::withHeaders([
-                'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
+                'Authorization' => 'Basic ' . base64_encode($settings['paymentSettings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 

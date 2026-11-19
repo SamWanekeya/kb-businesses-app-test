@@ -36,7 +36,7 @@ class InvoiceCinetPayPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
+            if (!isset($settings['paymentSettings']['cinetpay_site_id']) || !isset($settings['paymentSettings']['cinetpay_api_key'])) {
                 \Log::error('CinetPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('CinetPay not configured')], 400);
@@ -45,8 +45,8 @@ class InvoiceCinetPayPaymentController extends Controller
             $transactionId = 'inv_' . $invoice->id . '_' . time();
 
             $apiData = [
-                'apikey' => $settings['payment_settings']['cinetpay_api_key'],
-                'site_id' => $settings['payment_settings']['cinetpay_site_id'],
+                'apikey' => $settings['paymentSettings']['cinetpay_api_key'],
+                'site_id' => $settings['paymentSettings']['cinetpay_site_id'],
                 'transaction_id' => $transactionId,
                 'amount' => (int)($validated['amount']),
                 'currency' => 'XOF',
@@ -116,7 +116,7 @@ class InvoiceCinetPayPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

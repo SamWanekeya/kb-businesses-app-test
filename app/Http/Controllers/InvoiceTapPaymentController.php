@@ -35,7 +35,7 @@ class InvoiceTapPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['tap_secret_key'])) {
+            if (!isset($settings['paymentSettings']['tap_secret_key'])) {
                 return response()->json(['success' => false, 'error' => __('Tap not configured')]);
             }
 
@@ -46,7 +46,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
+                'organization_tap_secret_key' => $settings['paymentSettings']['tap_secret_key'],
             ]);
 
             $chargeData = [
@@ -96,7 +96,7 @@ class InvoiceTapPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -118,7 +118,7 @@ class InvoiceTapPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['tap_secret_key'])) {
+            if (!isset($settings['paymentSettings']['tap_secret_key'])) {
                 return redirect()->back()->with('error', __('Tap not configured'));
             }
 
@@ -127,7 +127,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
+                'organization_tap_secret_key' => $settings['paymentSettings']['tap_secret_key'],
             ]);
 
             // Get charge details from Tap API

@@ -441,51 +441,51 @@ export default function SalesOrderCreate() {
                                 <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
                             </Field>
                         </div>
-                            <div className="relative">
-                                <Select value={form.quote_id} onValueChange={handleQuoteChange}>
-                                    <SelectTrigger label={translate('Quote')}>
-                                        <SelectValue placeholder={translate('Select...')} />
-                                    </SelectTrigger>
-                                    <SelectContent searchable>
-                                        {quoteOptions.map((o) => (
-                                            <SelectItem key={o.value} value={o.value}>
-                                                {o.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                {loadingQuote && (
-                                    <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
-                                )}
-                            </div>
-                            {quotes.length === 0 && (
-                                <p className="mt-1 text-xs">
-                                    {translate('Click here to add')}{' '}
-                                    <a href={route('quotes.index')} className="font-medium underline">
-                                        {translate('Quotes')}
-                                    </a>
-                                </p>
-                            )}
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
-                                <SelectTrigger label={translate('Account')}>
+                        <div className="relative">
+                            <Select value={form.quote_id} onValueChange={handleQuoteChange}>
+                                <SelectTrigger label={translate('Quote')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
-                                    {accountOptions.map((o) => (
+                                    {quoteOptions.map((o) => (
                                         <SelectItem key={o.value} value={o.value}>
                                             {o.label}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            {accounts.length === 0 && (
-                                <p className="mt-1 text-xs">
-                                    {translate('Click here to add')}{' '}
-                                    <a href={route('accounts.index')} className="font-medium underline">
-                                        {translate('Accounts')}
-                                    </a>
-                                </p>
+                            {loadingQuote && (
+                                <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
                             )}
+                        </div>
+                        {quotes.length === 0 && (
+                            <p className="mt-1 text-xs">
+                                {translate('Click here to add')}{' '}
+                                <a href={route('quotes.index')} className="font-medium underline">
+                                    {translate('Quotes')}
+                                </a>
+                            </p>
+                        )}
+                        <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                            <SelectTrigger label={translate('Account')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {accountOptions.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>
+                                        {o.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {accounts.length === 0 && (
+                            <p className="mt-1 text-xs">
+                                {translate('Click here to add')}{' '}
+                                <a href={route('accounts.index')} className="font-medium underline">
+                                    {translate('Accounts')}
+                                </a>
+                            </p>
+                        )}
                         <div
                             className="cursor-pointer"
                             onClick={(e) => {
@@ -525,46 +525,45 @@ export default function SalesOrderCreate() {
                                 className="cursor-pointer"
                             />
                         </div>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger label={translate('Status')}>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {[
-                                        ['draft', translate('Draft')],
-                                        ['confirmed', translate('Confirmed')],
-                                        ['processing', translate('Processing')],
-                                        ['shipped', translate('Shipped')],
-                                        ['delivered', translate('Delivered')],
-                                        ['cancelled', translate('Cancelled')],
-                                    ].map(([v, l]) => (
-                                        <SelectItem key={v} value={v}>
-                                            {l}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
-                                <SelectTrigger label={translate('Assign to')}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {userOptions.map((o) => (
-                                        <SelectItem key={o.value} value={o.value}>
-                                            {o.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {users.length === 0 && (
-                                <p className="mt-1 text-xs">
-                                    {translate('Click here to add')}{' '}
-                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
-                                        {translate('Users')}
-                                    </a>
-                                </p>
-                            )}
-                        </Field>
+                        <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                            <SelectTrigger label={translate('Status')}>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[
+                                    ['draft', translate('Draft')],
+                                    ['confirmed', translate('Confirmed')],
+                                    ['processing', translate('Processing')],
+                                    ['shipped', translate('Shipped')],
+                                    ['delivered', translate('Delivered')],
+                                    ['cancelled', translate('Cancelled')],
+                                ].map(([v, l]) => (
+                                    <SelectItem key={v} value={v}>
+                                        {l}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <SelectTrigger label={translate('Assign to')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {userOptions.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>
+                                        {o.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {users.length === 0 && (
+                            <p className="mt-1 text-xs">
+                                {translate('Click here to add')}{' '}
+                                <a href={route('users-permissions.users.index')} className="font-medium underline">
+                                    {translate('Users')}
+                                </a>
+                            </p>
+                        )}
                     </CardContent>
                 </Card>
 
@@ -574,58 +573,58 @@ export default function SalesOrderCreate() {
                         <CardTitle className="text-base font-bold">{translate('Contacts & shipping provider')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
-                            <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
-                                <SelectTrigger label={translate('Billing contact')}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {contactOptions.map((o) => (
-                                        <SelectItem key={o.value} value={o.value}>
-                                            {o.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {contacts.length === 0 && (
-                                <p className="mt-1 text-xs">
-                                    {translate('Click here to add')}{' '}
-                                    <a href={route('contacts.index')} className="font-medium underline">
-                                        {translate('Contacts')}
-                                    </a>
-                                </p>
-                            )}
-                            <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
-                                <SelectTrigger label={translate('Shipping contact')}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {contactOptions.map((o) => (
-                                        <SelectItem key={o.value} value={o.value}>
-                                            {o.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
-                                <SelectTrigger label={translate('Shipping provider')}>
-                                    <SelectValue placeholder={translate('Select...')} />
-                                </SelectTrigger>
-                                <SelectContent searchable>
-                                    {providerOptions.map((o) => (
-                                        <SelectItem key={o.value} value={o.value}>
-                                            {o.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {shippingProviderTypes.length === 0 && (
-                                <p className="mt-1 text-xs">
-                                    {translate('Click here to add')}{' '}
-                                    <a href={route('shipping-provider-types.index')} className="font-medium underline">
-                                        {translate('Shipping providers')}
-                                    </a>
-                                </p>
-                            )}
+                        <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
+                            <SelectTrigger label={translate('Billing contact')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {contactOptions.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>
+                                        {o.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {contacts.length === 0 && (
+                            <p className="mt-1 text-xs">
+                                {translate('Click here to add')}{' '}
+                                <a href={route('contacts.index')} className="font-medium underline">
+                                    {translate('Contacts')}
+                                </a>
+                            </p>
+                        )}
+                        <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
+                            <SelectTrigger label={translate('Shipping contact')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {contactOptions.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>
+                                        {o.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
+                            <SelectTrigger label={translate('Shipping provider')}>
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+                            <SelectContent searchable>
+                                {providerOptions.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>
+                                        {o.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {shippingProviderTypes.length === 0 && (
+                            <p className="mt-1 text-xs">
+                                {translate('Click here to add')}{' '}
+                                <a href={route('shipping-provider-types.index')} className="font-medium underline">
+                                    {translate('Shipping providers')}
+                                </a>
+                            </p>
+                        )}
                     </CardContent>
                 </Card>
 

@@ -32,16 +32,16 @@ class InvoiceOzowPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['ozow_site_key']) || !isset($settings['payment_settings']['ozow_private_key']) || !isset($settings['payment_settings']['ozow_api_key'])) {
+            if (!isset($settings['paymentSettings']['ozow_site_key']) || !isset($settings['paymentSettings']['ozow_private_key']) || !isset($settings['paymentSettings']['ozow_api_key'])) {
                 Log::error('Ozow payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Ozow not configured')], 400);
             }
 
-            $siteCode = $settings['payment_settings']['ozow_site_key'];
-            $privateKey = $settings['payment_settings']['ozow_private_key'];
-            $apiKey = $settings['payment_settings']['ozow_api_key'];
-            $isTest = $settings['payment_settings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
+            $siteCode = $settings['paymentSettings']['ozow_site_key'];
+            $privateKey = $settings['paymentSettings']['ozow_private_key'];
+            $apiKey = $settings['paymentSettings']['ozow_api_key'];
+            $isTest = $settings['paymentSettings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
             $amount = $validated['amount'];
             $cancelUrl = route('customer-facing.invoices.public', encrypt($invoice->id));
             $successUrl = route('customer-facing.invoice.ozow.success', [
@@ -132,7 +132,7 @@ class InvoiceOzowPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

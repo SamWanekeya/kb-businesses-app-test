@@ -27,8 +27,8 @@ class AuthorizeNetPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
-                !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
+            if (!isset($settings['paymentSettings']['authorizenet_merchant_id']) ||
+                !isset($settings['paymentSettings']['authorizenet_transaction_key'])) {
                 return response()->json(['error' => 'AuthorizeNet not properly configured'], 400);
             }
 
@@ -42,10 +42,10 @@ class AuthorizeNetPaymentController extends Controller
 
             return response()->json([
                 'success' => true,
-                'merchant_id' => $settings['payment_settings']['authorizenet_merchant_id'],
+                'merchant_id' => $settings['paymentSettings']['authorizenet_merchant_id'],
                 'amount' => number_format($pricing['final_price'], 2, '.', ''),
                 'currency' => $currency,
-                'is_sandbox' => $settings['payment_settings']['authorizenet_mode'] === 'sandbox',
+                'is_sandbox' => $settings['paymentSettings']['authorizenet_mode'] === 'sandbox',
                 'supported_countries' => self::SUPPORTED_COUNTRIES,
                 'supported_currencies' => self::SUPPORTED_CURRENCIES,
             ]);
@@ -70,8 +70,8 @@ class AuthorizeNetPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
-                !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
+            if (!isset($settings['paymentSettings']['authorizenet_merchant_id']) ||
+                !isset($settings['paymentSettings']['authorizenet_transaction_key'])) {
                 return back()->withErrors(['error' => __('AuthorizeNet not properly configured')]);
             }
 
@@ -107,8 +107,8 @@ class AuthorizeNetPaymentController extends Controller
         try {
             // Set up merchant authentication
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-            $merchantAuthentication->setName($settings['payment_settings']['authorizenet_merchant_id']);
-            $merchantAuthentication->setTransactionKey($settings['payment_settings']['authorizenet_transaction_key']);
+            $merchantAuthentication->setName($settings['paymentSettings']['authorizenet_merchant_id']);
+            $merchantAuthentication->setTransactionKey($settings['paymentSettings']['authorizenet_transaction_key']);
 
             // Set up credit card information
             $creditCard = new AnetAPI\CreditCardType();
@@ -174,7 +174,7 @@ class AuthorizeNetPaymentController extends Controller
             // Execute the request
             $controller = new AnetController\CreateTransactionController($request);
 
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+            $environment = ($settings['paymentSettings']['authorizenet_mode'] === 'sandbox')
                 ? ANetEnvironment::SANDBOX
                 : ANetEnvironment::PRODUCTION;
 
@@ -310,8 +310,8 @@ class AuthorizeNetPaymentController extends Controller
         try {
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
-                !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
+            if (!isset($settings['paymentSettings']['authorizenet_merchant_id']) ||
+                !isset($settings['paymentSettings']['authorizenet_transaction_key'])) {
                 return response()->json([
                     'success' => false,
                     'message' => __('AuthorizeNet credentials not configured'),
@@ -320,15 +320,15 @@ class AuthorizeNetPaymentController extends Controller
 
             // Test with AuthenticateTest API call
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-            $merchantAuthentication->setName($settings['payment_settings']['authorizenet_merchant_id']);
-            $merchantAuthentication->setTransactionKey($settings['payment_settings']['authorizenet_transaction_key']);
+            $merchantAuthentication->setName($settings['paymentSettings']['authorizenet_merchant_id']);
+            $merchantAuthentication->setTransactionKey($settings['paymentSettings']['authorizenet_transaction_key']);
 
             $request = new AnetAPI\AuthenticateTestRequest();
             $request->setMerchantAuthentication($merchantAuthentication);
 
             $controller = new AnetController\AuthenticateTestController($request);
 
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+            $environment = ($settings['paymentSettings']['authorizenet_mode'] === 'sandbox')
                 ? ANetEnvironment::SANDBOX
                 : ANetEnvironment::PRODUCTION;
 
@@ -338,7 +338,7 @@ class AuthorizeNetPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => __('AuthorizeNet connection successful'),
-                    'mode' => $settings['payment_settings']['authorizenet_mode'],
+                    'mode' => $settings['paymentSettings']['authorizenet_mode'],
                 ]);
             } else {
                 $errorMessage = __('Connection failed');

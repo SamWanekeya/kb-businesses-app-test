@@ -1,133 +1,166 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface KakbimaIntelligenceSettingsProps {
     settings?: Record<string, string>;
 }
 
+interface IntelligenceSettings {
+    kakbima_intelligence_key: string;
+    kakbima_intelligence_model: string;
+}
+
+const DEFAULT_SETTINGS: IntelligenceSettings = {
+    kakbima_intelligence_key: '',
+    kakbima_intelligence_model: 'gpt-3.5-turbo',
+};
+
+const AVAILABLE_MODELS = [
+    { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' },
+    { value: 'gpt-3.5-turbo-16k', label: 'GPT-3.5 Turbo 16K' },
+    { value: 'gpt-4', label: 'GPT-4' },
+    { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+    { value: 'gpt-4o', label: 'GPT-4o' },
+    { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+] as const;
+
+type IntelligenceModel = (typeof AVAILABLE_MODELS)[number]['value'];
+
+function isSupportedModel(value: string): value is IntelligenceModel {
+    return AVAILABLE_MODELS.some((model) => model.value === value);
+}
+
+function createInitialSettings(settings: Record<string, string>): IntelligenceSettings {
+    const model = settings.kakbima_intelligence_model;
+
+    return {
+        kakbima_intelligence_key: settings.kakbima_intelligence_key ?? DEFAULT_SETTINGS.kakbima_intelligence_key,
+        kakbima_intelligence_model: model && isSupportedModel(model) ? model : DEFAULT_SETTINGS.kakbima_intelligence_model,
+    };
+}
+
+/**
+ * Configures the API key and model used by Kakbima Intelligence.
+ *
+ * Keeps the existing Inertia endpoint and payload contract, synchronizes
+ * server settings when appropriate, and provides save/error feedback.
+ */
 export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIntelligenceSettingsProps) {
     const { t: translate } = useTranslation();
-    const pageProps = usePage().props;
-    const [processing, setProcessing] = useState(false);
+    const { settings: pageSettings } = usePage().props;
 
-    // Default settings
-    const defaultSettings = {
-        kakbima_intelligence_key: '',
-        kakbima_intelligence_model: 'gpt-3.5-turbo',
-    };
+    const settingsData = useMemo(
+        () => (Object.keys(settings).length > 0 ? settings : ((pageSettings as Record<string, string> | undefined) ?? {})),
+        [settings, pageSettings],
+    );
 
-    // Combine settings from props and page props
-    const settingsData = Object.keys(settings).length > 0 ? settings : pageProps.settings || {};
+    const initialSettings = useMemo(() => createInitialSettings(settingsData), [settingsData]);
 
-    // Initialize state with merged settings
-    const [kakbimaIntelligenceSettings, setKakbimaIntelligenceSettings] = useState(() => ({
-        kakbima_intelligence_key: settingsData.kakbima_intelligence_key || defaultSettings.kakbima_intelligence_key,
-        kakbima_intelligence_model: settingsData.kakbima_intelligence_model || defaultSettings.kakbima_intelligence_model,
-    }));
+    const [form, setForm] = useState<IntelligenceSettings>(initialSettings);
+    const [isSaving, setIsSaving] = useState(false);
 
-    // Update state when settings change
     useEffect(() => {
-        if (Object.keys(settingsData).length > 0) {
-            const mergedSettings = Object.keys(defaultSettings).reduce<Record<string, string>>((acc, key) => {
-                acc[key] = settingsData[key] || defaultSettings[key];
-                return acc;
-            }, {});
-
-            setKakbimaIntelligenceSettings((prevSettings) => ({
-                ...prevSettings,
-                ...mergedSettings,
-            }));
+        if (!isSaving) {
+            setForm(initialSettings);
         }
-    }, [settingsData]);
+    }, [initialSettings, isSaving]);
 
-    // Handle form changes
-    const handleSettingsChange = (field: string, value: string) => {
-        setKakbimaIntelligenceSettings((prev) => ({
-            ...prev,
+    const handleChange = <K extends keyof IntelligenceSettings>(field: K, value: IntelligenceSettings[K]) => {
+        setForm((previous) => ({
+            ...previous,
             [field]: value,
         }));
     };
 
-    // Handle form submission
-    const submitKakbimaIntelligenceSettings = (e: React.FormEvent) => {
-        e.preventDefault();
-        setProcessing(true);
+    const submitSettings = () => {
+        if (isSaving) {
+            return;
+        }
 
-        const toastId = toast.loading(translate('Updating Kakbima Intelligence...'));
-        router.post(route('settings.kakbima-intelligence.update'), kakbimaIntelligenceSettings, {
+        setIsSaving(true);
+
+        const toastId = toast.loading(translate('Updating Kakbima Intelligence information...'));
+
+        router.post(route('settings.kakbima-intelligence.update'), form, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.dismiss(toastId);
-                setProcessing(false);
             },
             onError: (errors) => {
+                Object.values(errors).forEach((message) => {
+                    toast.error(translate(message));
+                });
+            },
+            onFinish: () => {
+                setIsSaving(false);
                 toast.dismiss(toastId);
-                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
     return (
         <SettingsSection
-            title={translate('Kakbima Intelligence settings')}
-            description={translate('Configure Kakbima Intelligence integration settings for ai-powered features')}
+            title={translate('Kakbima Intelligence')}
+            description={translate('Configure the AI integration used by Kakbima Intelligence features.')}
             action={
-                <Button type="submit" disabled={processing} form="kakbima-intelligence-settings-form" size="sm">
-                    <Save className="mr-2 h-4 w-4" />
-                    {processing ? translate('Saving...') : translate('Save changes')}
+                <Button type="submit" form="kakbima-intelligence-settings-form" size="lg" disabled={isSaving}>
+                    {isSaving ? translate('Saving...') : translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="mt-6">
-                    <form id="kakbima-intelligence-settings-form" onSubmit={submitKakbimaIntelligenceSettings} className="space-y-6">
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="grid gap-2 md:col-span-2">
-                                <Input
-                                    inputIdentifier="kakbima_intelligence_key"
-                                    inputType="password"
-                                    label={translate('Kakbima Intelligence key')}
-                                    required
-                                    value={kakbimaIntelligenceSettings.kakbima_intelligence_key}
-                                    onChange={(e) => {
-                                        handleSettingsChange('kakbima_intelligence_key', e.target.value);
-                                    }}
-                                />
-                            </div>
+            <form
+                id="kakbima-intelligence-settings-form"
+                autoComplete="off"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    submitSettings();
+                }}
+                className="border-border space-y-5 border-t pt-5"
+            >
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    <div className="space-y-2">
+                        <Input
+                            inputIdentifier="kakbima_intelligence_key"
+                            label={translate('Kakbima Intelligence key')}
+                            name="kakbima_intelligence_key"
+                            inputType="password"
+                            autoComplete="kakbima_intelligence_key"
+                            value={form.kakbima_intelligence_key}
+                            onChange={(event) => handleChange('kakbima_intelligence_key', event.target.value)}
+                        />
+                    </div>
 
-                            <div className="grid gap-2">
-                                <Select
-                                    value={kakbimaIntelligenceSettings.kakbima_intelligence_model}
-                                    onValueChange={(value) => {
-                                        handleSettingsChange('kakbima_intelligence_model', value);
-                                    }}
-                                >
-                                    <SelectTrigger label={translate('Kakbima Intelligence model name')}>
-                                        <SelectValue placeholder={translate('Select...')} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
-                                        <SelectItem value="gpt-3.5-turbo-16k">GPT-3.5 Turbo 16K</SelectItem>
-                                        <SelectItem value="gpt-4">GPT-4</SelectItem>
-                                        <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
-                                        <SelectItem value="gpt-4o">GPT-4o</SelectItem>
-                                        <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
+                    <div className="space-y-2">
+                        <Select
+                            value={form.kakbima_intelligence_model}
+                            onValueChange={(value) => {
+                                if (isSupportedModel(value)) {
+                                    handleChange('kakbima_intelligence_model', value);
+                                }
+                            }}
+                        >
+                            <SelectTrigger label={translate('Kakbima Intelligence model name')} id="kakbima_intelligence_model">
+                                <SelectValue placeholder={translate('Select...')} />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {AVAILABLE_MODELS.map((model) => (
+                                    <SelectItem key={model.value} value={model.value}>
+                                        {model.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+            </form>
         </SettingsSection>
     );
 }

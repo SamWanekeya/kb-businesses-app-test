@@ -7,7 +7,7 @@ import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Bell, MessagesCircle, Send } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationItem {
@@ -122,11 +122,11 @@ export default function SlackNotificationSettings() {
 
     return (
         <SettingsSection
-            title={translate('Slack settings')}
+            title={translate('Slack')}
             description={translate('Configure Slack settings for notifications and communications')}
             action={
-                <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
+                <Button onClick={handleSave} disabled={processing} size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
@@ -135,90 +135,85 @@ export default function SlackNotificationSettings() {
                     {/* Left Column - Configuration */}
                     <div className="space-y-6 min-[1600px]:col-span-2">
                         {/* Credentials */}
-                        <div className="rounded-lg border border-gray-200 bg-white p-6">
-                            <div className="grid grid-cols-1 gap-6">
-                                <div>
-                                    <Input
-                                        value={slackWebhookUrl}
-                                        label={translate('Webhook URL')}
-                                        required
-                                        onChange={(e) => {
-                                            setSlackWebhookUrl(e.target.value);
-                                        }}
-                                        className="font-mono"
-                                    />
-                                </div>
+                        <div className="grid grid-cols-1 gap-6">
+                            <div>
+                                <Input
+                                    value={slackWebhookUrl}
+                                    label={translate('Webhook URL')}
+                                    required
+                                    onChange={(e) => {
+                                        setSlackWebhookUrl(e.target.value);
+                                    }}
+                                />
                             </div>
-
-                            {/* Slack Notification Settings */}
-                            <div className="my-6 flex items-center gap-2">
-                                <Bell className="h-5 w-5 text-emerald-500" />
-                                <h3 className="font-medium text-gray-900">{translate('Slack notification settings')}</h3>
-                            </div>
-                            {availableNotifications.length > 0 ? (
-                                <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
-                                    {availableNotifications.map((item) => (
-                                        <div key={item.name} className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
-                                            <Label htmlFor={item.name} className="text-sm">
-                                                {translate(item.label)}
-                                            </Label>
-                                            <Switch
-                                                id={item.name}
-                                                checked={notifications[item.name] || false}
-                                                onCheckedChange={(checked) => {
-                                                    handleToggle(item.name, checked);
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
-                            )}
                         </div>
+
+                        {/* Slack Notification Settings */}
+                        <div className="my-6 flex items-center gap-2">
+                            <Bell className="h-5 w-5 text-fuchsia-500" />
+                            <h3 className="font-medium">{translate('Slack notification settings')}</h3>
+                        </div>
+                        {availableNotifications.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
+                                {availableNotifications.map((item) => (
+                                    <div key={item.name} className="flex items-center justify-between rounded-lg border p-3">
+                                        <Label htmlFor={item.name} className="text-sm">
+                                            {translate(item.label)}
+                                        </Label>
+                                        <Switch
+                                            id={item.name}
+                                            checked={notifications[item.name] || false}
+                                            onCheckedChange={(checked) => {
+                                                handleToggle(item.name, checked);
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
+                        )}
                     </div>
 
                     {/* Right Column - Test Configuration */}
-                    <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 min-[1600px]:col-span-1">
-                        <div className="mb-4 flex items-center gap-2">
-                            <Send className="h-4 w-4 text-emerald-500" />
-                            <h3 className="font-medium text-gray-900">{translate('Test Slack configuration')}</h3>
-                        </div>
-                        <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
-                            <p className="text-xs text-gray-600">{translate('Send a test message to verify your Slack webhook.')}</p>
+                    <div className="mb-4 flex items-center gap-2">
+                        <Send className="h-4 w-4 text-emerald-500" />
+                        <h3 className="font-medium">{translate('Test Slack configuration')}</h3>
+                    </div>
+                    <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
+                        <p className="text-xs text-gray-600">{translate('Send a test message to verify your Slack webhook.')}</p>
 
-                            <Button
-                                type="submit"
-                                className="w-full bg-emerald-500 text-white hover:bg-emerald-600"
-                                disabled={isSendingMessage || !isAvailableSlackWebhookUrl}
-                            >
-                                {isSendingMessage ? (
-                                    <>
-                                        <span className="mr-2 animate-spin">◌</span>
-                                        {translate('Sending...')}
-                                    </>
-                                ) : (
-                                    <>
-                                        <Send className="mr-2 h-4 w-4" />
-                                        {translate('Send test message')}
-                                    </>
-                                )}
-                            </Button>
-                        </form>
-                        {/* Setup Instructions */}
-                        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
-                            <div className="mb-2 flex items-center gap-2">
-                                <MessagesCircle className="h-4 w-4 text-blue-600" />
-                                <h3 className="text-sm text-blue-900">{translate('Slack setup instructions')}</h3>
-                            </div>
-                            <ol className="space-y-2 text-xs text-blue-800">
-                                <li>{translate('1. Go to your Slack workspace')}</li>
-                                <li>{translate('2. Create a new Slack app')}</li>
-                                <li>{translate('3. Enable incoming webhooks')}</li>
-                                <li>{translate('4. Add webhook to workspace')}</li>
-                                <li>{translate('5. Copy the webhook URL here')}</li>
-                            </ol>
+                        <Button
+                            type="submit"
+                            className="w-full bg-emerald-500 text-white hover:bg-emerald-600"
+                            disabled={isSendingMessage || !isAvailableSlackWebhookUrl}
+                        >
+                            {isSendingMessage ? (
+                                <>
+                                    <span className="mr-2 animate-spin">◌</span>
+                                    {translate('Sending...')}
+                                </>
+                            ) : (
+                                <>
+                                    <Send className="mr-2 h-4 w-4" />
+                                    {translate('Send test message')}
+                                </>
+                            )}
+                        </Button>
+                    </form>
+                    {/* Setup Instructions */}
+                    <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
+                        <div className="mb-2 flex items-center gap-2">
+                            <MessagesCircle className="h-4 w-4 text-blue-600" />
+                            <h3 className="text-sm text-blue-900">{translate('Slack setup instructions')}</h3>
                         </div>
+                        <ol className="space-y-2 text-xs text-blue-800">
+                            <li>{translate('1. Go to your Slack workspace')}</li>
+                            <li>{translate('2. Create a new Slack app')}</li>
+                            <li>{translate('3. Enable incoming webhooks')}</li>
+                            <li>{translate('4. Add webhook to workspace')}</li>
+                            <li>{translate('5. Copy the webhook URL here')}</li>
+                        </ol>
                     </div>
                 </div>
             </div>

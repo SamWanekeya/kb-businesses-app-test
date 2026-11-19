@@ -37,7 +37,7 @@ class InvoiceEasebuzzPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
+            if (!isset($settings['paymentSettings']['easebuzz_merchant_key']) || !isset($settings['paymentSettings']['easebuzz_salt_key'])) {
                 Log::error('Easebuzz payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Easebuzz not configured')], 400);
@@ -47,11 +47,11 @@ class InvoiceEasebuzzPaymentController extends Controller
             require_once app_path('Libraries/Easebuzz/easebuzz_payment_gateway.php');
 
             $txnid = 'inv_' . $invoice->id . '_' . time();
-            $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
+            $environment = $settings['paymentSettings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             $easebuzz = new Easebuzz(
-                $settings['payment_settings']['easebuzz_merchant_key'],
-                $settings['payment_settings']['easebuzz_salt_key'],
+                $settings['paymentSettings']['easebuzz_merchant_key'],
+                $settings['paymentSettings']['easebuzz_salt_key'],
                 $environment
             );
 
@@ -80,7 +80,7 @@ class InvoiceEasebuzzPaymentController extends Controller
             if ($resultArray && isset($resultArray['status']) && $resultArray['status'] == 1) {
                 $accessKey = $resultArray['access_key'] ?? null;
                 if ($accessKey) {
-                    $baseUrl = $settings['payment_settings']['easebuzz_environment'] === 'prod'
+                    $baseUrl = $settings['paymentSettings']['easebuzz_environment'] === 'prod'
                         ? 'https://pay.easebuzz.in'
                         : 'https://testpay.easebuzz.in';
 
@@ -121,7 +121,7 @@ class InvoiceEasebuzzPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -142,11 +142,11 @@ class InvoiceEasebuzzPaymentController extends Controller
 
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
-            $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
+            $environment = $settings['paymentSettings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             $easebuzz = new Easebuzz(
-                $settings['payment_settings']['easebuzz_merchant_key'],
-                $settings['payment_settings']['easebuzz_salt_key'],
+                $settings['paymentSettings']['easebuzz_merchant_key'],
+                $settings['paymentSettings']['easebuzz_salt_key'],
                 $environment
             );
 

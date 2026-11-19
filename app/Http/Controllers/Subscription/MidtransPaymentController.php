@@ -21,7 +21,7 @@ class MidtransPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['midtrans_secret_key'])) {
+            if (!isset($settings['paymentSettings']['midtrans_secret_key'])) {
                 return back()->withErrors(['error' => __('Midtrans not configured')]);
             }
 
@@ -54,7 +54,7 @@ class MidtransPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['midtrans_secret_key'])) {
+            if (!isset($settings['paymentSettings']['midtrans_secret_key'])) {
                 return response()->json(['error' => __('Midtrans not configured')], 400);
             }
 
@@ -86,10 +86,10 @@ class MidtransPaymentController extends Controller
                 ],
             ];
 
-            $snapToken = $this->createSnapToken($paymentData, $settings['payment_settings']);
+            $snapToken = $this->createSnapToken($paymentData, $settings['paymentSettings']);
 
             if ($snapToken) {
-                $baseUrl = $settings['payment_settings']['midtrans_mode'] === 'live'
+                $baseUrl = $settings['paymentSettings']['midtrans_mode'] === 'live'
                     ? 'https://app.midtrans.com'
                     : 'https://app.sandbox.midtrans.com';
 

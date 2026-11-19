@@ -33,12 +33,12 @@ class IyzipayPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
+            if (!isset($settings['paymentSettings']['iyzipay_secret_key']) || !isset($settings['paymentSettings']['iyzipay_public_key'])) {
                 return back()->withErrors(['error' => __('IyziPay not configured')]);
             }
 
             // Retrieve payment result from IyziPay
-            $paymentResult = $this->retrieveIyzipayPayment($validated['token'], $settings['payment_settings']);
+            $paymentResult = $this->retrieveIyzipayPayment($validated['token'], $settings['paymentSettings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
                 processPaymentSuccess([
@@ -97,13 +97,13 @@ class IyzipayPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
+            if (!isset($settings['paymentSettings']['iyzipay_secret_key']) || !isset($settings['paymentSettings']['iyzipay_public_key'])) {
                 return response()->json(['error' => __('IyziPay not configured')], 400);
             }
 
             $user = auth()?->user();
             $conversationId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
-            $options = $this->getIyzipayOptions($settings['payment_settings']);
+            $options = $this->getIyzipayOptions($settings['paymentSettings']);
 
             // Create checkout form initialize request
             $checkoutRequest = new CreateCheckoutFormInitializeRequest();
@@ -197,7 +197,7 @@ class IyzipayPaymentController extends Controller
             }
 
             // Retrieve payment result from IyziPay
-            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
+            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['paymentSettings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
                 // Extract conversation ID to find the plan and user
@@ -257,7 +257,7 @@ class IyzipayPaymentController extends Controller
             $settings = $superAdmin ? getPaymentGatewaySettings($superAdmin->id) : getPaymentGatewaySettings();
 
             // Retrieve payment result from IyziPay
-            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
+            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['paymentSettings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
                 processPaymentSuccess([

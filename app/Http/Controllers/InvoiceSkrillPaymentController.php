@@ -39,7 +39,7 @@ class InvoiceSkrillPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
             $currency = $settings['general_settings']['default_currency'] ?? 'USD';
 
-            if (!isset($settings['payment_settings']['skrill_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['skrill_merchant_id'])) {
                 Log::error('Skrill payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Skrill not configured')]);
@@ -50,7 +50,7 @@ class InvoiceSkrillPaymentController extends Controller
 
             // Prepare Skrill payment data
             $paymentData = [
-                'pay_to_email' => $settings['payment_settings']['skrill_merchant_id'],
+                'pay_to_email' => $settings['paymentSettings']['skrill_merchant_id'],
                 'transaction_id' => $transactionId,
                 'return_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
                 'cancel_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
@@ -110,7 +110,7 @@ class InvoiceSkrillPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

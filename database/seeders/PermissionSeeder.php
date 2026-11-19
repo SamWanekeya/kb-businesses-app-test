@@ -104,26 +104,27 @@ class PermissionSeeder extends Seeder
             ['name' => 'approve-plan-orders', 'module' => 'plan-orders', 'label' => 'Approve Plan Orders', 'description' => 'Can approve plan orders'],
             ['name' => 'reject-plan-orders', 'module' => 'plan-orders', 'label' => 'Reject Plan Orders', 'description' => 'Can reject plan orders'],
 
-
             // Settings
             ['name' => 'manage-settings', 'module' => 'settings', 'label' => 'Manage Settings', 'description' => 'Can manage All settings'],
             ['name' => 'manage-system-settings', 'module' => 'settings', 'label' => 'Manage System Settings', 'description' => 'Can manage system settings'],
             ['name' => 'manage-email-settings', 'module' => 'settings', 'label' => 'Manage Email Settings', 'description' => 'Can manage email settings'],
+            ['name' => 'manage-email-notification-settings', 'module' => 'settings', 'label' => 'Manage Email Notification Settings', 'description' => 'Can manage email notification settings'],
+            ['name' => 'manage-twilio-notification-settings', 'module' => 'settings', 'label' => 'Manage Twilio Notification Settings', 'description' => 'Can manage Twilio notification settings'],
+            ['name' => 'manage-slack-notification-settings', 'module' => 'settings', 'label' => 'Manage Slack Notification Settings', 'description' => 'Can manage Slack notification settings'],
+            ['name' => 'manage-google-calendar-settings', 'module' => 'settings', 'label' => 'Manage Google Calendar Settings', 'description' => 'Can manage Google Calendar settings'],
             ['name' => 'manage-brand-settings', 'module' => 'settings', 'label' => 'Manage Brand Settings', 'description' => 'Can manage brand settings'],
-            ['name' => 'manage-organization-settings', 'module' => 'settings', 'label' => 'Manage Organization Settings', 'description' => 'Can manage Organization settings'],
-
             ['name' => 'manage-payment-settings', 'module' => 'settings', 'label' => 'Manage Payment Settings', 'description' => 'Can manage payment settings'],
             ['name' => 'manage-currency-settings', 'module' => 'settings', 'label' => 'Manage Currency Settings', 'description' => 'Can manage currency settings'],
-            ['name' => 'manage-recaptcha-settings', 'module' => 'settings', 'label' => 'Manage ReCaptch Settings', 'description' => 'Can manage recaptcha settings'],
-            ['name' => 'manage-kakbima-intelligence-settings', 'module' => 'settings', 'label' => 'Manage KakbimaIntelligence Settings', 'description' => 'Can manage kakbima-intelligence settings'],
+            ['name' => 'manage-recaptcha-settings', 'module' => 'settings', 'label' => 'Manage ReCaptcha Settings', 'description' => 'Can manage recaptcha settings'],
+            ['name' => 'manage-kakbima-intelligence-settings', 'module' => 'settings', 'label' => 'Manage Kakbima Intelligence Settings', 'description' => 'Can manage Kakbima Intelligence settings'],
             ['name' => 'manage-cookie-settings', 'module' => 'settings', 'label' => 'Manage Cookie(GDPR) Settings', 'description' => 'Can manage cookie settings'],
             ['name' => 'manage-cache-settings', 'module' => 'settings', 'label' => 'Manage Cache Settings', 'description' => 'Can manage cache settings'],
             ['name' => 'manage-storage-settings', 'module' => 'settings', 'label' => 'Manage Storage Settings', 'description' => 'Can manage storage settings'],
             ['name' => 'manage-account-settings', 'module' => 'settings', 'label' => 'Manage Account Settings', 'description' => 'Can manage account settings'],
-            ['name' => 'manage-invoices-settings', 'module' => 'settings', 'label' => 'Manage Invoices Settings', 'description' => 'Can manage invoices settings'],
+            ['name' => 'manage-invoice-settings', 'module' => 'settings', 'label' => 'Manage Invoice Settings', 'description' => 'Can manage invoice settings'],
             ['name' => 'manage-quotes-settings', 'module' => 'settings', 'label' => 'Manage Quotes Settings', 'description' => 'Can manage quotes settings'],
-            ['name' => 'manage-sales-orders-settings', 'module' => 'settings', 'label' => 'Manage Sales Orders Settings', 'description' => 'Can manage sales orders settings'],
-
+            ['name' => 'manage-sales-order-settings', 'module' => 'settings', 'label' => 'Manage Sales Orders Settings', 'description' => 'Can manage sales orders settings'],
+            ['name' => 'manage-webhook-settings', 'module' => 'settings', 'label' => 'Manage Webhook Settings', 'description' => 'Can manage webhook settings'],
 
             // Currency management
             ['name' => 'manage-currencies', 'module' => 'currencies', 'label' => 'Manage Currencies', 'description' => 'Can manage currencies'],
@@ -151,9 +152,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-media', 'module' => 'media', 'label' => 'Delete media', 'description' => 'Delete media'],
             ['name' => 'view-media', 'module' => 'media', 'label' => 'View media', 'description' => 'View media'],
             ['name' => 'download-media', 'module' => 'media', 'label' => 'Download media', 'description' => 'Download media'],
-
-            // Webhook management
-            // ['name' => 'manage-webhook-settings', 'module' => 'settings', 'label' => 'Manage Webhook Settings', 'description' => 'Can manage webhook settings'],
 
             // Tax management
             ['name' => 'manage-taxes', 'module' => 'taxes', 'label' => 'Manage Taxes', 'description' => 'Can manage taxes'],

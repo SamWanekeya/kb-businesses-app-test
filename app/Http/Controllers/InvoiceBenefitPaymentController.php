@@ -37,7 +37,7 @@ class InvoiceBenefitPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['benefit_secret_key']) || !isset($settings['payment_settings']['benefit_public_key'])) {
+            if (!isset($settings['paymentSettings']['benefit_secret_key']) || !isset($settings['paymentSettings']['benefit_public_key'])) {
                 return response()->json(['success' => false, 'message' => __('Benefit payment not configured')], 400);
             }
 
@@ -71,7 +71,7 @@ class InvoiceBenefitPaymentController extends Controller
             ];
 
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
+                'Authorization' => 'Bearer ' . $settings['paymentSettings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
             ])->post('https://api.tap.organization/v2/charges', $userData);
@@ -119,7 +119,7 @@ class InvoiceBenefitPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

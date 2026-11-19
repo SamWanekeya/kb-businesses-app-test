@@ -52,12 +52,12 @@ class InvoiceIyzipayPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
+            if (!isset($settings['paymentSettings']['iyzipay_secret_key']) || !isset($settings['paymentSettings']['iyzipay_public_key'])) {
                 return response()->json(['error' => __('IyziPay not configured')], 400);
             }
 
             $conversationId = 'invoice_' . $invoice->id . '_' . time();
-            $options = $this->getIyzipayOptions($settings['payment_settings']);
+            $options = $this->getIyzipayOptions($settings['paymentSettings']);
 
             // Create checkout form initialize request
             $checkoutRequest = new CreateCheckoutFormInitializeRequest();
@@ -144,7 +144,7 @@ class InvoiceIyzipayPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -178,7 +178,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             // Retrieve payment result from IyziPay
-            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
+            $paymentResult = $this->retrieveIyzipayPayment($token, $settings['paymentSettings']);
 
             if ($paymentResult && $paymentResult->getPaymentStatus() === 'SUCCESS') {
                 InvoicePayment::storePayment([

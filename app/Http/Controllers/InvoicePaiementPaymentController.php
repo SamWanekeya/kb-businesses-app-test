@@ -36,7 +36,7 @@ class InvoicePaiementPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['paiement_merchant_id'])) {
                 Log::error('Paiement Pro payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Paiement Pro not configured')], 400);
@@ -45,7 +45,7 @@ class InvoicePaiementPaymentController extends Controller
             $transactionId = 'INV-' . time() . '-' . $invoice->id;
 
             $data = [
-                'merchantId' => $settings['payment_settings']['paiement_merchant_id'],
+                'merchantId' => $settings['paymentSettings']['paiement_merchant_id'],
                 'amount' => (int)($validated['amount'] * 549),
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'channel' => 'CARD',
@@ -120,7 +120,7 @@ class InvoicePaiementPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

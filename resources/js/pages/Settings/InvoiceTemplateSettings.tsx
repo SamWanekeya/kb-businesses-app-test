@@ -3,7 +3,6 @@ import IframePortal from '@components/IframePortal';
 import MediaPicker from '@components/MediaPicker';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Switch } from '@components/UserInterface/Switch';
@@ -38,7 +37,7 @@ const templateComponents = {
 const mockData = {
     invoice: {
         invoice_id: '00001',
-        invoice_number: 'INV-2024-000001',
+        invoice_number: 'INV-2025-000001',
         invoice_date: new Date().toISOString().split('T')[0],
         due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         total_tax: 60,
@@ -97,16 +96,16 @@ const mockData = {
 };
 
 const templates = {
-    template1: 'New York',
-    template2: 'Toronto',
-    template3: 'Rio',
-    template4: 'London',
-    template5: 'Istanbul',
-    template6: 'Mumbai',
-    template7: 'Hong Kong',
-    template8: 'Tokyo',
-    template9: 'Sydney',
-    template10: 'Paris',
+    template1: 'Invoice template 1',
+    template2: 'Invoice template 2',
+    template3: 'Invoice template 3',
+    template4: 'Invoice template 4',
+    template5: 'Invoice template 5',
+    template6: 'Invoice template 6',
+    template7: 'Invoice template 7',
+    template8: 'Invoice template 8',
+    template9: 'Invoice template 9',
+    template10: 'Invoice template 10',
 };
 
 const colors = [
@@ -270,103 +269,101 @@ export default function InvoiceTemplateSettings() {
             title={translate('Invoice templates')}
             description={translate('Configure invoice template, colors, and display options')}
             action={
-                <Button type="submit" disabled={saving} form="invoice-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save changes')}</span>
+                <Button type="submit" disabled={saving} form="invoice-template-settings-form" size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="pt-6">
-                    <form autoComplete="off" onSubmit={handleSubmit} id="invoice-template-settings-form" className="space-y-6">
-                        <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
-                            <div ref={settingsRef} className="space-y-4">
-                                <div className="space-y-2">
-                                    <Select
-                                        value={data.invoiceTemplate}
-                                        onValueChange={(value) => {
-                                            setData('invoiceTemplate', value);
-                                        }}
-                                    >
-                                        <SelectTrigger label={translate('Invoice template')}>
-                                            <SelectValue placeholder={translate('Select...')} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {Object.entries(templates).map(([key, name]) => (
-                                                <SelectItem key={key} value={key}>
-                                                    {name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.invoiceTemplate && <p className="text-destructive text-sm">{errors.invoiceTemplate}</p>}
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="invoice_qr_enabled" className="text-sm">
-                                        {translate('QR display?')}
-                                    </Label>
-                                    <Switch
-                                        id="invoice_qr_enabled"
-                                        checked={data.invoiceQrEnabled}
-                                        onCheckedChange={(checked) => {
-                                            setData('invoiceQrEnabled', checked);
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label>{translate('Color input')}</Label>
-                                    <div className="grid w-50 grid-cols-6 gap-1">
-                                        {colors.map((color) => (
-                                            <label key={color} className="cursor-pointer">
-                                                <input
-                                                    type="radio"
-                                                    name="invoiceColor"
-                                                    value={color}
-                                                    checked={data.invoiceColor === color}
-                                                    onChange={(e) => {
-                                                        setData('invoiceColor', e.target.value);
-                                                    }}
-                                                    className="sr-only"
-                                                />
-                                                <div
-                                                    className={`h-6 w-6 border-2 ${
-                                                        data.invoiceColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
-                                                    }`}
-                                                    style={{ backgroundColor: `#${color}` }}
-                                                />
-                                            </label>
+            <div className="space-y-6">
+                <form autoComplete="off" onSubmit={handleSubmit} id="invoice-template-settings-form">
+                    <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
+                        <div ref={settingsRef} className="space-y-4">
+                            <div className="space-y-2">
+                                <Select
+                                    value={data.invoiceTemplate}
+                                    onValueChange={(value) => {
+                                        setData('invoiceTemplate', value);
+                                    }}
+                                >
+                                    <SelectTrigger label={translate('Invoice template')}>
+                                        <SelectValue placeholder={translate('Select...')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries(templates).map(([key, name]) => (
+                                            <SelectItem key={key} value={key}>
+                                                {name}
+                                            </SelectItem>
                                         ))}
-                                    </div>
-                                </div>
+                                    </SelectContent>
+                                </Select>
+                                {errors.invoiceTemplate && <p className="text-destructive text-sm">{errors.invoiceTemplate}</p>}
+                            </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="invoiceLogo">{translate('Invoice logo')}</Label>
-                                    <MediaPicker
-                                        label=""
-                                        value={data.invoiceLogoId || ''}
-                                        onChange={handleLogoSelect}
-                                        showPreview={true}
-                                        returnType="id"
-                                    />
-                                    {errors.invoiceLogo && <p className="text-destructive text-sm">{errors.invoiceLogo}</p>}
-                                    <p className="text-xs text-gray-500">{translate('Select a logo for invoices')}</p>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="invoice_qr_enabled" className="text-sm">
+                                    {translate('Display QR code?')}
+                                </Label>
+                                <Switch
+                                    id="invoice_qr_enabled"
+                                    checked={data.invoiceQrEnabled}
+                                    onCheckedChange={(checked) => {
+                                        setData('invoiceQrEnabled', checked);
+                                    }}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>{translate('Color input')}</Label>
+                                <div className="grid w-50 grid-cols-6 gap-1">
+                                    {colors.map((color) => (
+                                        <label key={color} className="cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="invoiceColor"
+                                                value={color}
+                                                checked={data.invoiceColor === color}
+                                                onChange={(e) => {
+                                                    setData('invoiceColor', e.target.value);
+                                                }}
+                                                className="sr-only"
+                                            />
+                                            <div
+                                                className={`h-6 w-6 border-2 ${
+                                                    data.invoiceColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
+                                                }`}
+                                                style={{ backgroundColor: `#${color}` }}
+                                            />
+                                        </label>
+                                    ))}
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>{translate('Preview')}</Label>
-                                <div
-                                    className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
-                                    style={{ height: settingsHeight - 25 || 'auto' }}
-                                >
-                                    {renderPreview()}
-                                </div>
+                                <Label htmlFor="invoiceLogo">{translate('Invoice logo')}</Label>
+                                <MediaPicker
+                                    label=""
+                                    value={data.invoiceLogoId || ''}
+                                    onChange={handleLogoSelect}
+                                    showPreview={true}
+                                    returnType="id"
+                                />
+                                {errors.invoiceLogo && <p className="text-destructive text-sm">{errors.invoiceLogo}</p>}
+                                <p className="text-xs text-gray-500">{translate('Select a logo for invoices')}</p>
                             </div>
                         </div>
-                    </form>
-                </CardContent>
-            </Card>
+
+                        <div className="space-y-2">
+                            <Label>{translate('Preview')}</Label>
+                            <div
+                                className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
+                                style={{ height: settingsHeight - 25 || 'auto' }}
+                            >
+                                {renderPreview()}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </SettingsSection>
     );
 }

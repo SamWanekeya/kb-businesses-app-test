@@ -38,7 +38,7 @@ class InvoiceMidtransPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['midtrans_secret_key'])) {
+            if (!isset($settings['paymentSettings']['midtrans_secret_key'])) {
                 return response()->json(['error' => __('Midtrans not configured')], 400);
             }
 
@@ -80,10 +80,10 @@ class InvoiceMidtransPaymentController extends Controller
                 ],
             ];
 
-            $snapToken = $this->createSnapToken($paymentData, $settings['payment_settings']);
+            $snapToken = $this->createSnapToken($paymentData, $settings['paymentSettings']);
 
             if ($snapToken) {
-                $baseUrl = $settings['payment_settings']['midtrans_mode'] === 'live'
+                $baseUrl = $settings['paymentSettings']['midtrans_mode'] === 'live'
                     ? 'https://app.midtrans.com'
                     : 'https://app.sandbox.midtrans.com';
 
@@ -110,7 +110,7 @@ class InvoiceMidtransPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

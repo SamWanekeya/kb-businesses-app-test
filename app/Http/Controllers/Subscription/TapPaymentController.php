@@ -20,7 +20,7 @@ class TapPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['tap_secret_key'])) {
+            if (!isset($settings['paymentSettings']['tap_secret_key'])) {
                 return response()->json(['error' => __('Tap not configured')], 400);
             }
 
@@ -32,7 +32,7 @@ class TapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
+                'organization_tap_secret_key' => $settings['paymentSettings']['tap_secret_key'],
             ]);
 
             $chargeData = [
@@ -79,7 +79,7 @@ class TapPaymentController extends Controller
                     // Verify payment status with Tap API
                     $settings = getPaymentGatewaySettings();
 
-                    if (!isset($settings['payment_settings']['tap_secret_key'])) {
+                    if (!isset($settings['paymentSettings']['tap_secret_key'])) {
                         return redirect()->route('subscriptions.plans.index')->with('error', __('Tap not configured'));
                     }
 
@@ -88,7 +88,7 @@ class TapPaymentController extends Controller
                     require_once app_path('Libraries/Tap/Reference.php');
                     require_once app_path('Libraries/Tap/Payment.php');
                     $tap = new Payment([
-                        'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
+                        'organization_tap_secret_key' => $settings['paymentSettings']['tap_secret_key'],
                     ]);
 
                     // Get charge details from Tap API

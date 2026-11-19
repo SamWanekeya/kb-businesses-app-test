@@ -23,7 +23,7 @@ class PayHerePaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['payhere_merchant_id'])) {
                 return back()->withErrors(['error' => __('PayHere not configured')]);
             }
 
@@ -56,7 +56,7 @@ class PayHerePaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['payhere_merchant_id'])) {
                 return response()->json(['error' => __('PayHere not configured')], 400);
             }
 
@@ -64,7 +64,7 @@ class PayHerePaymentController extends Controller
             $orderId = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
 
             $paymentData = [
-                'merchant_id' => $settings['payment_settings']['payhere_merchant_id'],
+                'merchant_id' => $settings['paymentSettings']['payhere_merchant_id'],
                 'return_url' => route('payhere.success', [
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
@@ -93,12 +93,12 @@ class PayHerePaymentController extends Controller
                     $paymentData['order_id'] .
                     number_format($paymentData['amount'], 2, '.', '') .
                     $paymentData['currency'] .
-                    strtoupper(md5($settings['payment_settings']['payhere_merchant_secret']))
+                    strtoupper(md5($settings['paymentSettings']['payhere_merchant_secret']))
                 )
             );
             $paymentData['hash'] = $hashString;
 
-            $baseUrl = $settings['payment_settings']['payhere_mode'] === 'live'
+            $baseUrl = $settings['paymentSettings']['payhere_mode'] === 'live'
                 ? 'https://www.payhere.lk'
                 : 'https://sandbox.payhere.lk';
 

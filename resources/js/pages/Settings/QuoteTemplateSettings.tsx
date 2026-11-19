@@ -3,7 +3,6 @@ import IframePortal from '@components/IframePortal';
 import MediaPicker from '@components/MediaPicker';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Switch } from '@components/UserInterface/Switch';
@@ -40,7 +39,7 @@ const templateComponents = {
 const mockData = {
     quote: {
         quote_id: '00001',
-        quote_number: 'QT-2024-000001',
+        quote_number: 'QT-2026-000001',
         issue_date: new Date().toISOString().split('T')[0],
         due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         date_quoted: new Date().toISOString().split('T')[0],
@@ -111,16 +110,16 @@ const mockData = {
 };
 
 const templates = {
-    template1: 'New York',
-    template2: 'Toronto',
-    template3: 'Rio',
-    template4: 'London',
-    template5: 'Istanbul',
-    template6: 'Mumbai',
-    template7: 'Hong Kong',
-    template8: 'Tokyo',
-    template9: 'Sydney',
-    template10: 'Paris',
+    template1: 'Quote template 1',
+    template2: 'Quote template 2',
+    template3: 'Quote template 3',
+    template4: 'Quote template 4',
+    template5: 'Quote template 5',
+    template6: 'Quote template 6',
+    template7: 'Quote template 7',
+    template8: 'Quote template 8',
+    template9: 'Quote template 9',
+    template10: 'Quote template 10',
 };
 
 const colors = [
@@ -284,103 +283,95 @@ export default function QuoteTemplateSettings() {
             title={translate('Quote templates')}
             description={translate('Configure quote template, colors, and display options')}
             action={
-                <Button type="submit" disabled={saving} form="quote-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save changes')}</span>
+                <Button type="submit" disabled={saving} form="quote-template-settings-form" size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="pt-6">
-                    <form autoComplete="off" onSubmit={handleSubmit} id="quote-template-settings-form" className="space-y-6">
-                        <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
-                            <div ref={settingsRef} className="space-y-4">
-                                <div className="space-y-2">
-                                    <Select
-                                        value={data.quoteTemplate}
-                                        onValueChange={(value) => {
-                                            setData('quoteTemplate', value);
-                                        }}
-                                    >
-                                        <SelectTrigger label={translate('Quote template')}>
-                                            <SelectValue placeholder={translate('Select...')} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {Object.entries(templates).map(([key, name]) => (
-                                                <SelectItem key={key} value={key}>
-                                                    {name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.quoteTemplate && <p className="text-destructive text-sm">{errors.quoteTemplate}</p>}
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="quote_qr_enabled" className="text-sm">
-                                        {translate('QR display?')}
-                                    </Label>
-                                    <Switch
-                                        id="quote_qr_enabled"
-                                        checked={data.quoteQrEnabled}
-                                        onCheckedChange={(checked) => {
-                                            setData('quoteQrEnabled', checked);
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label>{translate('Color input')}</Label>
-                                    <div className="grid w-50 grid-cols-6 gap-1">
-                                        {colors.map((color) => (
-                                            <label key={color} className="cursor-pointer">
-                                                <input
-                                                    type="radio"
-                                                    name="quoteColor"
-                                                    value={color}
-                                                    checked={data.quoteColor === color}
-                                                    onChange={(e) => {
-                                                        setData('quoteColor', e.target.value);
-                                                    }}
-                                                    className="sr-only"
-                                                />
-                                                <div
-                                                    className={`h-6 w-6 border-2 ${
-                                                        data.quoteColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
-                                                    }`}
-                                                    style={{ backgroundColor: `#${color}` }}
-                                                />
-                                            </label>
+            <div className="space-y-6">
+                <form autoComplete="off" onSubmit={handleSubmit} id="quote-template-settings-form">
+                    <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
+                        <div ref={settingsRef} className="space-y-4">
+                            <div className="space-y-2">
+                                <Select
+                                    value={data.quoteTemplate}
+                                    onValueChange={(value) => {
+                                        setData('quoteTemplate', value);
+                                    }}
+                                >
+                                    <SelectTrigger label={translate('Quote template')}>
+                                        <SelectValue placeholder={translate('Select...')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries(templates).map(([key, name]) => (
+                                            <SelectItem key={key} value={key}>
+                                                {name}
+                                            </SelectItem>
                                         ))}
-                                    </div>
-                                </div>
+                                    </SelectContent>
+                                </Select>
+                                {errors.quoteTemplate && <p className="text-destructive text-sm">{errors.quoteTemplate}</p>}
+                            </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="quoteLogo">{translate('Quote logo')}</Label>
-                                    <MediaPicker
-                                        label=""
-                                        value={data.quoteLogoId || ''}
-                                        onChange={handleLogoSelect}
-                                        showPreview={true}
-                                        returnType="id"
-                                    />
-                                    {errors.quoteLogo && <p className="text-destructive text-sm">{errors.quoteLogo}</p>}
-                                    <p className="text-xs text-gray-500">{translate('Select a logo for quotes')}</p>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="quote_qr_enabled" className="text-sm">
+                                    {translate('Display QR code?')}
+                                </Label>
+                                <Switch
+                                    id="quote_qr_enabled"
+                                    checked={data.quoteQrEnabled}
+                                    onCheckedChange={(checked) => {
+                                        setData('quoteQrEnabled', checked);
+                                    }}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>{translate('Color input')}</Label>
+                                <div className="grid w-50 grid-cols-6 gap-1">
+                                    {colors.map((color) => (
+                                        <label key={color} className="cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="quoteColor"
+                                                value={color}
+                                                checked={data.quoteColor === color}
+                                                onChange={(e) => {
+                                                    setData('quoteColor', e.target.value);
+                                                }}
+                                                className="sr-only"
+                                            />
+                                            <div
+                                                className={`h-6 w-6 border-2 ${
+                                                    data.quoteColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
+                                                }`}
+                                                style={{ backgroundColor: `#${color}` }}
+                                            />
+                                        </label>
+                                    ))}
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>{translate('Preview')}</Label>
-                                <div
-                                    className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
-                                    style={{ height: settingsHeight - 25 || 'auto' }}
-                                >
-                                    {renderPreview()}
-                                </div>
+                                <Label htmlFor="quoteLogo">{translate('Quote logo')}</Label>
+                                <MediaPicker label="" value={data.quoteLogoId || ''} onChange={handleLogoSelect} showPreview={true} returnType="id" />
+                                {errors.quoteLogo && <p className="text-destructive text-sm">{errors.quoteLogo}</p>}
+                                <p className="text-xs text-gray-500">{translate('Select a logo for quotes')}</p>
                             </div>
                         </div>
-                    </form>
-                </CardContent>
-            </Card>
+
+                        <div className="space-y-2">
+                            <Label>{translate('Preview')}</Label>
+                            <div
+                                className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
+                                style={{ height: settingsHeight - 25 || 'auto' }}
+                            >
+                                {renderPreview()}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </SettingsSection>
     );
 }

@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { Edit, Link2, Plus, Trash2 } from 'lucide-react';
+import { Edit, Link2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -150,12 +150,11 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
     return (
         <SettingsSection
-            title={translate('Webhook settings')}
+            title={translate('Webhook')}
             description={translate('Manage webhooks for external integrations')}
             action={
-                <Button onClick={handleCreate} size="sm" className="max-[1300px]:px-2.5">
-                    <Plus className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{translate('Add webhook')}</span>
+                <Button onClick={handleCreate} size="lg">
+                    {translate('Add webhook')}
                 </Button>
             }
         >

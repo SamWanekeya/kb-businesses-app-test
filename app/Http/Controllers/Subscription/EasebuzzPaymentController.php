@@ -22,7 +22,7 @@ class EasebuzzPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['easebuzz_merchant_key'])) {
+            if (!isset($settings['paymentSettings']['easebuzz_merchant_key'])) {
                 return back()->withErrors(['error' => __('Easebuzz not configured')]);
             }
 
@@ -55,7 +55,7 @@ class EasebuzzPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
+            if (!isset($settings['paymentSettings']['easebuzz_merchant_key']) || !isset($settings['paymentSettings']['easebuzz_salt_key'])) {
                 return response()->json(['error' => __('Easebuzz not configured')], 400);
             }
 
@@ -64,12 +64,12 @@ class EasebuzzPaymentController extends Controller
 
             $user = auth()?->user();
             $txnid = 'plan_' . $plan->id . '_' . $user->id . '_' . time();
-            $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
+            $environment = $settings['paymentSettings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             // Initialize Easebuzz
             $easebuzz = new Easebuzz(
-                $settings['payment_settings']['easebuzz_merchant_key'],
-                $settings['payment_settings']['easebuzz_salt_key'],
+                $settings['paymentSettings']['easebuzz_merchant_key'],
+                $settings['paymentSettings']['easebuzz_salt_key'],
                 $environment
             );
 
@@ -94,7 +94,7 @@ class EasebuzzPaymentController extends Controller
             if ($resultArray && isset($resultArray['status']) && $resultArray['status'] == 1) {
                 $accessKey = $resultArray['access_key'] ?? null;
                 if ($accessKey) {
-                    $baseUrl = $settings['payment_settings']['easebuzz_environment'] === 'prod'
+                    $baseUrl = $settings['paymentSettings']['easebuzz_environment'] === 'prod'
                         ? 'https://pay.easebuzz.in'
                         : 'https://testpay.easebuzz.in';
 
@@ -120,11 +120,11 @@ class EasebuzzPaymentController extends Controller
             require_once app_path('Libraries/Easebuzz/easebuzz_payment_gateway.php');
 
             $settings = getPaymentGatewaySettings();
-            $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
+            $environment = $settings['paymentSettings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             $easebuzz = new Easebuzz(
-                $settings['payment_settings']['easebuzz_merchant_key'],
-                $settings['payment_settings']['easebuzz_salt_key'],
+                $settings['paymentSettings']['easebuzz_merchant_key'],
+                $settings['paymentSettings']['easebuzz_salt_key'],
                 $environment
             );
 

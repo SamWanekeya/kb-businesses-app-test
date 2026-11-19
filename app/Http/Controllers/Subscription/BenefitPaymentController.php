@@ -24,7 +24,7 @@ class BenefitPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['benefit_secret_key']) || !isset($settings['payment_settings']['benefit_public_key'])) {
+            if (!isset($settings['paymentSettings']['benefit_secret_key']) || !isset($settings['paymentSettings']['benefit_public_key'])) {
                 return back()->withErrors(['error' => __('Benefit payment not configured')]);
             }
 
@@ -32,7 +32,7 @@ class BenefitPaymentController extends Controller
             $isPaymentValid = $this->verifyBenefitPayment(
                 $validated['payment_id'],
                 $validated['transaction_id'],
-                $settings['payment_settings']
+                $settings['paymentSettings']
             );
 
             if ($isPaymentValid) {
@@ -71,7 +71,7 @@ class BenefitPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['benefit_secret_key'])) {
+            if (!isset($settings['paymentSettings']['benefit_secret_key'])) {
                 return response()->json(['error' => __('Benefit payment not configured')], 400);
             }
 
@@ -108,7 +108,7 @@ class BenefitPaymentController extends Controller
 
             $responseData = json_encode($userData);
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
+                'Authorization' => 'Bearer ' . $settings['paymentSettings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
             ])->post('https://api.tap.organization/v2/charges', $userData);
@@ -145,7 +145,7 @@ class BenefitPaymentController extends Controller
             }
 
             // Verify payment status with Benefit API
-            $paymentResult = $this->retrieveBenefitPayment($paymentId, $settings['payment_settings']);
+            $paymentResult = $this->retrieveBenefitPayment($paymentId, $settings['paymentSettings']);
 
             if ($paymentResult && $paymentResult['status'] === 'completed') {
                 // Extract transaction ID to find the plan and user
@@ -237,7 +237,7 @@ class BenefitPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             // Verify webhook signature
-            if (!$this->verifyBenefitWebhook($payload, $request->header('X-Benefit-Signature'), $settings['payment_settings'])) {
+            if (!$this->verifyBenefitWebhook($payload, $request->header('X-Benefit-Signature'), $settings['paymentSettings'])) {
                 return response()->json(['error' => 'Invalid signature'], 400);
             }
 

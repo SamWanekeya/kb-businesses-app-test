@@ -20,7 +20,7 @@ class FlutterwavePaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['flutterwave_secret_key'])) {
+            if (!isset($settings['paymentSettings']['flutterwave_secret_key'])) {
                 return back()->withErrors(['error' => __('Flutterwave not configured')]);
             }
 
@@ -30,7 +30,7 @@ class FlutterwavePaymentController extends Controller
                 CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/" . $validated['payment_id'] . "/verify",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
-                    "Authorization: Bearer " . $settings['payment_settings']['flutterwave_secret_key'],
+                    "Authorization: Bearer " . $settings['paymentSettings']['flutterwave_secret_key'],
                     "Content-Type: application/json",
                 ],
             ]);

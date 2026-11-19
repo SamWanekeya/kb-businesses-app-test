@@ -34,7 +34,7 @@ class InvoiceKhaltiPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['khalti_public_key'])) {
+            if (!isset($settings['paymentSettings']['khalti_public_key'])) {
                 Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Khalti not configured')], 400);
@@ -42,7 +42,7 @@ class InvoiceKhaltiPaymentController extends Controller
 
             return response()->json([
                 'success' => true,
-                'public_key' => $settings['payment_settings']['khalti_public_key'],
+                'public_key' => $settings['paymentSettings']['khalti_public_key'],
                 'amount' => (int)($validated['amount'] * 100), // Khalti uses paisa as integer
                 'product_identity' => 'invoice_' . $invoice->id,
                 'product_name' => 'Invoice Payment - ' . $invoice->invoice_number,
@@ -74,7 +74,7 @@ class InvoiceKhaltiPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -103,14 +103,14 @@ class InvoiceKhaltiPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['khalti_secret_key'])) {
+            if (!isset($settings['paymentSettings']['khalti_secret_key'])) {
                 Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Khalti not configured')]);
             }
 
             // Verify payment with Khalti API
-            $isValid = $this->verifyKhaltiPayment($validated['token'], $validated['amount'], $settings['payment_settings']);
+            $isValid = $this->verifyKhaltiPayment($validated['token'], $validated['amount'], $settings['paymentSettings']);
 
             if ($isValid) {
                 InvoicePayment::storePayment([

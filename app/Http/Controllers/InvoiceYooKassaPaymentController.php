@@ -35,14 +35,14 @@ class InvoiceYooKassaPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['yookassa_shop_id']) || !isset($settings['payment_settings']['yookassa_secret_key'])) {
+            if (!isset($settings['paymentSettings']['yookassa_shop_id']) || !isset($settings['paymentSettings']['yookassa_secret_key'])) {
                 Log::error('YooKassa payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('YooKassa not configured')], 400);
             }
 
             $client = new Client();
-            $client->setAuth((int)$settings['payment_settings']['yookassa_shop_id'], $settings['payment_settings']['yookassa_secret_key']);
+            $client->setAuth((int)$settings['paymentSettings']['yookassa_shop_id'], $settings['paymentSettings']['yookassa_secret_key']);
 
             $orderID = strtoupper(str_replace('.', '', uniqid('INV-', true)));
 
@@ -107,7 +107,7 @@ class InvoiceYooKassaPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

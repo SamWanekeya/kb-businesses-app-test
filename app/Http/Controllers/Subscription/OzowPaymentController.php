@@ -21,7 +21,7 @@ class OzowPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['ozow_site_key'])) {
+            if (!isset($settings['paymentSettings']['ozow_site_key'])) {
                 return back()->withErrors(['error' => __('Ozow not configured')]);
             }
 
@@ -54,14 +54,14 @@ class OzowPaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['ozow_site_key']) || !isset($settings['payment_settings']['ozow_private_key']) || !isset($settings['payment_settings']['ozow_api_key'])) {
+            if (!isset($settings['paymentSettings']['ozow_site_key']) || !isset($settings['paymentSettings']['ozow_private_key']) || !isset($settings['paymentSettings']['ozow_api_key'])) {
                 return response()->json(['error' => __('Ozow not configured')], 400);
             }
 
-            $siteCode = $settings['payment_settings']['ozow_site_key'];
-            $privateKey = $settings['payment_settings']['ozow_private_key'];
-            $apiKey = $settings['payment_settings']['ozow_api_key'];
-            $isTest = $settings['payment_settings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
+            $siteCode = $settings['paymentSettings']['ozow_site_key'];
+            $privateKey = $settings['paymentSettings']['ozow_private_key'];
+            $apiKey = $settings['paymentSettings']['ozow_api_key'];
+            $isTest = $settings['paymentSettings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
             $amount = $pricing['final_price'];
             $cancelUrl = route('subscriptions.plans.index');
             $successUrl = route('ozow.success');

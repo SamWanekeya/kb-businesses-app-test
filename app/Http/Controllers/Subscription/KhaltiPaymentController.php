@@ -20,12 +20,12 @@ class KhaltiPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
 
-            if (!isset($settings['payment_settings']['khalti_secret_key'])) {
+            if (!isset($settings['paymentSettings']['khalti_secret_key'])) {
                 return back()->withErrors(['error' => __('Khalti not configured')]);
             }
 
             // Verify payment with Khalti API
-            $isValid = $this->verifyKhaltiPayment($validated['token'], $validated['amount'], $settings['payment_settings']);
+            $isValid = $this->verifyKhaltiPayment($validated['token'], $validated['amount'], $settings['paymentSettings']);
 
             if ($isValid) {
                 processPaymentSuccess([
@@ -89,13 +89,13 @@ class KhaltiPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
-            if (!isset($settings['payment_settings']['khalti_public_key'])) {
+            if (!isset($settings['paymentSettings']['khalti_public_key'])) {
                 return response()->json(['error' => __('Khalti not configured')], 400);
             }
 
             return response()->json([
                 'success' => true,
-                'public_key' => $settings['payment_settings']['khalti_public_key'],
+                'public_key' => $settings['paymentSettings']['khalti_public_key'],
                 'amount' => (int)($pricing['final_price'] * 100), // Khalti uses paisa as integer
                 'product_identity' => 'plan_' . $plan->id,
                 'product_name' => $plan->name,

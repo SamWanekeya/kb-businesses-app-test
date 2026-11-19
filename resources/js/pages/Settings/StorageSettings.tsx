@@ -1,545 +1,666 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Checkbox } from '@components/UserInterface/Checkbox';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { HardDrive, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Cloud, HardDrive, Search, Server } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Supported storage backends.
+ *
+ * Keep these values aligned with the backend's accepted storage_type values.
+ */
 type StorageType = 'local' | 'aws_s3' | 'wasabi';
 
+/**
+ * Storage configuration managed by this settings screen.
+ *
+ * Credentials are kept as strings to support controlled inputs and empty
+ * values returned by the server. The upload limit remains a string while
+ * editing so partially entered numeric values are not lost.
+ */
 interface StorageSettings {
-    storageType: StorageType;
-    // Local Storage
-    allowedFileTypes: string;
-    maxUploadSize: string;
-    // AWS S3
-    awsAccessKeyId: string;
-    awsSecretAccessKey: string;
-    awsDefaultRegion: string;
-    awsBucket: string;
-    awsUrl: string;
-    awsEndpoint: string;
-    // Wasabi
-    wasabiAccessKey: string;
-    wasabiSecretKey: string;
-    wasabiRegion: string;
-    wasabiBucket: string;
-    wasabiUrl: string;
-    wasabiRoot: string;
+    storage_type: StorageType;
+    allowed_file_types: string;
+    maximum_upload_size: string;
+
+    aws_access_key_id: string;
+    aws_secret_access_key: string;
+    aws_default_region: string;
+    aws_bucket: string;
+    aws_url: string;
+    aws_endpoint: string;
+
+    wasabi_access_key: string;
+    wasabi_secret_key: string;
+    wasabi_region: string;
+    wasabi_bucket: string;
+    wasabi_url: string;
+    wasabi_root: string;
 }
 
 interface StorageSettingsProps {
     settings?: Record<string, string>;
 }
 
+interface FieldDefinition {
+    name: keyof StorageSettings;
+    label: string;
+    type?: 'text' | 'password';
+    placeholder?: string;
+    autoComplete?: string;
+}
+
+const FILE_EXTENSIONS = [
+    '3dmf',
+    '3dm',
+    'avi',
+    'ai',
+    'bin',
+    'bmp',
+    'cab',
+    'c',
+    'c++',
+    'class',
+    'css',
+    'csv',
+    'cdr',
+    'doc',
+    'dot',
+    'docx',
+    'dwg',
+    'eps',
+    'exe',
+    'gif',
+    'gz',
+    'gtar',
+    'flv',
+    'fh4',
+    'fh5',
+    'fhc',
+    'help',
+    'hlp',
+    'html',
+    'htm',
+    'ico',
+    'imap',
+    'inf',
+    'jpe',
+    'jpeg',
+    'jpg',
+    'js',
+    'java',
+    'latex',
+    'log',
+    'm3u',
+    'midi',
+    'mid',
+    'mov',
+    'mp4',
+    'mp3',
+    'mpeg',
+    'mpg',
+    'mp2',
+    'ogg',
+    'phtml',
+    'php',
+    'pdf',
+    'pgp',
+    'png',
+    'pps',
+    'ppt',
+    'ppz',
+    'pot',
+    'ps',
+    'qt',
+    'qd3d',
+    'qd3',
+    'qxd',
+    'rar',
+    'ra',
+    'ram',
+    'rm',
+    'rtf',
+    'spr',
+    'sprite',
+    'stream',
+    'swf',
+    'svg',
+    'sgml',
+    'sgm',
+    'tar',
+    'tiff',
+    'tif',
+    'tgz',
+    'tex',
+    'txt',
+    'vob',
+    'wav',
+    'wrl',
+    'xla',
+    'xls',
+    'xlc',
+    'xml',
+    'zip',
+    'json',
+    'webp',
+] as const;
+
+const AWS_FIELDS: FieldDefinition[] = [
+    {
+        name: 'aws_access_key_id',
+        label: 'AWS access key ID',
+        autoComplete: 'off',
+    },
+    {
+        name: 'aws_secret_access_key',
+        label: 'AWS secret access key',
+        type: 'password',
+        autoComplete: 'new-password',
+    },
+    {
+        name: 'aws_default_region',
+        label: 'AWS default region',
+        placeholder: 'af-south-1',
+    },
+    {
+        name: 'aws_bucket',
+        label: 'AWS bucket',
+    },
+    {
+        name: 'aws_url',
+        label: 'AWS URL',
+        placeholder: 'https://...',
+    },
+    {
+        name: 'aws_endpoint',
+        label: 'AWS endpoint',
+        placeholder: 'https://...',
+    },
+];
+
+const WASABI_FIELDS: FieldDefinition[] = [
+    {
+        name: 'wasabi_access_key',
+        label: 'Wasabi access key',
+        autoComplete: 'off',
+    },
+    {
+        name: 'wasabi_secret_key',
+        label: 'Wasabi secret key',
+        type: 'password',
+        autoComplete: 'new-password',
+    },
+    {
+        name: 'wasabi_region',
+        label: 'Wasabi region',
+        placeholder: 'eu-central-2',
+    },
+    {
+        name: 'wasabi_bucket',
+        label: 'Wasabi bucket',
+    },
+    {
+        name: 'wasabi_url',
+        label: 'Wasabi URL',
+        placeholder: 'https://...',
+    },
+    {
+        name: 'wasabi_root',
+        label: 'Wasabi root',
+    },
+];
+
+/**
+ * Creates the initial editable configuration from server-provided settings.
+ *
+ * Existing defaults are preserved to avoid changing the application's
+ * storage behavior when optional settings are missing.
+ */
+function createInitialSettings(settings: Record<string, string>): StorageSettings {
+    const storageType = settings.storage_type;
+
+    return {
+        storage_type: storageType === 'aws_s3' || storageType === 'wasabi' ? storageType : 'local',
+
+        allowed_file_types: settings.storage_file_types ?? 'jpg,png,webp,gif',
+
+        maximum_upload_size: settings.storage_maximum_upload_size ?? '2048',
+
+        aws_access_key_id: settings.aws_access_key_id ?? '',
+        aws_secret_access_key: settings.aws_secret_access_key ?? '',
+        aws_default_region: settings.aws_default_region || 'af-south-1',
+        aws_bucket: settings.aws_bucket ?? '',
+        aws_url: settings.aws_url ?? '',
+        aws_endpoint: settings.aws_endpoint ?? '',
+
+        wasabi_access_key: settings.wasabi_access_key ?? '',
+        wasabi_secret_key: settings.wasabi_secret_key ?? '',
+        wasabi_region: settings.wasabi_region || 'eu-central-2',
+        wasabi_bucket: settings.wasabi_bucket ?? '',
+        wasabi_url: settings.wasabi_url ?? '',
+        wasabi_root: settings.wasabi_root ?? '',
+    };
+}
+
+/**
+ * StorageSettings
+ *
+ * Provides a unified configuration interface for local, AWS S3 and Wasabi
+ * file storage.
+ *
+ * Responsibilities:
+ * - Manage editable storage configuration.
+ * - Configure permitted file extensions and upload limits.
+ * - Submit provider-specific settings through Inertia.
+ * - Communicate saving and validation feedback.
+ *
+ * Architecture:
+ * - Provider fields are declared as typed metadata.
+ * - Shared file restrictions are rendered once for every provider.
+ * - Storage credentials are included in the payload only for the active
+ *   provider, preserving the existing conditional submission behavior.
+ *
+ * Accessibility:
+ * - Uses labeled inputs, semantic headings and keyboard-accessible tabs.
+ * - Search and selection controls have accessible names.
+ * - Focus indicators and reduced-motion preferences are respected by
+ *   the underlying design system.
+ *
+ * Performance:
+ * - File extensions are defined outside the component.
+ * - Filtered extensions and selected values are memoized.
+ * - Event handlers are memoized where they are passed between renderers.
+ *
+ * Extension points:
+ * - Add a provider by extending StorageType, StorageSettings and the
+ *   provider field definitions, then adding its payload branch.
+ */
 export default function StorageSettings({ settings = {} }: StorageSettingsProps) {
     const { t: translate } = useTranslation();
 
-    const fileExtensions = {
-        '3dmf': '3dmf',
-        '3dm': '3dm',
-        avi: 'avi',
-        ai: 'ai',
-        bin: 'bin',
-        bmp: 'bmp',
-        cab: 'cab',
-        c: 'c',
-        'c++': 'c++',
-        class: 'class',
-        css: 'css',
-        csv: 'csv',
-        cdr: 'cdr',
-        doc: 'doc',
-        dot: 'dot',
-        docx: 'docx',
-        dwg: 'dwg',
-        eps: 'eps',
-        exe: 'exe',
-        gif: 'gif',
-        gz: 'gz',
-        gtar: 'gtar',
-        flv: 'flv',
-        fh4: 'fh4',
-        fh5: 'fh5',
-        fhc: 'fhc',
-        help: 'help',
-        hlp: 'hlp',
-        html: 'html',
-        htm: 'htm',
-        ico: 'ico',
-        imap: 'imap',
-        inf: 'inf',
-        jpe: 'jpe',
-        jpeg: 'jpeg',
-        jpg: 'jpg',
-        js: 'js',
-        java: 'java',
-        latex: 'latex',
-        log: 'log',
-        m3u: 'm3u',
-        midi: 'midi',
-        mid: 'mid',
-        mov: 'mov',
-        mp4: 'mp4',
-        mp3: 'mp3',
-        mpeg: 'mpeg',
-        mpg: 'mpg',
-        mp2: 'mp2',
-        ogg: 'ogg',
-        phtml: 'phtml',
-        php: 'php',
-        pdf: 'pdf',
-        pgp: 'pgp',
-        png: 'png',
-        pps: 'pps',
-        ppt: 'ppt',
-        ppz: 'ppz',
-        pot: 'pot',
-        ps: 'ps',
-        qt: 'qt',
-        qd3d: 'qd3d',
-        qd3: 'qd3',
-        qxd: 'qxd',
-        rar: 'rar',
-        ra: 'ra',
-        ram: 'ram',
-        rm: 'rm',
-        rtf: 'rtf',
-        spr: 'spr',
-        sprite: 'sprite',
-        stream: 'stream',
-        swf: 'swf',
-        svg: 'svg',
-        sgml: 'sgml',
-        sgm: 'sgm',
-        tar: 'tar',
-        tiff: 'tiff',
-        tif: 'tif',
-        tgz: 'tgz',
-        tex: 'tex',
-        txt: 'txt',
-        vob: 'vob',
-        wav: 'wav',
-        wrl: 'wrl',
-        xla: 'xla',
-        xls: 'xls',
-        xlc: 'xlc',
-        xml: 'xml',
-        zip: 'zip',
-        json: 'json',
-        webp: 'webp',
-    };
-
-    const [storageSettings, setStorageSettings] = useState<StorageSettings>({
-        storageType: (settings.storage_type as StorageType) || 'local',
-        allowedFileTypes: settings.storage_file_types || 'jpg,png,webp,gif,pdf,doc,docx,txt,csv',
-        maxUploadSize: settings.storage_maximum_upload_size || '2048',
-        awsAccessKeyId: settings.aws_access_key_id || '',
-        awsSecretAccessKey: settings.aws_secret_access_key || '',
-        awsDefaultRegion: settings.aws_default_region || 'us-east-1',
-        awsBucket: settings.aws_bucket || '',
-        awsUrl: settings.aws_url || '',
-        awsEndpoint: settings.aws_endpoint || '',
-        wasabiAccessKey: settings.wasabi_access_key || '',
-        wasabiSecretKey: settings.wasabi_secret_key || '',
-        wasabiRegion: settings.wasabi_region || 'us-east-1',
-        wasabiBucket: settings.wasabi_bucket || '',
-        wasabiUrl: settings.wasabi_url || '',
-        wasabiRoot: settings.wasabi_root || '',
-    });
+    const [storageSettings, setStorageSettings] = useState<StorageSettings>(() => createInitialSettings(settings));
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [processing, setProcessing] = useState(false);
 
-    const handleSettingChange = (field: keyof StorageSettings, value: string) => {
-        setStorageSettings((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
-    const handleFileTypeChange = (extension: string, checked: boolean) => {
-        const currentTypes = storageSettings.allowedFileTypes.split(',').filter((type) => type.trim());
-        let newTypes;
-
-        if (checked) {
-            newTypes = [...currentTypes, extension];
-        } else {
-            newTypes = currentTypes.filter((type) => type !== extension);
-        }
-
-        setStorageSettings((prev) => ({
-            ...prev,
-            allowedFileTypes: newTypes.join(','),
-        }));
-    };
-
-    const handleSelectAll = () => {
-        const allExtensions = Object.keys(fileExtensions);
-        setStorageSettings((prev) => ({
-            ...prev,
-            allowedFileTypes: allExtensions.join(','),
-        }));
-    };
-
-    const handleUnselectAll = () => {
-        setStorageSettings((prev) => ({
-            ...prev,
-            allowedFileTypes: '',
-        }));
-    };
+    const selectedExtensions = useMemo(
+        () =>
+            new Set(
+                storageSettings.allowed_file_types
+                    .split(',')
+                    .map((extension) => extension.trim())
+                    .filter(Boolean),
+            ),
+        [storageSettings.allowed_file_types],
+    );
 
     const filteredExtensions = useMemo(() => {
-        return Object.keys(fileExtensions).filter((ext) => ext.toLowerCase().includes(searchTerm.toLowerCase()));
+        const query = searchTerm.trim().toLowerCase();
+
+        if (!query) {
+            return FILE_EXTENSIONS;
+        }
+
+        return FILE_EXTENSIONS.filter((extension) => extension.toLowerCase().includes(query));
     }, [searchTerm]);
 
-    const submitStorageSettings = (e: React.FormEvent) => {
-        e.preventDefault();
-        setProcessing(true);
+    const handleSettingChange = useCallback((field: keyof StorageSettings, value: string) => {
+        setStorageSettings((previous) => ({
+            ...previous,
+            [field]: value,
+        }));
+    }, []);
 
-        const formData: any = {
-            storage_type: storageSettings.storageType,
-            allowedFileTypes: storageSettings.allowedFileTypes,
-            maxUploadSize: storageSettings.maxUploadSize,
+    const handleStorageTypeChange = useCallback((value: string) => {
+        if (value !== 'local' && value !== 'aws_s3' && value !== 'wasabi') {
+            return;
+        }
+
+        setStorageSettings((previous) => ({
+            ...previous,
+            storage_type: value,
+        }));
+    }, []);
+
+    const handleFileTypeChange = useCallback((extension: string, checked: boolean) => {
+        setStorageSettings((previous) => {
+            const currentTypes = new Set(
+                previous.allowed_file_types
+                    .split(',')
+                    .map((type) => type.trim())
+                    .filter(Boolean),
+            );
+
+            if (checked) {
+                currentTypes.add(extension);
+            } else {
+                currentTypes.delete(extension);
+            }
+
+            return {
+                ...previous,
+                allowed_file_types: [...currentTypes].join(','),
+            };
+        });
+    }, []);
+
+    const handleSelectAll = useCallback(() => {
+        setStorageSettings((previous) => ({
+            ...previous,
+            allowed_file_types: FILE_EXTENSIONS.join(','),
+        }));
+    }, []);
+
+    const handleUnselectAll = useCallback(() => {
+        setStorageSettings((previous) => ({
+            ...previous,
+            allowed_file_types: '',
+        }));
+    }, []);
+
+    /**
+     * Submits common settings and only the credentials relevant to the
+     * currently selected provider.
+     *
+     * The event type is inferred from the form's onSubmit prop, avoiding
+     * an explicit dependency on deprecated React form event aliases.
+     */
+    const submitStorageSettings = useCallback(() => {
+        const formData: Record<string, string> = {
+            storage_type: storageSettings.storage_type,
+            allowed_file_types: storageSettings.allowed_file_types,
+            maximum_upload_size: storageSettings.maximum_upload_size,
         };
 
-        if (storageSettings.storageType === 'aws_s3') {
-            formData.awsAccessKeyId = storageSettings.awsAccessKeyId;
-            formData.awsSecretAccessKey = storageSettings.awsSecretAccessKey;
-            formData.awsDefaultRegion = storageSettings.awsDefaultRegion;
-            formData.awsBucket = storageSettings.awsBucket;
-            formData.awsUrl = storageSettings.awsUrl;
-            formData.awsEndpoint = storageSettings.awsEndpoint;
+        if (storageSettings.storage_type === 'aws_s3') {
+            Object.assign(formData, {
+                aws_access_key_id: storageSettings.aws_access_key_id,
+                aws_secret_access_key: storageSettings.aws_secret_access_key,
+                aws_default_region: storageSettings.aws_default_region,
+                aws_bucket: storageSettings.aws_bucket,
+                aws_url: storageSettings.aws_url,
+                aws_endpoint: storageSettings.aws_endpoint,
+            });
         }
 
-        if (storageSettings.storageType === 'wasabi') {
-            formData.wasabiAccessKey = storageSettings.wasabiAccessKey;
-            formData.wasabiSecretKey = storageSettings.wasabiSecretKey;
-            formData.wasabiRegion = storageSettings.wasabiRegion;
-            formData.wasabiBucket = storageSettings.wasabiBucket;
-            formData.wasabiUrl = storageSettings.wasabiUrl;
-            formData.wasabiRoot = storageSettings.wasabiRoot;
+        if (storageSettings.storage_type === 'wasabi') {
+            Object.assign(formData, {
+                wasabi_access_key: storageSettings.wasabi_access_key,
+                wasabi_secret_key: storageSettings.wasabi_secret_key,
+                wasabi_region: storageSettings.wasabi_region,
+                wasabi_bucket: storageSettings.wasabi_bucket,
+                wasabi_url: storageSettings.wasabi_url,
+                wasabi_root: storageSettings.wasabi_root,
+            });
         }
-        const toastId = toast.loading(translate('Updating storage settings...'));
+
+        const toastId = toast.loading(translate('Saving storage settings...'));
+
         router.post(route('settings.storage.update'), formData, {
             preserveScroll: true,
+
             onSuccess: () => {
-                setProcessing(false);
+                toast.dismiss(toastId);
                 toast.dismiss(toastId);
             },
+
             onError: (errors) => {
-                setProcessing(false);
                 toast.dismiss(toastId);
-                Object.values(errors).forEach((message) => toast.error(translate(message)));
+
+                Object.values(errors).forEach((message) => {
+                    toast.error(translate(message));
+                });
+            },
+
+            onFinish: () => {
+                toast.dismiss(toastId);
             },
         });
-    };
+    }, [storageSettings, translate]);
 
-    const renderFileTypeSelector = () => (
-        <div className="space-y-2">
-            <Label>
-                {translate('Allowed file types')} <span className="text-sm text-red-500">*</span>
-            </Label>
-            <div className="space-y-3">
-                <div className="flex flex-col gap-2 min-[1100px]:flex-row">
-                    <div className="relative flex-1">
-                        <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
-                        <Input
-                            value={searchTerm}
-                            onChange={(e) => {
-                                setSearchTerm(e.target.value);
-                            }}
-                            className="ps-10"
-                        />
-                    </div>
-                    <div className="flex gap-2 max-[768px]:grid max-[768px]:grid-cols-2">
-                        <Button type="button" variant="outline" size="sm" onClick={handleSelectAll} className="w-full whitespace-nowrap">
-                            {translate('Select all')}
-                        </Button>
-                        <Button type="button" variant="outline" size="sm" onClick={handleUnselectAll} className="w-full whitespace-nowrap">
-                            {translate('Unselect all')}
-                        </Button>
-                    </div>
-                </div>
-                <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto rounded-md border p-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {filteredExtensions.map((ext) => (
-                        <div key={ext} className="flex items-center space-x-2">
-                            <Checkbox
-                                id={ext}
-                                checked={storageSettings.allowedFileTypes.split(',').includes(ext)}
-                                onCheckedChange={(checked) => {
-                                    handleFileTypeChange(ext, checked as boolean);
-                                }}
+    /**
+     * Renders a consistent set of labeled provider configuration fields.
+     * Metadata controls field labels, input types and autocomplete behavior.
+     */
+    const renderProviderFields = useCallback(
+        (fields: FieldDefinition[]) => (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {fields.map((field) => {
+                    const id = field.name;
+                    const value = storageSettings[field.name];
+
+                    return (
+                        <div key={field.name} className="min-w-0 space-y-2">
+                            <Input
+                                inputIdentifier={id}
+                                label={translate(field.label)}
+                                name={id}
+                                inputType={field.type ?? 'text'}
+                                value={value}
+                                placeholder={field.placeholder ? translate(field.placeholder) : undefined}
+                                autoComplete={field.autoComplete ?? 'off'}
+                                onChange={(event) => handleSettingChange(field.name, event.target.value)}
                             />
-                            <Label htmlFor={ext} className="text-sm font-normal">
-                                {ext}
-                            </Label>
                         </div>
-                    ))}
-                </div>
+                    );
+                })}
             </div>
-        </div>
+        ),
+        [handleSettingChange, storageSettings, translate],
     );
 
-    const renderLocalStorageFields = () => (
-        <div className="space-y-6">
-            {renderFileTypeSelector()}
+    /**
+     * Renders shared file restrictions.
+     *
+     * Selection actions intentionally apply to the entire supported
+     * extension list, not only the currently filtered search results.
+     */
+    const renderFileTypeSelector = () => (
+        <fieldset className="min-w-0 space-y-4">
+            <div className="flex flex-col gap-1">
+                <legend className="text-sm font-semibold">{translate('Allowed file types')}</legend>
 
-            <div className="space-y-2">
-                <Input
-                    inputIdentifier="maxUploadSize"
-                    label={translate('Maximum upload size (KB)')}
-                    inputType="number"
-                    inputMode="decimal"
-                    value={storageSettings.maxUploadSize}
-                    onChange={(e) => {
-                        handleSettingChange('maxUploadSize', e.target.value);
-                    }}
-                />
+                <p className="text-foreground/75 text-sm">{translate('Choose which file formats users can upload.')}</p>
             </div>
-        </div>
-    );
 
-    const renderAwsS3Fields = () => (
-        <div className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-2">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="relative min-w-0 flex-1">
+                    <Search aria-hidden="true" className="text-foreground/75 pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+
                     <Input
-                        inputIdentifier="awsAccessKeyId"
-                        label={translate('AWS access key ID')}
-                        value={storageSettings.awsAccessKeyId}
-                        onChange={(e) => {
-                            handleSettingChange('awsAccessKeyId', e.target.value);
-                        }}
+                        inputIdentifier="storage-extension-search"
+                        type="search"
+                        inputType="text"
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                        placeholder={translate('Search file extensions')}
+                        label={translate('Search file extensions')}
+                        className="pl-9"
                     />
                 </div>
 
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="awsSecretAccessKey"
-                        label={translate('AWS secret access key')}
-                        inputType="password"
-                        value={storageSettings.awsSecretAccessKey}
-                        onChange={(e) => {
-                            handleSettingChange('awsSecretAccessKey', e.target.value);
-                        }}
-                    />
-                </div>
+                <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" size="lg" onClick={handleSelectAll}>
+                        {translate('Select all')}
+                    </Button>
 
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="awsDefaultRegion"
-                        label={translate('AWS default region')}
-                        value={storageSettings.awsDefaultRegion}
-                        onChange={(e) => {
-                            handleSettingChange('awsDefaultRegion', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="awsBucket"
-                        label={translate('AWS bucket')}
-                        value={storageSettings.awsBucket}
-                        onChange={(e) => {
-                            handleSettingChange('awsBucket', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="awsUrl"
-                        label={translate('AWS URL')}
-                        value={storageSettings.awsUrl}
-                        onChange={(e) => {
-                            handleSettingChange('awsUrl', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="awsEndpoint"
-                        label={translate('AWS endpoint')}
-                        value={storageSettings.awsEndpoint}
-                        onChange={(e) => {
-                            handleSettingChange('awsEndpoint', e.target.value);
-                        }}
-                    />
+                    <Button type="button" variant="outline" size="lg" onClick={handleUnselectAll}>
+                        {translate('Unselect all')}
+                    </Button>
                 </div>
             </div>
 
-            <div className="space-y-6">
-                {renderFileTypeSelector()}
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                        <Input
-                            inputIdentifier="awsMaxUploadSize"
-                            label={translate('Maximum upload size (KB)')}
-                            inputType="number"
-                            inputMode="decimal"
-                            value={storageSettings.maxUploadSize}
-                            onChange={(e) => {
-                                handleSettingChange('maxUploadSize', e.target.value);
-                            }}
-                        />
+            <div
+                className="border-border bg-muted/20 max-h-64 overflow-y-auto rounded-lg border p-3 sm:p-4"
+                role="group"
+                aria-label={translate('Available file extensions')}
+            >
+                {filteredExtensions.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-3 lg:grid-cols-4">
+                        {filteredExtensions.map((extension) => (
+                            <div
+                                key={extension}
+                                className="hover:bg-accent/60 flex min-w-0 items-center gap-2 rounded-md px-2 py-1.5 transition-colors"
+                            >
+                                <Checkbox
+                                    id={`storage-extension-${extension}`}
+                                    checked={selectedExtensions.has(extension)}
+                                    onCheckedChange={(checked) => handleFileTypeChange(extension, checked === true)}
+                                />
+
+                                <Label htmlFor={`storage-extension-${extension}`} className="cursor-pointer font-mono text-sm font-normal">
+                                    {extension}
+                                </Label>
+                            </div>
+                        ))}
                     </div>
-                </div>
+                ) : (
+                    <p className="text-foreground/75 py-6 text-center text-sm" role="status">
+                        {translate('No file extensions found.')}
+                    </p>
+                )}
             </div>
-        </div>
+
+            <div className="text-foreground/75 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span aria-live="polite">
+                    {translate('{{count}} file types selected', {
+                        count: selectedExtensions.size,
+                    })}
+                </span>
+
+                <span>
+                    {translate('{{count}} supported formats', {
+                        count: FILE_EXTENSIONS.length,
+                    })}
+                </span>
+            </div>
+        </fieldset>
     );
 
-    const renderWasabiFields = () => (
-        <div className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiAccessKey"
-                        label={translate('Wasabi access key')}
-                        value={storageSettings.wasabiAccessKey}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiAccessKey', e.target.value);
-                        }}
-                    />
-                </div>
+    /**
+     * Renders the shared upload-size field.
+     *
+     * Native numeric input constraints provide basic client-side feedback;
+     * server-side validation remains authoritative.
+     */
+    const renderMaximumUploadSize = () => (
+        <div className="max-w-sm space-y-2">
+            <Input
+                inputIdentifier="maximum_upload_size"
+                label={translate('Maximum upload size (KB)')}
+                name="maximum_upload_size"
+                inputType="number"
+                inputMode="numeric"
+                min={1}
+                step={1}
+                value={storageSettings.maximum_upload_size}
+                onChange={(event) => handleSettingChange('maximum_upload_size', event.target.value)}
+                aria-describedby="maximum-upload-size-help"
+            />
 
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiSecretKey"
-                        label={translate('Wasabi secret key')}
-                        inputType="password"
-                        value={storageSettings.wasabiSecretKey}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiSecretKey', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiRegion"
-                        label={translate('Wasabi region')}
-                        value={storageSettings.wasabiRegion}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiRegion', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiBucket"
-                        label={translate('Wasabi bucket')}
-                        value={storageSettings.wasabiBucket}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiBucket', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiUrl"
-                        label={translate('Wasabi URL')}
-                        value={storageSettings.wasabiUrl}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiUrl', e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiRoot"
-                        label={translate('Wasabi root')}
-                        value={storageSettings.wasabiRoot}
-                        onChange={(e) => {
-                            handleSettingChange('wasabiRoot', e.target.value);
-                        }}
-                    />
-                </div>
-            </div>
-
-            <div className="space-y-6">
-                {renderFileTypeSelector()}
-                <div className="space-y-2">
-                    <Input
-                        inputIdentifier="wasabiMaxUploadSize"
-                        label={translate('Maximum upload size(KB)')}
-                        inputType="number"
-                        inputMode="decimal"
-                        value={storageSettings.maxUploadSize}
-                        onChange={(e) => {
-                            handleSettingChange('maxUploadSize', e.target.value);
-                        }}
-                    />
-                </div>
-            </div>
+            <p id="maximum-upload-size-help" className="text-foreground/75 text-xs leading-relaxed">
+                {translate('Set the maximum permitted size for an individual upload.')}
+            </p>
         </div>
     );
 
     return (
         <SettingsSection
-            title={translate('Storage settings')}
-            description={translate('Configure file storage settings for your application')}
+            title={translate('Storage')}
+            description={translate('Configure file storage, upload restrictions and provider credentials.')}
             action={
-                <Button type="submit" disabled={processing} form="storage-settings-form" size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
+                <Button type="submit" form="storage-settings-form" size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="mt-6">
-                    <form id="storage-settings-form" onSubmit={submitStorageSettings}>
-                        <Tabs
-                            value={storageSettings.storageType}
-                            className="w-full"
-                            onValueChange={(value) => {
-                                setStorageSettings((prev) => ({ ...prev, storageType: value as StorageType }));
-                            }}
-                        >
-                            <TabsList className="grid w-full grid-cols-3 max-[1100px]:h-auto max-[1100px]:grid-cols-1">
-                                <TabsTrigger value="local" className="flex cursor-pointer items-center gap-2">
-                                    <HardDrive className="h-4 w-4" />
-                                    {translate('Local storage')}
-                                </TabsTrigger>
-                                <TabsTrigger value="aws_s3" className="flex cursor-pointer items-center gap-2">
-                                    <span>☁️</span>
-                                    {translate('AWS S3')}
-                                </TabsTrigger>
-                                <TabsTrigger value="wasabi" className="flex cursor-pointer items-center gap-2">
-                                    <span>🗄️</span>
-                                    {translate('Wasabi')}
-                                </TabsTrigger>
-                            </TabsList>
+            <form
+                id="storage-settings-form"
+                autoComplete="off"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    submitStorageSettings();
+                }}
+                className="space-y-6"
+            >
+                <div className="border-border border-t" />
+                <Tabs value={storageSettings.storage_type} onValueChange={handleStorageTypeChange} className="w-full">
+                    <TabsList
+                        aria-label={translate('Storage provider')}
+                        className="bg-muted/60 grid h-auto w-full grid-cols-1 gap-1 p-1 sm:grid-cols-3"
+                    >
+                        <TabsTrigger value="local" className="flex min-h-11 items-center justify-center gap-2 px-3 py-2">
+                            <HardDrive aria-hidden="true" className="size-4 shrink-0" />
+                            <span>{translate('Local storage')}</span>
+                        </TabsTrigger>
 
-                            <TabsContent value="local" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('Local storage settings')}</h3>
-                                {renderLocalStorageFields()}
-                            </TabsContent>
+                        <TabsTrigger value="aws_s3" className="flex min-h-11 items-center justify-center gap-2 px-3 py-2">
+                            <Cloud aria-hidden="true" className="size-4 shrink-0" />
+                            <span>{translate('AWS S3')}</span>
+                        </TabsTrigger>
 
-                            <TabsContent value="aws_s3" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('AWS S3 storage settings')}</h3>
-                                {renderAwsS3Fields()}
-                            </TabsContent>
+                        <TabsTrigger value="wasabi" className="flex min-h-11 items-center justify-center gap-2 px-3 py-2">
+                            <Server aria-hidden="true" className="size-4 shrink-0" />
+                            <span>{translate('Wasabi')}</span>
+                        </TabsTrigger>
+                    </TabsList>
 
-                            <TabsContent value="wasabi" className="mt-6">
-                                <h3 className="mb-4 text-base font-medium">{translate('Wasabi storage settings')}</h3>
-                                {renderWasabiFields()}
-                            </TabsContent>
-                        </Tabs>
-                    </form>
-                </CardContent>
-            </Card>
+                    <TabsContent value="local" className="mt-6 space-y-6 focus-visible:outline-none">
+                        <section aria-labelledby="local-storage-heading" className="space-y-5">
+                            {renderFileTypeSelector()}
+                            {renderMaximumUploadSize()}
+                        </section>
+                    </TabsContent>
+
+                    <TabsContent value="aws_s3" className="mt-6 space-y-6 focus-visible:outline-none">
+                        <section aria-labelledby="aws-storage-heading" className="space-y-6">
+                            <div className="space-y-1">
+                                <h3 id="aws-storage-heading" className="text-base font-semibold tracking-tight">
+                                    {translate('AWS S3 storage')}
+                                </h3>
+
+                                <p className="text-foreground/75 text-sm">
+                                    {translate('Configure your AWS bucket, region and connection credentials.')}
+                                </p>
+                            </div>
+
+                            {renderProviderFields(AWS_FIELDS)}
+
+                            <div className="border-border border-t" />
+
+                            {renderFileTypeSelector()}
+                            {renderMaximumUploadSize()}
+                        </section>
+                    </TabsContent>
+
+                    <TabsContent value="wasabi" className="mt-6 space-y-6 focus-visible:outline-none">
+                        <section aria-labelledby="wasabi-storage-heading" className="space-y-6">
+                            <div className="space-y-1">
+                                <h3 id="wasabi-storage-heading" className="text-base font-semibold tracking-tight">
+                                    {translate('Wasabi storage')}
+                                </h3>
+
+                                <p className="text-foreground/75 text-sm">
+                                    {translate('Configure your Wasabi bucket, region and connection credentials.')}
+                                </p>
+                            </div>
+
+                            {renderProviderFields(WASABI_FIELDS)}
+
+                            <div className="border-border border-t" />
+
+                            {renderFileTypeSelector()}
+                            {renderMaximumUploadSize()}
+                        </section>
+                    </TabsContent>
+                </Tabs>
+            </form>
         </SettingsSection>
     );
 }

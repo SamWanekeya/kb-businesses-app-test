@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PaymentInputFieldProps {
     id: string;
@@ -27,6 +27,7 @@ export default function PaymentInputField({
     error,
     className = '',
 }: PaymentInputFieldProps) {
+    const { t: translate } = useTranslation();
     const [showSecret, setShowSecret] = useState(false);
 
     // Show asterisks in demo mode for secret fields with values
@@ -35,10 +36,10 @@ export default function PaymentInputField({
 
     return (
         <div className="space-y-2">
-            <Label htmlFor={id}>{label}</Label>
             <div className="relative">
                 <Input
-                    id={id}
+                    inputIdentifier={id}
+                    label={translate(label)}
                     type={inputType}
                     value={displayValue}
                     onChange={(e) => {

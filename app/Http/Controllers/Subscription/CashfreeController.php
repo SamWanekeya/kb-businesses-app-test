@@ -100,7 +100,7 @@ class CashfreeController extends Controller
         $settings = getPaymentGatewaySettings();
 
         // Handle both string and numeric mode values
-        $modeValue = $settings['payment_settings']['cashfree_mode'] ?? 'sandbox';
+        $modeValue = $settings['paymentSettings']['cashfree_mode'] ?? 'sandbox';
 
         // Convert to consistent string format
         if ($modeValue === 0 || $modeValue === '0' || $modeValue === 'sandbox') {
@@ -114,8 +114,8 @@ class CashfreeController extends Controller
             : 'https://sandbox.cashfree.com/pg';
 
         return [
-            'app_id' => $settings['payment_settings']['cashfree_public_key'] ?? null,
-            'secret_key' => $settings['payment_settings']['cashfree_secret_key'] ?? null,
+            'app_id' => $settings['paymentSettings']['cashfree_public_key'] ?? null,
+            'secret_key' => $settings['paymentSettings']['cashfree_secret_key'] ?? null,
             'mode' => $mode,
             'base_url' => $baseUrl,
             'currency' => $settings['general_settings']['default_currency'] ?? 'INR',

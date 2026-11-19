@@ -23,11 +23,11 @@ class StripePaymentController extends Controller
             $pricing = calculatePlanPricing($plan, $validated['discount_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
             $currency = $settings['general_settings']['default_currency'] ?? 'usd';
-            if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
+            if (!isset($settings['paymentSettings']['stripe_secret']) || !isset($settings['paymentSettings']['stripe_key'])) {
                 return back()->withErrors(['error' => __('Stripe not configured')]);
             }
 
-            $stripeSecret = $settings['payment_settings']['stripe_secret'];
+            $stripeSecret = $settings['paymentSettings']['stripe_secret'];
             if (!str_starts_with($stripeSecret, 'sk_')) {
                 return back()->withErrors(['error' => __('Invalid Stripe secret key format')]);
             }

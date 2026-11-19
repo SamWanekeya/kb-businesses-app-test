@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('payment_settings', function (Blueprint $table) {
+        Schema::create('paymentSettings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('key');
@@ -20,6 +20,6 @@ return new class () extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('payment_settings');
+        Schema::dropIfExists('paymentSettings');
     }
 };

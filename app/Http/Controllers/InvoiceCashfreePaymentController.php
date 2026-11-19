@@ -35,7 +35,7 @@ class InvoiceCashfreePaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['cashfree_public_key']) || !isset($settings['payment_settings']['cashfree_secret_key'])) {
+            if (!isset($settings['paymentSettings']['cashfree_public_key']) || !isset($settings['paymentSettings']['cashfree_secret_key'])) {
                 Log::error('Cashfree payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Cashfree not configured')], 400);
@@ -76,14 +76,14 @@ class InvoiceCashfreePaymentController extends Controller
                 ],
             ];
 
-            $responseData = $this->makeCashfreeApiCall('post', '/orders', $orderData, $settings['payment_settings']);
+            $responseData = $this->makeCashfreeApiCall('post', '/orders', $orderData, $settings['paymentSettings']);
 
             return response()->json([
                 'payment_session_id' => $responseData['payment_session_id'],
                 'order_id' => $orderId,
                 'amount' => $amount,
                 'currency' => 'INR',
-                'mode' => $settings['payment_settings']['cashfree_mode'],
+                'mode' => $settings['paymentSettings']['cashfree_mode'],
             ]);
 
         } catch (Exception $e) {
@@ -110,7 +110,7 @@ class InvoiceCashfreePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -152,13 +152,13 @@ class InvoiceCashfreePaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            $orderData = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id'], null, $settings['payment_settings']);
+            $orderData = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id'], null, $settings['paymentSettings']);
 
             if ($orderData['order_status'] !== 'PAID') {
                 return response()->json(['error' => __('Payment not completed successfully')], 400);
             }
 
-            $payments = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id'] . '/payments', null, $settings['payment_settings']);
+            $payments = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id'] . '/payments', null, $settings['paymentSettings']);
             $successfulPayment = null;
 
             foreach ($payments as $payment) {

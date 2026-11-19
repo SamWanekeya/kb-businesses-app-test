@@ -22,7 +22,7 @@ class InvoiceXenditPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['xendit_api_key'])) {
+            if (!isset($settings['paymentSettings']['xendit_api_key'])) {
                 return response()->json(['error' => __('Xendit not configured')], 400);
             }
 
@@ -48,7 +48,7 @@ class InvoiceXenditPaymentController extends Controller
             ];
 
             $response = Http::withHeaders([
-                'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
+                'Authorization' => 'Basic ' . base64_encode($settings['paymentSettings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 
@@ -84,7 +84,7 @@ class InvoiceXenditPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -98,7 +98,7 @@ class InvoiceXenditPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['xendit_api_key'])) {
+            if (!isset($settings['paymentSettings']['xendit_api_key'])) {
                 return response()->json(['error' => __('Xendit not configured')], 400);
             }
 
@@ -124,7 +124,7 @@ class InvoiceXenditPaymentController extends Controller
             ];
 
             $response = Http::withHeaders([
-                'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
+                'Authorization' => 'Basic ' . base64_encode($settings['paymentSettings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 

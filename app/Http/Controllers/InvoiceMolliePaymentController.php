@@ -95,7 +95,7 @@ class InvoiceMolliePaymentController extends Controller
         $settings = $this->getInvoicePaymentSettings($organizationId);
 
         return [
-            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
+            'api_key' => $settings['paymentSettings']['mollie_api_key'] ?? null,
             'currency' => $settings['general_settings']['default_currency'] ?? 'EUR',
         ];
     }
@@ -103,7 +103,7 @@ class InvoiceMolliePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

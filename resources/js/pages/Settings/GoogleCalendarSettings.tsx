@@ -1,7 +1,6 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
@@ -73,76 +72,74 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
 
     return (
         <SettingsSection
-            title={translate('Google Calendar settings')}
+            title={translate('Google Calendar')}
             description={translate('Configure Google Calendar integration for appointment synchronization')}
             action={
-                <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save changes')}</span>
+                <Button type="submit" form="google-calendar-form" disabled={isLoading} size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="pt-6">
-                    <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
-                        <div className="flex items-center justify-between">
-                            <div className="space-y-0.5">
-                                <Label htmlFor="googleCalendarEnabled">{translate('Enable Google Calendar')}</Label>
-                                <p className="text-foreground/75 text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
-                            </div>
-                            <Switch
-                                id="googleCalendarEnabled"
-                                checked={formData.googleCalendarEnabled}
-                                onCheckedChange={(checked) => {
-                                    setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }));
+            <div className="space-y-6">
+                <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label htmlFor="googleCalendarEnabled">{translate('Enable Google Calendar')}</Label>
+                            <p className="text-foreground/75 text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
+                        </div>
+                        <Switch
+                            id="googleCalendarEnabled"
+                            checked={formData.googleCalendarEnabled}
+                            onCheckedChange={(checked) => {
+                                setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }));
+                            }}
+                        />
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Input
+                                inputIdentifier="googleCalendarId"
+                                label={translate('Google Calendar ID')}
+                                required
+                                inputType="text"
+                                inputMode="text"
+                                value={formData.googleCalendarId}
+                                onChange={(e) => {
+                                    setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }));
                                 }}
+                                disabled={!formData.googleCalendarEnabled}
                             />
                         </div>
 
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <Input
-                                    inputIdentifier="googleCalendarId"
-                                    label={translate('Google Calendar ID')}
-                                    required
-                                    inputType="text"
-                                    inputMode="text"
-                                    value={formData.googleCalendarId}
-                                    onChange={(e) => {
-                                        setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }));
-                                    }}
-                                    disabled={!formData.googleCalendarEnabled}
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <Input
-                                    inputIdentifier="googleCalendarJson"
-                                    label={translate('Service account JSON file')}
-                                    inputType="file"
-                                    accept=".json"
-                                    onChange={(e) => {
-                                        setJsonFile(e.target.files?.[0] || null);
-                                    }}
-                                    disabled={!formData.googleCalendarEnabled}
-                                />
-                                {jsonFile && (
-                                    <p className="text-sm text-fuchsia-600">
-                                        {translate('Selected file')}: {jsonFile.name}
-                                    </p>
-                                )}
-                                <p className="text-foreground/75 text-xs">{translate('Upload your Google service account JSON credentials')}</p>
-                            </div>
-
-                            <div className="flex justify-end">
-                                <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
-                                    <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                                    {isSyncing ? translate('Syncing...') : translate('Test sync')}
-                                </Button>
-                            </div>
+                        <div className="space-y-2">
+                            <Input
+                                inputIdentifier="googleCalendarJson"
+                                label={translate('Service account JSON file')}
+                                inputType="file"
+                                accept=".json"
+                                onChange={(e) => {
+                                    setJsonFile(e.target.files?.[0] || null);
+                                }}
+                                disabled={!formData.googleCalendarEnabled}
+                            />
+                            {jsonFile && (
+                                <p className="text-sm text-fuchsia-600">
+                                    {translate('Selected file')}: {jsonFile.name}
+                                </p>
+                            )}
+                            <p className="text-foreground/75 text-xs">{translate('Upload your Google service account JSON credentials')}</p>
                         </div>
-                    </form>
-                </CardContent>
-            </Card>
+
+                        <div className="flex justify-end">
+                            <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
+                                <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                                {isSyncing ? translate('Syncing...') : translate('Test sync')}
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </SettingsSection>
     );
 }

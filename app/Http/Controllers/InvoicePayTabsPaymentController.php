@@ -32,7 +32,7 @@ class InvoicePayTabsPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (empty($settings['payment_settings']['paytabs_profile_id']) || empty($settings['payment_settings']['paytabs_server_key'])) {
+            if (empty($settings['paymentSettings']['paytabs_profile_id']) || empty($settings['paymentSettings']['paytabs_server_key'])) {
                 return response()->json(['success' => false, 'message' => __('PayTabs configuration incomplete.')], 400);
             }
 
@@ -40,9 +40,9 @@ class InvoicePayTabsPaymentController extends Controller
 
             // Force PayTabs configuration
             config([
-                'paytabs.profile_id' => $settings['payment_settings']['paytabs_profile_id'],
-                'paytabs.server_key' => $settings['payment_settings']['paytabs_server_key'],
-                'paytabs.region' => $settings['payment_settings']['paytabs_region'] ?? 'ARE',
+                'paytabs.profile_id' => $settings['paymentSettings']['paytabs_profile_id'],
+                'paytabs.server_key' => $settings['paymentSettings']['paytabs_server_key'],
+                'paytabs.region' => $settings['paymentSettings']['paytabs_region'] ?? 'ARE',
                 'paytabs.currency' => 'INR',
             ]);
 
@@ -104,7 +104,7 @@ class InvoicePayTabsPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

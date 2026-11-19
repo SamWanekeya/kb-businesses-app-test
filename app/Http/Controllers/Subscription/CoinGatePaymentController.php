@@ -28,11 +28,11 @@ class CoinGatePaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
 
-            if (!$settings['payment_settings']['is_coingate_payment_mode_enabled'] || !$settings['payment_settings']['coingate_api_token']) {
+            if (!$settings['paymentSettings']['is_coingate_payment_mode_enabled'] || !$settings['paymentSettings']['coingate_api_token']) {
                 return redirect()->route('subscriptions.plans.index')->with('error', __('CoinGate payment is not available'));
             }
 
-            if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
+            if (!isset($settings['paymentSettings']['coingate_api_token']) || empty($settings['paymentSettings']['coingate_api_token'])) {
                 return redirect()->route('subscriptions.plans.index')->with('error', __('CoinGate API token not configured'));
             }
 
@@ -55,8 +55,8 @@ class CoinGatePaymentController extends Controller
 
             // Use official CoinGate package
             $client = new Client(
-                $settings['payment_settings']['coingate_api_token'],
-                ($settings['payment_settings']['coingate_mode'] ?? 'sandbox') === 'sandbox'
+                $settings['paymentSettings']['coingate_api_token'],
+                ($settings['paymentSettings']['coingate_mode'] ?? 'sandbox') === 'sandbox'
             );
 
             $orderParams = [

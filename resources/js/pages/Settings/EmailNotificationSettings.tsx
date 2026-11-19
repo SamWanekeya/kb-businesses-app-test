@@ -1,12 +1,11 @@
 import { toast } from '@components/CustomToast';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationItem {
@@ -74,36 +73,34 @@ export default function EmailNotificationSettings() {
 
     return (
         <SettingsSection
-            title={translate('Email notification settings')}
+            title={translate('Email notification')}
             description={translate('Configure which email notifications are sent')}
             action={
-                <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
-                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save changes')}</span>
+                <Button onClick={handleSave} disabled={processing} size="lg">
+                    {translate('Save')}
                 </Button>
             }
         >
-            <Card>
-                <CardContent className="pt-6">
-                    <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2 min-[1600px]:grid-cols-3">
-                        {availableNotifications.map((item) => (
-                            <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
-                                <div>
-                                    <Label htmlFor={item.name} className="text-sm">
-                                        {translate(item.label)}
-                                    </Label>
-                                </div>
-                                <Switch
-                                    id={item.name}
-                                    checked={notifications[item.name] || false}
-                                    onCheckedChange={(checked) => {
-                                        handleToggle(item.name, checked);
-                                    }}
-                                />
+            <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2 min-[1600px]:grid-cols-3">
+                    {availableNotifications.map((item) => (
+                        <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
+                            <div>
+                                <Label htmlFor={item.name} className="text-sm">
+                                    {translate(item.label)}
+                                </Label>
                             </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+                            <Switch
+                                id={item.name}
+                                checked={notifications[item.name] || false}
+                                onCheckedChange={(checked) => {
+                                    handleToggle(item.name, checked);
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
         </SettingsSection>
     );
 }

@@ -87,7 +87,7 @@ class MolliePaymentController extends Controller
         $settings = getPaymentGatewaySettings();
 
         return [
-            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
+            'api_key' => $settings['paymentSettings']['mollie_api_key'] ?? null,
             'currency' => $settings['general_settings']['default_currency'] ?? 'EUR',
         ];
     }

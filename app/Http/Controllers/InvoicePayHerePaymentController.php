@@ -36,7 +36,7 @@ class InvoicePayHerePaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
+            if (!isset($settings['paymentSettings']['payhere_merchant_id'])) {
                 Log::error('PayHere payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('PayHere not configured')], 400);
@@ -45,7 +45,7 @@ class InvoicePayHerePaymentController extends Controller
             $orderId = 'inv_' . $invoice->id . '_' . time();
 
             $paymentData = [
-                'merchant_id' => $settings['payment_settings']['payhere_merchant_id'],
+                'merchant_id' => $settings['paymentSettings']['payhere_merchant_id'],
                 'return_url' => route('customer-facing.invoice.payhere.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
@@ -73,12 +73,12 @@ class InvoicePayHerePaymentController extends Controller
                     $paymentData['order_id'] .
                     number_format($paymentData['amount'], 2, '.', '') .
                     $paymentData['currency'] .
-                    strtoupper(md5($settings['payment_settings']['payhere_merchant_secret']))
+                    strtoupper(md5($settings['paymentSettings']['payhere_merchant_secret']))
                 )
             );
             $paymentData['hash'] = $hashString;
 
-            $baseUrl = $settings['payment_settings']['payhere_mode'] === 'live'
+            $baseUrl = $settings['paymentSettings']['payhere_mode'] === 'live'
                 ? 'https://www.payhere.lk'
                 : 'https://sandbox.payhere.lk';
 
@@ -114,7 +114,7 @@ class InvoicePayHerePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }

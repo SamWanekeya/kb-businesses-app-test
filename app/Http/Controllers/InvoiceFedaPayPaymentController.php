@@ -38,13 +38,13 @@ class InvoiceFedaPayPaymentController extends Controller
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
+            if (!isset($settings['paymentSettings']['fedapay_secret_key'])) {
                 Log::error('FedaPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('FedaPay not configured')], 400);
             }
 
-            $this->configureFedaPay($settings['payment_settings']);
+            $this->configureFedaPay($settings['paymentSettings']);
 
             $transaction = Transaction::create([
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
@@ -96,7 +96,7 @@ class InvoiceFedaPayPaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
@@ -112,7 +112,7 @@ class InvoiceFedaPayPaymentController extends Controller
         try {
             $organizationId = $request->input('organization_id');
             $settings = $this->getInvoicePaymentSettings($organizationId);
-            $this->configureFedaPay($settings['payment_settings']);
+            $this->configureFedaPay($settings['paymentSettings']);
 
             $transactionId = $request->input('id');
             $transaction = Transaction::retrieve($transactionId);

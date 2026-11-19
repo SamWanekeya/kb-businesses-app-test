@@ -36,7 +36,7 @@ class InvoiceCoingatePaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
             $currency = $settings['general_settings']['default_currency'] ?? 'USD';
 
-            if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
+            if (!isset($settings['paymentSettings']['coingate_api_token']) || empty($settings['paymentSettings']['coingate_api_token'])) {
                 Log::error('CoinGate payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('CoinGate not configured')]);
@@ -47,8 +47,8 @@ class InvoiceCoingatePaymentController extends Controller
 
             // Use official CoinGate package
             $client = new Client(
-                $settings['payment_settings']['coingate_api_token'],
-                ($settings['payment_settings']['coingate_mode'] ?? 'sandbox') === 'sandbox'
+                $settings['paymentSettings']['coingate_api_token'],
+                ($settings['paymentSettings']['coingate_mode'] ?? 'sandbox') === 'sandbox'
             );
 
             $orderParams = [
@@ -115,7 +115,7 @@ class InvoiceCoingatePaymentController extends Controller
     private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'paymentSettings' => PaymentSetting::getUserSettings($organizationId),
             'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
