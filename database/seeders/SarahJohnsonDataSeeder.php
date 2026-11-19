@@ -256,9 +256,9 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Sales Orders
         $salesOrderData = [
-            ['name' => 'SO-2024-001 TechFlow Solutions', 'status' => 'confirmed'],
-            ['name' => 'SO-2024-002 GlobalMarketing Inc', 'status' => 'processing'],
-            ['name' => 'SO-2024-003 DataSync Corp', 'status' => 'shipped'],
+            ['name' => 'SO-2026-001 TechFlow Solutions', 'status' => 'confirmed'],
+            ['name' => 'SO-2026-002 GlobalMarketing Inc', 'status' => 'processing'],
+            ['name' => 'SO-2026-003 DataSync Corp', 'status' => 'shipped'],
         ];
 
         foreach ($salesOrderData as $orderInfo) {
@@ -294,11 +294,11 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Invoices with different statuses
         $invoiceData = [
-            ['name' => 'INV-2024-001 TechFlow Solutions', 'status' => 'paid'],
-            ['name' => 'INV-2024-002 GlobalMarketing Inc', 'status' => 'partially_paid'],
-            ['name' => 'INV-2024-003 DataSync Corp', 'status' => 'sent'],
-            ['name' => 'INV-2024-004 CloudVision Ltd', 'status' => 'overdue'],
-            ['name' => 'INV-2024-005 InnovateTech Group', 'status' => 'draft'],
+            ['name' => 'INV-2026-001 TechFlow Solutions', 'status' => 'paid'],
+            ['name' => 'INV-2026-002 GlobalMarketing Inc', 'status' => 'partially_paid'],
+            ['name' => 'INV-2026-003 DataSync Corp', 'status' => 'sent'],
+            ['name' => 'INV-2026-004 CloudVision Ltd', 'status' => 'overdue'],
+            ['name' => 'INV-2026-005 InnovateTech Group', 'status' => 'draft'],
         ];
 
         foreach ($invoiceData as $invInfo) {
@@ -340,7 +340,7 @@ class SarahJohnsonDataSeeder extends Seeder
         $projects = [
             [
                 'name' => 'TechFlow CRM Integration Project',
-                'code' => 'PROJ-2024-001',
+                'code' => 'PROJ-2026-001',
                 'description' => 'Complete CRM system integration including data migration, customization, and staff training for TechFlow Solutions.',
                 'status' => 'active',
                 'priority' => 'high',
@@ -349,7 +349,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ],
             [
                 'name' => 'CloudVision Digital Transformation',
-                'code' => 'PROJ-2024-002',
+                'code' => 'PROJ-2026-002',
                 'description' => 'Comprehensive digital transformation initiative including cloud migration, process automation, and staff training.',
                 'status' => 'active',
                 'priority' => 'urgent',
@@ -358,7 +358,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ],
             [
                 'name' => 'DataSync Analytics Implementation',
-                'code' => 'PROJ-2024-003',
+                'code' => 'PROJ-2026-003',
                 'description' => 'Business intelligence and analytics platform implementation with custom dashboards and reporting.',
                 'status' => 'completed',
                 'priority' => 'medium',
@@ -405,14 +405,14 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Delivery Orders
         $deliveryOrders = [
-            ['name' => 'DO-2024-001 TechFlow Delivery', 'status' => 'in_transit'],
-            ['name' => 'DO-2024-002 GlobalMarketing Delivery', 'status' => 'delivered'],
-            ['name' => 'DO-2024-003 DataSync Delivery', 'status' => 'pending'],
-            ['name' => 'DO-2024-004 CloudVision Delivery', 'status' => 'pending'],
-            ['name' => 'DO-2024-005 InnovateTech Delivery', 'status' => 'in_transit'],
-            ['name' => 'DO-2024-006 TechFlow Express', 'status' => 'delivered'],
-            ['name' => 'DO-2024-007 GlobalMarketing Rush', 'status' => 'pending'],
-            ['name' => 'DO-2024-008 DataSync Priority', 'status' => 'in_transit'],
+            ['name' => 'DO-2026-001 TechFlow Delivery', 'status' => 'in_transit'],
+            ['name' => 'DO-2026-002 GlobalMarketing Delivery', 'status' => 'delivered'],
+            ['name' => 'DO-2026-003 DataSync Delivery', 'status' => 'pending'],
+            ['name' => 'DO-2026-004 CloudVision Delivery', 'status' => 'pending'],
+            ['name' => 'DO-2026-005 InnovateTech Delivery', 'status' => 'in_transit'],
+            ['name' => 'DO-2026-006 TechFlow Express', 'status' => 'delivered'],
+            ['name' => 'DO-2026-007 GlobalMarketing Rush', 'status' => 'pending'],
+            ['name' => 'DO-2026-008 DataSync Priority', 'status' => 'in_transit'],
         ];
 
         foreach ($deliveryOrders as $doInfo) {
@@ -431,14 +431,14 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Return Orders
         $returnOrders = [
-            ['name' => 'RO-2024-001 Product Return', 'status' => 'pending'],
-            ['name' => 'RO-2024-002 Defective Item Return', 'status' => 'approved'],
-            ['name' => 'RO-2024-003 Wrong Size Return', 'status' => 'shipped'],
-            ['name' => 'RO-2024-004 Damaged Package', 'status' => 'processed'],
-            ['name' => 'RO-2024-005 Customer Change Mind', 'status' => 'cancelled'],
-            ['name' => 'RO-2024-006 Quality Issue', 'status' => 'approved'],
-            ['name' => 'RO-2024-007 Late Delivery Return', 'status' => 'pending'],
-            ['name' => 'RO-2024-008 Warranty Return', 'status' => 'received'],
+            ['name' => 'RO-2026-001 Product Return', 'status' => 'pending'],
+            ['name' => 'RO-2026-002 Defective Item Return', 'status' => 'approved'],
+            ['name' => 'RO-2026-003 Wrong Size Return', 'status' => 'shipped'],
+            ['name' => 'RO-2026-004 Damaged Package', 'status' => 'processed'],
+            ['name' => 'RO-2026-005 Customer Change Mind', 'status' => 'cancelled'],
+            ['name' => 'RO-2026-006 Quality Issue', 'status' => 'approved'],
+            ['name' => 'RO-2026-007 Late Delivery Return', 'status' => 'pending'],
+            ['name' => 'RO-2026-008 Warranty Return', 'status' => 'received'],
         ];
 
         foreach ($returnOrders as $roInfo) {
@@ -457,14 +457,14 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Purchase Orders
         $purchaseOrders = [
-            ['name' => 'PO-2024-001 Office Supplies', 'status' => 'confirmed'],
-            ['name' => 'PO-2024-002 IT Equipment', 'status' => 'draft'],
-            ['name' => 'PO-2024-003 Software Licenses', 'status' => 'received'],
-            ['name' => 'PO-2024-004 Marketing Materials', 'status' => 'sent'],
-            ['name' => 'PO-2024-005 Furniture Order', 'status' => 'confirmed'],
-            ['name' => 'PO-2024-006 Security Systems', 'status' => 'draft'],
-            ['name' => 'PO-2024-007 Cleaning Supplies', 'status' => 'received'],
-            ['name' => 'PO-2024-008 Training Materials', 'status' => 'sent'],
+            ['name' => 'PO-2026-001 Office Supplies', 'status' => 'confirmed'],
+            ['name' => 'PO-2026-002 IT Equipment', 'status' => 'draft'],
+            ['name' => 'PO-2026-003 Software Licenses', 'status' => 'received'],
+            ['name' => 'PO-2026-004 Marketing Materials', 'status' => 'sent'],
+            ['name' => 'PO-2026-005 Furniture Order', 'status' => 'confirmed'],
+            ['name' => 'PO-2026-006 Security Systems', 'status' => 'draft'],
+            ['name' => 'PO-2026-007 Cleaning Supplies', 'status' => 'received'],
+            ['name' => 'PO-2026-008 Training Materials', 'status' => 'sent'],
         ];
 
         foreach ($purchaseOrders as $poInfo) {
@@ -484,14 +484,14 @@ class SarahJohnsonDataSeeder extends Seeder
 
         // Create Receipt Orders
         $receiptOrders = [
-            ['name' => 'REC-2024-001 Equipment Receipt', 'status' => 'received'],
-            ['name' => 'REC-2024-002 Supply Receipt', 'status' => 'partial'],
-            ['name' => 'REC-2024-003 Software Receipt', 'status' => 'received'],
-            ['name' => 'REC-2024-004 Furniture Receipt', 'status' => 'pending'],
-            ['name' => 'REC-2024-005 Marketing Receipt', 'status' => 'received'],
-            ['name' => 'REC-2024-006 Security Receipt', 'status' => 'partial'],
-            ['name' => 'REC-2024-007 Cleaning Receipt', 'status' => 'received'],
-            ['name' => 'REC-2024-008 Training Receipt', 'status' => 'pending'],
+            ['name' => 'REC-2026-001 Equipment Receipt', 'status' => 'received'],
+            ['name' => 'REC-2026-002 Supply Receipt', 'status' => 'partial'],
+            ['name' => 'REC-2026-003 Software Receipt', 'status' => 'received'],
+            ['name' => 'REC-2026-004 Furniture Receipt', 'status' => 'pending'],
+            ['name' => 'REC-2026-005 Marketing Receipt', 'status' => 'received'],
+            ['name' => 'REC-2026-006 Security Receipt', 'status' => 'partial'],
+            ['name' => 'REC-2026-007 Cleaning Receipt', 'status' => 'received'],
+            ['name' => 'REC-2026-008 Training Receipt', 'status' => 'pending'],
         ];
 
         foreach ($receiptOrders as $recInfo) {

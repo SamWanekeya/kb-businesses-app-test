@@ -879,7 +879,7 @@ class InvoiceController extends Controller
 
         // Sample invoice data for preview
         $invoice = (object)[
-            'invoice_number' => 'INV-2024-001',
+            'invoice_number' => 'INV-2026-001',
             'invoice_date' => now()?->format('Y-m-d'),
             'due_date' => now()->addDays(30)?->format('Y-m-d'),
             'status' => 'draft',
