@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/A
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
-import { Label } from '@components/UserInterface/Label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
@@ -1405,8 +1404,7 @@ export default function InvoiceShow() {
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="reason">{translate('Rejection reason (optional)')}</Label>
-                                <Textarea id="reason" name="reason" className="mt-1" />
+                                <Textarea id="reason" name="reason" label={translate('Rejection reason (optional)')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">

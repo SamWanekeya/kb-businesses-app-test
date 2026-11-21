@@ -2,7 +2,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { useForm, usePage } from '@inertiajs/react';
@@ -177,19 +176,16 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="description" className="text-sm">
-                                    {translate('Description')}
-                                </Label>
                                 <Textarea
                                     id="description"
+                                    label={translate('Description')}
                                     value={data.description}
                                     onChange={(e) => {
                                         handleInputChange('description', e.target.value);
                                     }}
-                                    className={errors.description ? 'border-red-500' : ''}
+                                    error={errors.description}
                                     rows={3}
                                 />
-                                {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -239,19 +235,16 @@ export default function OpportunityCreate() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="notes" className="text-sm">
-                                    {translate('Notes')}
-                                </Label>
                                 <Textarea
                                     id="notes"
+                                    label={translate('Notes')}
                                     value={data.notes}
                                     onChange={(e) => {
                                         handleInputChange('notes', e.target.value);
                                     }}
-                                    className={errors.notes ? 'border-red-500' : ''}
+                                    error={errors.notes}
                                     rows={3}
                                 />
-                                {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
                         </div>
                     </div>

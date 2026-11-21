@@ -187,15 +187,14 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </div>
 
                                             <div className="space-y-3">
-                                                <Label htmlFor={`content-${code}`} className="text-sm" required>
-                                                    {translate('Notification content')}
-                                                </Label>
                                                 <Textarea
                                                     id={`content-${code}`}
+                                                    label={translate('Notification content')}
                                                     value={templateLangs[code]?.content || ''}
                                                     onChange={(e) => {
                                                         handleContentChange(code, e.target.value);
                                                     }}
+                                                    required
                                                     className="focus:ring-primary min-h-[200px] focus:ring-2"
                                                     rows={8}
                                                 />

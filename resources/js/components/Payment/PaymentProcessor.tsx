@@ -190,7 +190,7 @@ export default function PaymentProcessor({ plan, billingCycle, paymentMethods, o
 
         switch (selectedPaymentMethod) {
             case 'bank':
-                return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={paymentSettings.bank_detail || ''} />;
+                return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={paymentSettings.bank_details || ''} />;
 
             case 'paystack':
                 return (

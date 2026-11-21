@@ -2,7 +2,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, useForm, usePage } from '@inertiajs/react';
@@ -246,8 +245,12 @@ export default function PurchaseOrderCreate() {
 
                         {/* Description */}
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Description')}</Label>
-                            <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={3} />
+                            <Textarea
+                                value={data.description}
+                                label={translate('Description')}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={3}
+                            />
                         </div>
 
                         {/* Sales Order + Account */}

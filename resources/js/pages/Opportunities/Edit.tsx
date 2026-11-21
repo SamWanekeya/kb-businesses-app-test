@@ -181,19 +181,17 @@ export default function OpportunityEdit() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="description" className="text-sm">
-                                    {translate('Description')}
-                                </Label>
                                 <Textarea
                                     id="description"
+                                    label={translate('Description')}
                                     value={data.description}
                                     onChange={(e) => {
                                         handleInputChange('description', e.target.value);
                                     }}
                                     className={errors.description ? 'border-red-500' : ''}
                                     rows={3}
+                                    error={errors.description}
                                 />
-                                {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -245,19 +243,16 @@ export default function OpportunityEdit() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="notes" className="text-sm">
-                                    {translate('Notes')}
-                                </Label>
                                 <Textarea
                                     id="notes"
+                                    label={translate('Notes')}
                                     value={data.notes}
                                     onChange={(e) => {
                                         handleInputChange('notes', e.target.value);
                                     }}
-                                    className={errors.notes ? 'border-red-500' : ''}
+                                    error={errors.notes}
                                     rows={3}
                                 />
-                                {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
                         </div>
                     </div>

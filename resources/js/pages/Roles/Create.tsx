@@ -4,7 +4,6 @@ import RolePermissionCheckboxGroup from '@components/RolePermissionCheckboxGroup
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
@@ -105,9 +104,9 @@ export default function RolesCreate() {
                                 {errors.label && <p className="text-xs text-red-500">{errors.label}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
+                                    label={translate('Description')}
                                     value={description}
                                     onChange={(e) => {
                                         setDescription(e.target.value);

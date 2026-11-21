@@ -222,8 +222,12 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Description')}</Label>
-                            <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
+                            <Textarea
+                                value={form.description}
+                                label={translate('Description')}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
 
                         <div className="space-y-1.5">
@@ -593,16 +597,13 @@ export default function DeliveryOrderCreate() {
                     <SectionHeader title={translate('Delivery address')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">
-                                {translate('Delivery address')} <span className="text-red-500">*</span>
-                            </Label>
                             <Textarea
                                 value={form.delivery_address}
+                                label={translate('Delivery address')}
                                 onChange={(e) => set('delivery_address', e.target.value)}
                                 rows={2}
-                                className={errors.delivery_address ? 'border-red-500' : ''}
+                                error={errors.delivery_address}
                             />
-                            <FieldError message={errors.delivery_address} />
                         </div>
 
                         <div className="space-y-1.5">
@@ -647,8 +648,12 @@ export default function DeliveryOrderCreate() {
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Delivery notes')}</Label>
-                            <Textarea value={form.delivery_notes} onChange={(e) => set('delivery_notes', e.target.value)} rows={3} />
+                            <Textarea
+                                value={form.delivery_notes}
+                                label={translate('Delivery notes')}
+                                onChange={(e) => set('delivery_notes', e.target.value)}
+                                rows={3}
+                            />
                         </div>
                     </div>
                 </div>

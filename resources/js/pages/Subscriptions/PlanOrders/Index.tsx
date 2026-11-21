@@ -3,7 +3,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
-import { Label } from '@components/UserInterface/Label';
 import Pagination from '@components/UserInterface/Pagination';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { Textarea } from '@components/UserInterface/Textarea';
@@ -678,19 +677,16 @@ export default function PlanOrders() {
                         )}
 
                         <div className="space-y-2">
-                            <Label htmlFor="rejection-notes">{translate('Rejection reason (optional)')}</Label>
                             <Textarea
                                 id="rejection-notes"
+                                label={translate('Rejection reason (optional)')}
                                 name="notes"
                                 value={rejectionNotes}
                                 onChange={setRejectionNotes}
+                                helperText={translate('The reason may be used to explain the decision to the organization.')}
                                 disabled={isRejecting}
-                                placeholder={translate('Add a reason for rejecting this order...')}
                                 className="min-h-24 resize-y"
                             />
-                            <p className="text-foreground/75 text-sm">
-                                {translate('The reason may be used to explain the decision to the organization.')}
-                            </p>
                         </div>
 
                         <DialogFooter>

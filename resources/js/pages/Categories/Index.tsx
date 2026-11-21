@@ -3,7 +3,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import Pagination from '@components/UserInterface/Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
@@ -265,18 +264,17 @@ export default function Categories() {
                                 {formErrors.slug && <p className="text-sm text-red-500">{formErrors.slug}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
+                                    label={translate('Description')}
                                     value={formData.description}
                                     onChange={(e) => {
                                         setFormData({ ...formData, description: e.target.value });
                                     }}
                                     rows={3}
-                                    className={formErrors.description ? 'border-red-500' : ''}
+                                    error={formErrors.description}
                                     disabled={!canCreate && !canEdit}
                                 />
-                                {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Select

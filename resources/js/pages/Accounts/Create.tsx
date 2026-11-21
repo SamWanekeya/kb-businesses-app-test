@@ -2,7 +2,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
@@ -290,17 +289,15 @@ export default function AccountCreate() {
                         <SectionTitle title={translate('Billing address')} />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="billing_address" required>
-                                    {translate('Billing address')}
-                                </Label>
                                 <Textarea
                                     id="billing_address"
+                                    label={translate('Billing address')}
                                     value={data.billing_address}
                                     onChange={(e) => set('billing_address', e.target.value)}
-                                    className={errors.billing_address ? 'border-red-500' : ''}
+                                    error={errors.billing_address}
                                     rows={2}
+                                    required
                                 />
-                                <FieldError message={errors.billing_address} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
@@ -385,9 +382,9 @@ export default function AccountCreate() {
                         />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="shipping_address">{translate('Shipping address')}</Label>
                                 <Textarea
                                     id="shipping_address"
+                                    label={translate('Shipping address')}
                                     value={data.shipping_address}
                                     onChange={(e) => set('shipping_address', e.target.value)}
                                     rows={2}

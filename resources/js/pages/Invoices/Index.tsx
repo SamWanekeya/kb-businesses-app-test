@@ -6,7 +6,6 @@ import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
 import { Button } from '@components/UserInterface/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
-import { Label } from '@components/UserInterface/Label';
 import Pagination from '@components/UserInterface/Pagination';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { Textarea } from '@components/UserInterface/Textarea';
@@ -770,9 +769,9 @@ export default function Invoices() {
                             })}
                         </p>
                         <div>
-                            <Label htmlFor="reject-notes">{translate('Rejection notes (optional)')}</Label>
                             <Textarea
                                 id="reject-notes"
+                                label={translate('Rejection notes (optional)')}
                                 value={rejectNotes}
                                 onChange={(e) => {
                                     setRejectNotes(e.target.value);

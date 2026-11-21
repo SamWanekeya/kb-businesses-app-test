@@ -475,9 +475,14 @@ export default function SalesOrderEdit() {
                             />
                         </div>
                         <div className="md:col-span-2">
-                            <Field label={translate('Description')} error={errors.description}>
-                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
-                            </Field>
+                            <Textarea
+                                value={form.description}
+                                label={translate('Description')}
+                                label={translate('Description')}
+                                error={errors.description}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
                         <div className="relative">
                             <Select value={form.quote_id} onValueChange={handleQuoteChange}>
@@ -856,14 +861,14 @@ export default function SalesOrderEdit() {
                                         </Button>
                                     </div>
                                     <div className="space-y-3">
-                                        <Field label={translate('Billing address')} required error={errors.billing_address}>
-                                            <Textarea
-                                                value={form.billing_address}
-                                                onChange={(e) => set('billing_address', e.target.value)}
-                                                rows={2}
-                                                className={errors.billing_address ? 'border-red-500' : ''}
-                                            />
-                                        </Field>
+                                        <Textarea
+                                            value={form.billing_address}
+                                            label={translate('Billing address')}
+                                            required
+                                            error={errors.billing_address}
+                                            onChange={(e) => set('billing_address', e.target.value)}
+                                            rows={2}
+                                        />
                                         <div className="grid grid-cols-2 gap-3">
                                             <Input
                                                 value={form.billing_city}
@@ -901,13 +906,13 @@ export default function SalesOrderEdit() {
                                 <div>
                                     <h3 className="mb-4 font-bold text-gray-800 dark:text-gray-100">{translate('Shipping address')}</h3>
                                     <div className="space-y-3">
-                                        <Field label={translate('Shipping address')} error={errors.shipping_address}>
-                                            <Textarea
-                                                value={form.shipping_address}
-                                                onChange={(e) => set('shipping_address', e.target.value)}
-                                                rows={2}
-                                            />
-                                        </Field>
+                                        <Textarea
+                                            value={form.shipping_address}
+                                            label={translate('Shipping address')}
+                                            error={errors.shipping_address}
+                                            onChange={(e) => set('shipping_address', e.target.value)}
+                                            rows={2}
+                                        />
                                         <div className="grid grid-cols-2 gap-3">
                                             <Input
                                                 value={form.shipping_city}

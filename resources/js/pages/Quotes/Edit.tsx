@@ -3,7 +3,6 @@ import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, useForm, usePage } from '@inertiajs/react';
@@ -402,8 +401,12 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                            <Label className="text-sm">{translate('Description')}</Label>
-                            <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={2} />
+                            <Textarea
+                                value={data.description}
+                                label={translate('Description')}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
                     </CardContent>
                 </Card>
@@ -631,19 +634,17 @@ export default function QuoteEdit() {
                             <div className="space-y-4">
                                 <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">{translate('Billing address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm" required>
-                                        {translate('Address')}
-                                    </Label>
                                     <Textarea
                                         value={data.billing_address}
+                                        label={translate('Billing address')}
                                         onChange={(e) => {
                                             set('billing_address', e.target.value);
                                             if (sameAsBilling) setData('shipping_address' as any, e.target.value);
                                         }}
-                                        className={errors.billing_address ? 'border-red-500' : ''}
+                                        error={errors.billing_address}
                                         rows={2}
+                                        required
                                     />
-                                    {errors.billing_address && <p className="text-xs text-red-500">{errors.billing_address}</p>}
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
@@ -703,8 +704,12 @@ export default function QuoteEdit() {
                             <div className="space-y-4">
                                 <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">{translate('Shipping address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm">{translate('Address')}</Label>
-                                    <Textarea value={data.shipping_address} onChange={(e) => set('shipping_address', e.target.value)} rows={2} />
+                                    <Textarea
+                                        value={data.shipping_address}
+                                        label={translate('Shipping address')}
+                                        onChange={(e) => set('shipping_address', e.target.value)}
+                                        rows={2}
+                                    />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">

@@ -5,7 +5,6 @@ import { ArrowLeft } from 'lucide-react';
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { route } from '@utils/Routes';
@@ -367,35 +366,29 @@ export default function LeadCreate() {
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label htmlFor="address" className="text-sm" required>
-                                    {translate('Address')}
-                                </Label>
                                 <Textarea
                                     id="address"
+                                    label={translate('Address')}
                                     value={data.address}
                                     onChange={(e) => {
                                         handleInputChange('address', e.target.value);
                                     }}
-                                    className={errors.address ? 'border-red-500' : ''}
                                     rows={2}
+                                    error={errors.address}
                                 />
-                                {errors.address && <p className="text-xs text-red-500">{errors.address}</p>}
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="notes" className="text-sm">
-                                    {translate('Notes')}
-                                </Label>
                                 <Textarea
                                     id="notes"
+                                    label={translate('Notes')}
                                     value={data.notes}
                                     onChange={(e) => {
                                         handleInputChange('notes', e.target.value);
                                     }}
-                                    className={errors.notes ? 'border-red-500' : ''}
+                                    error={errors.notes}
                                     rows={2}
                                 />
-                                {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
                         </div>
                     </div>

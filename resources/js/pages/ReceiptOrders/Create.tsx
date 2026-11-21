@@ -285,7 +285,12 @@ export default function ReceiptOrderCreate() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Description')}</Label>
-                            <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
+                            <Textarea
+                                value={form.description}
+                                label={translate('Description')}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
 
                         {/* Purchase Order + Return Order */}

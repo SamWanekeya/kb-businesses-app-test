@@ -404,15 +404,14 @@ export default function PlanCreateEditForm({ plan, hasDefaultPlan = false }: Pro
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="description">{translate('Description')}</Label>
-
-                                    <Textarea id="description" name="description" value={formData.description} onChange={handleChange} />
-
-                                    {errors.description && (
-                                        <p id="description-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
-                                            {errors.description}
-                                        </p>
-                                    )}
+                                    <Textarea
+                                        id="description"
+                                        label={translate('Description')}
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        error={errors.description}
+                                    />
                                 </div>
                             </div>
 

@@ -240,10 +240,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         </div>
 
                         <div className="grid content-start gap-2">
-                            <Label htmlFor="cookie_description">{translate('Cookie description')}</Label>
-
                             <Textarea
                                 id="cookie_description"
+                                label={translate('Cookie description')}
                                 name="cookie_description"
                                 value={cookieSettings.cookie_description}
                                 rows={4}
@@ -253,10 +252,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         </div>
 
                         <div className="grid content-start gap-2">
-                            <Label htmlFor="strictly_cookie_description">{translate('Strictly cookie description')}</Label>
-
                             <Textarea
                                 id="strictly_cookie_description"
+                                label={translate('Strictly cookie description')}
                                 name="strictly_cookie_description"
                                 value={cookieSettings.strictly_cookie_description}
                                 rows={4}
@@ -271,10 +269,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                 <section className="space-y-4">
                     <div className="grid gap-5 md:grid-cols-2">
                         <div className="grid content-start gap-2">
-                            <Label htmlFor="contact_us_description">{translate('Contact us description')}</Label>
-
                             <Textarea
                                 id="contact_us_description"
+                                label={translate('Contact us description')}
                                 name="contact_us_description"
                                 value={cookieSettings.contact_us_description}
                                 rows={3}

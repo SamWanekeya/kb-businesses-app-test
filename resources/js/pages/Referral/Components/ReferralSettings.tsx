@@ -98,18 +98,16 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                     </div>
 
                     <div>
-                        <Label htmlFor="guidelines" required>
-                            {translate('Referral guidelines')}
-                        </Label>
                         <Textarea
                             id="guidelines"
+                            label={translate('Referral guidelines')}
                             value={data.guidelines}
                             onChange={(e) => {
                                 setData('guidelines', e.target.value);
                             }}
+                            error={errors.guidelines}
                             rows={6}
                         />
-                        {errors.guidelines && <p className="text-sm text-red-500">{errors.guidelines}</p>}
                     </div>
 
                     <div className="flex justify-end">

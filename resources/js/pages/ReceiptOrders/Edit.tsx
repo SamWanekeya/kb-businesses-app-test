@@ -2,7 +2,6 @@ import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
@@ -276,14 +275,17 @@ export default function ReceiptOrderEdit() {
                                 label={translate('Name')}
                                 required
                                 onChange={(e) => set('name', e.target.value)}
-                                className={errors.name ? 'border-red-500' : ''}
+                                error={errors.name}
                             />
-                            <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-bold text-gray-900 dark:text-white">{translate('Description')}</Label>
-                            <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
+                            <Textarea
+                                value={form.description}
+                                label={translate('Description')}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
 
                         {/* Purchase Order + Return Order */}
@@ -665,8 +667,7 @@ export default function ReceiptOrderEdit() {
 
                 {/* Additional Notes */}
                 <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-                    <h2 className="mb-4 text-sm font-bold text-gray-900 dark:text-white">{translate('Additional notes')}</h2>
-                    <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
+                    <Textarea value={form.notes} label={translate('Additional notes')} onChange={(e) => set('notes', e.target.value)} rows={3} />
                 </div>
 
                 {/* Actions */}

@@ -4,7 +4,6 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@components/UserInterface/Dialog';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { router, useForm } from '@inertiajs/react';
 import { route } from '@utils/Routes';
@@ -275,8 +274,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="notes">{translate('Rejection reason (optional)')}</Label>
-                                <Textarea id="notes" name="notes" className="mt-1" />
+                                <Textarea id="notes" label={translate('Rejection reason (optional)')} name="notes" className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter>

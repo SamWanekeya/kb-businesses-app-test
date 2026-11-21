@@ -285,8 +285,12 @@ export default function ProductEdit() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <Label>{translate('Description')}</Label>
-                                        <Textarea value={data.description} onChange={(e) => set('description', e.target.value)} rows={5} />
+                                        <Textarea
+                                            value={data.description}
+                                            label={translate('Description')}
+                                            onChange={(e) => set('description', e.target.value)}
+                                            rows={5}
+                                        />
                                     </div>
                                 </div>
                             )}

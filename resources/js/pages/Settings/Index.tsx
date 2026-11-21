@@ -75,6 +75,7 @@ const SUPER_ADMIN_EXCLUDED_PERMISSIONS = [
     'manage-quotes-settings',
     'manage-sales-order-settings',
     'manage-invoice-settings',
+    'manage-google-calendar-settings',
 ] as const;
 
 /**

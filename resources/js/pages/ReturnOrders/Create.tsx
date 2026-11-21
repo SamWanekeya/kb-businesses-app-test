@@ -3,7 +3,6 @@ import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
@@ -468,13 +467,21 @@ export default function ReturnOrderCreate() {
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm">{translate('Description')}</Label>
-                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
+                                <Textarea
+                                    value={form.description}
+                                    label={translate('Description')}
+                                    onChange={(e) => set('description', e.target.value)}
+                                    rows={2}
+                                />
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm">{translate('Reason description')}</Label>
-                                <Textarea value={form.reason_description} onChange={(e) => set('reason_description', e.target.value)} rows={2} />
+                                <Textarea
+                                    value={form.reason_description}
+                                    label={translate('Reason description')}
+                                    onChange={(e) => set('reason_description', e.target.value)}
+                                    rows={2}
+                                />
                             </div>
                         </div>
                     </CardContent>
@@ -739,8 +746,7 @@ export default function ReturnOrderCreate() {
                             <span className="text-base font-extrabold text-gray-900 dark:text-white">{translate('Additional notes')}</span>
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-sm">{translate('Notes')}</Label>
-                            <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={3} />
+                            <Textarea value={form.notes} label={translate('Notes')} onChange={(e) => set('notes', e.target.value)} rows={3} />
                         </div>
                     </CardContent>
                 </Card>

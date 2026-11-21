@@ -4,7 +4,6 @@ import PaymentInputField from '@components/Payment/PaymentInputField';
 import PaymentMethodCard from '@components/Payment/PaymentMethodCard';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
-import { Label } from '@components/UserInterface/Label';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { useForm } from '@inertiajs/react';
 import PaymentSettingsSummary from '@pages/Settings/PaymentSettings/PaymentSettingsSummary';
@@ -63,7 +62,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
         currencySymbol: getStringSetting(settings, 'currency_symbol', '$'),
         is_manual_payment_mode_enabled: getBooleanSetting(settings, 'is_manual_payment_mode_enabled'),
         is_bank_payment_mode_enabled: getBooleanSetting(settings, 'is_bank_payment_mode_enabled'),
-        bank_detail: getStringSetting(settings, 'bank_detail'),
+        bank_details: getStringSetting(settings, 'bank_details'),
         // is_stripe_payment_mode_enabled: getBooleanSetting(settings, 'is_stripe_payment_mode_enabled'),
         // stripe_key: getStringSetting(settings, 'stripe_key'),
         // stripe_secret: getStringSetting(settings, 'stripe_secret'),
@@ -303,19 +302,19 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             }}
                         >
                             <div className="space-y-2">
-                                <Label htmlFor="bank_detail">{translate('Bank details')}</Label>
                                 <Textarea
-                                    id="bank_detail"
-                                    value={data.bank_detail}
+                                    id="bank_details"
+                                    label={translate('Bank details')}
+                                    value={data.bank_details}
                                     onChange={(e) => {
-                                        setData('bank_detail', e.target.value);
+                                        setData('bank_details', e.target.value);
                                     }}
+                                    error={errors.bank_details}
+                                    helperText={translate('Enter your bank details that customers will use for manual transfers')}
                                     rows={6}
+                                    maxLength={500}
+                                    required
                                 />
-                                <p className="text-foreground/75 text-xs">
-                                    {translate('Enter your bank details that customers will use for manual transfers')}
-                                </p>
-                                {errors.bank_detail && <p className="text-destructive text-sm">{errors.bank_detail}</p>}
                             </div>
                         </PaymentMethodCard>
                     )}

@@ -605,14 +605,22 @@ export default function InvoiceCreate() {
 
                         {/* Row 4 & 5: Notes + Description in one row */}
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={translate('Description')} error={errors.description}>
-                                <Textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} />
-                            </Field>
+                            <Textarea
+                                value={form.description}
+                                label={translate('Description')}
+                                error={errors.description}
+                                onChange={(e) => set('description', e.target.value)}
+                                rows={2}
+                            />
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={translate('Notes')} error={errors.notes}>
-                                <Textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={2} />
-                            </Field>
+                            <Textarea
+                                value={form.notes}
+                                label={translate('Notes')}
+                                error={errors.notes}
+                                onChange={(e) => set('notes', e.target.value)}
+                                rows={2}
+                            />
                         </div>
                     </CardContent>
                 </Card>
@@ -623,14 +631,14 @@ export default function InvoiceCreate() {
                         <CardTitle className="text-base font-bold">{translate('Billing information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4 p-6">
-                        <Field label={translate('Billing address')} required error={errors.billing_address}>
-                            <Textarea
-                                value={form.billing_address}
-                                onChange={(e) => set('billing_address', e.target.value)}
-                                rows={2}
-                                className={errors.billing_address ? 'border-red-500' : ''}
-                            />
-                        </Field>
+                        <Textarea
+                            value={form.billing_address}
+                            onChange={(e) => set('billing_address', e.target.value)}
+                            rows={2}
+                            label={translate('Billing address')}
+                            required
+                            error={errors.billing_address}
+                        />
                         <div className="grid grid-cols-2 gap-4">
                             <Input
                                 value={form.billing_city}
@@ -661,9 +669,13 @@ export default function InvoiceCreate() {
                                 className={errors.billing_postal_code ? 'border-red-500' : ''}
                             />
                         </div>
-                        <Field label={translate('Terms')} error={errors.terms}>
-                            <Textarea value={form.terms} onChange={(e) => set('terms', e.target.value)} rows={2} />
-                        </Field>
+                        <Textarea
+                            value={form.terms}
+                            label={translate('Terms')}
+                            error={errors.terms}
+                            onChange={(e) => set('terms', e.target.value)}
+                            rows={2}
+                        />
                     </CardContent>
                 </Card>
 
