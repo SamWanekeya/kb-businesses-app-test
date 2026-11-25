@@ -112,7 +112,7 @@ export default function AccountEdit() {
                 router.visit(route('accounts.index'));
             },
 
-            onError: () => {
+            onError: (errors) => {
                 toast.dismiss(toastId);
 
                 toast.error(translate('Please fix the errors before submitting.'));

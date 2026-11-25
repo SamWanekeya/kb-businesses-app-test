@@ -105,8 +105,14 @@ export default function AccountCreate() {
         }
         const toastId = toast.loading(translate('Creating account...'));
         post(route('accounts.store'), {
-            onSuccess: () => toast.dismiss(),
-            onError: () => toast.dismiss(),
+            onSuccess: () => {
+                toast.dismiss(toastId);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+                setKanbanData(kanbanDataRef);
+            },
         });
     };
 

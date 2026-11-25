@@ -223,8 +223,14 @@ export default function QuoteCreate() {
 
         const toastId = toast.loading(translate('Creating quote...'));
         post(route('quotes.store'), {
-            onSuccess: () => toast.dismiss(),
-            onError: () => toast.dismiss(),
+            onSuccess: () => {
+                toast.dismiss(toastId);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+                setKanbanData(kanbanDataRef);
+            },
         });
     };
 

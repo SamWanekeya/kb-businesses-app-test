@@ -775,7 +775,7 @@ export default function Leads() {
                                                             toast.dismiss(toastId);
                                                             loadKanbanData();
                                                         },
-                                                        onError: () => {
+                                                        onError: (errors) => {
                                                             toast.dismiss(toastId);
                                                             Object.values(errors).forEach((message) => toast.error(translate(message)));
                                                         },

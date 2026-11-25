@@ -708,6 +708,7 @@ export default function Opportunities() {
                                                 ],
                                             };
                                             setKanbanData(updated);
+                                            const toastId = toast.loading(translate('Updating opportunities...'));
                                             router.put(
                                                 route('opportunities.update-status', opportunityId),
                                                 { opportunity_stage_id: stage.id },
@@ -717,7 +718,7 @@ export default function Opportunities() {
                                                     onSuccess: () => {
                                                         toast.dismiss(toastId);
                                                     },
-                                                    onError: () => {
+                                                    onError: (errors) => {
                                                         toast.dismiss(toastId);
                                                         Object.values(errors).forEach((message) => toast.error(translate(message)));
                                                         setKanbanData(kanbanDataRef);

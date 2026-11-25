@@ -76,8 +76,14 @@ export default function LeadEdit() {
 
         const toastId = toast.loading(translate('Updating lead...'));
         put(route('leads.update', lead.id), {
-            onSuccess: () => toast.dismiss(),
-            onError: () => toast.dismiss(),
+            onSuccess: () => {
+                toast.dismiss(toastId);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+                setKanbanData(kanbanDataRef);
+            },
         });
     };
 

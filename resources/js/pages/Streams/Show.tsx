@@ -288,7 +288,7 @@ export default function Show({ module, moduleTitle, streams }: StreamsShowProps)
                                         setIsDeleteModalOpen(false);
                                         toast.dismiss(toastId);
                                     },
-                                    onError: () => {
+                                    onError: (errors) => {
                                         toast.dismiss(toastId);
                                         Object.values(errors).forEach((message) => toast.error(translate(message)));
                                     },

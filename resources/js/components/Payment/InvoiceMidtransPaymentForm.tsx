@@ -117,7 +117,7 @@ export function InvoiceMidtransPaymentForm({
                 onSuccess: () => {
                     onSuccess();
                 },
-                onError: () => {
+                onError: (errors) => {
                     setError(translate('Payment processing failed'));
                     setIsLoading(false);
                 },

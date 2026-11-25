@@ -78,8 +78,14 @@ export default function LeadCreate() {
         const toastId = toast.loading(translate('Creating lead...'));
 
         post(route('leads.store'), {
-            onSuccess: () => toast.dismiss(),
-            onError: () => toast.dismiss(),
+            onSuccess: () => {
+                toast.dismiss(toastId);
+            },
+            onError: (errors) => {
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
+                setKanbanData(kanbanDataRef);
+            },
         });
     };
 
