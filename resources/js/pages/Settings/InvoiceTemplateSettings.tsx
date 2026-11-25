@@ -18,7 +18,8 @@ import Template7 from '@pages/invoices/Templates/Template7';
 import Template8 from '@pages/invoices/Templates/Template8';
 import Template9 from '@pages/invoices/Templates/Template9';
 import { route } from '@utils/Routes';
-import { useEffect, useRef, useState } from 'react';
+import { Check } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const templateComponents = {
@@ -274,10 +275,18 @@ export default function InvoiceTemplateSettings() {
                 </Button>
             }
         >
-            <div className="space-y-6">
-                <form autoComplete="off" onSubmit={handleSubmit} id="invoice-template-settings-form">
-                    <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
-                        <div ref={settingsRef} className="space-y-4">
+            <form autoComplete="off" onSubmit={handleSubmit} id="invoice-template-settings-form">
+                <div aria-hidden="true" className="border-border border-t" />
+                <div className="grid grid-cols-1 gap-6 space-y-6 py-7 min-[1300px]:grid-cols-[320px_minmax(0,1fr)] min-[1300px]:items-start">
+                    {/* Configuration column */}
+                    <div ref={settingsRef} className="space-y-6">
+                        {/* Template selection */}
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Template settings')}</h3>
+
+                                <p className="text-muted-foreground mt-1 text-sm">{translate('Choose the appearance and layout of your invoices')}</p>
+                            </div>
                             <div className="space-y-2">
                                 <Select
                                     value={data.invoiceTemplate}
@@ -288,6 +297,7 @@ export default function InvoiceTemplateSettings() {
                                     <SelectTrigger label={translate('Invoice template')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
+
                                     <SelectContent>
                                         {Object.entries(templates).map(([key, name]) => (
                                             <SelectItem key={key} value={key}>
@@ -296,25 +306,53 @@ export default function InvoiceTemplateSettings() {
                                         ))}
                                     </SelectContent>
                                 </Select>
+
                                 {errors.invoiceTemplate && <p className="text-destructive text-sm">{errors.invoiceTemplate}</p>}
                             </div>
+                        </div>
 
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="invoice_qr_enabled" className="text-sm">
+                        {/* Display options */}
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Display options')}</h3>
+
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {translate('Customize additional elements displayed on your invoices')}
+                            </p>
+                        </div>
+
+                        <div className="border-border bg-card flex items-center justify-between gap-4 rounded-xl border p-4">
+                            <div className="space-y-1">
+                                <Label htmlFor="invoice_qr_enabled" className="text-sm font-medium">
                                     {translate('Display QR code?')}
                                 </Label>
-                                <Switch
-                                    id="invoice_qr_enabled"
-                                    checked={data.invoiceQrEnabled}
-                                    onCheckedChange={(checked) => {
-                                        setData('invoiceQrEnabled', checked);
-                                    }}
-                                />
+
+                                <p className="text-muted-foreground text-xs">{translate('Include a QR code on generated invoices')}</p>
                             </div>
 
-                            <div className="space-y-2">
+                            <Switch
+                                id="invoice_qr_enabled"
+                                checked={data.invoiceQrEnabled}
+                                onCheckedChange={(checked) => {
+                                    setData('invoiceQrEnabled', checked);
+                                }}
+                            />
+                        </div>
+
+                        {/* Brand customization */}
+                        <div className="border-border space-y-4 border-t pt-5">
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Brand customization')}</h3>
+
+                                <p className="text-muted-foreground mt-1 text-sm">
+                                    {translate('Personalize your quotes with your preferred colors and logo')}
+                                </p>
+                            </div>
+
+                            {/* Color selection */}
+                            <div className="space-y-3">
                                 <Label>{translate('Color input')}</Label>
-                                <div className="grid w-50 grid-cols-6 gap-1">
+
+                                <div className="flex flex-wrap gap-2">
                                     {colors.map((color) => (
                                         <label key={color} className="cursor-pointer">
                                             <input
@@ -325,45 +363,68 @@ export default function InvoiceTemplateSettings() {
                                                 onChange={(e) => {
                                                     setData('invoiceColor', e.target.value);
                                                 }}
-                                                className="sr-only"
+                                                aria-label={`#${color}`}
+                                                className="peer sr-only"
                                             />
+
                                             <div
-                                                className={`h-6 w-6 border-2 ${
-                                                    data.invoiceColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
+                                                className={`flex size-9 items-center justify-center rounded-lg border-2 transition-all ${
+                                                    data.invoiceColor === color
+                                                        ? 'border-primary ring-primary/20 ring-offset-background ring-2 ring-offset-2'
+                                                        : 'border-border hover:scale-105'
                                                 }`}
-                                                style={{ backgroundColor: `#${color}` }}
-                                            />
+                                                style={{
+                                                    backgroundColor: `#${color}`,
+                                                }}
+                                            >
+                                                {data.invoiceColor === color && (
+                                                    <Check
+                                                        aria-hidden="true"
+                                                        className={`size-4 drop-shadow ${color === 'ffffff' ? 'text-black' : 'text-white'}`}
+                                                    />
+                                                )}
+                                            </div>
                                         </label>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="invoiceLogo">{translate('Invoice logo')}</Label>
+                            {/* Logo selection */}
+                            <div className="space-y-3">
                                 <MediaPicker
-                                    label=""
+                                    label={translate('Invoice logo')}
                                     value={data.invoiceLogoId || ''}
                                     onChange={handleLogoSelect}
                                     showPreview={true}
                                     returnType="id"
                                 />
-                                {errors.invoiceLogo && <p className="text-destructive text-sm">{errors.invoiceLogo}</p>}
-                                <p className="text-xs text-gray-500">{translate('Select a logo for invoices')}</p>
-                            </div>
-                        </div>
 
-                        <div className="space-y-2">
-                            <Label>{translate('Preview')}</Label>
-                            <div
-                                className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
-                                style={{ height: settingsHeight - 25 || 'auto' }}
-                            >
-                                {renderPreview()}
+                                {errors.invoiceLogo && <p className="text-destructive text-sm">{errors.invoiceLogo}</p>}
+
+                                <p className="text-muted-foreground text-xs">{translate('Select a logo for invoices')}</p>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                    {/* Preview column */}
+                    <div className="min-w-0 space-y-3">
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Preview')}</h3>
+
+                            <p className="text-muted-foreground mt-1 text-sm">{translate('See how your quote template will look')}</p>
+                        </div>
+
+                        <div
+                            className="border-border overflow-auto rounded-xl border bg-white min-[1300px]:sticky min-[1300px]:top-6"
+                            style={{
+                                height: settingsHeight > 25 ? `${settingsHeight - 25}px` : 'auto',
+                            }}
+                        >
+                            {renderPreview()}
+                        </div>
+                    </div>
+                </div>
+            </form>
         </SettingsSection>
     );
 }

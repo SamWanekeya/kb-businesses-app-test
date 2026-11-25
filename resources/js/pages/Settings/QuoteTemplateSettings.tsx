@@ -18,10 +18,9 @@ import Template7 from '@pages/quotes/Templates/Template7';
 import Template8 from '@pages/quotes/Templates/Template8';
 import Template9 from '@pages/quotes/Templates/Template9';
 import { route } from '@utils/Routes';
-import { useEffect, useRef, useState } from 'react';
+import { Check } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-interface QuoteTemplateSettingsProps {}
 
 const templateComponents = {
     template1: Template1,
@@ -158,12 +157,13 @@ const colors = [
 export default function QuoteTemplateSettings() {
     const { t: translate } = useTranslation();
     const { settings } = usePage().props;
-    const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
     const [saving, setSaving] = useState(false);
     const [settingsHeight, setSettingsHeight] = useState(0);
 
-    const { data, setData, errors, reset } = useForm({
+    const settingsRef = useRef<HTMLDivElement | null>(null);
+
+    const { data, setData, errors } = useForm({
         quoteTemplate: settings.quoteTemplate || 'template1',
         quoteColor: settings.quoteColor || 'ffffff',
         quoteQrEnabled: settings.quoteQrEnabled === 'on' || settings.quoteQrEnabled === true,
@@ -171,28 +171,25 @@ export default function QuoteTemplateSettings() {
         quoteLogoUrl: settings.quoteLogo || null,
     });
 
-    //   const settingsRef = useCallback((node: HTMLDivElement | null) => {
-    //     if (node) {
-    //       const measure = () => setSettingsHeight(node.offsetHeight-25);
-    //       measure();
-    //       setTimeout(measure, 100);
-    //     }
-    //   }, [data]);
-    const settingsRef = useRef<HTMLDivElement | null>(null);
-
+    // Observe only the configuration column.
+    // The preview must not be included in this measurement.
     useEffect(() => {
-        if (!settingsRef.current) return;
+        const element = settingsRef.current;
+
+        if (!element) return;
 
         const observer = new ResizeObserver(([entry]) => {
-            setSettingsHeight(entry.contentRect.height);
+            const height = Math.ceil(entry.contentRect.height);
+
+            setSettingsHeight((previousHeight) => (previousHeight === height ? previousHeight : height));
         });
 
-        observer.observe(settingsRef.current);
+        observer.observe(element);
 
         return () => {
             observer.disconnect();
         };
-    }, [data.quoteLogoUrl]);
+    }, []);
 
     const SelectedTemplate = templateComponents[data.quoteTemplate as keyof typeof templateComponents];
 
@@ -229,50 +226,73 @@ export default function QuoteTemplateSettings() {
         );
     };
 
-    const handleLogoSelect = (value: number | '') => {
-        setData('quoteLogoId', value);
+    const handleLogoSelect = async (logoId: string | null) => {
+        setData('quoteLogoId', logoId);
 
-        if (!value) {
+        if (!logoId) {
             setData('quoteLogoUrl', null);
-        } else {
-            fetch(route('media-library.media.index'))
-                .then((res) => res.json())
-                .then((media) => {
-                    const item = media.find((m: any) => m.id === Number(value));
-                    if (item) {
-                        setData('quoteLogoUrl', item.url);
-                    }
-                });
+            return;
         }
 
-        setTimeout(() => {
-            const node = document.querySelector('[ref]') as HTMLDivElement;
-            if (node) setSettingsHeight(node.offsetHeight);
-        }, 150);
+        try {
+            const response = await fetch(route('media-library.media.index'), {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to retrieve media.');
+            }
+
+            const result = await response.json();
+
+            const selectedMedia = result.data?.find((media: { id: number | string; original_url: string }) => String(media.id) === String(logoId));
+
+            setData('quoteLogoUrl', selectedMedia?.original_url ?? null);
+        } catch (error) {
+            console.error('Failed to retrieve selected logo:', error);
+            setData('quoteLogoUrl', null);
+        }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSaving(true);
 
         try {
-            const { data: result } = await fetch(route('settings.quote-template'), {
-                quoteTemplate: data.quoteTemplate,
-                quoteColor: data.quoteColor,
-                quoteQrEnabled: data.quoteQrEnabled,
-                quoteLogoId: data.quoteLogoId,
+            const response = await fetch(route('settings.quote-template'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({
+                    quoteTemplate: data.quoteTemplate,
+                    quoteColor: data.quoteColor,
+                    quoteQrEnabled: data.quoteQrEnabled,
+                    quoteLogoId: data.quoteLogoId,
+                }),
             });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to update quote template settings');
+            }
 
             if (result.success) {
                 toast.success(result.success);
-                reset('quoteLogo');
             } else if (result.error) {
                 toast.error(result.error);
             } else {
                 toast.error(translate(result.message));
             }
-        } catch (e: any) {
-            toast.error(translate(e.response?.data?.message || 'Failed to update quote template settings'));
+        } catch (error) {
+            toast.error(error instanceof Error ? translate(error.message) : translate('Failed to update quote template settings'));
         } finally {
             setSaving(false);
         }
@@ -288,10 +308,19 @@ export default function QuoteTemplateSettings() {
                 </Button>
             }
         >
-            <div className="space-y-6">
-                <form autoComplete="off" onSubmit={handleSubmit} id="quote-template-settings-form">
-                    <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
-                        <div ref={settingsRef} className="space-y-4">
+            <form autoComplete="off" onSubmit={handleSubmit} id="quote-template-settings-form">
+                <div aria-hidden="true" className="border-border border-t" />
+                <div className="grid grid-cols-1 gap-6 space-y-6 py-7 min-[1300px]:grid-cols-[320px_minmax(0,1fr)] min-[1300px]:items-start">
+                    {/* Configuration column */}
+                    <div ref={settingsRef} className="space-y-6">
+                        {/* Template selection */}
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Template settings')}</h3>
+
+                                <p className="text-muted-foreground mt-1 text-sm">{translate('Choose the appearance and layout of your quotes')}</p>
+                            </div>
+
                             <div className="space-y-2">
                                 <Select
                                     value={data.quoteTemplate}
@@ -302,6 +331,7 @@ export default function QuoteTemplateSettings() {
                                     <SelectTrigger label={translate('Quote template')}>
                                         <SelectValue placeholder={translate('Select...')} />
                                     </SelectTrigger>
+
                                     <SelectContent>
                                         {Object.entries(templates).map(([key, name]) => (
                                             <SelectItem key={key} value={key}>
@@ -310,25 +340,53 @@ export default function QuoteTemplateSettings() {
                                         ))}
                                     </SelectContent>
                                 </Select>
+
                                 {errors.quoteTemplate && <p className="text-destructive text-sm">{errors.quoteTemplate}</p>}
                             </div>
+                        </div>
 
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="quote_qr_enabled" className="text-sm">
+                        {/* Display options */}
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Display options')}</h3>
+
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {translate('Customize additional elements displayed on your quotes')}
+                            </p>
+                        </div>
+
+                        <div className="border-border bg-card flex items-center justify-between gap-4 rounded-xl border p-4">
+                            <div className="space-y-1">
+                                <Label htmlFor="quote_qr_enabled" className="text-sm font-medium">
                                     {translate('Display QR code?')}
                                 </Label>
-                                <Switch
-                                    id="quote_qr_enabled"
-                                    checked={data.quoteQrEnabled}
-                                    onCheckedChange={(checked) => {
-                                        setData('quoteQrEnabled', checked);
-                                    }}
-                                />
+
+                                <p className="text-muted-foreground text-xs">{translate('Include a QR code on generated quotes')}</p>
                             </div>
 
-                            <div className="space-y-2">
+                            <Switch
+                                id="quote_qr_enabled"
+                                checked={data.quoteQrEnabled}
+                                onCheckedChange={(checked) => {
+                                    setData('quoteQrEnabled', checked);
+                                }}
+                            />
+                        </div>
+
+                        {/* Brand customization */}
+                        <div className="border-border space-y-4 border-t pt-5">
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Brand customization')}</h3>
+
+                                <p className="text-muted-foreground mt-1 text-sm">
+                                    {translate('Personalize your quotes with your preferred colors and logo')}
+                                </p>
+                            </div>
+
+                            {/* Color selection */}
+                            <div className="space-y-3">
                                 <Label>{translate('Color input')}</Label>
-                                <div className="grid w-50 grid-cols-6 gap-1">
+
+                                <div className="flex flex-wrap gap-2">
                                     {colors.map((color) => (
                                         <label key={color} className="cursor-pointer">
                                             <input
@@ -339,39 +397,68 @@ export default function QuoteTemplateSettings() {
                                                 onChange={(e) => {
                                                     setData('quoteColor', e.target.value);
                                                 }}
-                                                className="sr-only"
+                                                aria-label={`#${color}`}
+                                                className="peer sr-only"
                                             />
+
                                             <div
-                                                className={`h-6 w-6 border-2 ${
-                                                    data.quoteColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
+                                                className={`flex size-9 items-center justify-center rounded-lg border-2 transition-all ${
+                                                    data.quoteColor === color
+                                                        ? 'border-primary ring-primary/20 ring-offset-background ring-2 ring-offset-2'
+                                                        : 'border-border hover:scale-105'
                                                 }`}
-                                                style={{ backgroundColor: `#${color}` }}
-                                            />
+                                                style={{
+                                                    backgroundColor: `#${color}`,
+                                                }}
+                                            >
+                                                {data.quoteColor === color && (
+                                                    <Check
+                                                        aria-hidden="true"
+                                                        className={`size-4 drop-shadow ${color === 'ffffff' ? 'text-black' : 'text-white'}`}
+                                                    />
+                                                )}
+                                            </div>
                                         </label>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="quoteLogo">{translate('Quote logo')}</Label>
-                                <MediaPicker label="" value={data.quoteLogoId || ''} onChange={handleLogoSelect} showPreview={true} returnType="id" />
-                                {errors.quoteLogo && <p className="text-destructive text-sm">{errors.quoteLogo}</p>}
-                                <p className="text-xs text-gray-500">{translate('Select a logo for quotes')}</p>
-                            </div>
-                        </div>
+                            {/* Logo selection */}
+                            <div className="space-y-3">
+                                <MediaPicker
+                                    label={translate('Quote logo')}
+                                    value={data.quoteLogoId || ''}
+                                    onChange={handleLogoSelect}
+                                    showPreview={true}
+                                    returnType="id"
+                                />
 
-                        <div className="space-y-2">
-                            <Label>{translate('Preview')}</Label>
-                            <div
-                                className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
-                                style={{ height: settingsHeight - 25 || 'auto' }}
-                            >
-                                {renderPreview()}
+                                {errors.quoteLogo && <p className="text-destructive text-sm">{errors.quoteLogo}</p>}
+
+                                <p className="text-muted-foreground text-xs">{translate('Select a logo for quotes')}</p>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                    {/* Preview column */}
+                    <div className="min-w-0 space-y-3">
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Preview')}</h3>
+
+                            <p className="text-muted-foreground mt-1 text-sm">{translate('See how your quote template will look')}</p>
+                        </div>
+
+                        <div
+                            className="border-border overflow-auto rounded-xl border bg-white min-[1300px]:sticky min-[1300px]:top-6"
+                            style={{
+                                height: settingsHeight > 25 ? `${settingsHeight - 25}px` : 'auto',
+                            }}
+                        >
+                            {renderPreview()}
+                        </div>
+                    </div>
+                </div>
+            </form>
         </SettingsSection>
     );
 }

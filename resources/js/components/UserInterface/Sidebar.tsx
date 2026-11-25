@@ -311,7 +311,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
                     variant="ghost"
                     size="icon"
                     className={cn(
-                        'text-foreground/75 size-8 rounded-md border border-transparent transition-all duration-200',
+                        'text-foreground/75 size-8 rounded-full border border-transparent transition-all duration-200',
                         'hover:border-border hover:bg-muted hover:text-foreground',
                         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2',
                         'active:scale-[0.98]',
@@ -470,8 +470,8 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
 
 const sidebarMenuButtonVariants = cva(
     cn(
-        'peer/menu-button group relative flex w-full items-center gap-3 overflow-hidden rounded-md',
-        'border border-transparent px-2 py-2 text-left text-sm',
+        'peer/menu-button group relative flex w-full items-center gap-3 overflow-hidden rounded-full',
+        'border border-transparent px-3 py-2 text-left text-sm',
         'transition-all duration-200 ease-out',
         'ring-ring outline-none',
         'hover:border-border/60 hover:bg-muted/70 hover:text-foreground',
@@ -596,12 +596,12 @@ function SidebarMenuSkeleton({
         >
             {showIcon && (
                 <Skeleton
-                    className={cn('size-4 rounded-md', active ? 'bg-primary/40' : 'bg-muted-foreground/20')}
+                    className={cn('size-4 rounded-full', active ? 'bg-primary/40' : 'bg-muted-foreground/20')}
                     data-sidebar="menu-skeleton-icon"
                 />
             )}
 
-            <Skeleton className={cn('h-4 rounded-md', widthClass)} />
+            <Skeleton className={cn('h-4 rounded-full', widthClass)} />
         </div>
     );
 }
@@ -655,7 +655,7 @@ function SidebarMenuSubButton({
             data-size={size}
             data-active={isActive}
             className={cn(
-                'flex h-8 min-w-0 items-center gap-2 overflow-hidden rounded-md border border-transparent',
+                'flex h-8 min-w-0 items-center gap-2 overflow-hidden rounded-full border border-transparent',
                 'px-2.5 transition-all duration-200',
                 'ring-ring outline-none',
                 'hover:border-border/50 hover:bg-muted/60 hover:text-foreground',

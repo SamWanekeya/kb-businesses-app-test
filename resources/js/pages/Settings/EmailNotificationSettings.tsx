@@ -81,25 +81,28 @@ export default function EmailNotificationSettings() {
                 </Button>
             }
         >
-            <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2 min-[1600px]:grid-cols-3">
-                    {availableNotifications.map((item) => (
-                        <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
-                            <div>
-                                <Label htmlFor={item.name} className="text-sm">
-                                    {translate(item.label)}
-                                </Label>
-                            </div>
-                            <Switch
-                                id={item.name}
-                                checked={notifications[item.name] || false}
-                                onCheckedChange={(checked) => {
-                                    handleToggle(item.name, checked);
-                                }}
-                            />
+            <div aria-hidden="true" className="border-border border-t" />
+            <div className="grid grid-cols-1 gap-3 space-y-6 py-7 sm:grid-cols-2 xl:grid-cols-3">
+                {availableNotifications.map((item) => (
+                    <div
+                        key={item.name}
+                        className="border-border bg-card hover:bg-muted/30 flex min-h-20 items-center justify-between gap-4 rounded-xl border p-4 transition-colors"
+                    >
+                        <div className="flex min-w-0 items-center gap-3">
+                            <div className={`size-2 shrink-0 rounded-full ${notifications[item.name] ? 'bg-primary' : 'bg-muted-foreground/40'}`} />
+
+                            <Label htmlFor={item.name} className="text-foreground cursor-pointer text-sm leading-relaxed font-medium">
+                                {translate(item.label)}
+                            </Label>
                         </div>
-                    ))}
-                </div>
+
+                        <Switch
+                            id={item.name}
+                            checked={notifications[item.name] || false}
+                            onCheckedChange={(checked) => handleToggle(item.name, checked)}
+                        />
+                    </div>
+                ))}
             </div>
         </SettingsSection>
     );

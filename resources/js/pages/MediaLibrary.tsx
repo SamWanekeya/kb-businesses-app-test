@@ -428,7 +428,7 @@ export default function MediaLibraryDemo() {
                                 </div>
                                 {searchTerm && (
                                     <p className="text-foreground/75 mt-1 text-xs">
-                                        {translate('Showing results for "{{term}}"', { term: searchTerm })}
+                                        {translate('Showing results for “add product”', { term: searchTerm })}
                                     </p>
                                 )}
                             </div>
@@ -482,7 +482,7 @@ export default function MediaLibraryDemo() {
                                 <h3 className="mb-2 text-lg font-bold">{translate('No media files found')}</h3>
                                 <p className="text-foreground/75 mb-6">
                                     {searchTerm
-                                        ? translate('No results found for "{{term}}"', { term: searchTerm })
+                                        ? translate('No results found for “add product”', { term: searchTerm })
                                         : translate('Get started by uploading your first file')}
                                 </p>
                                 {!searchTerm && (

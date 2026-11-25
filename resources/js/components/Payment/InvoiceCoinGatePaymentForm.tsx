@@ -118,7 +118,7 @@ export function InvoiceCoingatePaymentForm({
                             <div className="text-xs text-blue-800">
                                 <p className="mb-1 font-medium">{translate('Payment process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{translate('Click "pay with Crypto" to proceed to CoinGate')}</li>
+                                    <li>{translate('Click “pay with Crypto” to proceed to CoinGate')}</li>
                                     <li>{translate('Complete payment using your selected cryptocurrency')}</li>
                                     <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>

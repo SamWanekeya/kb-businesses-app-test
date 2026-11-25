@@ -97,9 +97,6 @@ export default function AccountCreate() {
         if (data.phone && !/^[+\d\s\-().]+$/.test(data.phone)) {
             clientErrors['phone'] = translate('Phone number can only contain digits, spaces, +, -, (, )');
         }
-        if (data.website && !/^https?:\/\/.+/.test(data.website)) {
-            clientErrors['website'] = translate('Website must start with http:// or https://');
-        }
         if (Object.keys(clientErrors).length > 0) {
             Object.entries(clientErrors).forEach(([k, v]) => {
                 setError(k as any, v);

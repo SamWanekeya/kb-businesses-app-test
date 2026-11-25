@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
-use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
 use App\Http\Controllers\Settings\PaymentSettingController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
@@ -31,12 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
     Route::post('/payment-settings', [PaymentSettingController::class, 'store'])
         ->name('payment.settings');
-
-    Route::post('/organization-payment-settings', [OrganizationPaymentSettingController::class, 'store'])
-        ->name('payment.organization.settings');
-
-    Route::get('/organization-payment-methods', [OrganizationPaymentSettingController::class, 'getOrganizationPaymentMethods'])
-        ->name('payment.organization.methods');
 
     Route::get('settings', [SettingsController::class, 'index'])
         ->name('settings.index');

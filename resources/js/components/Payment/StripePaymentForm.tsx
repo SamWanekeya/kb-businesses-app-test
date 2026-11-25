@@ -177,7 +177,7 @@ export function StripePaymentForm({
         return (
             <div className="bg-destructive/10 rounded-md border p-4 text-center">
                 <p className="text-destructive mb-2 text-sm">{translate('Invalid Stripe configuration')}</p>
-                <p className="text-foreground/75 text-xs">{translate('Stripe publishable key must start with "pk_".')}</p>
+                <p className="text-foreground/75 text-xs">{translate('Stripe publishable key must start with “pk_”.')}</p>
             </div>
         );
     }

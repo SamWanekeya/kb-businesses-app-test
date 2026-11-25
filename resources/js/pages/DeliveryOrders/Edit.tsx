@@ -420,7 +420,7 @@ export default function DeliveryOrderEdit() {
 
                     {productRows.length === 0 ? (
                         <div className="mx-6 my-4 rounded-lg border-2 border-dashed border-gray-200 py-10 text-center dark:border-gray-700">
-                            <p className="text-sm text-gray-400">{translate('No products added yet. Click "add product" to begin.')}</p>
+                            <p className="text-sm text-gray-400">{translate('No products added yet. Click “add product” to begin.')}</p>
                         </div>
                     ) : (
                         <>

@@ -3,12 +3,11 @@ import MediaPicker from '@components/MediaPicker';
 import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import Input from '@components/UserInterface/Input';
-import { Label } from '@components/UserInterface/Label';
 
 import { useBrand } from '@contexts/BrandContext';
+import useEmailValidation from '@hooks/useEmailValidation';
 import useTheme from '@hooks/useTheme';
 
-import useEmailValidation from '@hooks/useEmailValidation';
 import { router, usePage } from '@inertiajs/react';
 import { resolveImageUrl } from '@utils/Helpers/Url';
 import { route } from '@utils/Routes';
@@ -18,9 +17,11 @@ import { Building2, Check, Image as ImageIcon, Monitor, Moon, Sun } from 'lucide
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Textarea } from '@components/UserInterface/Textarea';
 import kakbimaIcon from '@images/logos/kakbima_icon.png';
 import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
 import kakbimaLogoDark from '@images/logos/kakbima_logo_dark.png';
+import { cn } from '@lib/utils';
 
 export interface BrandSettings {
     logo_light: string;
@@ -48,6 +49,14 @@ interface ThemeOption {
     label: string;
     description: string;
     Icon: typeof Sun;
+}
+
+interface OrganizationFieldConfig {
+    name: Exclude<OrganizationFieldName, 'organization_physical_address'>;
+    label: string;
+    type: 'text' | 'tel' | 'email';
+    required?: boolean;
+    inputMode?: 'text' | 'tel' | 'email';
 }
 
 type FormErrors = Partial<Record<BrandSettingsFieldName, string>>;
@@ -96,59 +105,6 @@ function normalizeValidationErrors(validationErrors: ServerValidationErrors): Fo
     return normalizedErrors;
 }
 
-const THEME_OPTIONS: ThemeOption[] = [
-    {
-        value: 'light',
-        label: 'Light',
-        description: 'Use a light appearance.',
-        Icon: Sun,
-    },
-    {
-        value: 'dark',
-        label: 'Dark',
-        description: 'Use a dark appearance.',
-        Icon: Moon,
-    },
-    {
-        value: 'system',
-        label: 'System',
-        description: 'Follow your device settings.',
-        Icon: Monitor,
-    },
-];
-
-const ORGANIZATION_FIELDS: {
-    name: Exclude<OrganizationFieldName, 'organization_physical_address'>;
-    label: string;
-    type: 'text' | 'tel' | 'email';
-    required?: boolean;
-    inputMode?: 'text' | 'tel' | 'email';
-}[] = [
-    {
-        name: 'organization_name',
-        label: 'Organization name',
-        type: 'text',
-        required: true,
-    },
-    {
-        name: 'organization_tax_id_pin_number',
-        label: 'Tax ID/PIN number',
-        type: 'text',
-    },
-    {
-        name: 'organization_phone_number',
-        label: 'Phone number',
-        type: 'tel',
-        inputMode: 'tel',
-    },
-    {
-        name: 'organization_email',
-        label: 'Email',
-        type: 'email',
-        inputMode: 'email',
-    },
-];
-
 /**
  * BrandSettings
  *
@@ -193,6 +149,72 @@ export default function BrandSettings() {
     const { updateBrandSettings } = useBrand();
     const theme = useTheme();
     const validateEmail = useEmailValidation();
+
+    /**
+     * Theme configuration.
+     *
+     * Translation strings are explicitly passed to translate() here
+     * so the PHP translation extraction process can discover them.
+     */
+    const THEME_OPTIONS = useMemo<ThemeOption[]>(
+        () => [
+            {
+                value: 'light',
+                label: translate('Light'),
+                description: translate('Use a light appearance.'),
+                Icon: Sun,
+            },
+            {
+                value: 'dark',
+                label: translate('Dark'),
+                description: translate('Use a dark appearance.'),
+                Icon: Moon,
+            },
+            {
+                value: 'system',
+                label: translate('System'),
+                description: translate('Follow your device settings.'),
+                Icon: Monitor,
+            },
+        ],
+        [translate],
+    );
+
+    /**
+     * Organization field configuration.
+     *
+     * Field labels are translated when the configuration is created
+     * rather than when individual input components are rendered.
+     * This keeps all translation strings statically extractable.
+     */
+    const ORGANIZATION_FIELDS = useMemo<OrganizationFieldConfig[]>(
+        () => [
+            {
+                name: 'organization_name',
+                label: translate('Organization name'),
+                type: 'text',
+                required: true,
+            },
+            {
+                name: 'organization_tax_id_pin_number',
+                label: translate('Tax ID/PIN number'),
+                type: 'text',
+            },
+            {
+                name: 'organization_phone_number',
+                label: translate('Phone number'),
+                type: 'tel',
+                inputMode: 'tel',
+            },
+            {
+                name: 'organization_email',
+                label: translate('Email'),
+                type: 'email',
+                inputMode: 'email',
+            },
+        ],
+        [translate],
+    );
 
     const initialSettings = useMemo<BrandSettings>(() => {
         const settings = userSettings || globalSettings || {};
@@ -264,9 +286,10 @@ export default function BrandSettings() {
     );
 
     /**
-     * Updates an organization field and clears its previous validation error.
-     * The Input component reports the new validation result immediately
-     * after the value changes.
+     * Updates an organization field.
+     *
+     * The Input component reports the new validation result independently
+     * through handleFieldValidate.
      */
     const handleOrganizationChange = useCallback((field: OrganizationFieldName, value: string) => {
         setForm((previous) => ({
@@ -275,6 +298,9 @@ export default function BrandSettings() {
         }));
     }, []);
 
+    /**
+     * Updates a brand asset and synchronizes it with the brand context.
+     */
     const handleFile = useCallback(
         (url: string, field: BrandAssetField) => {
             setForm((previous) => ({
@@ -287,6 +313,9 @@ export default function BrandSettings() {
         [updateBrandSettings],
     );
 
+    /**
+     * Previews an appearance preference without immediately persisting it.
+     */
     const handleThemePreview = useCallback(
         (mode: Appearance) => {
             setForm((previous) => ({
@@ -299,6 +328,16 @@ export default function BrandSettings() {
         [theme],
     );
 
+    /**
+     * Validates and persists brand settings.
+     *
+     * Organization fields are validated before submission. All validation
+     * errors are collected together so users can correct every invalid field
+     * without submitting the form repeatedly.
+     *
+     * Server-side validation errors are normalized before being added
+     * to the field error state.
+     */
     const save = useCallback(() => {
         if (saving) {
             return;
@@ -392,12 +431,10 @@ export default function BrandSettings() {
                 },
             },
         );
-    }, [form, saving, theme, translate, userType, validateEmail]);
+    }, [form, saving, theme, translate, userType, validateEmail, ORGANIZATION_FIELDS]);
 
     const lightLogoPreview = resolveImageUrl(form.logo_light) || kakbimaLogoLight;
-
     const darkLogoPreview = resolveImageUrl(form.logo_dark) || kakbimaLogoDark;
-
     const faviconPreview = resolveImageUrl(form.favicon) || kakbimaIcon;
 
     return (
@@ -409,7 +446,7 @@ export default function BrandSettings() {
             action={
                 <div className="flex items-center gap-3">
                     {isDirty && (
-                        <span className="text-foreground/75 hidden text-sm sm:inline" role="status">
+                        <span className="text-muted-foreground hidden text-sm sm:inline" role="status">
                             {translate('Unsaved changes')}
                         </span>
                     )}
@@ -420,39 +457,40 @@ export default function BrandSettings() {
                 </div>
             }
         >
-            <div className="border-border border-t pb-6" />
+            {/* Organization details */}
+            {userType === 'organization' && (
+                <>
+                    <div aria-hidden="true" className="border-border border-t" />
 
-            <div className="space-y-10">
-                {userType === 'organization' && (
-                    <section aria-labelledby="organization-details-heading" className="space-y-5">
+                    <section aria-labelledby="organization-details-heading" className="space-y-5 py-7 first:pt-0">
                         <div className="flex items-start gap-3">
-                            <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
-                                <Building2 className="text-foreground/75 size-5" aria-hidden="true" />
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <Building2 className="size-[18px]" aria-hidden="true" />
                             </div>
 
                             <div className="min-w-0 space-y-1">
-                                <h3 id="organization-details-heading" className="text-base font-semibold tracking-tight">
+                                <h3 id="organization-details-heading" className="text-foreground text-sm font-semibold tracking-tight">
                                     {translate('Organization details')}
                                 </h3>
 
-                                <p className="text-foreground/75 text-sm">
+                                <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
                                     {translate('Keep your organization information accurate across official documents.')}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-x-5 gap-y-5 md:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                             {ORGANIZATION_FIELDS.map((field) => {
                                 const error = errors[field.name];
                                 const errorId = `${field.name}-error`;
 
                                 return (
-                                    <div key={field.name} className="grid content-start gap-2">
+                                    <div key={field.name} className="grid min-w-0 content-start gap-2">
                                         <Input
                                             inputIdentifier={field.name}
                                             inputType={field.type}
                                             inputMode={field.inputMode ?? 'text'}
-                                            label={translate(field.label)}
+                                            label={field.label}
                                             name={field.name}
                                             value={form[field.name]}
                                             required={field.required}
@@ -468,111 +506,116 @@ export default function BrandSettings() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="organization_physical_address">{translate('Physical address')}</Label>
-
-                            <textarea
+                            <Textarea
                                 id="organization_physical_address"
                                 name="organization_physical_address"
+                                label={translate('Physical address')}
                                 value={form.organization_physical_address}
                                 onChange={(event) => handleOrganizationChange('organization_physical_address', event.currentTarget.value)}
-                                aria-invalid={Boolean(errors.organization_physical_address)}
-                                aria-describedby={errors.organization_physical_address ? 'organization_physical_address-error' : undefined}
+                                error={errors.organization_physical_address}
                                 rows={3}
-                                className="border-input bg-background placeholder:text-foreground/75 focus-visible:ring-ring w-full resize-y rounded-md border px-3 py-2 text-sm shadow-xs transition-[border-color,box-shadow] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                             />
-
-                            {errors.organization_physical_address && (
-                                <p id="organization_physical_address-error" role="alert" className="text-destructive text-sm">
-                                    {translate(errors.organization_physical_address)}
-                                </p>
-                            )}
                         </div>
                     </section>
-                )}
+                </>
+            )}
 
-                <section aria-labelledby="appearance-heading" className="space-y-5">
-                    <div className="flex items-start gap-3">
-                        <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
-                            <Monitor className="text-foreground/75 size-5" aria-hidden="true" />
-                        </div>
+            <div aria-hidden="true" className="border-border border-t" />
 
-                        <div className="min-w-0 space-y-1">
-                            <h3 id="appearance-heading" className="text-base font-semibold tracking-tight">
-                                {translate('Appearance')}
-                            </h3>
-
-                            <p className="text-foreground/75 text-sm">{translate('Choose how the application should look on your device.')}</p>
-                        </div>
+            {/* Appearance */}
+            <section aria-labelledby="appearance-heading" className="space-y-5 py-7">
+                <div className="flex items-start gap-3">
+                    <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                        <Monitor className="size-[18px]" aria-hidden="true" />
                     </div>
 
-                    <div role="group" aria-label={translate('Appearance preference')} className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        {THEME_OPTIONS.map(({ value, label, description, Icon }) => {
-                            const selected = form.theme_mode === value;
+                    <div className="min-w-0 space-y-1">
+                        <h3 id="appearance-heading" className="text-foreground text-sm font-semibold tracking-tight">
+                            {translate('Appearance')}
+                        </h3>
 
-                            return (
-                                <Button
-                                    key={value}
-                                    type="button"
-                                    variant="outline"
-                                    aria-pressed={selected}
-                                    onClick={() => handleThemePreview(value)}
-                                    className={[
-                                        'h-auto min-h-28 w-full items-start justify-start gap-3 rounded-xl p-4 text-left whitespace-normal',
-                                        'transition-colors motion-reduce:transition-none',
-                                        'hover:border-primary/50',
-                                        selected ? 'border-primary bg-primary/5 ring-primary/20 ring-1' : 'border-border bg-card',
-                                    ].join(' ')}
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                            {translate('Choose how the application should look on your device.')}
+                        </p>
+                    </div>
+                </div>
+
+                <div role="group" aria-label={translate('Appearance preference')} className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {THEME_OPTIONS.map(({ value, label, description, Icon }) => {
+                        const selected = form.theme_mode === value;
+
+                        return (
+                            <Button
+                                key={value}
+                                type="button"
+                                variant="outline"
+                                aria-pressed={selected}
+                                onClick={() => handleThemePreview(value)}
+                                className={cn(
+                                    'h-auto min-h-32 w-full items-start justify-start',
+                                    'gap-3 rounded-xl p-4 text-left whitespace-normal',
+                                    'transition-colors duration-150',
+                                    'motion-reduce:transition-none',
+                                    'hover:bg-muted/50 hover:border-primary/40',
+                                    'focus-visible:ring-ring focus-visible:ring-2',
+                                    selected ? 'border-primary bg-primary/5 ring-primary/20 hover:bg-primary/5 ring-1' : 'border-border bg-card',
+                                )}
+                            >
+                                <span
+                                    className={cn(
+                                        'flex size-10 shrink-0 items-center justify-center rounded-full',
+                                        selected ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground',
+                                    )}
                                 >
-                                    <span
-                                        className={[
-                                            'flex size-9 shrink-0 items-center justify-center rounded-lg',
-                                            selected ? 'bg-primary/10 text-primary' : 'bg-muted text-foreground/75',
-                                        ].join(' ')}
-                                    >
-                                        <Icon className="size-4" aria-hidden="true" />
+                                    <Icon className="size-[18px]" aria-hidden="true" />
+                                </span>
+
+                                <span className="min-w-0 flex-1 space-y-1.5">
+                                    <span className="flex items-center justify-between gap-2">
+                                        <span className="text-foreground text-sm font-semibold">{label}</span>
+
+                                        {selected && <Check className="text-primary size-4 shrink-0" aria-hidden="true" />}
                                     </span>
 
-                                    <span className="min-w-0 flex-1 space-y-1">
-                                        <span className="flex items-center justify-between gap-2">
-                                            <span className="font-medium">{translate(label)}</span>
+                                    <span className="text-muted-foreground block text-xs leading-relaxed">{description}</span>
+                                </span>
+                            </Button>
+                        );
+                    })}
+                </div>
+            </section>
 
-                                            {selected && <Check className="text-primary size-4 shrink-0" aria-hidden="true" />}
-                                        </span>
+            {/* Brand assets */}
+            {userType === 'organization' && (
+                <>
+                    <div aria-hidden="true" className="border-border border-t" />
 
-                                        <span className="text-foreground/75 block text-xs leading-relaxed">{translate(description)}</span>
-                                    </span>
-                                </Button>
-                            );
-                        })}
-                    </div>
-                </section>
-
-                {userType === 'organization' && (
-                    <section aria-labelledby="brand-assets-heading" className="space-y-5">
+                    <section aria-labelledby="brand-assets-heading" className="space-y-6 py-7">
                         <div className="flex items-start gap-3">
-                            <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
-                                <ImageIcon className="text-foreground/75 size-5" aria-hidden="true" />
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <ImageIcon className="size-[18px]" aria-hidden="true" />
                             </div>
 
                             <div className="min-w-0 space-y-1">
-                                <h3 id="brand-assets-heading" className="text-base font-semibold tracking-tight">
+                                <h3 id="brand-assets-heading" className="text-foreground text-sm font-semibold tracking-tight">
                                     {translate('Brand assets')}
                                 </h3>
 
-                                <p className="text-foreground/75 text-sm">
+                                <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
                                     {translate('Upload the logos and favicon used throughout your organization’s workspace and documents.')}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="border-border border-t" />
-
-                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                            <article className="bg-card min-w-0 space-y-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                            {/* Light mode logo */}
+                            <article className="border-border/70 bg-card min-w-0 space-y-4 rounded-xl border p-4">
                                 <div className="space-y-1">
-                                    <h4 className="text-sm">{translate('Light mode logo')}</h4>
+                                    <h4 className="text-foreground text-sm font-medium">{translate('Light mode logo')}</h4>
 
-                                    <p className="text-foreground/75 text-xs">{translate('Displayed against light backgrounds.')}</p>
+                                    <p className="text-muted-foreground text-xs leading-relaxed">
+                                        {translate('Displayed against light backgrounds.')}
+                                    </p>
                                 </div>
 
                                 <div className="flex h-36 items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white p-5">
@@ -587,11 +630,14 @@ export default function BrandSettings() {
                                 <MediaPicker value={form.logo_light} onChange={(url) => handleFile(url, 'logo_light')} showPreview={false} />
                             </article>
 
-                            <article className="bg-card min-w-0 space-y-4">
+                            {/* Dark mode logo */}
+                            <article className="border-border/70 bg-card min-w-0 space-y-4 rounded-xl border p-4">
                                 <div className="space-y-1">
-                                    <h4 className="text-sm">{translate('Dark mode logo')}</h4>
+                                    <h4 className="text-foreground text-sm font-medium">{translate('Dark mode logo')}</h4>
 
-                                    <p className="text-foreground/75 text-xs">{translate('Displayed against dark backgrounds.')}</p>
+                                    <p className="text-muted-foreground text-xs leading-relaxed">
+                                        {translate('Displayed against dark backgrounds.')}
+                                    </p>
                                 </div>
 
                                 <div className="flex h-36 items-center justify-center overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950 p-5">
@@ -606,15 +652,18 @@ export default function BrandSettings() {
                                 <MediaPicker value={form.logo_dark} onChange={(url) => handleFile(url, 'logo_dark')} showPreview={false} />
                             </article>
 
-                            <article className="bg-card min-w-0 space-y-4">
+                            {/* Favicon */}
+                            <article className="border-border/70 bg-card min-w-0 space-y-4 rounded-xl border p-4">
                                 <div className="space-y-1">
-                                    <h4 className="text-sm">{translate('Favicon')}</h4>
+                                    <h4 className="text-foreground text-sm font-medium">{translate('Favicon')}</h4>
 
-                                    <p className="text-foreground/75 text-xs">{translate('The small icon shown in browser tabs.')}</p>
+                                    <p className="text-muted-foreground text-xs leading-relaxed">
+                                        {translate('The small icon shown in browser tabs.')}
+                                    </p>
                                 </div>
 
-                                <div className="bg-muted/30 flex h-36 items-center justify-center overflow-hidden rounded-lg border p-5">
-                                    <div className="bg-background flex size-20 items-center justify-center rounded-xl border shadow-xs">
+                                <div className="border-border bg-muted/30 flex h-36 items-center justify-center overflow-hidden rounded-lg border p-5">
+                                    <div className="border-border bg-background flex size-20 items-center justify-center rounded-xl border shadow-xs">
                                         <img
                                             src={faviconPreview}
                                             alt={translate('Favicon preview')}
@@ -628,8 +677,8 @@ export default function BrandSettings() {
                             </article>
                         </div>
                     </section>
-                )}
-            </div>
+                </>
+            )}
         </SettingsSection>
     );
 }

@@ -104,36 +104,24 @@ function scanDirectory($dir, &$translations) {
  *
  * @return void
  */
-function extractTranslations($file, &$translations) {
+
+function extractTranslations(string $file, array &$translations): void
+{
     $content = file_get_contents($file);
 
-    // Match translate("...") pattern - ensure it's the function, not part of another word
-    preg_match_all('/(?<![a-zA-Z0-9_])translate\("([^"]*)"\)/', $content, $doubleQuoteMatches);
-
-    // Match translate('...') pattern - ensure it's the function, not part of another word
-    preg_match_all("/(?<![a-zA-Z0-9_])translate\('([^']*)'\)/", $content, $singleQuoteMatches);
-
-    // Match __("...") pattern
-    preg_match_all('/__\("([^"]*)"\)/', $content, $doubleQuoteMatchesUnderscore);
-
-    // Match __('...') pattern
-    preg_match_all("/__\('([^']*)'\)/", $content, $singleQuoteMatchesUnderscore);
-
-    // Add matches to translations array
-    foreach ($doubleQuoteMatches[1] as $match) {
-        $translations[$match] = $match;
+    if ($content === false) {
+        return;
     }
 
-    foreach ($singleQuoteMatches[1] as $match) {
-        $translations[$match] = $match;
-    }
+    $pattern = '/(?<![a-zA-Z0-9_$])(?:translate|__)\s*\(\s*([\'"])((?:\\\\.|(?!\1)[^\\\\])*)\1/s';
 
-    foreach ($doubleQuoteMatchesUnderscore[1] as $match) {
-        $translations[$match] = $match;
-    }
+    preg_match_all($pattern, $content, $matches);
 
-    foreach ($singleQuoteMatchesUnderscore[1] as $match) {
-        $translations[$match] = $match;
+    foreach ($matches[2] as $match) {
+        // Unescape JavaScript/PHP-style escaped characters.
+        $translation = stripcslashes($match);
+
+        $translations[$translation] = $translation;
     }
 }
 

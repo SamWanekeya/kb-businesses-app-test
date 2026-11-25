@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { router, usePage } from '@inertiajs/react';
 import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
+import { Clock, Globe2 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -250,80 +251,120 @@ export default function SystemSettings({
                 </Button>
             }
         >
-            <form id="system-settings-form" autoComplete="off" onSubmit={submitSystemSettings} className="space-y-6">
+            <form id="system-settings-form" autoComplete="off" onSubmit={submitSystemSettings}>
                 <div aria-hidden="true" className="border-border border-t" />
+                {/* Regional preferences */}
+                <section className="space-y-5 py-7 first:pt-0">
+                    <div className="flex items-start gap-3">
+                        <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                            <Globe2 className="size-[18px]" aria-hidden="true" />
+                        </div>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
-                    <div className="grid content-start">
-                        <Select value={systemSettings.default_language} onValueChange={handleLanguageChange}>
-                            <SelectTrigger id="default_language" label={translate('Default language')}>
-                                <SelectValue placeholder={translate('Select...')}>{selectedLanguage?.name ?? translate('Select...')}</SelectValue>
-                            </SelectTrigger>
+                        <div className="min-w-0 space-y-1">
+                            <h3 className="text-foreground text-sm font-semibold tracking-tight">{translate('Regional preferences')}</h3>
 
-                            <SelectContent>
-                                {languageData.map((language) => (
-                                    <SelectItem key={language.code} value={language.code}>
-                                        {language.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                            <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
+                                {translate('Set the default language and regional date and time formats used throughout the platform.')}
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="grid content-start">
-                        <Select value={systemSettings.date_format} onValueChange={handleDateFormatChange}>
-                            <SelectTrigger id="date_format" label={translate('Date format')}>
-                                <SelectValue placeholder={translate('Select...')} />
-                            </SelectTrigger>
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
+                        {/* Default language */}
+                        <div className="grid content-start gap-2">
+                            <Select value={systemSettings.default_language} onValueChange={handleLanguageChange}>
+                                <SelectTrigger id="default_language" label={translate('Default language')}>
+                                    <SelectValue placeholder={translate('Select...')}>{selectedLanguage?.name ?? translate('Select...')}</SelectValue>
+                                </SelectTrigger>
 
-                            <SelectContent>
-                                {Object.entries(dateFormats).map(([format, example]) => (
-                                    <SelectItem key={format} value={format}>
-                                        <span className="flex items-center justify-between gap-4">
-                                            <span>{format}</span>
-                                            <span className="text-foreground/75 text-sm">({example})</span>
-                                        </span>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                                <SelectContent>
+                                    {languageData.map((language) => (
+                                        <SelectItem key={language.code} value={language.code}>
+                                            {language.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
 
-                    <div className="grid content-start">
-                        <Select value={systemSettings.time_format} onValueChange={handleTimeFormatChange}>
-                            <SelectTrigger id="time_format" label={translate('Time format')}>
-                                <SelectValue placeholder={translate('Select...')} />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                {Object.entries(timeFormats).map(([format, example]) => (
-                                    <SelectItem key={format} value={format}>
-                                        <span className="flex items-center justify-between gap-4">
-                                            <span>{format}</span>
-                                            <span className="text-foreground/75 text-sm">({example})</span>
-                                        </span>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {!isOrganizationUser && (
-                        <div className="grid content-start">
-                            <Select value={systemSettings.calendar_start_day} onValueChange={handleCalendarStartDayChange}>
-                                <SelectTrigger id="calendar_start_day" label={translate('Calendar start day')}>
+                        {/* Date format */}
+                        <div className="grid content-start gap-2">
+                            <Select value={systemSettings.date_format} onValueChange={handleDateFormatChange}>
+                                <SelectTrigger id="date_format" label={translate('Date format')}>
                                     <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
 
                                 <SelectContent>
-                                    <SelectItem value="sunday">{translate('Sunday')}</SelectItem>
-                                    <SelectItem value="monday">{translate('Monday')}</SelectItem>
+                                    {Object.entries(dateFormats).map(([format, example]) => (
+                                        <SelectItem key={format} value={format}>
+                                            <span className="flex items-center justify-between gap-4">
+                                                <span>{format}</span>
+
+                                                <span className="text-muted-foreground text-xs">{example}</span>
+                                            </span>
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
-                    )}
 
-                    <div className="grid content-start md:col-span-2">
+                        {/* Time format */}
+                        <div className="grid content-start gap-2">
+                            <Select value={systemSettings.time_format} onValueChange={handleTimeFormatChange}>
+                                <SelectTrigger id="time_format" label={translate('Time format')}>
+                                    <SelectValue placeholder={translate('Select...')} />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                    {Object.entries(timeFormats).map(([format, example]) => (
+                                        <SelectItem key={format} value={format}>
+                                            <span className="flex items-center justify-between gap-4">
+                                                <span>{format}</span>
+
+                                                <span className="text-muted-foreground text-xs">{example}</span>
+                                            </span>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Calendar start day */}
+                        {!isOrganizationUser && (
+                            <div className="grid content-start gap-2">
+                                <Select value={systemSettings.calendar_start_day} onValueChange={handleCalendarStartDayChange}>
+                                    <SelectTrigger id="calendar_start_day" label={translate('Calendar start day')}>
+                                        <SelectValue placeholder={translate('Select...')} />
+                                    </SelectTrigger>
+
+                                    <SelectContent>
+                                        <SelectItem value="sunday">{translate('Sunday')}</SelectItem>
+
+                                        <SelectItem value="monday">{translate('Monday')}</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    </div>
+                </section>
+                <div aria-hidden="true" className="border-border border-t" />
+                {/* Timezone preferences */}
+                <section className="space-y-5 py-7">
+                    <div className="flex items-start gap-3">
+                        <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                            <Clock className="size-[18px]" aria-hidden="true" />
+                        </div>
+
+                        <div className="min-w-0 space-y-1">
+                            <h3 className="text-foreground text-sm font-semibold tracking-tight">{translate('Timezone')}</h3>
+
+                            <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
+                                {translate('Choose the timezone used to display dates and times throughout your workspace.')}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid min-w-0 gap-2">
                         <Select value={systemSettings.default_timezone} onValueChange={handleTimezoneChange}>
                             <SelectTrigger id="default_timezone" label={translate('Default timezone')}>
                                 <SelectValue placeholder={translate('Select...')} />
@@ -349,15 +390,19 @@ export default function SystemSettings({
                                             </SelectItem>
                                         ))
                                     ) : (
-                                        <p role="status" className="text-foreground/75 px-3 py-6 text-center text-sm">
+                                        <p role="status" className="text-muted-foreground px-3 py-6 text-center text-sm">
                                             {translate('No timezones found.')}
                                         </p>
                                     )}
                                 </div>
                             </SelectContent>
                         </Select>
+
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                            {translate('This setting determines how dates and times are presented across the platform.')}
+                        </p>
                     </div>
-                </div>
+                </section>
             </form>
         </SettingsSection>
     );

@@ -88,7 +88,7 @@ export default function SlackNotificationSettings() {
                 setProcessing(false);
                 toast.dismiss(toastId);
             },
-            onError: () => {
+            onError: (errors) => {
                 setProcessing(false);
                 toast.dismiss(toastId);
                 Object.values(errors).forEach((message) => toast.error(translate(message)));
@@ -130,36 +130,54 @@ export default function SlackNotificationSettings() {
                 </Button>
             }
         >
-            <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-6 min-[1600px]:grid-cols-3">
-                    {/* Left Column - Configuration */}
-                    <div className="space-y-6 min-[1600px]:col-span-2">
-                        {/* Credentials */}
-                        <div className="grid grid-cols-1 gap-6">
+            <div aria-hidden="true" className="border-border border-t" />
+            <div className="grid grid-cols-1 gap-6 space-y-6 py-7 2xl:grid-cols-3">
+                {/* Main configuration */}
+                <div className="space-y-6 2xl:col-span-2">
+                    {/* Webhook configuration */}
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Connection credentials')}</h3>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {translate('Connect your Slack workspace using an incoming webhook URL')}
+                            </p>
+                        </div>
+
+                        <Input
+                            inputIdentifier="slackWebhookUrl"
+                            value={slackWebhookUrl}
+                            label={translate('Webhook URL')}
+                            required
+                            onChange={(e) => {
+                                setSlackWebhookUrl(e.target.value);
+                            }}
+                        />
+                    </div>
+
+                    {/* Notification preferences */}
+                    <div className="border-border space-y-4 border-t pt-6">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <Bell className="size-[18px]" aria-hidden="true" />
+                            </div>
+
                             <div>
-                                <Input
-                                    value={slackWebhookUrl}
-                                    label={translate('Webhook URL')}
-                                    required
-                                    onChange={(e) => {
-                                        setSlackWebhookUrl(e.target.value);
-                                    }}
-                                />
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Slack notification settings')}</h3>
+                                <p className="text-muted-foreground mt-1 text-sm">{translate('Choose which notifications are sent to Slack')}</p>
                             </div>
                         </div>
 
-                        {/* Slack Notification Settings */}
-                        <div className="my-6 flex items-center gap-2">
-                            <Bell className="h-5 w-5 text-fuchsia-500" />
-                            <h3 className="font-medium">{translate('Slack notification settings')}</h3>
-                        </div>
                         {availableNotifications.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                                 {availableNotifications.map((item) => (
-                                    <div key={item.name} className="flex items-center justify-between rounded-lg border p-3">
-                                        <Label htmlFor={item.name} className="text-sm">
+                                    <div
+                                        key={item.name}
+                                        className="border-border bg-card hover:bg-muted/30 flex min-h-16 items-center justify-between gap-4 rounded-xl border p-4 transition-colors"
+                                    >
+                                        <Label htmlFor={item.name} className="text-foreground cursor-pointer text-sm leading-relaxed font-medium">
                                             {translate(item.label)}
                                         </Label>
+
                                         <Switch
                                             id={item.name}
                                             checked={notifications[item.name] || false}
@@ -171,48 +189,97 @@ export default function SlackNotificationSettings() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
+                            <div className="border-border rounded-xl border border-dashed px-6 py-10 text-center">
+                                <Bell className="text-muted-foreground mx-auto mb-3 size-5" />
+
+                                <p className="text-muted-foreground text-sm">{translate('No notification template available')}</p>
+                            </div>
                         )}
                     </div>
+                </div>
 
-                    {/* Right Column - Test Configuration */}
-                    <div className="mb-4 flex items-center gap-2">
-                        <Send className="h-4 w-4 text-emerald-500" />
-                        <h3 className="font-medium">{translate('Test Slack configuration')}</h3>
-                    </div>
-                    <form autoComplete="off" onSubmit={handleTestMessage} className="space-y-4">
-                        <p className="text-xs text-gray-600">{translate('Send a test message to verify your Slack webhook.')}</p>
+                {/* Testing and setup sidebar */}
+                <div className="space-y-5">
+                    {/* Test configuration */}
+                    <div className="border-border bg-card space-y-4 rounded-xl border p-4 sm:p-5">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <Send className="size-[18px]" aria-hidden="true" />
+                            </div>
 
-                        <Button
-                            type="submit"
-                            className="w-full bg-emerald-500 text-white hover:bg-emerald-600"
-                            disabled={isSendingMessage || !isAvailableSlackWebhookUrl}
-                        >
-                            {isSendingMessage ? (
-                                <>
-                                    <span className="mr-2 animate-spin">◌</span>
-                                    {translate('Sending...')}
-                                </>
-                            ) : (
-                                <>
-                                    <Send className="mr-2 h-4 w-4" />
-                                    {translate('Send test message')}
-                                </>
-                            )}
-                        </Button>
-                    </form>
-                    {/* Setup Instructions */}
-                    <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
-                        <div className="mb-2 flex items-center gap-2">
-                            <MessagesCircle className="h-4 w-4 text-blue-600" />
-                            <h3 className="text-sm text-blue-900">{translate('Slack setup instructions')}</h3>
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Test Slack configuration')}</h3>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Send a test message to verify your Slack webhook.')}</p>
+                            </div>
                         </div>
-                        <ol className="space-y-2 text-xs text-blue-800">
-                            <li>{translate('1. Go to your Slack workspace')}</li>
-                            <li>{translate('2. Create a new Slack app')}</li>
-                            <li>{translate('3. Enable incoming webhooks')}</li>
-                            <li>{translate('4. Add webhook to workspace')}</li>
-                            <li>{translate('5. Copy the webhook URL here')}</li>
+
+                        <form autoComplete="off" onSubmit={handleTestMessage}>
+                            <Button type="submit" className="w-full" disabled={isSendingMessage || !isAvailableSlackWebhookUrl}>
+                                {isSendingMessage ? (
+                                    <>
+                                        <span className="mr-2 animate-spin">◌</span>
+                                        {translate('Sending...')}
+                                    </>
+                                ) : (
+                                    <>
+                                        <Send className="mr-2 size-4" />
+                                        {translate('Send test message')}
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+                    </div>
+
+                    {/* Setup instructions */}
+                    <div className="border-border bg-muted/20 space-y-4 rounded-xl border p-4 sm:p-5">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <MessagesCircle className="size-[18px]" aria-hidden="true" />
+                            </div>
+
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Slack setup instructions')}</h3>
+                                <p className="text-muted-foreground mt-1 text-xs">
+                                    {translate('Follow these steps to connect your Slack workspace')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <ol className="text-muted-foreground space-y-3 text-sm">
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    1
+                                </span>
+                                <span>{translate('Go to your Slack workspace')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    2
+                                </span>
+                                <span>{translate('Create a new Slack app')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    3
+                                </span>
+                                <span>{translate('Enable incoming webhooks')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    4
+                                </span>
+                                <span>{translate('Add webhook to workspace')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    5
+                                </span>
+                                <span>{translate('Copy the webhook URL here')}</span>
+                            </li>
                         </ol>
                     </div>
                 </div>

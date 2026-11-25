@@ -139,56 +139,74 @@ export default function TwilioNotificationSettings() {
                 </Button>
             }
         >
-            <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 min-[1600px]:grid-cols-3">
-                    {/* Left Column - Configuration */}
-                    <div className="space-y-6 min-[1600px]:col-span-2">
-                        {/* Credentials */}
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <div>
-                                <Input
-                                    value={twilioSettings.twilio_sid}
-                                    label={translate('Account SID')}
-                                    onChange={(e) => {
-                                        handleConfigChange('twilio_sid', e.target.value);
-                                    }}
-                                />
+            <div aria-hidden="true" className="border-border border-t" />
+            <div className="grid grid-cols-1 gap-6 space-y-6 py-7 2xl:grid-cols-3">
+                {/* Main configuration */}
+                <div className="space-y-6 2xl:col-span-2">
+                    {/* Account credentials */}
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('Account credentials')}</h3>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                                {translate('Enter your Twilio account details to configure SMS communications')}
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                            <Input
+                                inputIdentifier="twilio_sid"
+                                value={twilioSettings.twilio_sid}
+                                label={translate('Account SID')}
+                                onChange={(e) => {
+                                    handleConfigChange('twilio_sid', e.target.value);
+                                }}
+                            />
+
+                            <Input
+                                inputIdentifier="password"
+                                label={translate('Auth token')}
+                                inputType="password"
+                                value={twilioSettings.twilio_token}
+                                onChange={(e) => {
+                                    handleConfigChange('twilio_token', e.target.value);
+                                }}
+                            />
+
+                            <Input
+                                inputIdentifier="twilio_from"
+                                label={translate('From phone number')}
+                                value={twilioSettings.twilio_from}
+                                onChange={(e) => {
+                                    handleConfigChange('twilio_from', e.target.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* SMS notification preferences */}
+                    <div className="border-border space-y-4 border-t pt-6">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <Bell className="size-[18px]" aria-hidden="true" />
                             </div>
+
                             <div>
-                                <Input
-                                    inputIdentifier="password"
-                                    label={translate('Auth token')}
-                                    inputType="password"
-                                    value={twilioSettings.twilio_token}
-                                    onChange={(e) => {
-                                        handleConfigChange('twilio_token', e.target.value);
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    inputIdentifier="twilio_from"
-                                    label={translate('From phone number')}
-                                    value={twilioSettings.twilio_from}
-                                    onChange={(e) => {
-                                        handleConfigChange('twilio_from', e.target.value);
-                                    }}
-                                />
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Twilio notification settings')}</h3>
+                                <p className="text-muted-foreground mt-1 text-sm">{translate('Choose which notifications are sent through SMS')}</p>
                             </div>
                         </div>
 
-                        {/* SMS Notification Settings */}
-                        <div className="my-6 flex items-center gap-2">
-                            <Bell className="h-5 w-5 text-fuchsia-500" />
-                            <h3 className="font-medium">{translate('Twilio notification settings')}</h3>
-                        </div>
                         {availableNotifications.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                                 {availableNotifications.map((item) => (
-                                    <div key={item.name} className="flex items-center justify-between rounded-lg border p-3">
-                                        <Label htmlFor={item.name} className="text-sm">
+                                    <div
+                                        key={item.name}
+                                        className="border-border bg-card hover:bg-muted/30 flex min-h-16 items-center justify-between gap-4 rounded-xl border p-4 transition-colors"
+                                    >
+                                        <Label htmlFor={item.name} className="text-foreground cursor-pointer text-sm leading-relaxed font-medium">
                                             {translate(item.label)}
                                         </Label>
+
                                         <Switch
                                             id={item.name}
                                             checked={notifications[item.name] || false}
@@ -200,59 +218,117 @@ export default function TwilioNotificationSettings() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
+                            <div className="border-border rounded-xl border border-dashed px-6 py-10 text-center">
+                                <Bell className="text-muted-foreground mx-auto mb-3 size-5" />
+
+                                <p className="text-muted-foreground text-sm">{translate('No notification template available')}</p>
+                            </div>
                         )}
                     </div>
+                </div>
 
-                    {/* Right Column - Test Configuration */}
-                    <div className="mb-4 flex items-center gap-2">
-                        <Send className="h-4 w-4 text-fuchsia-500" />
-                        <h3 className="font-medium">{translate('Test Twilio configuration')}</h3>
-                    </div>
-                    <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
-                        <Input
-                            value={testPhone}
-                            label={translate('Send test to')}
-                            onChange={(e) => {
-                                setTestPhone(e.target.value);
-                            }}
+                {/* Testing and setup sidebar */}
+                <div className="space-y-5">
+                    {/* Test configuration */}
+                    <div className="border-border bg-card space-y-4 rounded-xl border p-4 sm:p-5">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <Send className="size-[18px]" aria-hidden="true" />
+                            </div>
 
-                            required
-                        />
-                        <p className="mt-1 text-xs text-gray-500">
-                            {translate('Enter a phone number with country code')} {translate('E.G., +1234567890')}
-                        </p>
-
-                        <Button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-600" disabled={isSendingSMS || !testPhone}>
-                            {isSendingSMS ? (
-                                <>
-                                    <span className="mr-2 animate-spin">◌</span>
-                                    {translate('Sending...')}
-                                </>
-                            ) : (
-                                <>
-                                    <Send className="mr-2 h-4 w-4" />
-                                    {translate('Send test SMS')}
-                                </>
-                            )}
-                        </Button>
-                    </form>
-                    {/* Setup Instructions */}
-                    <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
-                        <div className="mb-2 flex items-center gap-2">
-                            <MessageSquare className="h-5 w-5 text-blue-600" />
-                            <h3 className="font-medium text-blue-900">{translate('Twilio setup instructions')}</h3>
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Test Twilio configuration')}</h3>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Send a test SMS to verify your Twilio connection')}</p>
+                            </div>
                         </div>
-                        <ol className="space-y-2 text-xs text-blue-800">
-                            <li>
-                                {translate('1. Sign up for a Twilio account at')}{' '}
-                                <span className="text-blue-600 underline">
-                                    <a href="https://www.twilio.com">twilio.com</a>{' '}
+
+                        <form autoComplete="off" onSubmit={handleTestSMS} className="space-y-4">
+                            <div className="space-y-2">
+                                <Input
+                                    value={testPhone}
+                                    label={translate('Send test to')}
+                                    onChange={(e) => {
+                                        setTestPhone(e.target.value);
+                                    }}
+                                    required
+                                />
+
+                                <p className="text-muted-foreground text-xs">
+                                    {translate('Enter a phone number with country code')} {translate('E.G., +1234567890')}
+                                </p>
+                            </div>
+
+                            <Button type="submit" className="w-full" disabled={isSendingSMS || !testPhone}>
+                                {isSendingSMS ? (
+                                    <>
+                                        <span className="mr-2 animate-spin">◌</span>
+                                        {translate('Sending...')}
+                                    </>
+                                ) : (
+                                    <>
+                                        <Send className="mr-2 size-4" />
+                                        {translate('Send test SMS')}
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+                    </div>
+
+                    {/* Setup instructions */}
+                    <div className="border-border bg-muted/20 space-y-4 rounded-xl border p-4 sm:p-5">
+                        <div className="flex items-start gap-3">
+                            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+                                <MessageSquare className="size-[18px]" aria-hidden="true" />
+                            </div>
+
+                            <div>
+                                <h3 className="text-foreground text-sm font-semibold">{translate('Twilio setup instructions')}</h3>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Follow these steps to connect your Twilio account')}</p>
+                            </div>
+                        </div>
+
+                        <ol className="text-muted-foreground space-y-3 text-sm">
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    1
+                                </span>
+
+                                <span>
+                                    {translate('Sign up for a Twilio account at')}{' '}
+                                    <a
+                                        href="https://www.twilio.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-primary font-medium underline-offset-4 hover:underline"
+                                    >
+                                        twilio.com
+                                    </a>
                                 </span>
                             </li>
-                            <li>{translate('2. Get your account SID and auth token from the Twilio console')}</li>
-                            <li>{translate('3. Purchase a phone number or use a trial number')}</li>
-                            <li>{translate('4. Enter your credentials and admin phone number')}</li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    2
+                                </span>
+
+                                <span>{translate('Get your account SID and auth token from the Twilio console')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    3
+                                </span>
+
+                                <span>{translate('Purchase a phone number or use a trial number')}</span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                                <span className="bg-background text-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                                    4
+                                </span>
+
+                                <span>{translate('Enter your credentials and admin phone number')}</span>
+                            </li>
                         </ol>
                     </div>
                 </div>

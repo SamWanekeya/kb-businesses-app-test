@@ -610,7 +610,7 @@ export default function ReturnOrderEdit() {
                         </div>
                         {returnItems.length === 0 ? (
                             <p className="py-8 text-center text-sm text-gray-400">
-                                {translate('No items added yet. Click "add to return" from the available items above.')}
+                                {translate('No items added yet. Click “add to return” from the available items above.')}
                             </p>
                         ) : (
                             <div className="overflow-x-auto">

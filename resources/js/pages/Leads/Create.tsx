@@ -68,10 +68,6 @@ export default function LeadCreate() {
             if (!data[name]) clientErrors[name] = `${label} is required`;
         });
 
-        if (data.website && !/^https?:\/\/.+/.test(data.website)) {
-            clientErrors['website'] = translate('Website must start with http:// or https://');
-        }
-
         if (Object.keys(clientErrors).length > 0) {
             Object.entries(clientErrors).forEach(([key, msg]) => {
                 setError(key as any, msg);

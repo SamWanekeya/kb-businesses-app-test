@@ -397,28 +397,18 @@ export default function Settings() {
             url="/settings"
             breadcrumbs={breadcrumbs}
         >
-            <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-                <aside className="min-w-0 lg:sticky lg:top-20 lg:w-64 lg:shrink-0">
-                    <div className={cn('border-border/70 overflow-hidden rounded-xl border', 'text-sidebar-foreground', 'shadow-sm')}>
-                        <div className="border-border/70 border-b px-4 py-4">
-                            <div className="flex items-center gap-3">
-                                <div
-                                    aria-hidden="true"
-                                    className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-lg"
-                                >
-                                    <SettingsIcon className="size-[18px]" />
-                                </div>
-
-                                <div className="min-w-0">
-                                    <h2 className="text-foreground text-sm font-semibold tracking-tight">{translate('Settings')}</h2>
-                                    <p className="text-foreground/75 mt-0.5 text-xs">{translate('Manage your preferences')}</p>
-                                </div>
+            <div className="min-w-0 space-y-8">
+                {/* Settings layout */}
+                <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-start lg:gap-10">
+                    {/* Settings navigation */}
+                    <aside className="min-w-0 lg:sticky lg:top-20 lg:w-60 lg:shrink-0">
+                        <nav aria-label={translate('Settings navigation')}>
+                            <div className="mb-3 hidden px-3 lg:block">
+                                <span className="text-muted-foreground text-xs font-medium">{translate('Your organization preferences')}</span>
                             </div>
-                        </div>
 
-                        <ScrollArea className="h-auto max-h-72 lg:h-[calc(100dvh-13rem)] lg:max-h-[calc(100dvh-13rem)]">
-                            <nav aria-label={translate('Settings navigation')} className="p-2">
-                                <ul className="flex min-w-0 gap-1.5 overflow-x-auto pb-1 lg:flex-col lg:overflow-x-visible lg:pb-0">
+                            <ScrollArea className="w-full lg:h-[calc(100dvh-12rem)]">
+                                <ul className="flex min-w-0 gap-1 overflow-x-auto pb-2 lg:flex-col lg:overflow-x-visible lg:pb-0">
                                     {sidebarNavItems.map((item) => {
                                         const sectionId = item.href.slice(1);
                                         const isActive = activeSection === sectionId;
@@ -439,16 +429,15 @@ export default function Settings() {
 
                                                         window.history.replaceState(null, '', item.href);
                                                     }}
-
                                                     className={cn(
-                                                        'group relative flex h-10 items-center gap-2.5 rounded-md border px-3',
-                                                        'text-sm transition-colors duration-150',
-                                                        'focus-visible:ring-ring focus-visible:ring-offset-sidebar focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                                                        'flex h-10 items-center gap-3 rounded-full px-4',
+                                                        'text-sm font-medium whitespace-nowrap',
+                                                        'transition-colors duration-150',
                                                         'motion-reduce:transition-none',
+                                                        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
 
                                                         // Default state
-                                                        'text-foreground/75 border-transparent',
-                                                        'hover:border-border/70 hover:bg-muted/70 hover:text-foreground',
+                                                        'text-muted-foreground hover:bg-muted hover:text-foreground',
 
                                                         // Active state
                                                         isActive && [
@@ -456,271 +445,301 @@ export default function Settings() {
                                                             'hover:border-primary/20 hover:bg-primary/10 hover:text-primary',
                                                             'dark:text-fuchsia-300 dark:hover:text-fuchsia-300',
                                                         ],
-
-                                                        // Active indicator
-                                                        'after:pointer-events-none after:absolute after:end-3 after:top-1/2',
-                                                        'after:size-1.5 after:-translate-y-1/2 after:rounded-full',
-                                                        'after:bg-primary after:opacity-0',
-                                                        isActive && 'after:opacity-100',
                                                     )}
                                                 >
-                                                    <Icon aria-hidden="true" className="size-4 shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
+                                                    <Icon aria-hidden="true" className="size-[18px] shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
 
                                                     <span className="min-w-0 truncate">{item.title}</span>
-
-                                                    {isActive && (
-                                                        <span aria-hidden="true" className="bg-primary ml-auto size-1.5 shrink-0 rounded-full" />
-                                                    )}
                                                 </a>
                                             </li>
                                         );
                                     })}
                                 </ul>
-                            </nav>
-                        </ScrollArea>
-                    </div>
-                </aside>
+                            </ScrollArea>
+                        </nav>
+                    </aside>
 
-                <div className="min-w-0 flex-1 space-y-8">
-                    {(permissions.includes('manage-system-settings') || isSuperAdmin) && (
-                        <section id="system-settings" data-settings-section="true" aria-labelledby="system-settings-heading" className="scroll-mt-24">
-                            <h2 id="system-settings-heading" className="sr-only">
-                                {translate('System')}
-                            </h2>
-                            <SystemSettings
-                                settings={systemSettings}
-                                timeZones={timeZones}
-                                dateFormats={dateFormats}
-                                timeFormats={timeFormats}
-                                isOrganizationUser={isOrganization}
-                            />
-                        </section>
-                    )}
+                    {/* Settings content */}
+                    <main className="min-w-0 flex-1 space-y-8">
+                        {(permissions.includes('manage-system-settings') || isSuperAdmin) && (
+                            <section
+                                id="system-settings"
+                                data-settings-section="true"
+                                aria-labelledby="system-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="system-settings-heading" className="sr-only">
+                                    {translate('System')}
+                                </h2>
 
-                    {(permissions.includes('manage-brand-settings') || isSuperAdmin) && (
-                        <section id="brand-settings" data-settings-section="true" aria-labelledby="brand-settings-heading" className="scroll-mt-24">
-                            <h2 id="brand-settings-heading" className="sr-only">
-                                {translate('Branding')}
-                            </h2>
-                            <BrandSettings settings={systemSettings} />
-                        </section>
-                    )}
+                                <SystemSettings
+                                    settings={systemSettings}
+                                    timeZones={timeZones}
+                                    dateFormats={dateFormats}
+                                    timeFormats={timeFormats}
+                                    isOrganizationUser={isOrganization}
+                                />
+                            </section>
+                        )}
 
-                    {(permissions.includes('manage-currency-settings') || isSuperAdmin) && (
-                        <section
-                            id="currency-settings"
-                            data-settings-section="true"
-                            aria-labelledby="currency-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="currency-settings-heading" className="sr-only">
-                                {translate('Currency')}
-                            </h2>
-                            <CurrencySettings />
-                        </section>
-                    )}
+                        {(permissions.includes('manage-brand-settings') || isSuperAdmin) && (
+                            <section
+                                id="brand-settings"
+                                data-settings-section="true"
+                                aria-labelledby="brand-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="brand-settings-heading" className="sr-only">
+                                    {translate('Branding')}
+                                </h2>
 
-                    {isOrganization && permissions.includes('manage-google-calendar-settings') && (
-                        <section
-                            id="google-calendar-settings"
-                            data-settings-section="true"
-                            aria-labelledby="google-calendar-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="google-calendar-settings-heading" className="sr-only">
-                                {translate('Google Calendar')}
-                            </h2>
-                            <GoogleCalendarSettings settings={GoogleCalendarSettings} />
-                        </section>
-                    )}
+                                <BrandSettings settings={systemSettings} />
+                            </section>
+                        )}
 
-                    {/*{(permissions.includes('manage-email-settings') ||*/}
-                    {/*    isSuperAdmin) && (*/}
-                    {/*    <section*/}
-                    {/*        id="email-settings"*/}
-                    {/*        data-settings-section="true"*/}
-                    {/*        aria-labelledby="email-settings-heading"*/}
-                    {/*        className="scroll-mt-24"*/}
-                    {/*    >*/}
-                    {/*        <h2*/}
-                    {/*            id="email-settings-heading"*/}
-                    {/*            className="sr-only"*/}
-                    {/*        >*/}
-                    {/*            {translate('Email address')}*/}
-                    {/*        </h2>*/}
-                    {/*        <EmailSettings />*/}
-                    {/*    </section>*/}
-                    {/*)}*/}
+                        {(permissions.includes('manage-currency-settings') || isSuperAdmin) && (
+                            <section
+                                id="currency-settings"
+                                data-settings-section="true"
+                                aria-labelledby="currency-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="currency-settings-heading" className="sr-only">
+                                    {translate('Currency')}
+                                </h2>
 
-                    {isOrganization && permissions.includes('manage-email-notification-settings') && (
-                        <section
-                            id="email-notification-settings"
-                            data-settings-section="true"
-                            aria-labelledby="email-notification-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="email-notification-settings-heading" className="sr-only">
-                                {translate('Email notification')}
-                            </h2>
-                            <EmailNotificationSettings />
-                        </section>
-                    )}
+                                <CurrencySettings />
+                            </section>
+                        )}
 
-                    {isOrganization && permissions.includes('manage-twilio-notification-settings') && (
-                        <section
-                            id="twilio-notification-settings"
-                            data-settings-section="true"
-                            aria-labelledby="twilio-notification-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="twilio-notification-settings-heading" className="sr-only">
-                                {translate('Twilio')}
-                            </h2>
-                            <TwilioNotificationSettings />
-                        </section>
-                    )}
+                        {isOrganization && permissions.includes('manage-google-calendar-settings') && (
+                            <section
+                                id="google-calendar-settings"
+                                data-settings-section="true"
+                                aria-labelledby="google-calendar-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="google-calendar-settings-heading" className="sr-only">
+                                    {translate('Google Calendar')}
+                                </h2>
 
-                    {isOrganization && permissions.includes('manage-slack-notification-settings') && (
-                        <section
-                            id="slack-notification-settings"
-                            data-settings-section="true"
-                            aria-labelledby="slack-notification-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="slack-notification-settings-heading" className="sr-only">
-                                {translate('Slack')}
-                            </h2>
-                            <SlackNotificationSettings />
-                        </section>
-                    )}
+                                <GoogleCalendarSettings settings={GoogleCalendarSettings} />
+                            </section>
+                        )}
 
-                    {isOrganization && permissions.includes('manage-quotes-settings') && (
-                        <section id="quote-templates" data-settings-section="true" aria-labelledby="quote-templates-heading" className="scroll-mt-24">
-                            <h2 id="quote-templates-heading" className="sr-only">
-                                {translate('Quote templates')}
-                            </h2>
-                            <QuoteTemplateSettings />
-                        </section>
-                    )}
+                        {/*{(permissions.includes('manage-email-settings') ||
+                isSuperAdmin) && (
+                <section
+                    id="email-settings"
+                    data-settings-section="true"
+                    aria-labelledby="email-settings-heading"
+                    className="scroll-mt-24"
+                >
+                    <h2 id="email-settings-heading" className="sr-only">
+                        {translate('Email address')}
+                    </h2>
 
-                    {isOrganization && permissions.includes('manage-sales-order-settings') && (
-                        <section
-                            id="sales-order-templates"
-                            data-settings-section="true"
-                            aria-labelledby="sales-order-templates-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="sales-order-templates-heading" className="sr-only">
-                                {translate('Sales order templates')}
-                            </h2>
-                            <SalesOrderTemplateSettings />
-                        </section>
-                    )}
+                    <EmailSettings />
+                </section>
+            )}*/}
 
-                    {isOrganization && permissions.includes('manage-invoice-settings') && (
-                        <section
-                            id="invoice-templates"
-                            data-settings-section="true"
-                            aria-labelledby="invoice-templates-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="invoice-templates-heading" className="sr-only">
-                                {translate('Invoice templates')}
-                            </h2>
-                            <InvoiceTemplateSettings />
-                        </section>
-                    )}
+                        {isOrganization && permissions.includes('manage-email-notification-settings') && (
+                            <section
+                                id="email-notification-settings"
+                                data-settings-section="true"
+                                aria-labelledby="email-notification-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="email-notification-settings-heading" className="sr-only">
+                                    {translate('Email notification')}
+                                </h2>
 
-                    {(permissions.includes('manage-payment-settings') || isSuperAdmin) && (
-                        <section
-                            id="payment-settings"
-                            data-settings-section="true"
-                            aria-labelledby="payment-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="payment-settings-heading" className="sr-only">
-                                {translate('Payment')}
-                            </h2>
-                            <PaymentSettings settings={paymentSettings} />
-                        </section>
-                    )}
+                                <EmailNotificationSettings />
+                            </section>
+                        )}
 
-                    {permissions.includes('manage-storage-settings') && isSuperAdmin && (
-                        <section
-                            id="storage-settings"
-                            data-settings-section="true"
-                            aria-labelledby="storage-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="storage-settings-heading" className="sr-only">
-                                {translate('Storage')}
-                            </h2>
-                            <StorageSettings settings={systemSettings} />
-                        </section>
-                    )}
+                        {isOrganization && permissions.includes('manage-twilio-notification-settings') && (
+                            <section
+                                id="twilio-notification-settings"
+                                data-settings-section="true"
+                                aria-labelledby="twilio-notification-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="twilio-notification-settings-heading" className="sr-only">
+                                    {translate('Twilio')}
+                                </h2>
 
-                    {(permissions.includes('manage-recaptcha-settings') || isSuperAdmin) && (
-                        <section
-                            id="recaptcha-settings"
-                            data-settings-section="true"
-                            aria-labelledby="recaptcha-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="recaptcha-settings-heading" className="sr-only">
-                                {translate('Google reCAPTCHA')}
-                            </h2>
-                            <RecaptchaSettings settings={systemSettings} />
-                        </section>
-                    )}
+                                <TwilioNotificationSettings />
+                            </section>
+                        )}
 
-                    {(permissions.includes('manage-kakbima-intelligence-settings') || isSuperAdmin) && (
-                        <section
-                            id="kakbima-intelligence-settings"
-                            data-settings-section="true"
-                            aria-labelledby="kakbima-intelligence-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="kakbima-intelligence-settings-heading" className="sr-only">
-                                {translate('Kakbima Intelligence')}
-                            </h2>
-                            <KakbimaIntelligenceSettings settings={systemSettings} />
-                        </section>
-                    )}
+                        {isOrganization && permissions.includes('manage-slack-notification-settings') && (
+                            <section
+                                id="slack-notification-settings"
+                                data-settings-section="true"
+                                aria-labelledby="slack-notification-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="slack-notification-settings-heading" className="sr-only">
+                                    {translate('Slack')}
+                                </h2>
 
-                    {(permissions.includes('manage-cookie-settings') || isSuperAdmin) && (
-                        <section id="cookie-settings" data-settings-section="true" aria-labelledby="cookie-settings-heading" className="scroll-mt-24">
-                            <h2 id="cookie-settings-heading" className="sr-only">
-                                {translate('Cookie')}
-                            </h2>
-                            <CookieSettings settings={systemSettings} />
-                        </section>
-                    )}
+                                <SlackNotificationSettings />
+                            </section>
+                        )}
 
-                    {(permissions.includes('manage-cache-settings') || isSuperAdmin) && (
-                        <section id="cache-settings" data-settings-section="true" aria-labelledby="cache-settings-heading" className="scroll-mt-24">
-                            <h2 id="cache-settings-heading" className="sr-only">
-                                {translate('Cache')}
-                            </h2>
-                            <CacheSettings cacheSize={cacheSize} />
-                        </section>
-                    )}
+                        {isOrganization && permissions.includes('manage-quotes-settings') && (
+                            <section
+                                id="quote-templates"
+                                data-settings-section="true"
+                                aria-labelledby="quote-templates-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="quote-templates-heading" className="sr-only">
+                                    {translate('Quote templates')}
+                                </h2>
 
-                    {isOrganization && permissions.includes('manage-webhook-settings') && (
-                        <section
-                            id="webhook-settings"
-                            data-settings-section="true"
-                            aria-labelledby="webhook-settings-heading"
-                            className="scroll-mt-24"
-                        >
-                            <h2 id="webhook-settings-heading" className="sr-only">
-                                {translate('Webhook')}
-                            </h2>
-                            <WebhookSettings />
-                        </section>
-                    )}
+                                <QuoteTemplateSettings />
+                            </section>
+                        )}
+
+                        {isOrganization && permissions.includes('manage-sales-order-settings') && (
+                            <section
+                                id="sales-order-templates"
+                                data-settings-section="true"
+                                aria-labelledby="sales-order-templates-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="sales-order-templates-heading" className="sr-only">
+                                    {translate('Sales order templates')}
+                                </h2>
+
+                                <SalesOrderTemplateSettings />
+                            </section>
+                        )}
+
+                        {isOrganization && permissions.includes('manage-invoice-settings') && (
+                            <section
+                                id="invoice-templates"
+                                data-settings-section="true"
+                                aria-labelledby="invoice-templates-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="invoice-templates-heading" className="sr-only">
+                                    {translate('Invoice templates')}
+                                </h2>
+
+                                <InvoiceTemplateSettings />
+                            </section>
+                        )}
+
+                        {(permissions.includes('manage-payment-settings') || isSuperAdmin) && (
+                            <section
+                                id="payment-settings"
+                                data-settings-section="true"
+                                aria-labelledby="payment-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="payment-settings-heading" className="sr-only">
+                                    {translate('Payment')}
+                                </h2>
+
+                                <PaymentSettings settings={paymentSettings} />
+                            </section>
+                        )}
+
+                        {permissions.includes('manage-storage-settings') && isSuperAdmin && (
+                            <section
+                                id="storage-settings"
+                                data-settings-section="true"
+                                aria-labelledby="storage-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="storage-settings-heading" className="sr-only">
+                                    {translate('Storage')}
+                                </h2>
+
+                                <StorageSettings settings={systemSettings} />
+                            </section>
+                        )}
+
+                        {(permissions.includes('manage-recaptcha-settings') || isSuperAdmin) && (
+                            <section
+                                id="recaptcha-settings"
+                                data-settings-section="true"
+                                aria-labelledby="recaptcha-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="recaptcha-settings-heading" className="sr-only">
+                                    {translate('Google reCAPTCHA')}
+                                </h2>
+
+                                <RecaptchaSettings settings={systemSettings} />
+                            </section>
+                        )}
+
+                        {(permissions.includes('manage-kakbima-intelligence-settings') || isSuperAdmin) && (
+                            <section
+                                id="kakbima-intelligence-settings"
+                                data-settings-section="true"
+                                aria-labelledby="kakbima-intelligence-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="kakbima-intelligence-settings-heading" className="sr-only">
+                                    {translate('Kakbima Intelligence')}
+                                </h2>
+
+                                <KakbimaIntelligenceSettings settings={systemSettings} />
+                            </section>
+                        )}
+
+                        {(permissions.includes('manage-cookie-settings') || isSuperAdmin) && (
+                            <section
+                                id="cookie-settings"
+                                data-settings-section="true"
+                                aria-labelledby="cookie-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="cookie-settings-heading" className="sr-only">
+                                    {translate('Cookie')}
+                                </h2>
+
+                                <CookieSettings settings={systemSettings} />
+                            </section>
+                        )}
+
+                        {(permissions.includes('manage-cache-settings') || isSuperAdmin) && (
+                            <section
+                                id="cache-settings"
+                                data-settings-section="true"
+                                aria-labelledby="cache-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="cache-settings-heading" className="sr-only">
+                                    {translate('Cache')}
+                                </h2>
+
+                                <CacheSettings cacheSize={cacheSize} />
+                            </section>
+                        )}
+
+                        {isOrganization && permissions.includes('manage-webhook-settings') && (
+                            <section
+                                id="webhook-settings"
+                                data-settings-section="true"
+                                aria-labelledby="webhook-settings-heading"
+                                className="scroll-mt-24"
+                            >
+                                <h2 id="webhook-settings-heading" className="sr-only">
+                                    {translate('Webhook')}
+                                </h2>
+
+                                <WebhookSettings />
+                            </section>
+                        )}
+                    </main>
                 </div>
             </div>
-
             <Toaster />
         </PageTemplate>
     );

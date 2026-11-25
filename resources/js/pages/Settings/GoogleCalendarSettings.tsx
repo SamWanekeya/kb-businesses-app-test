@@ -6,8 +6,8 @@ import { Label } from '@components/UserInterface/Label';
 import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import { RefreshCw } from 'lucide-react';
-import { useState } from 'react';
+import { CalendarDays, CheckCircle2, FileJson, RefreshCw } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface GoogleCalendarSettingsProps {
@@ -53,6 +53,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
 
     const handleSync = () => {
         setIsSyncing(true);
+        const toastId = toast.loading(translate('Saving Google Calendar settings...'));
 
         router.post(
             route('settings.google-calendar.sync'),
@@ -80,23 +81,48 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                 </Button>
             }
         >
-            <div className="space-y-6">
-                <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
-                    <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                            <Label htmlFor="googleCalendarEnabled">{translate('Enable Google Calendar')}</Label>
-                            <p className="text-foreground/75 text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
+            <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
+                <div aria-hidden="true" className="border-border border-t" />
+                {/* Integration status */}
+                <div className="border-border bg-card flex items-center justify-between gap-4 rounded-xl border p-4 sm:p-5">
+                    <div className="flex min-w-0 items-start gap-3">
+                        <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
+                            <CalendarDays className="text-muted-foreground size-5" />
                         </div>
-                        <Switch
-                            id="googleCalendarEnabled"
-                            checked={formData.googleCalendarEnabled}
-                            onCheckedChange={(checked) => {
-                                setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }));
-                            }}
-                        />
+
+                        <div className="min-w-0 space-y-1">
+                            <Label htmlFor="googleCalendarEnabled" className="font-medium">
+                                {translate('Enable Google Calendar')}
+                            </Label>
+
+                            <p className="text-muted-foreground text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
+                        </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <Switch
+                        id="googleCalendarEnabled"
+                        checked={formData.googleCalendarEnabled}
+                        onCheckedChange={(checked) => {
+                            setFormData((prev) => ({
+                                ...prev,
+                                googleCalendarEnabled: checked,
+                            }));
+                        }}
+                    />
+                </div>
+
+                {/* Integration credentials */}
+                <fieldset disabled={!formData.googleCalendarEnabled} className="space-y-5 disabled:opacity-60">
+                    <div className="space-y-1">
+                        <h3 className="text-foreground text-sm font-semibold">{translate('Connection credentials')}</h3>
+
+                        <p className="text-muted-foreground text-sm">
+                            {translate('Provide the credentials required to connect your Google Calendar')}
+                        </p>
+                    </div>
+
+                    <div className="border-border bg-card space-y-5 rounded-xl border p-4 sm:p-5">
+                        {/* Calendar ID */}
                         <div className="space-y-2">
                             <Input
                                 inputIdentifier="googleCalendarId"
@@ -106,13 +132,16 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                 inputMode="text"
                                 value={formData.googleCalendarId}
                                 onChange={(e) => {
-                                    setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }));
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        googleCalendarId: e.target.value,
+                                    }));
                                 }}
-                                disabled={!formData.googleCalendarEnabled}
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        {/* Service account credentials */}
+                        <div className="space-y-3">
                             <Input
                                 inputIdentifier="googleCalendarJson"
                                 label={translate('Service account JSON file')}
@@ -121,25 +150,52 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                 onChange={(e) => {
                                     setJsonFile(e.target.files?.[0] || null);
                                 }}
-                                disabled={!formData.googleCalendarEnabled}
                             />
-                            {jsonFile && (
-                                <p className="text-sm text-fuchsia-600">
-                                    {translate('Selected file')}: {jsonFile.name}
-                                </p>
-                            )}
-                            <p className="text-foreground/75 text-xs">{translate('Upload your Google service account JSON credentials')}</p>
-                        </div>
 
-                        <div className="flex justify-end">
-                            <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
-                                <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                                {isSyncing ? translate('Syncing...') : translate('Test sync')}
-                            </Button>
+                            {jsonFile && (
+                                <div className="border-border bg-muted/40 flex items-center gap-3 rounded-lg border p-3">
+                                    <div className="bg-background flex size-9 shrink-0 items-center justify-center rounded-lg">
+                                        <FileJson className="size-[18px]" aria-hidden="true" />
+                                    </div>
+
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-muted-foreground text-xs">{translate('Selected file')}</p>
+
+                                        <p className="text-foreground truncate text-sm font-medium">{jsonFile.name}</p>
+                                    </div>
+
+                                    <CheckCircle2 className="text-primary size-4 shrink-0" />
+                                </div>
+                            )}
+
+                            <p className="text-muted-foreground text-xs">{translate('Upload your Google service account JSON credentials')}</p>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                    {/* Synchronization */}
+                    <div className="border-border bg-muted/20 flex flex-col gap-3 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="space-y-1">
+                            <p className="text-foreground text-sm font-medium">{translate('Connection test')}</p>
+
+                            <p className="text-muted-foreground text-xs">
+                                {translate('Verify that your Google Calendar integration is working correctly')}
+                            </p>
+                        </div>
+
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleSync}
+                            disabled={!formData.googleCalendarEnabled || isSyncing}
+                            className="w-full shrink-0 sm:w-auto"
+                        >
+                            <RefreshCw className={`mr-2 size-4 ${isSyncing ? 'animate-spin' : ''}`} />
+
+                            {isSyncing ? translate('Syncing...') : translate('Test sync')}
+                        </Button>
+                    </div>
+                </fieldset>
+            </form>
         </SettingsSection>
     );
 }
