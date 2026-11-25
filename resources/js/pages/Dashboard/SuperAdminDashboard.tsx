@@ -125,19 +125,19 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
                         <Link
                             href={route('discounts.index')}
-                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
+                            className="hover:bg-muted rounded-full border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Discounts')}
                         </Link>
                         <Link
                             href={route('referral-program.index')}
-                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
+                            className="hover:bg-muted rounded-full border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Referral program')}
                         </Link>
                         <Link
                             href={route('settings.index')}
-                            className="hover:bg-muted rounded-md border px-3 py-2 text-sm font-medium transition-colors"
+                            className="hover:bg-muted rounded-full border px-3 py-2 text-sm font-medium transition-colors"
                         >
                             {translate('Settings')}
                         </Link>
@@ -248,7 +248,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                                 <p className="text-muted-foreground mt-0.5 truncate text-xs">{organization.email}</p>
                                             </div>
                                             <div className="flex shrink-0 flex-col items-end gap-1">
-                                                <span className="bg-muted text-foreground inline-flex items-center rounded-md px-2 py-1 text-xs font-medium">
+                                                <span className="bg-muted text-foreground inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
                                                     {translate('Active')}
                                                 </span>
                                                 <span className="text-muted-foreground text-xs">{organization.registered_at}</span>

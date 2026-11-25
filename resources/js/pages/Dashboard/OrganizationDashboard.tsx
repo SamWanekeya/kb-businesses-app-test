@@ -732,7 +732,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 {charts.salesTrends?.reduce((s, m) => s + m.sales, 0) || 0} {translate('Total')}
                                             </span>
                                         )}
-                                        {salesTab === 'revenue' && useHasPermission('view-managemanagemanage') && (
+                                        {salesTab === 'revenue' && (
                                             <span className="text-muted-foreground inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:ring-emerald-500/30">
                                                 {window.kbSettings.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
                                             </span>

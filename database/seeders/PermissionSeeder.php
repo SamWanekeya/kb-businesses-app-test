@@ -75,7 +75,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'trial-plans', 'module' => 'plans', 'label' => 'Trial Plans', 'description' => 'Can start trial for subscription plans'],
             ['name' => 'subscribe-plans', 'module' => 'plans', 'label' => 'Subscribe Plans', 'description' => 'Can subscribe to subscription plans'],
 
-
             // Discount management
             ['name' => 'manage-discounts', 'module' => 'discounts', 'label' => 'Manage Discounts', 'description' => 'Can manage subscription Discounts'],
             ['name' => 'manage-any-discounts', 'module' => 'discounts', 'label' => 'Manage All Discounts', 'description' => 'Manage Any Discounts'],
@@ -428,7 +427,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-document-folders', 'module' => 'document-folders', 'label' => 'Delete Document Folders', 'description' => 'Can delete document folders'],
             // ['name' => 'toggle-status-document-folders', 'module' => 'document-folders', 'label' => 'Toggle Status Document Folders', 'description' => 'Can toggle status document folders'],
 
-
             // Document Type management
             ['name' => 'manage-document-types', 'module' => 'document-types', 'label' => 'Manage Document Types', 'description' => 'Can manage document types'],
             ['name' => 'view-document-types', 'module' => 'document-types', 'label' => 'View Document Types', 'description' => 'View Document Types'],
@@ -453,7 +451,7 @@ class PermissionSeeder extends Seeder
             // Reports management
             ['name' => 'manage-reports', 'module' => 'reports', 'label' => 'Manage Reports', 'description' => 'Can manage reports'],
 
-            // // Notification Template management
+            // Notification Template management
             ['name' => 'manage-notification-templates', 'module' => 'notification-templates', 'label' => 'Manage Notification Templates', 'description' => 'Can manage notification templates'],
             ['name' => 'view-notification-templates', 'module' => 'notification-templates', 'label' => 'View Notification Templates', 'description' => 'View Notification Templates'],
             ['name' => 'create-notification-templates', 'module' => 'notification-templates', 'label' => 'Create Notification Templates', 'description' => 'Can create notification templates'],
@@ -483,7 +481,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-announcements', 'module' => 'announcements', 'label' => 'Delete Announcements', 'description' => 'Can delete announcements'],
             ['name' => 'toggle-status-announcements', 'module' => 'announcements', 'label' => 'Toggle Status Announcements', 'description' => 'Can toggle status announcements'],
 
-            // Sign in History management
+            // Sign in history management
             ['name' => 'manage-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Manage Sign in History', 'description' => 'Can manage sign in history'],
             ['name' => 'show-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Show Sign in History', 'description' => 'Can view sign in history'],
             ['name' => 'delete-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Delete Sign in History', 'description' => 'Can delete sign in history'],
